@@ -1,0 +1,1239 @@
+﻿@model IEnumerable<LitProRead.Models.Student>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LitProID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Salutation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Zip)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomeAreaCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HomePhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkAreaCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkPhoneExt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FAXAreaCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FAX)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CellAreaCode1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CellPhone1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CellAreaCode2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CellAreaPhone2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactPref)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FingerPrintDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Source)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Staff)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Active)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActiveDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActiveType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InActiveDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InActiveReason)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MailCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Country)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Occupation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmergContact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmergAreaCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmergPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployerStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Referral)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Keyword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FollowUpDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FollowUpDesc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FFL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InitialSurveyDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FollowUpSurveyDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Program)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C1_1Tutoring)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C_1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C_2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C_3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Family_Literacy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FFL_1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FFL_2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FFL_3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompLab)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lab1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lab2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lab3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OpenLab)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SmallGroups)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InHouse)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LPT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C411)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ESL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Reading_Sharing)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OffSite)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project90)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Jericho)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bayshore)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Headstart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AdultSchool)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Income)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentContact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TutorPreference)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationPref)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationPref2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocationPref3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transportation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InterestHobbies)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SmokingPref)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TutorSmoker)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CallLocation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SpecialInstructions)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MedicalInfo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NativeLanguage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReadWriteNativeLang)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EducationLevel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PreLibraryCard)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LibraryCard)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IntakeDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstCalledBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstCalledByDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HowHeard)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NeedChildCare)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalChildren)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child1Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child1Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child1DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child1Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child2Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child2Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child2DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child2Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child3Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child3Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child3DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child3Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child4Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child4Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child4DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child4Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child5Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child5Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child5DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child5Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child6Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child6Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child6DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child6Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child7Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child7Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child7DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child7Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child8Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child8Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child8DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child8Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child9Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child9Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child9DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child9Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child10Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child10Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child10DateBorn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Child10Ethnicity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailMonAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailMonPM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailMonEVE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailTueAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailTuePM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailTueEVE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailWedAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailWedPM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailWedEVE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailThuAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailThuPM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailThudEVE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailFriAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailFriPM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailFriEVE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailSatAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailSatPM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailSatEVE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailSunAM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailSunPM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvailSunEVE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessIntakeDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessIntel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessLevel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessWork)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessFamilyMember)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessLifeLongLearner)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessCommunityMember)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessReadTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessMiscues)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssessWordRec)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate4)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate5)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish6)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate6)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish8)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate8)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish9)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate9)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Accomplish10)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AcDate10)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccomplishNotes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateModified)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hyperlink1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hyperlink2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hyperlink3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hyperlink4)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LitProID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Salutation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Zip)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeAreaCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomePhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkAreaCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WorkPhoneExt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FAXAreaCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FAX)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CellAreaCode1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CellPhone1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CellAreaCode2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CellAreaPhone2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactPref)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EMail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FingerPrintDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Source)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Staff)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActiveDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActiveType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InActiveDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InActiveReason)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MailCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DOB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Country)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Occupation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmergContact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmergAreaCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmergPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employer)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmployerStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Referral)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Keyword)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FollowUpDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FollowUpDesc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FFL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InitialSurveyDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FollowUpSurveyDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Program)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.C1_1Tutoring)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.C_1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.C_2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.C_3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Family_Literacy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FFL_1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FFL_2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FFL_3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompLab)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lab1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lab2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lab3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OpenLab)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SmallGroups)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InHouse)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LPT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.C411)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ESL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Reading_Sharing)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OffSite)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project90)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Jericho)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Bayshore)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Headstart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AdultSchool)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Income)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StudentContact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TutorPreference)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationPref)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationPref2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocationPref3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Transportation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InterestHobbies)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SmokingPref)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TutorSmoker)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CallLocation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SpecialInstructions)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MedicalInfo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NativeLanguage)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReadWriteNativeLang)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EducationLevel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PreLibraryCard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LibraryCard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IntakeDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstCalledBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstCalledByDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HowHeard)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NeedChildCare)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalChildren)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child1Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child1Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child1DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child1Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child2Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child2Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child2DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child2Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child3Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child3Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child3DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child3Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child4Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child4Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child4DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child4Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child5Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child5Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child5DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child5Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child6Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child6Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child6DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child6Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child7Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child7Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child7DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child7Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child8Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child8Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child8DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child8Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child9Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child9Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child9DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child9Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child10Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child10Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child10DateBorn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Child10Ethnicity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailMonAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailMonPM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailMonEVE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailTueAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailTuePM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailTueEVE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailWedAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailWedPM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailWedEVE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailThuAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailThuPM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailThudEVE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailFriAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailFriPM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailFriEVE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailSatAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailSatPM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailSatEVE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailSunAM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailSunPM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AvailSunEVE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessIntakeDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessIntel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessLevel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessWork)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessFamilyMember)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessLifeLongLearner)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessCommunityMember)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessReadTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessMiscues)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssessWordRec)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate4)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate5)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish6)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate6)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish8)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate8)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish9)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate9)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Accomplish10)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AcDate10)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccomplishNotes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateModified)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hyperlink1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hyperlink2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hyperlink3)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hyperlink4)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

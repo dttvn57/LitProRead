@@ -1,0 +1,135 @@
+﻿@model LitProRead.ViewModels.ReportsViewModel
+
+@{
+    ViewBag.Title = "Report Page";
+}
+<div id="tabs">
+
+    <ul>
+        <li><a href="#tabs-1">Students</a></li>
+        <li><a href="#tabs-2">Tutors</a></li>
+        <li><a href="#tabs-3">All Pairs</a></li>
+        <li><a href="#tabs-4">Classes/Training</a></li>
+        <li><a href="#tabs-5">Small Groups</a></li>
+        <li><a href="#tabs-6">Volunteers</a></li>
+        <li><a href="#tabs-7">Contacts</a></li>
+        <li><a href="#tabs-8">Donors</a></li>
+    </ul>
+
+    <div id="tabs-1">
+        @Html.Hidden("selectedReport")
+        @Html.Label("Reports")
+        @Html.DropDownList("StudentReports", new SelectList(Model.StudentReports), string.Empty)
+        @Html.Label("Enter date range (leave blank for all)", htmlAttributes: new { id = "StudentReportsDateRangeLabel", disabled="disabled" })
+        @Html.TextBox("StudentReportsBeginDate", null, htmlAttributes: new {type="date", style="display: none; width:10em" })
+        @Html.TextBox("StudentReportsEndDate", null, htmlAttributes: new {type="date", style="display: none; width:10em" })
+
+        @*
+        @Html.ActionLink("Run", "Run", "Reports", new { reportType = "PDF", id="RunReportLink" }, null)
+        *@
+        <button type="button" id="RunReportLink">Run</button>
+
+    </div>
+
+    <div id="tabs-2">
+    </div>
+
+    <div id="tabs-3">
+    </div>
+
+    <div id="tabs-4">
+    </div>
+
+    <div id="tabs-5">
+    </div>
+
+    <div id="tabs-6">
+    </div>
+
+    <div id="tabs-7">
+    </div>
+
+    <div id="tabs-8">
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            $("#tabs").tabs();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".date").datepicker();
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        $("#StudentReports").change(function () {
+            //alert(value);
+            var selectedStudentReport = $("#StudentReports").val();
+
+            $("#selectedReport").val(selectedStudentReport);
+
+            //modify the href link
+            //var linkValue = '/Reports/Run/' + selectedStudentReport;
+            //$('#RunReportLink').attr('href', linkValue);
+
+
+            @* alert(selectedStudentReport);
+            $("#StudentReportsDate1").style.display = "block";attr("disabled", false);*@
+            var studentReportsBeginDate = document.getElementById("StudentReportsBeginDate");
+            var studentReportsEndDate = document.getElementById("StudentReportsEndDate");
+
+            if (selectedStudentReport == 'StudentStatusHistory') {
+                document.getElementById("StudentReportsDateRangeLabel").display = "block";
+                studentReportsBeginDate.style.display = "block";
+                studentReportsEndDate.style.display = "block";
+            }
+            else {
+                document.getElementById("StudentReportsDateRangeLabel").style.display = "none";
+                studentReportsBeginDate.style.display = "none";
+                studentReportsEndDatestyle.style.display = "none";
+
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('#RunReportLink').click(function (value) {
+            var name = $("#EmpFullName").val();
+            var title = $("#Title").val();
+            var branch = $("#HomeBranches").val();
+
+            var reportType = "PDF";
+            var reportName = $("#StudentReports").val();
+
+            var url = '@Url.Action("Run", "Reports", new { paramsVal = "_paramsVal_" })';
+            url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "reportName=" + reportName);
+             alert(url);
+           window.location.href = url;
+
+            //$.ajax({
+            //    url: '@Url.Action("AddRow", "Verification")',//'@Url.Content("~/Verification/AddRow")',
+            //    type: 'GET',
+            //     contentType: 'application/json; charset=utf-8',
+            //    data: {
+            //        fullName: name,
+            //        title: t,
+            //        homeBranch: branch
+            //    },
+
+            //    success: function (result) {
+            //       //$('#ViewResult').html(result);
+            //    }
+            //});
+
+            return true;
+        });
+
+    </script>
+
+}
