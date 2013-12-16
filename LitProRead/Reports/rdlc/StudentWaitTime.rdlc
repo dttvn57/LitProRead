@@ -2,164 +2,6 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Rectangle Name="ReportFooter">
-        <ReportItems>
-          <Textbox Name="Label19">
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Count:</Value>
-                    <Style>
-                      <FontStyle>Normal</FontStyle>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>None</TextDecoration>
-                      <Color>#000000</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                  <LineHeight>13pt</LineHeight>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.0833in</Top>
-            <Left>0.0416in</Left>
-            <Height>0.177in</Height>
-            <Width>0.4583in</Width>
-            <Style>
-              <Border>
-                <Color>#000000</Color>
-              </Border>
-              <Direction>LTR</Direction>
-            </Style>
-          </Textbox>
-          <Textbox Name="Text18">
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value />
-                    <Style>
-                      <FontStyle>Normal</FontStyle>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>None</TextDecoration>
-                      <Color>#000000</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                  <LineHeight>13pt</LineHeight>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.0833in</Top>
-            <Left>0.5416in</Left>
-            <Height>0.1562in</Height>
-            <Width>0.5in</Width>
-            <ZIndex>1</ZIndex>
-            <Style>
-              <Border>
-                <Color>#000000</Color>
-              </Border>
-              <Direction>LTR</Direction>
-            </Style>
-          </Textbox>
-          <Textbox Name="Label22">
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Average Wait Time (months):</Value>
-                    <Style>
-                      <FontStyle>Normal</FontStyle>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>None</TextDecoration>
-                      <Color>#000000</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                  <LineHeight>13pt</LineHeight>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.0833in</Top>
-            <Left>3.1666in</Left>
-            <Height>0.177in</Height>
-            <Width>2.1666in</Width>
-            <ZIndex>2</ZIndex>
-            <Style>
-              <Border>
-                <Color>#000000</Color>
-              </Border>
-              <Direction>LTR</Direction>
-            </Style>
-          </Textbox>
-          <Textbox Name="Text21">
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value />
-                    <Style>
-                      <FontStyle>Normal</FontStyle>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <Format>F2</Format>
-                      <TextDecoration>None</TextDecoration>
-                      <Color>#000000</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                  <LineHeight>13pt</LineHeight>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.0833in</Top>
-            <Left>5.5in</Left>
-            <Height>0.1562in</Height>
-            <Width>0.5833in</Width>
-            <ZIndex>3</ZIndex>
-            <Style>
-              <Border>
-                <Color>#000000</Color>
-              </Border>
-              <Direction>LTR</Direction>
-            </Style>
-          </Textbox>
-          <Line Name="Line23">
-            <Height>0in</Height>
-            <Width>6.9166in</Width>
-            <ZIndex>4</ZIndex>
-            <Style>
-              <Border>
-                <Color>#000000</Color>
-                <Style>Solid</Style>
-              </Border>
-            </Style>
-          </Line>
-        </ReportItems>
-        <DataElementOutput>ContentsOnly</DataElementOutput>
-        <Top>0.1979in</Top>
-        <Height>0.375in</Height>
-        <Width>7.0416in</Width>
-        <Style>
-          <BackgroundColor>#ffffff</BackgroundColor>
-        </Style>
-      </Rectangle>
       <Rectangle Name="Detail">
         <ReportItems>
           <Tablix Name="Tablix1">
@@ -265,7 +107,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox1</rd:DefaultName>
@@ -319,7 +163,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=DateDiff("m",Fields!FirstActive.Value,Now())</Value>
+                                  <Value />
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -373,17 +217,136 @@
         </ReportItems>
         <DataElementOutput>ContentsOnly</DataElementOutput>
         <Height>0.25342in</Height>
-        <Width>10.14458in</Width>
-        <ZIndex>1</ZIndex>
+        <Width>6.1666in</Width>
         <Style>
           <BackgroundColor>#ffffff</BackgroundColor>
         </Style>
       </Rectangle>
+      <Textbox Name="Textbox3">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Count(Fields!LastName.Value, "StudentWaitTimeDataSet")</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox3</rd:DefaultName>
+        <Top>0.38413in</Top>
+        <Left>0.625in</Left>
+        <Height>0.25in</Height>
+        <Width>1in</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox4">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Count:</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox4</rd:DefaultName>
+        <Top>0.38413in</Top>
+        <Left>0.0416in</Left>
+        <Height>0.25in</Height>
+        <Width>0.48958in</Width>
+        <ZIndex>2</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox5">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Average Wait Time (months):</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox5</rd:DefaultName>
+        <Top>0.38413in</Top>
+        <Left>3.44781in</Left>
+        <Height>0.25in</Height>
+        <Width>1.82292in</Width>
+        <ZIndex>3</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox6">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Avg(Fields!WaitTime.Value, "StudentWaitTimeDataSet")</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox6</rd:DefaultName>
+        <Top>0.38413in</Top>
+        <Left>5.35986in</Left>
+        <Height>0.25in</Height>
+        <Width>0.80674in</Width>
+        <ZIndex>4</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
     </ReportItems>
-    <Height>0.5729in</Height>
+    <Height>0.80781in</Height>
     <Style />
   </Body>
-  <Width>10.14458in</Width>
+  <Width>7.93625in</Width>
   <Page>
     <PageHeader>
       <Height>1.38886in</Height>
@@ -471,7 +434,7 @@
                 </TextRun>
               </TextRuns>
               <Style>
-                <TextAlign>Center</TextAlign>
+                <TextAlign>Left</TextAlign>
                 <LineHeight>15pt</LineHeight>
               </Style>
             </Paragraph>
@@ -617,7 +580,7 @@
           <Top>0.75in</Top>
           <Left>0.0416in</Left>
           <Height>0.1666in</Height>
-          <Width>3.75in</Width>
+          <Width>0.70833in</Width>
           <ZIndex>6</ZIndex>
           <Style>
             <Border>
@@ -684,7 +647,7 @@
           <Top>1.0833in</Top>
           <Left>3.54159in</Left>
           <Height>0.1979in</Height>
-          <Width>0.9583in</Width>
+          <Width>0.81247in</Width>
           <ZIndex>8</ZIndex>
           <Style>
             <Border>
@@ -697,7 +660,7 @@
           <Top>1.3333in</Top>
           <Left>0.0416in</Left>
           <Height>0in</Height>
-          <Width>6.9166in</Width>
+          <Width>6.125in</Width>
           <ZIndex>9</ZIndex>
           <Style>
             <Border>
@@ -713,7 +676,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>0.3541in</Height>
+      <Height>0.49993in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -740,10 +703,10 @@
               </Style>
             </Paragraph>
           </Paragraphs>
-          <Top>0.1666in</Top>
+          <Top>0.2916in</Top>
           <Left>0.0416in</Left>
           <Height>0.1875in</Height>
-          <Width>3.5in</Width>
+          <Width>3.17708in</Width>
           <Style>
             <Border>
               <Color>#000000</Color>
@@ -773,10 +736,10 @@
               </Style>
             </Paragraph>
           </Paragraphs>
-          <Top>0.1666in</Top>
-          <Left>3.5833in</Left>
+          <Top>0.2916in</Top>
+          <Left>3.54159in</Left>
           <Height>0.1875in</Height>
-          <Width>2.9583in</Width>
+          <Width>2.50001in</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -786,7 +749,6 @@
           </Style>
         </Textbox>
         <Line Name="Line14">
-          <Top>0.1666in</Top>
           <Left>0.0416in</Left>
           <Height>0in</Height>
           <Width>6.9166in</Width>
@@ -803,6 +765,8 @@
         <BackgroundColor>#ffffff</BackgroundColor>
       </Style>
     </PageFooter>
+    <PageHeight>8.5in</PageHeight>
+    <PageWidth>11in</PageWidth>
     <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>

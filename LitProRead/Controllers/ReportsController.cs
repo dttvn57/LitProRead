@@ -14,18 +14,22 @@ namespace LitProRead.Controllers
         //
         // GET: /Reports/
 
-        //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students WHERE (((Students.FirstActive) Between [Forms]![frmDateSelectionStudentStatus]![BeginDate] And [Forms]![frmDateSelectionStudentStatus]![EndDate]));
+        //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students 
+        //      WHERE (((Students.FirstActive) Between [Forms]![frmDateSelectionStudentStatus]![BeginDate] And [Forms]![frmDateSelectionStudentStatus]![EndDate]));
         public ActionResult StudentWaitTime(string reportType)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
+                DateTime startDate = new DateTime(2013, 8, 1);
+                DateTime endDate = new DateTime(2013, 12, 1);
                 var wait = from student in db.Students
                            //join statusHist in db.tblStatusHistories on student.ID equals statusHist.ID
-                           //where statusHist.StudentorTutor.Equals("Student") && (student.LastName.StartsWith("A"))
+                           where student.FirstActive >= startDate && student.FirstActive <= endDate   // && (a.Start.Date >= startDate.Date && endDate)
+                                    //statusHist.StudentorTutor.Equals("Student") && (student.LastName.StartsWith("A"))
                            //orderby student.LastName
                            select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, student.FirstActive, student.Status };
 
-                return RunReport(reportType, "StudentWaitTime.rdlc", "StudentWaitTimeDataSet", wait);
+                return RunReport(reportType, "StudentWaitTime.rdlc", "StudentWaitTimeDataSet", wait, -1, -1, 0.25, 0.25);
             }
         }
 
