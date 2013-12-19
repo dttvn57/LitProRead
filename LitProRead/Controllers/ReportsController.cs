@@ -11,32 +11,224 @@ namespace LitProRead.Controllers
 {
     public class ReportsController : Controller
     {
+        private static DateTime DefaultBeginDate()
+        {
+            return new DateTime(DateTime.Now.Year, 1, 01);
+        }
+        private static DateTime DefaultEndDate()
+        {
+            return new DateTime(DateTime.Now.Year, 12, 31);
+        }
+
         //
         // GET: /Reports/
-
-        //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students 
-        //      WHERE (((Students.FirstActive) Between [Forms]![frmDateSelectionStudentStatus]![BeginDate] And [Forms]![frmDateSelectionStudentStatus]![EndDate]));
-        public ActionResult StudentWaitTime(string reportType)
+        // CLLS
+        public ActionResult CLLS(string reportType = "PDF", string beginDate = "", string endDate = "",
+                                 string AdultLearnersFromPriorPeriod = "",
+                                 string AdultLearnersBegan = "",
+                                 string AdultLearnersReceived = "",
+                                 string AdultLearnersLeft = "",
+                                 string AdultLearnersRemaining = "",
+                                 string CumulativeTotal = "",
+                                 string AdultsReferredToOtherPrograms = "",
+                                 string AdultLearnersAwaitingInstruction = "",
+                                 string AdultLearnersInstructionHours = "",
+                                 string BooksGiven = "")
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                DateTime startDate = new DateTime(2013, 8, 1);
-                DateTime endDate = new DateTime(2013, 12, 1);
-                var wait = from student in db.Students
-                           //join statusHist in db.tblStatusHistories on student.ID equals statusHist.ID
-                           where student.FirstActive >= startDate && student.FirstActive <= endDate   // && (a.Start.Date >= startDate.Date && endDate)
-                                    //statusHist.StudentorTutor.Equals("Student") && (student.LastName.StartsWith("A"))
-                           //orderby student.LastName
-                           select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, student.FirstActive, student.Status };
+                DateTime date1 = DefaultBeginDate();
+                if (beginDate != "")
+                {
+                    date1 = DateTime.Parse(beginDate);
+                }
+                else
+                {
+                     beginDate = date1.ToShortDateString();
+                }
 
-                return RunReport(reportType, "StudentWaitTime.rdlc", "StudentWaitTimeDataSet", wait, -1, -1, 0.25, 0.25);
+                DateTime date2 = DefaultEndDate();
+                if (endDate != "")
+                {
+                    date2 = DateTime.Parse(endDate);
+                }
+                else
+                {
+                    endDate = date2.ToShortDateString();
+                }
+
+                var clls = from student in db.Students
+                           //where student.FirstActive >= date1 && student.FirstActive <= date2
+                          // group student by new { name1 = student.DOB != null ? System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", student.DOB, DateTime.Now) >= 365 * 70 
+                           //                                                        && student.FirstActive >= date1 && student.FirstActive <= date2 && student.Status == "Active" 
+                           //                                                   : false
+                           //                     } into Count_70_Group
+                           select new
+                           {
+                               Count_Asian = db.Students.Count(n => n.Ethnicity == "Asian" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_Black = db.Students.Count(n => n.Ethnicity == "Black" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_Latino = db.Students.Count(n => n.Ethnicity == "Hispanic" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_NativeAmerican = db.Students.Count(n => n.Ethnicity == "Native American" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_PacificIslander = db.Students.Count(n => n.Ethnicity == "Pacific Islander" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_White = db.Students.Count(n => n.Ethnicity == "White" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_Other = db.Students.Count(n => n.Ethnicity == "Other" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_Unknown = db.Students.Count(n => n.Ethnicity == "Unknown" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+
+                               Count_Age_Unknown = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 1
+                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 15
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_10 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 16
+                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 19
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_20 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 20
+                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 29
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_30 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 30
+                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 39
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_40 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 40
+                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 49
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_50 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365*50 
+                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365*59 
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_60 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365*60 
+                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365*69 
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_70 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 70
+                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+
+                               Count_Male = db.Students.Count(n => n.Gender == "Male" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_Female = db.Students.Count(n => n.Gender == "Female" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                               Count_Gender_Unknown = db.Students.Count(n => n.Gender == null && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                           };
+                if (clls.Count() == 0)
+                {
+                    return RedirectToAction("NoRecord", "Home");
+                }
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", beginDate));
+                paramList.Add(new ReportParameter("EndDate", endDate));
+
+                paramList.Add(new ReportParameter("AdultLearnersFromPriorPeriod", AdultLearnersFromPriorPeriod == "" ? "0" : AdultLearnersFromPriorPeriod));
+                paramList.Add(new ReportParameter("AdultLearnersBegan", AdultLearnersBegan == "" ? "0" : AdultLearnersBegan));
+                paramList.Add(new ReportParameter("AdultLearnersReceived", AdultLearnersReceived == "" ? "0" : AdultLearnersReceived));
+                paramList.Add(new ReportParameter("AdultLearnersLeft", AdultLearnersLeft == "" ? "0" : AdultLearnersLeft));
+                paramList.Add(new ReportParameter("AdultLearnersRemaining", AdultLearnersRemaining == "" ? "0" : AdultLearnersRemaining));
+                paramList.Add(new ReportParameter("CumulativeTotal", CumulativeTotal == "" ? "0" : CumulativeTotal));
+
+                paramList.Add(new ReportParameter("Count_Asian", clls.First().Count_Asian.ToString()));
+                paramList.Add(new ReportParameter("Count_Black", clls.First().Count_Black.ToString()));
+                paramList.Add(new ReportParameter("Count_Latino", clls.First().Count_Latino.ToString()));
+                paramList.Add(new ReportParameter("Count_NativeAmerican", clls.First().Count_NativeAmerican.ToString()));
+                paramList.Add(new ReportParameter("Count_PacificIslander", clls.First().Count_PacificIslander.ToString()));
+                paramList.Add(new ReportParameter("Count_White", clls.First().Count_White.ToString()));
+                paramList.Add(new ReportParameter("Count_Other", clls.First().Count_Other.ToString()));
+                paramList.Add(new ReportParameter("Count_Unknown", clls.First().Count_Unknown.ToString()));
+
+                var Sum_Ethnicity = clls.First().Count_Asian + clls.First().Count_Black + clls.First().Count_Latino + clls.First().Count_NativeAmerican + clls.First().Count_PacificIslander + clls.First().Count_White + clls.First().Count_Other + clls.First().Count_Unknown;
+                paramList.Add(new ReportParameter("Sum_Ethnicity", Sum_Ethnicity.ToString()));
+
+                paramList.Add(new ReportParameter("Count_10", clls.First().Count_10.ToString()));
+                paramList.Add(new ReportParameter("Count_20", clls.First().Count_20.ToString()));
+                paramList.Add(new ReportParameter("Count_30", clls.First().Count_30.ToString()));
+                paramList.Add(new ReportParameter("Count_40", clls.First().Count_40.ToString()));
+                paramList.Add(new ReportParameter("Count_50", clls.First().Count_50.ToString()));
+                paramList.Add(new ReportParameter("Count_60", clls.First().Count_60.ToString()));
+                paramList.Add(new ReportParameter("Count_70", clls.First().Count_70.ToString()));
+                paramList.Add(new ReportParameter("Count_Age_Unknown", clls.First().Count_Age_Unknown.ToString()));
+
+                var Sum_Age = clls.First().Count_10 + clls.First().Count_20 + clls.First().Count_30 + clls.First().Count_40 + clls.First().Count_50 + clls.First().Count_60 + clls.First().Count_70 + clls.First().Count_Age_Unknown;
+                paramList.Add(new ReportParameter("Sum_Age", Sum_Age.ToString()));
+
+                paramList.Add(new ReportParameter("Count_Male", clls.First().Count_Male.ToString()));
+                paramList.Add(new ReportParameter("Count_Female", clls.First().Count_Female.ToString()));
+                paramList.Add(new ReportParameter("Count_Gender_Unknown", clls.First().Count_Gender_Unknown.ToString()));
+
+                var Sum_Gender = clls.First().Count_Male + clls.First().Count_Female + clls.First().Count_Gender_Unknown;
+                paramList.Add(new ReportParameter("Sum_Gender", Sum_Gender.ToString()));
+
+                paramList.Add(new ReportParameter("AdultsReferredToOtherPrograms", AdultsReferredToOtherPrograms == "" ? "0" : AdultsReferredToOtherPrograms));
+                paramList.Add(new ReportParameter("AdultLearnersAwaitingInstruction", AdultLearnersAwaitingInstruction == "" ? "0" : AdultLearnersAwaitingInstruction));
+                paramList.Add(new ReportParameter("AdultLearnersInstructionHours", AdultLearnersInstructionHours == "" ? "0" : AdultLearnersInstructionHours));
+                paramList.Add(new ReportParameter("BooksGiven", BooksGiven == "" ? "0" : BooksGiven));
+
+                return RunReport(reportType, "CLLS.rdlc", "CLLSDataSet", clls, paramList, -1, -1, 0.25, 0.25);
+            }
+        }
+
+        // Students
+        public ActionResult Run(string paramsVal)
+        {
+            string reportType = "";
+            string reportName = "";
+            string beginDate = "";
+            string endDate = "";
+            string statusType = "";
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: report type (PDF, EXCEL, WORD, or IMAGE)
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd: report name
+                string[] s2 = str[1].Split('=');
+                reportName = s2[1];
+
+                // 3rd and above: the criteria.
+                string[] date = str[2].Split('=');
+                beginDate = date[1];
+                date = str[3].Split('=');
+                endDate = date[1];
+
+                string[] type = str[4].Split('=');
+                statusType = type[1];
+            }
+
+            if (reportName == "StudentStatusHistory")
+                return StudentStatusHistory(reportType, beginDate, endDate, statusType);
+            else
+                if (reportName == "StudentWaitTime")
+                    return StudentWaitTime(reportType, beginDate, endDate, statusType);
+                else
+                    return View();
+        }
+
+        //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students 
+        //      WHERE (((Students.FirstActive) Between [Forms]![frmDateSelectionStudentStatus]![BeginDate] And [Forms]![frmDateSelectionStudentStatus]![EndDate]));
+        public ActionResult StudentWaitTime(string reportType, string beginDate, string endDate, string statusType)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                DateTime date1 = new DateTime(1900, 01, 01);
+                if (beginDate != "")
+                    date1 = DateTime.Parse(beginDate);
+                DateTime date2 = new DateTime(2025, 12, 31);
+                if (endDate != "")
+                    date2 = DateTime.Parse(endDate);
+                var wait = from student in db.Students
+                           where statusType != "" ? (student.FirstActive >= date1 && student.FirstActive <= date2) && (student.Status.Equals(statusType)) : (student.FirstActive >= date1 && student.FirstActive <= date2)
+                           select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, student.FirstActive, student.Status };
+                if (wait.Count() == 0)
+                {
+                    return RedirectToAction("NoRecord", "Home");
+                }
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));   //startDate.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString())); //endDate.ToShortDateString()));
+                paramList.Add(new ReportParameter("StatusType", statusType));
+                return RunReport(reportType, "StudentWaitTime.rdlc", "StudentWaitTimeDataSet", wait, paramList, - 1, -1, 0.25, 0.25);
             }
         }
 
         //SELECT [LastName] & "," & [FirstName] AS Name, Students.FirstName, Students.LastName, tblStatusHistory.*
         //FROM Students INNER JOIN tblStatusHistory ON Students.ID=tblStatusHistory.ID
         //WHERE (((tblStatusHistory.StudentorTutor)="Student") And ((tblStatusHistory.StatusDate) Between Forms!frmDateSelection!BeginDate And Forms!frmDateSelection!EndDate));
-        public ActionResult StudentStatusHistory(string reportType)
+        public ActionResult StudentStatusHistory(string reportType, string beginDate, string endDate, string statusType)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
@@ -46,102 +238,11 @@ namespace LitProRead.Controllers
                             orderby student.LastName
                            select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, statusHist.StatusDate, statusHist.Status, statusHist.InActiveDate, statusHist.ChangedDateTime, statusHist.ChangedBy };
 
-                return RunReport(reportType, "StudentStatusHistory.rdlc", "StudentStatusHistoryDataSet", hist, 11, 8.5, 0.25, 0.25);
+                return RunReport(reportType, "StudentStatusHistory.rdlc", "StudentStatusHistoryDataSet", hist, null, 11, 8.5, 0.25, 0.25);
             }
-
-            /**
-            LocalReport lr = new LocalReport();
-            string path = Path.Combine(Server.MapPath("~/Reports/rdlc"), "StudentStatusHistory.rdlc");
-            if (System.IO.File.Exists(path))
-            {
-                lr.ReportPath = path;
-            }
-            else
-            {
-                return View("Index");
-            }
-
-            //List<StateArea> cm = new List<StateArea>();
-            using (LitProReadEntities db = new LitProReadEntities())
-            {
-                //var students = from s in db.Students
-                //               where s.LastName.StartsWith("ch")
-                //               select new { s.LastName, s.FirstName, s.Address1, s.City, s.Zip };
-                //ReportDataSource rd = new ReportDataSource("StudentDataSet", students);
-                var hist = from student in db.Students
-                           join statusHist in db.tblStatusHistories on student.ID equals statusHist.ID
-                           where statusHist.StudentorTutor.Equals("Student") && (student.LastName.StartsWith("Abad"))
-                           orderby student.LastName
-                           select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, statusHist.StatusDate, statusHist.Status, statusHist.ChangedDateTime, statusHist.ChangedBy };
-                               //where s.StudentorTutor =="Student"
-                               //select s;
-                ReportDataSource rd = new ReportDataSource("StudentStatusHistoryDataSet", hist);
-                lr.DataSources.Add(rd);
-                //string reportType = "EXCEL";
-                string mimeType;
-                string encoding;
-                string fileNameExtension;
-
-
-
-                string deviceInfo =
-
-                "<DeviceInfo>" +
-                "  <OutputFormat>" +  reportType + "</OutputFormat>" +
-                "  <PageWidth>8.5in</PageWidth>" +
-                "  <PageHeight>11in</PageHeight>" +
-                "  <MarginTop>0.5in</MarginTop>" +
-                "  <MarginLeft>1in</MarginLeft>" +
-                "  <MarginRight>1in</MarginRight>" +
-                "  <MarginBottom>0.5in</MarginBottom>" +
-                "</DeviceInfo>";
-
-                Warning[] warnings;
-                string[] streams;
-                byte[] renderedBytes;
-
-                renderedBytes = lr.Render(
-                    reportType,
-                    deviceInfo,
-                    out mimeType,
-                    out encoding,
-                    out fileNameExtension,
-                    out streams,
-                    out warnings);
-
-
-                return File(renderedBytes, mimeType);
-            }
-            **/
         }
 
-        public ActionResult Run(string paramsVal)
-        {
-            string reportType = "";
-            string reportName = "";
-
-            if (paramsVal != null)
-            {
-                char[] sep = { '!' };
-                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-
-                string[] s1 = str[0].Split('=');
-                reportType = s1[1];
-
-                string[] s2 = str[1].Split('=');
-                reportName = s2[1];
-            }
-
-            if (reportName == "StudentStatusHistory")
-                return StudentStatusHistory(reportType);
-            else
-            if (reportName == "StudentWaitTime")
-                return StudentWaitTime(reportType);
-            else
-                return View();
-       }
-
-        private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
+        private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {
             LocalReport lr = new LocalReport();
             string path = Path.Combine(Server.MapPath("~/Reports/rdlc"), reportName);
@@ -161,6 +262,9 @@ namespace LitProRead.Controllers
                 rd.Name = dataSetname;
                 rd.Value = dataSourceValue;
                 lr.DataSources.Add(rd);
+
+                if (paramList != null)
+                    lr.SetParameters(paramList);
 
                 string mimeType;
                 string encoding;

@@ -625,6 +625,24 @@
       <DependentUpon>LitProReadModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\DataSets\CLLSDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CLLSDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\StatusDataSet.cs">
+      <DependentUpon>StatusDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\DataSets\StatusDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StatusDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\StudentDataSet.cs">
+      <DependentUpon>StudentDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reports\DataSets\StudentDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -725,6 +743,28 @@
     <Content Include="Reports\DataSets\StudentDataSet.xsc">
       <DependentUpon>StudentDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\StatusDataSet.xsc">
+      <DependentUpon>StatusDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSets\CLLSDataSet.xsc">
+      <DependentUpon>CLLSDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\CLLSDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CLLSDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\CLLSDataSet.xss">
+      <DependentUpon>CLLSDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StatusDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StatusDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StatusDataSet.xss">
+      <DependentUpon>StatusDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSets\StudentDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -733,7 +773,7 @@
     <Content Include="Reports\DataSets\StudentDataSet.xss">
       <DependentUpon>StudentDataSet.xsd</DependentUpon>
     </Content>
-    <EmbeddedResource Include="Reports\rdlc\Dummy.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
     <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
@@ -801,7 +841,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="packages.config" />
     <None Include="readme.txt" />
     <Content Include="Views\Student\Index.cshtml" />
@@ -826,9 +868,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Reports\rdlc\Student.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -2,54 +2,245 @@
 
 @{
     ViewBag.Title = "Report Page";
+
+    if (TempData["STATUS"] != null)
+    { 
+        <h3 style="color:red">@TempData["STATUS"]</h3> 
+    }
 }
 <div id="tabs">
 
     <ul>
-        <li><a href="#tabs-1">Students</a></li>
-        <li><a href="#tabs-2">Tutors</a></li>
-        <li><a href="#tabs-3">All Pairs</a></li>
-        <li><a href="#tabs-4">Classes/Training</a></li>
-        <li><a href="#tabs-5">Small Groups</a></li>
-        <li><a href="#tabs-6">Volunteers</a></li>
-        <li><a href="#tabs-7">Contacts</a></li>
-        <li><a href="#tabs-8">Donors</a></li>
+        <li><a href="#tabs-CLLS">CLLS</a></li>
+        <li><a href="#tabs-Students">Students</a></li>
+        <li><a href="#tabs-Tutors">Tutors</a></li>
+        <li><a href="#tabs-All-Pairs">All Pairs</a></li>
+        <li><a href="#tabs-Classes-Training">Classes/Training</a></li>
+        <li><a href="#tabs-Small-Groups">Small Groups</a></li>
+        <li><a href="#tabs-Volunteers">Volunteers</a></li>
+        <li><a href="#tabs-Contacts">Contacts</a></li>
+        <li><a href="#tabs-Donors">Donors</a></li>
     </ul>
 
-    <div id="tabs-1">
-        @Html.Hidden("selectedReport")
-        @Html.Label("Reports")
-        @Html.DropDownList("StudentReports", new SelectList(Model.StudentReports), string.Empty)
-        @Html.Label("Enter date range (leave blank for all)", htmlAttributes: new { id = "StudentReportsDateRangeLabel", disabled="disabled" })
-        @Html.TextBox("StudentReportsBeginDate", null, htmlAttributes: new {type="date", style="display: none; width:10em" })
-        @Html.TextBox("StudentReportsEndDate", null, htmlAttributes: new {type="date", style="display: none; width:10em" })
+    <div id="tabs-CLLS">
+        @using (Html.BeginForm("CLLS", "Reports"))
+        {        
+           <table width="75%" style="border:0 none; table-layout: fixed; border-collapse: separate">
+                <colgroup>
+                        <col style="width:55%;"/>
+                        <col style="width:5%;"/>
+                </colgroup>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Begin date:")
+                    </td>
+                    <td >
+                        @Html.TextBox("BeginDate", null, htmlAttributes: new {type="date", style="width:11em" })
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("End date:")
+                    </td>
+                    <td >
+                        @Html.TextBox("EndDate", null, htmlAttributes: new {type="date", style="width:11em" })
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Continuing Adult Learners from prior reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersFromPriorPeriod", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners who began instruction during this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersBegan", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Total Adult Learners who received instruction during  this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersReceived", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners who left during this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersLeft", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners remaining at the end of this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersRemaining", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Cumulative total:")
+                    </td>
+                    <td>
+                        @Html.TextBox("CumulativeTotal", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adults referred to other programs this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultsReferredToOtherPrograms", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners awaiting instruction or rematch at the end of this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersAwaitingInstruction", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Total number of Adult Learner instruction hours for this filing period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersInstructionHours", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Number of books given to Adult Learners:")
+                    </td>
+                    <td>
+                        @Html.TextBox("BooksGiven", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center" colspan="2">
+                        <input type="submit" value="Run" />
+                    </td>
+                </tr>
+           </table>
+        }
+    </div>
+
+    <div id="tabs-Students">
+       <table width="60%" style="border:0 none; table-layout: fixed; border-collapse: separate">
+            <colgroup>
+                    <col style="width:10%;"/>
+                    <col style="width:5%;"/>
+            </colgroup>
+            @*<tr>
+                 for (int i = 0; i < 10; i++)
+                {
+                    if (i%2 == 0)
+                    {
+                        <td style="color:red">i</td>
+                    }
+                    else
+                    {
+                        <td style="color:yellow">i</td>
+                    }
+                }
+            </tr>*@
+
+            <tr>        
+                <td>@Html.Label("Reports")</td>
+            </tr>
+            <tr>  
+                <td >
+                    @Html.DropDownList("StudentReports", new SelectList(Model.StudentReports), string.Empty)
+                </td>
+                <td >
+                     <button type="button" id="RunReportLink_Students" style="display: none;" >Run</button>
+                </td>
+            </tr>
+        </table>
+
+       <table style="border:0 none; table-layout: fixed; border-collapse: separate">
+            <colgroup>
+                    <col style="width:2%;"/>
+                    <col style="width:2%;"/>
+                    <col style="width:17%;"/>
+                    <col style="width:5%;"/>
+                    <col style="width:67%;"/>
+            </colgroup>
+           <tr>
+                <td colspan="1"></td>
+                <td colspan="4">
+                    @Html.Label("Enter date range (leave blank for all)", htmlAttributes: new { id = "StudentReportsDateRangeLabel", style="display: none;" })
+                </td>
+           </tr>
+           <tr>
+                <td colspan="2"></td>
+                <td style="text-align:right" colspan="1">
+                    @Html.Label("Begin", htmlAttributes: new { id = "StudentReportsBeginDateLabel", style="display: none;" })
+                </td>
+                <td >
+                    @Html.TextBox("StudentReportsBeginDate", null, htmlAttributes: new {type="date", style="display: none; width:10em" })
+                </td>
+           </tr>
+           <tr>
+                <td colspan="2"></td>
+                <td style="text-align:right" colspan="1">
+                    @Html.Label("End", htmlAttributes: new { id = "StudentReportsEndDateLabel", style="display: none;" })
+                </td>
+                <td >
+                    @Html.TextBox("StudentReportsEndDate", null, htmlAttributes: new {type="date", style="display: none; width:10em" })
+                </td>
+           </tr>
+
+           <tr>
+                <td colspan="2"></td>
+                <td style="text-align:right" colspan="1">
+                    @Html.Label("Choose Status", htmlAttributes: new { id = "StudentReportsChooseStatusLabel", style="display: none;" })&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td >
+                    @Html.DropDownList("StudentReportsStatus", new SelectList(Model.StudentReportsStatus), string.Empty, htmlAttributes: new { style="display: none" })
+                </td>
+           </tr>
+        </table>
 
         @*
+        @Html.Hidden("selectedReport")
         @Html.ActionLink("Run", "Run", "Reports", new { reportType = "PDF", id="RunReportLink" }, null)
         *@
-        <button type="button" id="RunReportLink">Run</button>
+        <br />
 
     </div>
 
-    <div id="tabs-2">
+    <div id="tabs-Tutors">
     </div>
 
-    <div id="tabs-3">
+    <div id="tabs-All-Pairs">
     </div>
 
-    <div id="tabs-4">
+    <div id="tabs-Classes-Training">
     </div>
 
-    <div id="tabs-5">
+    <div id="tabs-Small-Groups">
     </div>
 
-    <div id="tabs-6">
+    <div id="tabs-Volunteers">
     </div>
 
-    <div id="tabs-7">
+    <div id="tabs-Contacts">
     </div>
 
-    <div id="tabs-8">
+    <div id="tabs-Donors">
     </div>
 </div>
 
@@ -72,43 +263,58 @@
             //alert(value);
             var selectedStudentReport = $("#StudentReports").val();
 
-            $("#selectedReport").val(selectedStudentReport);
+             @* $("#selectedReport").val(selectedStudentReport);*@
 
             //modify the href link
             //var linkValue = '/Reports/Run/' + selectedStudentReport;
             //$('#RunReportLink').attr('href', linkValue);
 
 
-            @* alert(selectedStudentReport);
-            $("#StudentReportsDate1").style.display = "block";attr("disabled", false);*@
+            @*alert(selectedStudentReport);
+            $("#StudentReportsDate1").style.display = "block";attr("disabled", false);
             var studentReportsBeginDate = document.getElementById("StudentReportsBeginDate");
-            var studentReportsEndDate = document.getElementById("StudentReportsEndDate");
+            var studentReportsEndDate = document.getElementById("StudentReportsEndDate");*@
+            if (selectedStudentReport == '') 
+            {
+                document.getElementById("RunReportLink_Students").style.display = "none";
+            }
+            else
+            {
+                document.getElementById("RunReportLink_Students").style.display = "block";
+            }
 
-            if (selectedStudentReport == 'StudentStatusHistory') {
-                document.getElementById("StudentReportsDateRangeLabel").display = "block";
-                studentReportsBeginDate.style.display = "block";
-                studentReportsEndDate.style.display = "block";
+            if (selectedStudentReport == 'StudentStatusHistory' || selectedStudentReport == 'StudentWaitTime') {
+                document.getElementById("StudentReportsDateRangeLabel").style.display = "block";
+                document.getElementById("StudentReportsBeginDateLabel").style.display = "block";
+                document.getElementById("StudentReportsBeginDate").style.display = "block";
+                document.getElementById("StudentReportsEndDateLabel").style.display = "block";
+                document.getElementById("StudentReportsEndDate").style.display = "block";
+                document.getElementById("StudentReportsChooseStatusLabel").style.display = "block";
+                document.getElementById("StudentReportsStatus").style.display = "block";
             }
             else {
                 document.getElementById("StudentReportsDateRangeLabel").style.display = "none";
-                studentReportsBeginDate.style.display = "none";
-                studentReportsEndDatestyle.style.display = "none";
-
+                document.getElementById("StudentReportsBeginDateLabel").style.display = "none";
+                document.getElementById("StudentReportsBeginDate").style.display = "none";
+                document.getElementById("StudentReportsEndDateLabel").style.display = "none";
+                document.getElementById("StudentReportsEndDate").style.display = "none";
+                document.getElementById("StudentReportsChooseStatusLabel").style.display = "none";
+                document.getElementById("StudentReportsStatus").style.display = "none";
             }
         });
     </script>
 
+    <!-- Students -->
     <script type="text/javascript">
-        $('#RunReportLink').click(function (value) {
-            var name = $("#EmpFullName").val();
-            var title = $("#Title").val();
-            var branch = $("#HomeBranches").val();
-
+        $('#RunReportLink_Students').click(function (value) {
             var reportType = "PDF";
             var reportName = $("#StudentReports").val();
+            var beginDate = $("#StudentReportsBeginDate").val();
+            var endDate = $("#StudentReportsEndDate").val();
+            var statusType = $("#StudentReportsStatus").val();
 
             var url = '@Url.Action("Run", "Reports", new { paramsVal = "_paramsVal_" })';
-            url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "reportName=" + reportName);
+            url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "reportName=" + reportName + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate + '!' + "statusType=" + statusType);
              alert(url);
            window.location.href = url;
 
@@ -129,7 +335,13 @@
 
             return true;
         });
-
     </script>
 
+
+    <!-- CLLS -->
+    <script type="text/javascript">
+        $('#RunReportLink_CLLS').click(function (value) {
+            alert("RunReportLink_CLLS");
+        });
+    </script>
 }
