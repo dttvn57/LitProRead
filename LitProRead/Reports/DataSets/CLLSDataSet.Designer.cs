@@ -283,6 +283,42 @@ namespace LitProRead.Reports.DataSets {
             
             private global::System.Data.DataColumn columnCount_Asian;
             
+            private global::System.Data.DataColumn columnCount_Black;
+            
+            private global::System.Data.DataColumn columnCount_Latino;
+            
+            private global::System.Data.DataColumn columnCount_NativeAmerican;
+            
+            private global::System.Data.DataColumn columnCount_PacificIslander;
+            
+            private global::System.Data.DataColumn columnCount_White;
+            
+            private global::System.Data.DataColumn columnCount_Other;
+            
+            private global::System.Data.DataColumn columnCount_Unknown;
+            
+            private global::System.Data.DataColumn columnCount_10;
+            
+            private global::System.Data.DataColumn columnCount_20;
+            
+            private global::System.Data.DataColumn columnCount_30;
+            
+            private global::System.Data.DataColumn columnCount_40;
+            
+            private global::System.Data.DataColumn columnCount_50;
+            
+            private global::System.Data.DataColumn columnCount_60;
+            
+            private global::System.Data.DataColumn columnCount_70;
+            
+            private global::System.Data.DataColumn columnCount_Age_Unknown;
+            
+            private global::System.Data.DataColumn columnCount_Male;
+            
+            private global::System.Data.DataColumn columnCount_Female;
+            
+            private global::System.Data.DataColumn columnCount_Gender_Unknown;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public StudentsDataTable() {
@@ -334,6 +370,150 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_BlackColumn {
+                get {
+                    return this.columnCount_Black;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_LatinoColumn {
+                get {
+                    return this.columnCount_Latino;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_NativeAmericanColumn {
+                get {
+                    return this.columnCount_NativeAmerican;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_PacificIslanderColumn {
+                get {
+                    return this.columnCount_PacificIslander;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_WhiteColumn {
+                get {
+                    return this.columnCount_White;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_OtherColumn {
+                get {
+                    return this.columnCount_Other;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_UnknownColumn {
+                get {
+                    return this.columnCount_Unknown;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_10Column {
+                get {
+                    return this.columnCount_10;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_20Column {
+                get {
+                    return this.columnCount_20;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_30Column {
+                get {
+                    return this.columnCount_30;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_40Column {
+                get {
+                    return this.columnCount_40;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_50Column {
+                get {
+                    return this.columnCount_50;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_60Column {
+                get {
+                    return this.columnCount_60;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_70Column {
+                get {
+                    return this.columnCount_70;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_Age_UnknownColumn {
+                get {
+                    return this.columnCount_Age_Unknown;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_MaleColumn {
+                get {
+                    return this.columnCount_Male;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_FemaleColumn {
+                get {
+                    return this.columnCount_Female;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Count_Gender_UnknownColumn {
+                get {
+                    return this.columnCount_Gender_Unknown;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -369,11 +549,48 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public StudentsRow AddStudentsRow(string Count_Asian) {
+            public StudentsRow AddStudentsRow(
+                        string Count_Asian, 
+                        string Count_Black, 
+                        string Count_Latino, 
+                        string Count_NativeAmerican, 
+                        string Count_PacificIslander, 
+                        string Count_White, 
+                        string Count_Other, 
+                        string Count_Unknown, 
+                        string Count_10, 
+                        string Count_20, 
+                        string Count_30, 
+                        string Count_40, 
+                        string Count_50, 
+                        string Count_60, 
+                        string Count_70, 
+                        string Count_Age_Unknown, 
+                        string Count_Male, 
+                        string Count_Female, 
+                        string Count_Gender_Unknown) {
                 StudentsRow rowStudentsRow = ((StudentsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
-                        Count_Asian};
+                        Count_Asian,
+                        Count_Black,
+                        Count_Latino,
+                        Count_NativeAmerican,
+                        Count_PacificIslander,
+                        Count_White,
+                        Count_Other,
+                        Count_Unknown,
+                        Count_10,
+                        Count_20,
+                        Count_30,
+                        Count_40,
+                        Count_50,
+                        Count_60,
+                        Count_70,
+                        Count_Age_Unknown,
+                        Count_Male,
+                        Count_Female,
+                        Count_Gender_Unknown};
                 rowStudentsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStudentsRow);
                 return rowStudentsRow;
@@ -405,6 +622,24 @@ namespace LitProRead.Reports.DataSets {
             internal void InitVars() {
                 this.columnID = base.Columns["ID"];
                 this.columnCount_Asian = base.Columns["Count_Asian"];
+                this.columnCount_Black = base.Columns["Count_Black"];
+                this.columnCount_Latino = base.Columns["Count_Latino"];
+                this.columnCount_NativeAmerican = base.Columns["Count_NativeAmerican"];
+                this.columnCount_PacificIslander = base.Columns["Count_PacificIslander"];
+                this.columnCount_White = base.Columns["Count_White"];
+                this.columnCount_Other = base.Columns["Count_Other"];
+                this.columnCount_Unknown = base.Columns["Count_Unknown"];
+                this.columnCount_10 = base.Columns["Count_10"];
+                this.columnCount_20 = base.Columns["Count_20"];
+                this.columnCount_30 = base.Columns["Count_30"];
+                this.columnCount_40 = base.Columns["Count_40"];
+                this.columnCount_50 = base.Columns["Count_50"];
+                this.columnCount_60 = base.Columns["Count_60"];
+                this.columnCount_70 = base.Columns["Count_70"];
+                this.columnCount_Age_Unknown = base.Columns["Count_Age_Unknown"];
+                this.columnCount_Male = base.Columns["Count_Male"];
+                this.columnCount_Female = base.Columns["Count_Female"];
+                this.columnCount_Gender_Unknown = base.Columns["Count_Gender_Unknown"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -414,6 +649,42 @@ namespace LitProRead.Reports.DataSets {
                 base.Columns.Add(this.columnID);
                 this.columnCount_Asian = new global::System.Data.DataColumn("Count_Asian", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCount_Asian);
+                this.columnCount_Black = new global::System.Data.DataColumn("Count_Black", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Black);
+                this.columnCount_Latino = new global::System.Data.DataColumn("Count_Latino", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Latino);
+                this.columnCount_NativeAmerican = new global::System.Data.DataColumn("Count_NativeAmerican", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_NativeAmerican);
+                this.columnCount_PacificIslander = new global::System.Data.DataColumn("Count_PacificIslander", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_PacificIslander);
+                this.columnCount_White = new global::System.Data.DataColumn("Count_White", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_White);
+                this.columnCount_Other = new global::System.Data.DataColumn("Count_Other", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Other);
+                this.columnCount_Unknown = new global::System.Data.DataColumn("Count_Unknown", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Unknown);
+                this.columnCount_10 = new global::System.Data.DataColumn("Count_10", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_10);
+                this.columnCount_20 = new global::System.Data.DataColumn("Count_20", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_20);
+                this.columnCount_30 = new global::System.Data.DataColumn("Count_30", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_30);
+                this.columnCount_40 = new global::System.Data.DataColumn("Count_40", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_40);
+                this.columnCount_50 = new global::System.Data.DataColumn("Count_50", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_50);
+                this.columnCount_60 = new global::System.Data.DataColumn("Count_60", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_60);
+                this.columnCount_70 = new global::System.Data.DataColumn("Count_70", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_70);
+                this.columnCount_Age_Unknown = new global::System.Data.DataColumn("Count_Age_Unknown", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Age_Unknown);
+                this.columnCount_Male = new global::System.Data.DataColumn("Count_Male", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Male);
+                this.columnCount_Female = new global::System.Data.DataColumn("Count_Female", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Female);
+                this.columnCount_Gender_Unknown = new global::System.Data.DataColumn("Count_Gender_Unknown", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCount_Gender_Unknown);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnID}, true));
                 this.columnID.AutoIncrement = true;
@@ -591,6 +862,294 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Black {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_BlackColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Black\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_BlackColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Latino {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_LatinoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Latino\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_LatinoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_NativeAmerican {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_NativeAmericanColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_NativeAmerican\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_NativeAmericanColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_PacificIslander {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_PacificIslanderColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_PacificIslander\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_PacificIslanderColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_White {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_WhiteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_White\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_WhiteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Other {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_OtherColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Other\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_OtherColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Unknown {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_UnknownColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Unknown\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_UnknownColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_10 {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_10Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_10\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_10Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_20 {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_20Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_20\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_20Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_30 {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_30Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_30\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_30Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_40 {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_40Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_40\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_40Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_50 {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_50Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_50\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_50Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_60 {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_60Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_60\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_60Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_70 {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_70Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_70\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_70Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Age_Unknown {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_Age_UnknownColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Age_Unknown\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_Age_UnknownColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Male {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_MaleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Male\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_MaleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Female {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_FemaleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Female\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_FemaleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Count_Gender_Unknown {
+                get {
+                    try {
+                        return ((string)(this[this.tableStudents.Count_Gender_UnknownColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Count_Gender_Unknown\' in table \'Students\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudents.Count_Gender_UnknownColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCount_AsianNull() {
                 return this.IsNull(this.tableStudents.Count_AsianColumn);
             }
@@ -599,6 +1158,222 @@ namespace LitProRead.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCount_AsianNull() {
                 this[this.tableStudents.Count_AsianColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_BlackNull() {
+                return this.IsNull(this.tableStudents.Count_BlackColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_BlackNull() {
+                this[this.tableStudents.Count_BlackColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_LatinoNull() {
+                return this.IsNull(this.tableStudents.Count_LatinoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_LatinoNull() {
+                this[this.tableStudents.Count_LatinoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_NativeAmericanNull() {
+                return this.IsNull(this.tableStudents.Count_NativeAmericanColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_NativeAmericanNull() {
+                this[this.tableStudents.Count_NativeAmericanColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_PacificIslanderNull() {
+                return this.IsNull(this.tableStudents.Count_PacificIslanderColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_PacificIslanderNull() {
+                this[this.tableStudents.Count_PacificIslanderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_WhiteNull() {
+                return this.IsNull(this.tableStudents.Count_WhiteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_WhiteNull() {
+                this[this.tableStudents.Count_WhiteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_OtherNull() {
+                return this.IsNull(this.tableStudents.Count_OtherColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_OtherNull() {
+                this[this.tableStudents.Count_OtherColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_UnknownNull() {
+                return this.IsNull(this.tableStudents.Count_UnknownColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_UnknownNull() {
+                this[this.tableStudents.Count_UnknownColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_10Null() {
+                return this.IsNull(this.tableStudents.Count_10Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_10Null() {
+                this[this.tableStudents.Count_10Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_20Null() {
+                return this.IsNull(this.tableStudents.Count_20Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_20Null() {
+                this[this.tableStudents.Count_20Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_30Null() {
+                return this.IsNull(this.tableStudents.Count_30Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_30Null() {
+                this[this.tableStudents.Count_30Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_40Null() {
+                return this.IsNull(this.tableStudents.Count_40Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_40Null() {
+                this[this.tableStudents.Count_40Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_50Null() {
+                return this.IsNull(this.tableStudents.Count_50Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_50Null() {
+                this[this.tableStudents.Count_50Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_60Null() {
+                return this.IsNull(this.tableStudents.Count_60Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_60Null() {
+                this[this.tableStudents.Count_60Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_70Null() {
+                return this.IsNull(this.tableStudents.Count_70Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_70Null() {
+                this[this.tableStudents.Count_70Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_Age_UnknownNull() {
+                return this.IsNull(this.tableStudents.Count_Age_UnknownColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_Age_UnknownNull() {
+                this[this.tableStudents.Count_Age_UnknownColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_MaleNull() {
+                return this.IsNull(this.tableStudents.Count_MaleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_MaleNull() {
+                this[this.tableStudents.Count_MaleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_FemaleNull() {
+                return this.IsNull(this.tableStudents.Count_FemaleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_FemaleNull() {
+                this[this.tableStudents.Count_FemaleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCount_Gender_UnknownNull() {
+                return this.IsNull(this.tableStudents.Count_Gender_UnknownColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCount_Gender_UnknownNull() {
+                this[this.tableStudents.Count_Gender_UnknownColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -222,7 +222,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Asian.Value</Value>
+                <Value>=First(Fields!Count_Asian.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -466,7 +466,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Black.Value</Value>
+                <Value>=First(Fields!Count_Black.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -498,7 +498,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Latino.Value</Value>
+                <Value>=First(Fields!Count_Latino.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -530,7 +530,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_NativeAmerican.Value</Value>
+                <Value>=First(Fields!Count_NativeAmerican.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -562,7 +562,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_PacificIslander.Value</Value>
+                <Value>=First(Fields!Count_PacificIslander.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -594,7 +594,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_White.Value</Value>
+                <Value>=First(Fields!Count_White.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -626,7 +626,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Other.Value</Value>
+                <Value>=First(Fields!Count_Other.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -658,7 +658,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Unknown.Value</Value>
+                <Value>=First(Fields!Count_Unknown.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -875,7 +875,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_10.Value</Value>
+                <Value>=First(Fields!Count_10.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1027,7 +1027,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_20.Value</Value>
+                <Value>=First(Fields!Count_20.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1059,7 +1059,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_30.Value</Value>
+                <Value>=First(Fields!Count_30.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1091,7 +1091,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_40.Value</Value>
+                <Value>=First(Fields!Count_40.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1123,7 +1123,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_50.Value</Value>
+                <Value>=First(Fields!Count_50.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1155,7 +1155,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_60.Value</Value>
+                <Value>=First(Fields!Count_60.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1187,7 +1187,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_70.Value</Value>
+                <Value>=First(Fields!Count_70.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1281,7 +1281,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Age_Unknown.Value</Value>
+                <Value>=First(Fields!Count_Age_Unknown.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1830,7 +1830,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Male.Value</Value>
+                <Value>=First(Fields!Count_Male.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1892,7 +1892,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Female.Value</Value>
+                <Value>=First(Fields!Count_Female.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -1986,7 +1986,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>=Parameters!Count_Gender_Unknown.Value</Value>
+                <Value>=First(Fields!Count_Gender_Unknown.Value, "CLLSDataSet")</Value>
                 <Style />
               </TextRun>
             </TextRuns>
@@ -2059,7 +2059,7 @@
         <Top>11.72798in</Top>
         <Left>0.35292in</Left>
         <Height>0.25in</Height>
-        <Width>4.52729in</Width>
+        <Width>5.61062in</Width>
         <ZIndex>67</ZIndex>
         <Style>
           <Border>
@@ -2263,7 +2263,7 @@
     <Height>13.34485in</Height>
     <Style />
   </Body>
-  <Width>7.54042in</Width>
+  <Width>7.5925in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>
@@ -2278,7 +2278,7 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>277d972e-0ca8-4a57-8f89-265627365059</rd:DataSourceID>
+      <rd:DataSourceID>18d73f7e-169a-4259-9905-a94fe034a6c5</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
@@ -2292,12 +2292,80 @@
           <DataField>ID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="LitProID">
-          <DataField>LitProID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
         <Field Name="Count_Asian">
           <DataField>Count_Asian</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Black">
+          <DataField>Count_Black</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Latino">
+          <DataField>Count_Latino</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_NativeAmerican">
+          <DataField>Count_NativeAmerican</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_PacificIslander">
+          <DataField>Count_PacificIslander</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_White">
+          <DataField>Count_White</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Other">
+          <DataField>Count_Other</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Unknown">
+          <DataField>Count_Unknown</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_10">
+          <DataField>Count_10</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_20">
+          <DataField>Count_20</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_30">
+          <DataField>Count_30</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_40">
+          <DataField>Count_40</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_50">
+          <DataField>Count_50</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_60">
+          <DataField>Count_60</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_70">
+          <DataField>Count_70</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Age_Unknown">
+          <DataField>Count_Age_Unknown</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Male">
+          <DataField>Count_Male</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Female">
+          <DataField>Count_Female</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count_Gender_Unknown">
+          <DataField>Count_Gender_Unknown</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -2312,15 +2380,6 @@
     </DataSet>
   </DataSets>
   <ReportParameters>
-    <ReportParameter Name="Count_Asian">
-      <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>0</Value>
-        </Values>
-      </DefaultValue>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
     <ReportParameter Name="BeginDate">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
@@ -2329,67 +2388,7 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="Count_Black">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_Latino">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_NativeAmerican">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_PacificIslander">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_White">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_Other">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_Unknown">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
     <ReportParameter Name="Sum_Ethnicity">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_10">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_20">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_30">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_40">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_50">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_60">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_70">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_Age_Unknown">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
@@ -2418,18 +2417,6 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="CumulativeTotal">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_Male">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_Female">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="Count_Gender_Unknown">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>

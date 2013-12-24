@@ -20,6 +20,15 @@ namespace LitProRead.Controllers
             return new DateTime(DateTime.Now.Year, 12, 31);
         }
 
+
+        Predicate<Nullable<System.DateTime>> Count40 = delegate(Nullable<System.DateTime> dob)
+        {
+            if (DateTime.Now.Year - ((DateTime)dob).Year >= 40)
+                return true;
+            else
+                return false;
+        };
+
         //
         // GET: /Reports/
         // CLLS
@@ -44,7 +53,10 @@ namespace LitProRead.Controllers
                 }
                 else
                 {
-                     beginDate = date1.ToShortDateString();
+                    if (DateTime.Now.Month > 6)
+                        date1 = new DateTime(DateTime.Now.Year, 7, 1);
+                    else
+                        date1 = new DateTime(DateTime.Now.Year, 1, 1);
                 }
 
                 DateTime date2 = DefaultEndDate();
@@ -54,8 +66,17 @@ namespace LitProRead.Controllers
                 }
                 else
                 {
-                    endDate = date2.ToShortDateString();
+                    if (DateTime.Now.Month > 6)
+                        date2 = new DateTime(DateTime.Now.Year, 12, 31);
+                    else
+                        date2 = new DateTime(DateTime.Now.Year, 6, 30);
                 }
+
+                int ub40 = 49;
+                int lb40 = 40;
+                DateTime today = DateTime.Today;        //12/24/2013
+                DateTime min40 = today.AddYears(-ub40); //12/24/1964
+                DateTime max40 = today.AddYears(-lb40); //12/24/1973
 
                 var clls = from student in db.Students
                            //where student.FirstActive >= date1 && student.FirstActive <= date2
@@ -77,6 +98,7 @@ namespace LitProRead.Controllers
                                Count_Age_Unknown = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 1
                                                                  && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 15
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+
                                Count_10 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 16
                                                                  && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 19
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
@@ -86,9 +108,14 @@ namespace LitProRead.Controllers
                                Count_30 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 30
                                                                  && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 39
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-                               Count_40 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 40
-                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 49
-                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+
+                               //Count_40 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 40 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 49
+                               //                                  && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) == 0
+                                                                 //&& (DateTime)n.DOB).Year >= 1964 && ((DateTime)n.DOB).Year <= 1973
+                               Count_40 = db.Students.Count(n => n.DOB != null && n.DOB >= min40 && n.DOB <= max40
+                                                                && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
+                              //Count_40 = db.Students.Count(n => ((if (DateTime.Now.Year - ((DateTime)n.DOB).Year == 49) { n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"; } )),
+
                                Count_50 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365*50 
                                                                  && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365*59 
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
@@ -117,33 +144,33 @@ namespace LitProRead.Controllers
                 paramList.Add(new ReportParameter("AdultLearnersRemaining", AdultLearnersRemaining == "" ? "0" : AdultLearnersRemaining));
                 paramList.Add(new ReportParameter("CumulativeTotal", CumulativeTotal == "" ? "0" : CumulativeTotal));
 
-                paramList.Add(new ReportParameter("Count_Asian", clls.First().Count_Asian.ToString()));
-                paramList.Add(new ReportParameter("Count_Black", clls.First().Count_Black.ToString()));
-                paramList.Add(new ReportParameter("Count_Latino", clls.First().Count_Latino.ToString()));
-                paramList.Add(new ReportParameter("Count_NativeAmerican", clls.First().Count_NativeAmerican.ToString()));
-                paramList.Add(new ReportParameter("Count_PacificIslander", clls.First().Count_PacificIslander.ToString()));
-                paramList.Add(new ReportParameter("Count_White", clls.First().Count_White.ToString()));
-                paramList.Add(new ReportParameter("Count_Other", clls.First().Count_Other.ToString()));
-                paramList.Add(new ReportParameter("Count_Unknown", clls.First().Count_Unknown.ToString()));
+                //paramList.Add(new ReportParameter("Count_Asian", clls.First().Count_Asian.ToString()));
+                //paramList.Add(new ReportParameter("Count_Black", clls.First().Count_Black.ToString()));
+                //paramList.Add(new ReportParameter("Count_Latino", clls.First().Count_Latino.ToString()));
+                //paramList.Add(new ReportParameter("Count_NativeAmerican", clls.First().Count_NativeAmerican.ToString()));
+                //paramList.Add(new ReportParameter("Count_PacificIslander", clls.First().Count_PacificIslander.ToString()));
+                //paramList.Add(new ReportParameter("Count_White", clls.First().Count_White.ToString()));
+                //paramList.Add(new ReportParameter("Count_Other", clls.First().Count_Other.ToString()));
+                //paramList.Add(new ReportParameter("Count_Unknown", clls.First().Count_Unknown.ToString()));
 
                 var Sum_Ethnicity = clls.First().Count_Asian + clls.First().Count_Black + clls.First().Count_Latino + clls.First().Count_NativeAmerican + clls.First().Count_PacificIslander + clls.First().Count_White + clls.First().Count_Other + clls.First().Count_Unknown;
                 paramList.Add(new ReportParameter("Sum_Ethnicity", Sum_Ethnicity.ToString()));
 
-                paramList.Add(new ReportParameter("Count_10", clls.First().Count_10.ToString()));
-                paramList.Add(new ReportParameter("Count_20", clls.First().Count_20.ToString()));
-                paramList.Add(new ReportParameter("Count_30", clls.First().Count_30.ToString()));
-                paramList.Add(new ReportParameter("Count_40", clls.First().Count_40.ToString()));
-                paramList.Add(new ReportParameter("Count_50", clls.First().Count_50.ToString()));
-                paramList.Add(new ReportParameter("Count_60", clls.First().Count_60.ToString()));
-                paramList.Add(new ReportParameter("Count_70", clls.First().Count_70.ToString()));
-                paramList.Add(new ReportParameter("Count_Age_Unknown", clls.First().Count_Age_Unknown.ToString()));
+                //paramList.Add(new ReportParameter("Count_10", clls.First().Count_10.ToString()));
+                //paramList.Add(new ReportParameter("Count_20", clls.First().Count_20.ToString()));
+                //paramList.Add(new ReportParameter("Count_30", clls.First().Count_30.ToString()));
+                //paramList.Add(new ReportParameter("Count_40", clls.First().Count_40.ToString()));
+                //paramList.Add(new ReportParameter("Count_50", clls.First().Count_50.ToString()));
+                //paramList.Add(new ReportParameter("Count_60", clls.First().Count_60.ToString()));
+                //paramList.Add(new ReportParameter("Count_70", clls.First().Count_70.ToString()));
+                //paramList.Add(new ReportParameter("Count_Age_Unknown", clls.First().Count_Age_Unknown.ToString()));
 
                 var Sum_Age = clls.First().Count_10 + clls.First().Count_20 + clls.First().Count_30 + clls.First().Count_40 + clls.First().Count_50 + clls.First().Count_60 + clls.First().Count_70 + clls.First().Count_Age_Unknown;
                 paramList.Add(new ReportParameter("Sum_Age", Sum_Age.ToString()));
 
-                paramList.Add(new ReportParameter("Count_Male", clls.First().Count_Male.ToString()));
-                paramList.Add(new ReportParameter("Count_Female", clls.First().Count_Female.ToString()));
-                paramList.Add(new ReportParameter("Count_Gender_Unknown", clls.First().Count_Gender_Unknown.ToString()));
+                //paramList.Add(new ReportParameter("Count_Male", clls.First().Count_Male.ToString()));
+                //paramList.Add(new ReportParameter("Count_Female", clls.First().Count_Female.ToString()));
+                //paramList.Add(new ReportParameter("Count_Gender_Unknown", clls.First().Count_Gender_Unknown.ToString()));
 
                 var Sum_Gender = clls.First().Count_Male + clls.First().Count_Female + clls.First().Count_Gender_Unknown;
                 paramList.Add(new ReportParameter("Sum_Gender", Sum_Gender.ToString()));
