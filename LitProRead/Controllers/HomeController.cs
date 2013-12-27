@@ -17,6 +17,15 @@ namespace LitProRead.Controllers
     {
         public ActionResult Index()
         {
+            return View("Forms");
+        }
+
+        public ActionResult Forms()
+        {
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Student-General-View");//, model);
+            }
             return View();
         }
 

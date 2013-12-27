@@ -24,7 +24,20 @@
 
     <div id="tabs-CLLS">
         @using (Html.BeginForm("CLLS", "Reports"))
-        {        
+        {
+            DateTime now = DateTime.Now;
+            DateTime date1 = DateTime.Now;
+            DateTime date2 = DateTime.Now;
+            if (now.Month > 6)
+            {
+                date1 = new DateTime(DateTime.Now.Year, 07, 01);
+                date2 = new DateTime(DateTime.Now.Year, 12, 31);
+            }
+            else 
+            {
+                date1 = new DateTime(DateTime.Now.Year, 01, 01);
+                date2 = new DateTime(DateTime.Now.Year, 06, 30);
+            }
            <table width="75%" style="border:0 none; table-layout: fixed; border-collapse: separate">
                 <colgroup>
                         <col style="width:55%;"/>
@@ -35,7 +48,10 @@
                         @Html.Label("Begin date:")
                     </td>
                     <td >
-                        @Html.TextBox("BeginDate", null, htmlAttributes: new {type="date", style="width:11em" })
+                        @Html.TextBox("BeginDate", String.Format("{0:dd/MM/yyyy}", date1.ToShortDateString()),  new { @class = "datefield", style = "width:7em" })
+                        @*
+                        @Html.TextBox("BeginDate", "0:dd/MM/yyyy",  date1.ToShortDateString(), htmlAttributes: new { type = "date" })
+                        *@
                     </td>
                 </tr>
                 <tr>
@@ -43,7 +59,7 @@
                         @Html.Label("End date:")
                     </td>
                     <td >
-                        @Html.TextBox("EndDate", null, htmlAttributes: new {type="date", style="width:11em" })
+                        @Html.TextBox("EndDate", String.Format("{0:dd/MM/yyyy}", date2.ToShortDateString()),  new { @class = "datefield", style = "width:7em" })
                     </td>
                 </tr>
                 <tr>
@@ -250,13 +266,19 @@
         $(function () {
             $("#tabs").tabs();
         });
+
+        $(function () {
+            $(".datefield").datepicker();
+        });
     </script>
 
+    @*
     <script type="text/javascript">
         $(document).ready(function () {
             $(".date").datepicker();
         });
     </script>
+    *@
 
     <script language="javascript" type="text/javascript">
         $("#StudentReports").change(function () {

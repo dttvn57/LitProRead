@@ -18,7 +18,7 @@
                 <div class="float-right">
                     <nav>
                         <ul id="menu">
-                            <li>@Html.ActionLink("Forms", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Forms", "Forms", "Home")</li>
                             <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
                         </ul>
                     </nav>
@@ -39,8 +39,11 @@
             </div>
         </footer>
 
+        @*
         @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/jqueryui")        @* f or Tabs *@
+        @Scripts.Render("~/bundles/jqueryui")        @ * for Tabs * @
+        *@
+        @Scripts.Render("~/bundles/literacy")
         @RenderSection("scripts", required: false)
     </body>
 </html>

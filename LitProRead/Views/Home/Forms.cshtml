@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id="tabs">
+
+    <ul>
+        <li><a href="#tabs-Students">Students</a></li>
+        <li><a href="#tabs-Tutors">Tutors</a></li>
+        <li><a href="#tabs-All-Pairs">All Pairs</a></li>
+        <li><a href="#tabs-Classes-Training">Classes/Training</a></li>
+        <li><a href="#tabs-Small-Groups">Small Groups</a></li>
+        <li><a href="#tabs-Volunteers">Volunteers</a></li>
+        <li><a href="#tabs-Contacts">Contacts</a></li>
+        <li><a href="#tabs-Donors">Donors</a></li>
+        <li><a href="#tabs-Maintenance">Maintenance</a></li>
+    </ul>
+
+    @* ----------------------------------------------------- *@
+    <div id="tabs-Students">
+
+        <form method="get" action="@Url.Action("Forms")" 
+            data-otf-ajax="true" data-otf-target="#Student-General">
+
+            <input type="search" name="searchTerm" data-otf-autocomplete="@Url.Action("Autocomplete")" />
+            <input type="submit" value="Search By Name" />
+
+            <button type="button" id="addStudent">Add</button>
+            <button type="button" id="editStudent">Edit</button>
+            <button type="button" id="deleteStudent">Delete</button>
+            <button type="button" id="saveStudent">Save</button>
+            <button type="button" id="refreshStudent">Refresh</button>
+        </form>
+
+       <ul>
+            <li><a href="#tabs-General">General</a></li>
+            <li><a href="#tabs-Preferences">Preferences</a></li>
+            <li><a href="#tabs-Matching-S">Matching-S</a></li>
+            <li><a href="#tabs-Children">Children</a></li>
+            <li><a href="#tabs-Computer">Computer</a></li>
+            <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
+            <li><a href="#tabs-Assessment-Goals">Assessment Goals</a></li>
+            <li><a href="#tabs-Roles-and-Goals">Roles and Goals</a></li>
+            <li><a href="#tabs-Accomplishements">Accomplishements</a></li>
+            <li><a href="#tabs-Comments">Comments</a></li>
+            <li><a href="#tabs-FollowUp">FollowUp</a></li>
+            <li><a href="#tabs-Status-History">Status History</a></li>
+        </ul>
+
+        @Html.Partial("_Student-View")  @*, Model)*@
+
+        <div id="tabs-General">
+            General
+        </div>
+       
+        <div id="tabs-Matching-S">
+            Matching-S
+        </div>
+       
+        <div id="tabs-Preferences">
+            Preferences
+        </div>
+       
+        <div id="tabs-Children">
+            Children
+        </div>
+       
+        <div id="tabs-Computer">
+            Computer
+        </div>
+       
+        <div id="tabs-Assessment-Intake">
+            Assessment-Intake
+        </div>
+       
+        <div id="tabs-Assessment-Goals">
+            Assessment-Goals
+        </div>
+       
+        <div id="tabs-Roles-and-Goals">
+            Roles-and-Goals
+        </div>
+       
+        <div id="tabs-Accomplishements">
+            Accomplishements
+        </div>
+       
+        <div id="tabs-Comments">
+            Comments
+        </div>
+       
+        <div id="tabs-FollowUp">
+            FollowUp
+        </div>
+       
+        <div id="tabs-Status-History">
+            Status-History
+        </div>
+    </div>
+
+    @* ----------------------------------------------------- *@
+    <div id="tabs-Tutors">
+        Tutors
+    </div>
+
+    <div id="tabs-All-Pairs">
+        All-Pairs
+    </div>
+
+    <div id="tabs-Classes-Training">
+        Classes-Training
+    </div>
+
+    <div id="tabs-Small-Groups">
+        Small-Groups
+    </div>
+
+    <div id="tabs-Volunteers">
+        Volunteers
+    </div>
+
+    <div id="tabs-Contacts">
+        Contacts
+    </div>
+
+    <div id="tabs-Donors">
+        Donors
+    </div>
+
+    <div id="tabs-Maintenance">
+        Maintenance
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script>
+        $(function () {
+            $("#tabs").tabs();
+            $("#tabs-Students").tabs();
+       });
+    </script>
+
+    <script type="text/javascript">
+        $('#addStudent').click(function () {
+            alert("addStudent");
+            @*
+            var last = $("#LastName").val();
+            var first = $("#FirstName").val();
+
+            $.ajax({
+                url: '@Url.Content("~/RequestForm/GetAllForms")',
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: { Command: "approve", lastName: last, firstName: first },
+                success: function (result) {
+                    $('#ViewResult').html(result);
+                }
+            });
+            *@
+            return false;
+        });
+
+        $('#editStudent').click(function () {
+            alert("editStudent");
+            return false;
+        });
+    </script>
+}

@@ -72,11 +72,47 @@ namespace LitProRead.Controllers
                         date2 = new DateTime(DateTime.Now.Year, 6, 30);
                 }
 
+                DateTime today = DateTime.Today;        //12/24/2013
+
+                int ubUnknown = 15;
+                int lbUnknown = 1;
+                DateTime minUnknown = today.AddYears(-ubUnknown);
+                DateTime maxUnknown = today.AddYears(-lbUnknown);
+
+                int ub10 = 19;
+                int lb10 = 16;
+                DateTime min10 = today.AddYears(-ub10); 
+                DateTime max10 = today.AddYears(-lb10);
+
+                int ub20 = 29;
+                int lb20 = 20;
+                DateTime min20 = today.AddYears(-ub20);
+                DateTime max20 = today.AddYears(-lb20);
+
+                int ub30 = 39;
+                int lb30 = 30;
+                DateTime min30 = today.AddYears(-ub30);
+                DateTime max30 = today.AddYears(-lb30);
+
                 int ub40 = 49;
                 int lb40 = 40;
-                DateTime today = DateTime.Today;        //12/24/2013
                 DateTime min40 = today.AddYears(-ub40); //12/24/1964
                 DateTime max40 = today.AddYears(-lb40); //12/24/1973
+
+                int ub50 = 59;
+                int lb50 = 50;
+                DateTime min50 = today.AddYears(-ub50);
+                DateTime max50 = today.AddYears(-lb50);
+
+                int ub60 = 69;
+                int lb60 = 60;
+                DateTime min60 = today.AddYears(-ub60);
+                DateTime max60 = today.AddYears(-lb60);
+
+                int ub70 = 999;
+                int lb70 = 70;
+                DateTime min70 = today.AddYears(-ub70);
+                DateTime max70 = today.AddYears(-lb70);
 
                 var clls = from student in db.Students
                            //where student.FirstActive >= date1 && student.FirstActive <= date2
@@ -95,34 +131,21 @@ namespace LitProRead.Controllers
                                Count_Other = db.Students.Count(n => n.Ethnicity == "Other" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
                                Count_Unknown = db.Students.Count(n => n.Ethnicity == "Unknown" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
 
-                               Count_Age_Unknown = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 1
-                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 15
+                               Count_Age_Unknown = db.Students.Count(n => n.DOB != null && n.DOB >= minUnknown && n.DOB <= maxUnknown
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-
-                               Count_10 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 16
-                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 19
+                               Count_10 = db.Students.Count(n => n.DOB != null && n.DOB >= min10 && n.DOB <= max10
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-                               Count_20 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 20
-                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 29
+                               Count_20 = db.Students.Count(n => n.DOB != null && n.DOB >= min20 && n.DOB <= max20
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-                               Count_30 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 30
-                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365 * 39
+                               Count_30 = db.Students.Count(n => n.DOB != null && n.DOB >= min30 && n.DOB <= max30
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-
-                               //Count_40 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 40 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 49
-                               //                                  && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) == 0
-                                                                 //&& (DateTime)n.DOB).Year >= 1964 && ((DateTime)n.DOB).Year <= 1973
                                Count_40 = db.Students.Count(n => n.DOB != null && n.DOB >= min40 && n.DOB <= max40
                                                                 && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-                              //Count_40 = db.Students.Count(n => ((if (DateTime.Now.Year - ((DateTime)n.DOB).Year == 49) { n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"; } )),
-
-                               Count_50 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365*50 
-                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365*59 
+                               Count_50 = db.Students.Count(n => n.DOB != null && n.DOB >= min50 && n.DOB <= max50
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-                               Count_60 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365*60 
-                                                                 && System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) <= 365*69 
+                               Count_60 = db.Students.Count(n => n.DOB != null && n.DOB >= min60 && n.DOB <= max60
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
-                               Count_70 = db.Students.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", n.DOB, DateTime.Now) >= 365 * 70
+                               Count_70 = db.Students.Count(n => n.DOB != null && n.DOB >= min70 && n.DOB <= max70
                                                                  && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
 
                                Count_Male = db.Students.Count(n => n.Gender == "Male" && n.FirstActive >= date1 && n.FirstActive <= date2 && n.Status == "Active"),
