@@ -1,0 +1,76 @@
+﻿// ComboBox widget cross-borswser styling (FF, Chrome, IE 6,7,8,9)
+// Created by Maxim Saplin 30.12.2011
+
+
+.ui-combobox
+{
+    font-size: 10pt;
+    display: inline-block;
+    height: 18px;
+    padding: 2px 8px 2px 4px;
+    border: 1px solid #887788;
+}
+
+.ui-combobox-button
+{
+    font-size: 10pt;
+    display: inline-block;
+    height: 24px;
+    margin-left: -5px;
+    border: 1px solid #887788;
+}
+
+button.ui-combobox-button.ui-button-icon-only
+{
+    width: 25px;
+}
+
+.ui-combobox-button span
+{
+    display: inline !important;
+}
+
+.ui-combobox-button.ui-corner-right
+{
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.ui-combobox.ui-corner-left
+{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.ui-combobox-list
+{
+    background-color: White !important;
+    background-image: none;
+    border: 1px solid #887788 !important;
+    font-size: 10pt;
+}
+
+.ui-combobox-list.ui-corner-all, .ui-combobox-list.ui-corner-all a
+{
+    border-top-right-radius: 4px !important;
+    border-bottom-right-radius: 4px !important;
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+}
+
+.ui-combobox-list .ui-menu-item a
+{
+    font-size: 10pt;
+    background-color: White !important;
+    color: Black;
+    padding: 1px 1px 2px 1px;
+}
+
+.ui-combobox-list .ui-menu-item a.ui-state-hover
+{
+    font-size: 10pt;
+    background-color: Navy !important;
+    background-image: none;
+    color: White;
+    padding: 1px 1px 2px 1px;
+}

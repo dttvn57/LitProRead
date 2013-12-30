@@ -1,4 +1,6 @@
-﻿@{
+﻿@model LitProRead.ViewModels.StudentFormViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -22,8 +24,18 @@
         <form method="get" action="@Url.Action("Forms")" 
             data-otf-ajax="true" data-otf-target="#Student-General">
 
+            <label for="lastName">Last Name</label>
+            @Html.DropDownListFor(x => Model.studentVM.StudentListLastName, Model.studentVM.StudentListLastName)
+
+            <label for="firstName">First Name</label>
+            @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName)
+
+            @*
+                ,new { @class = "chzn-select", data_placeholder = "Choose  Countries..." })
+            @Html.DropDownListFor("", new SelectList(Model.Departments, "DepartmentId", "Name"), string.Empty)
             <input type="search" name="searchTerm" data-otf-autocomplete="@Url.Action("Autocomplete")" />
-            <input type="submit" value="Search By Name" />
+            <input type="submit" value="Search" />
+            *@
 
             <button type="button" id="addStudent">Add</button>
             <button type="button" id="editStudent">Edit</button>
@@ -135,10 +147,15 @@
 
 @section scripts
 {
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/ComboBox.css")"/>  
+    <script type="text/javascript" src="@Url.Content("~/Scripts/ComboboxWidget.js")"></script>
+    
     <script>
         $(function () {
             $("#tabs").tabs();
             $("#tabs-Students").tabs();
+
+            $("#Countries").combobox();
        });
     </script>
 
