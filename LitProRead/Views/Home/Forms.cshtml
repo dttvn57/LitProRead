@@ -25,12 +25,15 @@
             data-otf-ajax="true" data-otf-target="#Student-General">
 
             <label for="lastName">Last Name</label>
-            @Html.DropDownListFor(x => Model.studentVM.StudentListLastName, Model.studentVM.StudentListLastName)
+            @Html.DropDownListFor(x => Model.studentVM.StudentListLastName, Model.studentVM.StudentListLastName, htmlAttributes: new { style = "width: 250px;" })
 
             <label for="firstName">First Name</label>
-            @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName)
-
+             @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, htmlAttributes: new { style = "width: 250px;" })
             @*
+        @Html.ListBoxFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, new { @class = "chosen", Style = "width: 150px;" })
+            @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, "select", new { @ID = "ddlCountry", @class = "chosen-select", Style = "width: 150px;" })
+            
+            
                 ,new { @class = "chzn-select", data_placeholder = "Choose  Countries..." })
             @Html.DropDownListFor("", new SelectList(Model.Departments, "DepartmentId", "Name"), string.Empty)
             <input type="search" name="searchTerm" data-otf-autocomplete="@Url.Action("Autocomplete")" />
@@ -142,24 +145,34 @@
     <div id="tabs-Maintenance">
         Maintenance
     </div>
-
+    , 
 </div>
 
 @section scripts
 {
-    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/ComboBox.css")"/>  
-    <script type="text/javascript" src="@Url.Content("~/Scripts/ComboboxWidget.js")"></script>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>  
+    <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
     
     <script>
         $(function () {
             $("#tabs").tabs();
             $("#tabs-Students").tabs();
 
-            $("#Countries").combobox();
-       });
+            $("#studentVM_StudentListLastName").select2();
+            $("#studentVM_StudentListLastName").on("change", function (e) {
+                alert(e.val);
+            });
+
+            $("#studentVM_StudentListFirstName").select2();
+            $("#studentVM_StudentListFirstName").on("change", function (e)
+            { 
+                alert(e.val);
+            });
+      });
     </script>
 
     <script type="text/javascript">
+
         $('#addStudent').click(function () {
             alert("addStudent");
             @*
@@ -181,7 +194,18 @@
 
         $('#editStudent').click(function () {
             alert("editStudent");
-            return false;
+             $.ajax({
+                url: '@Url.Content("~/Student/Edit")',
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                 @*
+                data: { Command: "approve", lastName: last, firstName: first },
+                success: function (result) {
+                    $('#ViewResult').html(result);
+                }
+                 *@
+            });
+           return false;
         });
     </script>
 }
