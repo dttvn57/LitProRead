@@ -803,8 +803,6 @@
     </Content>
     <EmbeddedResource Include="Reports\rdlc\StudentWaitTime.rdlc" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Scripts\chosen.jquery.js" />
-    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -821,6 +819,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\literacy.js" />
     <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\toDictionary.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -870,7 +869,7 @@
     <Content Include="StudentStatusHistoryDataSet.xss">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="Views\Home\_Student-View.cshtml" />
+    <Content Include="Views\Student\_Student-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

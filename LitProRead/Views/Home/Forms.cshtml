@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Home Page";
+    var currStudentId = 0;
 }
-
 <div id="tabs">
 
     <ul>
@@ -21,14 +21,42 @@
     @* ----------------------------------------------------- *@
     <div id="tabs-Students">
 
-        <form method="get" action="@Url.Action("Forms")" 
+
+        <form id="studentform" method="post" action="@Url.Action("Forms")" 
             data-otf-ajax="true" data-otf-target="#Student-General">
+            <table style="width: 100%; border:0 none; table-layout: fixed; border-collapse: separate">
+                <colgroup>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                </colgroup>
+                <tr>
+                    <td style="text-align:right; border:0 none;">Last Name
+                    </td>
+                    <td style="text-align:left; border:0 none;">
+                        @Html.DropDownListFor(x => Model.studentVM.StudentListLastName, Model.studentVM.StudentListLastName, new { style = "width: 250px;", @onchange="onStudentLastNameChange(this.options[this.selectedIndex].value);" })
+                    </td>
+                    <td style="text-align:right; border:0 none;">First Name
+                    </td>
+                    <td style="text-align:left; border:0 none;">
+                        @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, htmlAttributes: new { style = "width: 250px;", @onchange="onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
+                    </td>
+                </tr>
 
-            <label for="lastName">Last Name</label>
-            @Html.DropDownListFor(x => Model.studentVM.StudentListLastName, Model.studentVM.StudentListLastName, htmlAttributes: new { style = "width: 250px;" })
+                <tr>
+                    <td colspan="5" style="text-align:center">
+                        <button type="button" id="refreshStudent">Refresh</button>
+                        <button type="button" id="addStudent">Add</button>
+                        <button type="button" id="editStudent">Edit</button>
+                        <button type="button" id="deleteStudent">Delete</button>
+                        <button type="button" id="saveStudent">Save</button>
+                        <button type="button" id="printStudent">Print</button>
 
-            <label for="firstName">First Name</label>
-             @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, htmlAttributes: new { style = "width: 250px;" })
+                    </td>
+                </tr>
+            </table>
             @*
         @Html.ListBoxFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, new { @class = "chosen", Style = "width: 150px;" })
             @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, "select", new { @ID = "ddlCountry", @class = "chosen-select", Style = "width: 150px;" })
@@ -40,12 +68,10 @@
             <input type="submit" value="Search" />
             *@
 
-            <button type="button" id="addStudent">Add</button>
-            <button type="button" id="editStudent">Edit</button>
-            <button type="button" id="deleteStudent">Delete</button>
-            <button type="button" id="saveStudent">Save</button>
-            <button type="button" id="refreshStudent">Refresh</button>
+            
         </form>
+        
+        <hr>
 
        <ul>
             <li><a href="#tabs-General">General</a></li>
@@ -62,10 +88,9 @@
             <li><a href="#tabs-Status-History">Status History</a></li>
         </ul>
 
-        @Html.Partial("_Student-View")  @*, Model)*@
 
         <div id="tabs-General">
-            General
+        @Html.Partial("../Student/_Student-View", Model.studentVM.CurrentStudent) 
         </div>
        
         <div id="tabs-Matching-S">
@@ -148,64 +173,117 @@
     , 
 </div>
 
+
 @section scripts
 {
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>  
     <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/toDictionary.js")"></script>
+
+     @*
+   There are two ways.
+    First one is the common way that serializes your form (when your ViewModel data is presented in the view as a form). Ajax call will likely be issued within form submit handler (meaning that this will refer to form DOM element):
+
+    $.ajax({ ..., data: $(this).serialize(), ...});
+
+    As you can see, there's no use of toDictionary in this case because most of the things will work out of the box. Vast majority of forms aren't dynamic so they don't just add additional fields to them.
+
+    Second way is less common and uses a JSON object and posts back that one. In this case there's no completely direct way of providing your server-side ViewModel on the client (unless you JSON-encode it and send it within the view). So when you want your actual ViewModel instance to access on the client then supposedly JSON encode it and put it i.e. as an attribute on some element that represents your model. All you'd have to do afterwards is to
+    1. read that data,
+    2. create Javascript instance of this JSON object
+    3. manipulate it
+    4. serialize it and send it back to server
+
+    var model = $.parseJSON($("#someEl").data("view-model-data"));
+    //manipulate model
+    $.ajax({ ..., data: $.toDictionary(model),... });
+    *@
+
+    <script type="text/javascript">
+        function onStudentLastNameChange(value) {
+            currStudentId = value;
+            //alert(currStudentId);
+        }
+    </script>
     
+    <script type="text/javascript">
+        function onStudentFirstNameChange(value) {
+            currStudentId = value;
+            //alert(currStudentId);
+        }
+    </script>
+
     <script>
         $(function () {
             $("#tabs").tabs();
             $("#tabs-Students").tabs();
 
             $("#studentVM_StudentListLastName").select2();
-            $("#studentVM_StudentListLastName").on("change", function (e) {
-                alert(e.val);
-            });
+            //$("#studentVM_StudentListLastName").on("change", function (e) {
+            //    currStudentId = $('#studentVM_StudentListLastName').val;
+           //     alert(currStudentId);
+           // });
 
             $("#studentVM_StudentListFirstName").select2();
-            $("#studentVM_StudentListFirstName").on("change", function (e)
-            { 
-                alert(e.val);
-            });
-      });
+       });
     </script>
 
     <script type="text/javascript">
 
         $('#addStudent').click(function () {
             alert("addStudent");
+            var firstName = $('#studentVM_StudentListFirstName').val;
+            var lastName = $('#studentVM_StudentListLastName').val;
+            alert("Last: " + lastName + ", " + "First: " + firstName);
             @*
-            var last = $("#LastName").val();
-            var first = $("#FirstName").val();
-
+            var studentvm = @(Model.studentVM);//$("form").serialize();
             $.ajax({
-                url: '@Url.Content("~/RequestForm/GetAllForms")',
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
+                url: '@Url.Content("~/Student/Add")',
+                 type: 'get',
+                 cache: false,
+                 data: $.toDictionary(studentvm, "studentvm"),
+                 contentType: 'application/json; charset=utf-8',
+                 @ *
                 data: { Command: "approve", lastName: last, firstName: first },
-                success: function (result) {
-                    $('#ViewResult').html(result);
-                }
-            });
+                 * @
+             }).done(function () {
+                 alert("done");
+
+             }).complete(function () {
+                 alert("complete");
+             }).success(function (dv) {
+                 alert("success");
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling editStudent: " + errorMessage);
+             });
             *@
-            return false;
         });
 
         $('#editStudent').click(function () {
-            alert("editStudent");
+            //alert("editStudent");
+            //var m = $("form").serialize();
+            //alert(m);
              $.ajax({
                 url: '@Url.Content("~/Student/Edit")',
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
+                 type: 'get',
+                 cache: false,
+                 data: { id: currStudentId },       //{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                  @*
-                data: { Command: "approve", lastName: last, firstName: first },
-                success: function (result) {
-                    $('#ViewResult').html(result);
-                }
+                 contentType: 'application/json; charset=utf-8',
+               data: { Command: "approve", lastName: last, firstName: first },
                  *@
-            });
-           return false;
+                 }).done(function (data) {
+                     //alert(data);
+                     $("#Student-General").replaceWith(data);
+                 }).complete(function (){
+                     //alert("complete");
+                 }).success(function (dv) {
+                    // alert("success");
+                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                     alert("There was an error calling editStudent: " + errorMessage);
+                 });
         });
     </script>
 }

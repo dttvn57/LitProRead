@@ -1,0 +1,99 @@
+﻿@*
+﻿@model IPagedList<RestaurantListViewModel>
+*@
+
+﻿@model LitProRead.Models.Student
+<div id="Student-General">
+<div data-otf-target="#Student-General">
+    <table style="width: 100%; border:0 none; table-layout: fixed; border-collapse: separate">
+        <colgroup>
+                <col style="width:17%;"/>
+                <col style="width:15%;"/>
+                <col style="width:17%;"/>
+                <col style="width:17%;"/>
+                <col style="width:17%;"/>
+                <col style="width:17%;"/>
+        </colgroup>
+        <tr>
+            <td style="text-align:right; border:0 none;">Name*
+            </td>
+            <td style="text-align:left; border:0 none;">
+                @Html.TextBox("Salutation")
+            </td>
+            <td style="text-align:left; border:0 none;">
+                @Html.TextBoxFor(m => m.FirstName)
+            </td>
+            <td style="text-align:left; border:0 none;">
+                @Html.TextBox("LastName")
+            </td>
+            <td style="text-align:right; border:0 none;">Intake Date
+            </td>
+            <td style="text-align:left; border:0 none;">
+                @Html.TextBox("IntakeDate")
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:right; border:0 none;">Address1*
+            </td>
+            <td  colspan="2" style="text-align:left; border:0 none;">
+                @Html.TextBox("Address1")
+            </td>
+            <td></td>
+            <td style="text-align:right; border:0 none;">Start Date
+            </td>
+            <td  colspan="2" style="text-align:left; border:0 none;">
+                @Html.TextBox("StartDate")
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:right; border:0 none;">Address2
+            </td>
+            <td  colspan="2" style="text-align:left; border:0 none;">
+                @Html.TextBox("Address2", null, htmlAttributes: new { style="width:30em" })
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:right; border:0 none;">City/State/Zip
+           </td>
+            <td  colspan="2" style="text-align:left; border:0 none;">
+                 @Html.TextBox("Address2")
+            </td>
+        </tr>
+
+        <tr>
+            <td style="text-align:right; border:0 none;">Primary Area Code/Phone
+            </td>
+            <td  colspan="2" style="text-align:left; border:0 none;">
+                @Html.TextBox("Address2")
+            </td>
+        </tr>
+    </table>
+
+    @*
+   <div class="pagedList" data-otf-target="#restaurantList">
+       @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+       PagedListRenderOptions.MinimalWithItemCountText)
+   </div>
+
+
+   @foreach (var item in Model)
+   {
+       <div>
+           <h4>@item.Name</h4>
+           <div>
+               @item.City, @item.Country
+           </div>
+           <div>
+               Reviews: @item.CountOfReviews
+           </div>
+           <hr />
+       </div>
+   }
+    *@
+
+</div>
+
+</div>

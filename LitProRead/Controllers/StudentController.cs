@@ -6,6 +6,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LitProRead.Models;
+using LitProRead.ViewModels;
+using System.Web.Script.Serialization;
+using System.Collections;
 
 namespace LitProRead.Controllers
 {
@@ -59,17 +62,28 @@ namespace LitProRead.Controllers
             return View(student);
         }
 
+        public JsonResult Add(IList studentvm)//int id = 0)
+        {
+//            StudentFormViewModel s = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<StudentFormViewModel>(studentvm);
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
+
         //
         // GET: /Student/Edit/5
-
-        public ActionResult Edit(int id = 0)
+        //[HttpPost]
+        public ActionResult Edit(int id = 0)      //)JsonResult --- string studentvm
         {
+            //StudentFormViewModel s = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<StudentFormViewModel>(studentvm);
+            //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            //var response = new Response(true, "Contact Successfully Submitted");
+            //return Json(response);
+
             Student student = db.Students.Find(id);
             if (student == null)
             {
                 return HttpNotFound();
             }
-            return View(student);
+            return PartialView("_Student-View", student);
         }
 
         //
