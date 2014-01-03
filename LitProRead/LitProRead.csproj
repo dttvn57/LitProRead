@@ -663,7 +663,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\StudentViewModel.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
     <Compile Include="ViewModels\StudentFormViewModel.cs" />
   </ItemGroup>
@@ -803,6 +802,7 @@
     </Content>
     <EmbeddedResource Include="Reports\rdlc\StudentWaitTime.rdlc" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\appjs\student-general.partialview.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -869,7 +869,7 @@
     <Content Include="StudentStatusHistoryDataSet.xss">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="Views\Student\_Student-View.cshtml" />
+    <Content Include="Views\Student\_Student-General-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

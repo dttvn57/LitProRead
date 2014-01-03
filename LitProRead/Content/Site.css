@@ -416,8 +416,9 @@ fieldset {
 
 label {
     display: block;
-    font-size: 1.2em;
-    font-weight: 600;
+    text-align:right;
+    font-size: 1.0em;    /* 1.2em; */
+    /* font-weight: 600; */
 }
 
 label.checkbox {
@@ -428,10 +429,10 @@ input, textarea {
     border: 1px solid #e2e2e2;
     background: #fff;
     color: #333;
-    font-size: 1.2em;
-    margin: 5px 0 6px 0;
-    padding: 5px;
-    <* width: 300px; *>
+    font-size: 0.75em;/* 1.2em */
+    /* margin: 5px 0 6px 0; */
+    padding: 3px 3px 3px 3px; /* 5px */
+    width: 100%;    /* 300px; */
 }
 
 textarea {
@@ -528,16 +529,18 @@ input[type="checkbox"].input-validation-error {
 /* tables
 ----------------------------------------------------------*/
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
     border-spacing: 0;
     margin-top: 0.75em;
     border: 0 none;
+    table-layout: fixed; /* trung */
+    width: 100%; /* trung */
 }
 
 th {
     font-size: 1.2em;
     text-align: left;
-    <!-- border: none 0px; -->
+    /* border: none 0px; */
     padding-left: 0;
 }
 
@@ -578,10 +581,10 @@ th {
     }
 td {
     font-size: 0.75em;
-     padding: 0.25em 2em 0.25em 0em;
- <!--
-   border: none 0px;
- -->
+    /* padding: 0.25em 2em 0.25em 0em; */
+    padding-left: 5px;
+    padding-right: 10px;
+    /* border: none 0px; */
 }
 tr.pager td {
     padding: 0 0.25em 0 0;

@@ -78,12 +78,12 @@ namespace LitProRead.Controllers
             //var response = new Response(true, "Contact Successfully Submitted");
             //return Json(response);
 
-            Student student = db.Students.Find(id);
-            if (student == null)
+            var vm = new StudentFormViewModel(id);
+            if (vm == null || vm.CurrentStudent == null)
             {
                 return HttpNotFound();
             }
-            return PartialView("_Student-View", student);
+            return PartialView("_Student-General-View", vm);
         }
 
         //

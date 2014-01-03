@@ -21,10 +21,13 @@
     @* ----------------------------------------------------- *@
     <div id="tabs-Students">
 
-
+        @*
         <form id="studentform" method="post" action="@Url.Action("Forms")" 
             data-otf-ajax="true" data-otf-target="#Student-General">
-            <table style="width: 100%; border:0 none; table-layout: fixed; border-collapse: separate">
+        *@
+
+        <form>
+            <table>
                 <colgroup>
                         <col style="width:20%;"/>
                         <col style="width:20%;"/>
@@ -36,12 +39,12 @@
                     <td style="text-align:right; border:0 none;">Last Name
                     </td>
                     <td style="text-align:left; border:0 none;">
-                        @Html.DropDownListFor(x => Model.studentVM.StudentListLastName, Model.studentVM.StudentListLastName, new { style = "width: 250px;", @onchange="onStudentLastNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.DropDownListFor(x => Model.StudentListLastName, Model.StudentListLastName, new { style = "width: 250px;", @onchange="onStudentLastNameChange(this.options[this.selectedIndex].value);" })
                     </td>
                     <td style="text-align:right; border:0 none;">First Name
                     </td>
                     <td style="text-align:left; border:0 none;">
-                        @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, htmlAttributes: new { style = "width: 250px;", @onchange="onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.DropDownListFor(x => Model.StudentListFirstName, Model.StudentListFirstName, htmlAttributes: new { style = "width: 250px;", @onchange="onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
                     </td>
                 </tr>
 
@@ -58,7 +61,7 @@
                 </tr>
             </table>
             @*
-        @Html.ListBoxFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, new { @class = "chosen", Style = "width: 150px;" })
+            @Html.ListBoxFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, new { @class = "chosen", Style = "width: 150px;" })
             @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, "select", new { @ID = "ddlCountry", @class = "chosen-select", Style = "width: 150px;" })
             
             
@@ -90,7 +93,7 @@
 
 
         <div id="tabs-General">
-        @Html.Partial("../Student/_Student-View", Model.studentVM.CurrentStudent) 
+        @Html.Partial("../Student/_Student-General-View", Model) 
         </div>
        
         <div id="tabs-Matching-S">
@@ -170,8 +173,9 @@
     <div id="tabs-Maintenance">
         Maintenance
     </div>
-    , 
+ 
 </div>
+
 
 
 @section scripts
@@ -180,8 +184,10 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/toDictionary.js")"></script>
 
+
      @*
-   There are two ways.
+     <script type="text/javascript" src="@Url.Content("~/Scripts/appjs/student-general.partialview.js")"></script>
+  There are two ways.
     First one is the common way that serializes your form (when your ViewModel data is presented in the view as a form). Ajax call will likely be issued within form submit handler (meaning that this will refer to form DOM element):
 
     $.ajax({ ..., data: $(this).serialize(), ...});
@@ -197,6 +203,14 @@
     var model = $.parseJSON($("#someEl").data("view-model-data"));
     //manipulate model
     $.ajax({ ..., data: $.toDictionary(model),... });
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".datefield").datepicker();
+
+        });
+    </script>
     *@
 
     <script type="text/javascript">
@@ -218,13 +232,16 @@
             $("#tabs").tabs();
             $("#tabs-Students").tabs();
 
-            $("#studentVM_StudentListLastName").select2();
+            $("#StudentListLastName").select2();
             //$("#studentVM_StudentListLastName").on("change", function (e) {
             //    currStudentId = $('#studentVM_StudentListLastName').val;
            //     alert(currStudentId);
            // });
 
-            $("#studentVM_StudentListFirstName").select2();
+            $("#StudentListFirstName").select2();
+
+            $(".datefield").datepicker();
+            
        });
     </script>
 
@@ -232,8 +249,8 @@
 
         $('#addStudent').click(function () {
             alert("addStudent");
-            var firstName = $('#studentVM_StudentListFirstName').val;
-            var lastName = $('#studentVM_StudentListLastName').val;
+            var firstName = $('#StudentListFirstName').val;
+            var lastName = $('#StudentListLastName').val;
             alert("Last: " + lastName + ", " + "First: " + firstName);
             @*
             var studentvm = @(Model.studentVM);//$("form").serialize();
@@ -275,11 +292,15 @@
                  *@
                  }).done(function (data) {
                      //alert(data);
-                     $("#Student-General").replaceWith(data);
+                     //$("#Student-General").replaceWith(data);
                  }).complete(function (){
                      //alert("complete");
-                 }).success(function (dv) {
-                    // alert("success");
+                 }).success(function (data) {
+                     //alert("success: " + data);
+                     $("#Student-General").empty().append(data);    //$("#Student-General").html(data)
+
+                     // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                     $(".datefield").datepicker();
                  }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
                      var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
                      alert("There was an error calling editStudent: " + errorMessage);

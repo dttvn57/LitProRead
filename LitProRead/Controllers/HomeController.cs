@@ -18,7 +18,7 @@ namespace LitProRead.Controllers
         public ActionResult Index()
         {
             var vm = new StudentFormViewModel();
-            vm.studentVM = new StudentViewModel();
+            //vm.studentVM = new StudentViewModel();
             return View("Forms", vm);
         }
 
