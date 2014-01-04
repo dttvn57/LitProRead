@@ -533,7 +533,7 @@ table {
     border-spacing: 0;
     margin-top: 0.75em;
     border: 0 none;
-    table-layout: fixed; /* trung */
+    table-layout: fixed; /*trung */
     width: 100%; /* trung */
 }
 

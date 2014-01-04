@@ -6,116 +6,154 @@
 @model LitProRead.ViewModels.StudentFormViewModel
 
 <div id="Student-General">
-    <table>
-        <colgroup>
-                <col style="width:17%;"/>
-                <col style="width:8%;"/>
-                <col style="width:19%;"/>
-                <col style="width:19%;"/>
-                <col style="width:17%;"/>
-                <col style="width:17%;"/>
-        </colgroup>
-        <tr>
-            @for (int i = 0; i < 6; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    <td style="background-color:red"></td>
-                }
-                else
-                {
-                    <td style="background-color:yellow"></td>
-                }
-            }
-        </tr>
+<table>
+    <colgroup>
+            <col style="width:70%;"/>
+            <col style="width:30%;"/>
+    </colgroup>
 
-        <tr>
-            <td>
-                @Html.Label("Name*")
-            </td>
-            <td>                
-                @Html.DropDownListFor(m => Model.SalutationList, Model.SalutationList)
-            </td>
-            <td>
-                @Html.TextBoxFor(m => m.CurrentStudent.FirstName)
-            </td>
-            <td>
-                @Html.TextBoxFor(m => m.CurrentStudent.LastName)
-            </td>
-            <td>
-                @Html.Label("Intake Date")
-            </td>
-            <td>
-                @Html.TextBoxFor(m => m.CurrentStudent.IntakeDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:6em" })
-            </td>
-        </tr>
+    <tr>
+        <td style="background-color:red"></td>
+        <td style="background-color:yellow"></td>
+    </tr>
 
-        <tr>
-            <td>
-                @Html.Label("Address1*")
-            </td>
-            <td colspan="3">
-                @Html.TextBoxFor(m => m.CurrentStudent.Address1, new { style = "width:100%" })
-            </td>
-            <td>
-                @Html.Label("Start Date")
-            </td>
-            <td>
-                @Html.TextBoxFor(m => m.CurrentStudent.FirstActive, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:6em" })
-            </td>
-        </tr>
+    <tr>
+        @* left table *@
+        <td>
+            <table>
+                <colgroup>
+                        <col style="width:25%;"/>
+                        <col style="width:15%;"/>
+                        <col style="width:25%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:25%;"/>
+                </colgroup>
+                <tr>
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            <td style="background-color:red"></td>
+                        }
+                        else
+                        {
+                            <td style="background-color:yellow"></td>
+                        }
+                    }
+                </tr>
 
-        <tr>
-            <td>
-                @Html.Label("Address2")
-            </td>
-            <td colspan="3">
-                @Html.TextBoxFor(m => m.CurrentStudent.Address2, new { style="width:100%" })
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Name*")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.SalutationList, Model.SalutationList, string.Empty, new { style = "width:100%" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentStudent.FirstName)
+                    </td>
+                    <td colspan="2">
+                        @Html.TextBoxFor(m => m.CurrentStudent.LastName)
+                    </td>
+                </tr>
 
-        <tr>
-            <td>
-                @Html.Label("City/State/Zip")
-           </td>
-            <td>
-                @Html.DropDownListFor(m => Model.CityList, Model.CityList)
-            </td>
-            <td>
-                 @Html.TextBoxFor(m => m.CurrentStudent.State)
-            </td>
-            <td>
-                 @Html.TextBoxFor(m => m.CurrentStudent.Zip)
-            </td>
-        </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Address1*")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextBoxFor(m => m.CurrentStudent.Address1, new { style = "width:100%" })
+                    </td>
+                </tr>
 
-        <tr>
-            <td>
-                @Html.Label("Primary Area Code/Phone")
-            </td>
-            <td >
-                @Html.DropDownListFor(m => Model.AreaCodeList, Model.AreaCodeList)   @* HomeAreaCode: SELECT DISTINCTROW AreaCodes.AreaCodes FROM AreaCodes *@
-            </td>
-            <td >
-                @Html.TextBoxFor(m => m.CurrentStudent.HomePhone)
-            </td>
-        </tr>
+                    <td>
+                        @Html.Label("Address2")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextBoxFor(m => m.CurrentStudent.Address2, new { style="width:100%" })
+                    </td>
+                </tr>
 
-        <tr>
-            <td>
-                @Html.Label("Secondary Area Code/Phone")
-            </td>
-            <td >
-                @Html.TextBoxFor(m => m.CurrentStudent.WorkAreaCode) 
-            </td>
-            <td >
-                @Html.TextBoxFor(m => m.CurrentStudent.WorkPhone)
-            </td>
-            <td style="text-align:right; padding-right: 0px;">Ext&nbsp&nbsp
-                @Html.TextBoxFor(m => m.CurrentStudent.WorkPhoneExt, new { style="width:30%" })
-            </td>
-        </tr>
-    </table>
+                <tr>
+                    <td>
+                        @Html.Label("City/State/Zip")
+                    </td>
+                    <td colspan="2">
+                        @Html.DropDownListFor(m => Model.CityList, Model.CityList, string.Empty, new { style="width:100%" })
+                    </td>
+                    <td>
+                         @Html.TextBoxFor(m => m.CurrentStudent.State)
+                    </td>
+                    <td>
+                         @Html.TextBoxFor(m => m.CurrentStudent.Zip)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Primary Area Code/Phone")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.AreaCodeList, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                    </td>
+                    <td >
+                        @Html.TextBoxFor(m => m.CurrentStudent.HomePhone)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Secondary Area Code/Phone")
+                    </td>
+                    <td>
+                        @* WorkAreaCode *@
+                        @Html.DropDownListFor(m => Model.AreaCodeList, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                    </td>
+                    <td >
+                        @Html.TextBoxFor(m => m.CurrentStudent.WorkPhone)
+                    </td>
+                    <td>
+                        @Html.Label("Ext")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentStudent.WorkPhoneExt, new { style="width:30%" })
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+        @* right table *@
+        <td>
+            <table>
+                <colgroup>
+                        <col style="width:50%;"/>
+                        <col style="width:50%;"/>
+                </colgroup>
+                <tr>
+                    <td style="background-color:blue"></td>
+                    <td style="background-color:green"></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Intake Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentStudent.IntakeDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:6em" })
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Start Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentStudent.FirstActive, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:6em" })
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 
     @*
    <div class="pagedList" data-otf-target="#restaurantList">

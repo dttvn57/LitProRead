@@ -39,12 +39,12 @@
                     <td style="text-align:right; border:0 none;">Last Name
                     </td>
                     <td style="text-align:left; border:0 none;">
-                        @Html.DropDownListFor(x => Model.StudentListLastName, Model.StudentListLastName, new { style = "width: 250px;", @onchange="onStudentLastNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.DropDownListFor(x => Model.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange="onStudentLastNameChange(this.options[this.selectedIndex].value);" })
                     </td>
                     <td style="text-align:right; border:0 none;">First Name
                     </td>
                     <td style="text-align:left; border:0 none;">
-                        @Html.DropDownListFor(x => Model.StudentListFirstName, Model.StudentListFirstName, htmlAttributes: new { style = "width: 250px;", @onchange="onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.DropDownListFor(x => Model.StudentListFirstName, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange="onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
                     </td>
                 </tr>
 
