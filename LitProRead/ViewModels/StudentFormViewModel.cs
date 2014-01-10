@@ -35,11 +35,41 @@ namespace LitProRead.ViewModels
         public bool CurrentStudentActive { get; set; }
         public bool CurrentStudentInActive { get; set; }
 
+        public bool CurrentStudentAvailMonAM { get; set; }
+        public bool CurrentStudentAvailTueAM { get; set; }
+        public bool CurrentStudentAvailWedAM { get; set; }
+        public bool CurrentStudentAvailThuAM { get; set; }
+        public bool CurrentStudentAvailFriAM { get; set; }
+        public bool CurrentStudentAvailSatAM { get; set; }
+        public bool CurrentStudentAvailSunAM { get; set; }
+
+        public bool CurrentStudentAvailMonPM { get; set; }
+        public bool CurrentStudentAvailTuePM { get; set; }
+        public bool CurrentStudentAvailWedPM { get; set; }
+        public bool CurrentStudentAvailThuPM { get; set; }
+        public bool CurrentStudentAvailFriPM { get; set; }
+        public bool CurrentStudentAvailSatPM { get; set; }
+        public bool CurrentStudentAvailSunPM { get; set; }
+
+        public bool CurrentStudentAvailMonEVE { get; set; }
+        public bool CurrentStudentAvailTueEVE { get; set; }
+        public bool CurrentStudentAvailWedEVE { get; set; }
+        public bool CurrentStudentAvailThuEVE { get; set; }
+        public bool CurrentStudentAvailFriEVE { get; set; }
+        public bool CurrentStudentAvailSatEVE { get; set; }
+        public bool CurrentStudentAvailSunEVE { get; set; }
+
         public SelectList StatusList { get; private set; }
         public SelectList StudentProgramList { get; private set; }
         public SelectList MailCodeList { get; private set; }
         public SelectList CategoryList { get; private set; }
         public SelectList KeywordList { get; private set; }
+
+        public SelectList TransportationList { get; private set; }
+        public SelectList StudentContactList { get; private set; }
+        public SelectList LocationPrefList { get; private set; }
+        public SelectList SmokingPrefList { get; private set; }
+        public SelectList TutorSmokerList { get; private set; }
 
         //public List<string> Students { get; set; }
         public SelectList StudentListLastName { get; private set; }
@@ -69,6 +99,37 @@ namespace LitProRead.ViewModels
             this.StudentAge = GetStudentAge();
             this.CurrentStudentActive = GetCurrentStudentActive();
             this.CurrentStudentInActive = GetCurrentStudentInActive();
+
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailMonAM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailTueAM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailWedAM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailThuAM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailFriAM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSatAM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSunAM();
+
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailMonPM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailTuePM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailWedPM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailThuPM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailFriPM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSatPM();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSunPM();
+
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailMonEVE();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailTueEVE();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailWedEVE();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailThuEVE();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailFriEVE();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSatEVE();
+            this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSunEVE();
+
+            this.TransportationList = GetTransportationList();
+            this.StudentContactList = GetStudentContactList();
+            this.LocationPrefList = GetLocationPrefList();
+            this.SmokingPrefList = GetSmokingPrefList();
+            this.TutorSmokerList = GetTutorSmokerList();
+
             this.StatusList = GetStatusList();
             this.StudentProgramList = GetStudentProgramList();
             this.MailCodeList = GetMailCodeList(null);
@@ -262,7 +323,46 @@ namespace LitProRead.ViewModels
             return new SelectList(kwList, "Keyword", "Description", selectedValues);
         }
 
-       public SelectList GetStudentsLastName(string[] selectedValues)
+        //SELECT DISTINCTROW Transportation.Transportation FROM Transportation ORDER BY Transportation.Transportation; 
+        public SelectList GetTransportationList()
+        {
+            var l = db.Database.SqlQuery<string>("SELECT Transportation FROM dbo.Transportation ORDER BY Transportation").ToList();
+            return new SelectList(l);
+        }
+
+        //SELECT DISTINCT StudentContact.StudentContact FROM StudentContact ORDER BY StudentContact.StudentContact; 
+        public SelectList GetStudentContactList()
+        {
+            var c = db.Database.SqlQuery<string>("SELECT StudentContact FROM dbo.StudentContact ORDER BY StudentContact").ToList();
+            return new SelectList(c);
+        }
+
+        //SELECT DISTINCTROW LocationPref.LocationPref FROM LocationPref ORDER BY LocationPref.LocationPref; 
+        public SelectList GetLocationPrefList()
+        {
+            var p = db.Database.SqlQuery<string>("SELECT LocationPref FROM dbo.LocationPref ORDER BY LocationPref").ToList();
+            return new SelectList(p);
+        }
+
+        //SmokingPref - "Smoker";"Non-Smoker"
+        public SelectList GetSmokingPrefList()
+        {
+            List<string> yn = new List<string>();
+            yn.Add("Smoker");
+            yn.Add("Non-Smoker");
+            return new SelectList(yn);
+        }
+
+        //TutorSmoker - " ";"Yes";"No"
+        public SelectList GetTutorSmokerList()
+        {
+            List<string> yn = new List<string>();
+            yn.Add("Yes");
+            yn.Add("No");
+            return new SelectList(yn);
+        }
+
+        public SelectList GetStudentsLastName(string[] selectedValues)
         {
             //var students = (from student in db.Students
             //               orderby student.LastName
@@ -328,6 +428,198 @@ namespace LitProRead.ViewModels
                 active = (bool)CurrentStudent.InActive;
             }
             return active;
+        }
+
+        private bool GetCurrentStudentAvailMonAM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailMonAM != null)
+            {
+                avail = (bool)CurrentStudent.AvailMonAM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailTueAM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailTueAM != null)
+            {
+                avail = (bool)CurrentStudent.AvailTueAM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailWedAM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailWedAM != null)
+            {
+                avail = (bool)CurrentStudent.AvailWedAM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailThuAM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailThuAM != null)
+            {
+                avail = (bool)CurrentStudent.AvailThuAM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailFriAM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailFriAM != null)
+            {
+                avail = (bool)CurrentStudent.AvailFriAM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailSatAM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailSatAM != null)
+            {
+                avail = (bool)CurrentStudent.AvailSatAM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailSunAM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailSunAM != null)
+            {
+                avail = (bool)CurrentStudent.AvailSunAM;
+            }
+            return avail;
+        }
+
+        private bool GetCurrentStudentAvailMonPM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailMonPM != null)
+            {
+                avail = (bool)CurrentStudent.AvailMonPM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailTuePM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailTuePM != null)
+            {
+                avail = (bool)CurrentStudent.AvailTuePM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailWedPM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailWedPM != null)
+            {
+                avail = (bool)CurrentStudent.AvailWedPM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailThuPM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailThuPM != null)
+            {
+                avail = (bool)CurrentStudent.AvailThuPM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailFriPM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailFriPM != null)
+            {
+                avail = (bool)CurrentStudent.AvailFriPM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailSatPM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailSatPM != null)
+            {
+                avail = (bool)CurrentStudent.AvailSatPM;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailSunPM()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailSunPM != null)
+            {
+                avail = (bool)CurrentStudent.AvailSunPM;
+            }
+            return avail;
+        }
+        
+        private bool GetCurrentStudentAvailMonEVE()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailMonEVE != null)
+            {
+                avail = (bool)CurrentStudent.AvailMonEVE;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailTueEVE()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailTueEVE != null)
+            {
+                avail = (bool)CurrentStudent.AvailTueEVE;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailWedEVE()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailWedEVE != null)
+            {
+                avail = (bool)CurrentStudent.AvailWedEVE;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailThuEVE()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailThudEVE != null)
+            {
+                avail = (bool)CurrentStudent.AvailThudEVE;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailFriEVE()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailFriEVE != null)
+            {
+                avail = (bool)CurrentStudent.AvailFriEVE;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailSatEVE()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailSatEVE != null)
+            {
+                avail = (bool)CurrentStudent.AvailSatEVE;
+            }
+            return avail;
+        }
+        private bool GetCurrentStudentAvailSunEVE()
+        {
+            bool avail = false;
+            if (CurrentStudent != null && CurrentStudent.AvailSunEVE != null)
+            {
+                avail = (bool)CurrentStudent.AvailSunEVE;
+            }
+            return avail;
         }
 
         //private readonly SqlConnection sqlConnection;

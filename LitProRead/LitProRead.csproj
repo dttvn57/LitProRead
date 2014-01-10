@@ -870,6 +870,7 @@
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Content>
     <Content Include="Views\Student\_Student-General-View.cshtml" />
+    <Content Include="Views\Student\_Student-Preferences-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

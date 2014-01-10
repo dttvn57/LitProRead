@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Home Page";
     var currStudentId = 0;
+    var editMode = "add";
 }
 <div id="tabs">
 
@@ -93,7 +94,7 @@
 
 
         <div id="tabs-General">
-        @Html.Partial("../Student/_Student-General-View", Model) 
+            @Html.Partial("../Student/_Student-General-View", Model) 
         </div>
        
         <div id="tabs-Matching-S">
@@ -101,7 +102,7 @@
         </div>
        
         <div id="tabs-Preferences">
-            Preferences
+            @Html.Partial("../Student/_Student-Preferences-View", Model) 
         </div>
        
         <div id="tabs-Children">
@@ -247,6 +248,7 @@
 
     <script type="text/javascript">
 
+        @* --- ADD --- *@
         $('#addStudent').click(function () {
             alert("addStudent");
             var firstName = $('#StudentListFirstName').val;
@@ -277,6 +279,7 @@
             *@
         });
 
+        @* --- EDIT --- *@
         $('#editStudent').click(function () {
             //alert("editStudent");
             //var m = $("form").serialize();
@@ -296,7 +299,8 @@
                  }).complete(function (){
                      //alert("complete");
                  }).success(function (data) {
-                     //alert("success: " + data);
+                     editMode = "edit";
+                     alert(editMode);
                      $("#Student-General").empty().append(data);    //$("#Student-General").html(data)
 
                      // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
@@ -306,5 +310,37 @@
                      alert("There was an error calling editStudent: " + errorMessage);
                  });
         });
+
+
+        @* --- SAVE --- *@
+        $('#saveStudent').click(function () {
+            alert("saveStudent for " + editMode);
+            //var m = $("form").serialize();
+            //alert(m);
+            $.ajax({
+                url: '@Url.Content("~/Student/Edit")',
+                 type: 'post',
+                 cache: false,
+                 data: { id: currStudentId },       //{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                 @*
+                 contentType: 'application/json; charset=utf-8',
+               data: { Command: "approve", lastName: last, firstName: first },
+                 *@
+             }).done(function (data) {
+                 //alert(data);
+                 //$("#Student-General").replaceWith(data);
+             }).complete(function () {
+                 //alert("complete");
+             }).success(function (data) {
+                 //$("#Student-General").empty().append(data);    //$("#Student-General").html(data)
+
+                 // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                 $(".datefield").datepicker();
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling editStudent: " + errorMessage);
+             });
+        });
+
     </script>
 }
