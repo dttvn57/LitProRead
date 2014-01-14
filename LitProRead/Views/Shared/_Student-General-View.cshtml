@@ -5,6 +5,8 @@
 
 @model LitProRead.ViewModels.StudentFormViewModel
 
+            @Html.HiddenFor(m => m.Id)
+
 <div id="Student-General">
 <table>
     <colgroup>
@@ -374,7 +376,7 @@
                             @Html.Label("Active")
                         </td>
                         <td>
-                            @Html.CheckBoxFor(m => m.CurrentStudentActive)
+                            @Html.CheckBoxFor(m => m.CurrentStudent.Active) @*m => m.CurrentStudentActive)*@
                         </td>
                         <td style="text-align:right">Date&nbsp;&nbsp;&nbsp;
                             @Html.TextBoxFor(m => m.CurrentStudent.ActiveDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
@@ -397,7 +399,7 @@
                             @Html.Label("Inactive")
                         </td>
                         <td>
-                            @Html.CheckBoxFor(m => m.CurrentStudentInActive)
+                            @Html.CheckBoxFor(m => m.CurrentStudent.InActive)
                         </td>
                     </tr>
 

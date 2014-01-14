@@ -25,9 +25,19 @@
         @*
         <form id="studentform" method="post" action="@Url.Action("Forms")" 
             data-otf-ajax="true" data-otf-target="#Student-General">
+        <form id="studentform">
         *@
 
-        <form>
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "studentform" }))
+        { 
+            @*
+            @Html.AntiForgeryToken()
+            *@
+            
+            @Html.ValidationSummary(true)
+
+            @* Html.HiddenFor(x => x.Id)*@
+            
             <table>
                 <colgroup>
                         <col style="width:20%;"/>
@@ -61,85 +71,87 @@
                     </td>
                 </tr>
             </table>
-            @*
-            @Html.ListBoxFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, new { @class = "chosen", Style = "width: 150px;" })
-            @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, "select", new { @ID = "ddlCountry", @class = "chosen-select", Style = "width: 150px;" })
+
+                @*
+                @Html.ListBoxFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, new { @class = "chosen", Style = "width: 150px;" })
+                @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, "select", new { @ID = "ddlCountry", @class = "chosen-select", Style = "width: 150px;" })
             
             
-                ,new { @class = "chzn-select", data_placeholder = "Choose  Countries..." })
-            @Html.DropDownListFor("", new SelectList(Model.Departments, "DepartmentId", "Name"), string.Empty)
-            <input type="search" name="searchTerm" data-otf-autocomplete="@Url.Action("Autocomplete")" />
-            <input type="submit" value="Search" />
-            *@
+                    ,new { @class = "chzn-select", data_placeholder = "Choose  Countries..." })
+                @Html.DropDownListFor("", new SelectList(Model.Departments, "DepartmentId", "Name"), string.Empty)
+                <input type="search" name="searchTerm" data-otf-autocomplete="@Url.Action("Autocomplete")" />
+                <input type="submit" value="Search" />
+                *@
 
             
-        </form>
         
-        <hr>
+            <hr>
 
-       <ul>
-            <li><a href="#tabs-General">General</a></li>
-            <li><a href="#tabs-Preferences">Preferences</a></li>
-            <li><a href="#tabs-Matching-S">Matching-S</a></li>
-            <li><a href="#tabs-Children">Children</a></li>
-            <li><a href="#tabs-Computer">Computer</a></li>
-            <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
-            <li><a href="#tabs-Assessment-Goals">Assessment Goals</a></li>
-            <li><a href="#tabs-Roles-and-Goals">Roles and Goals</a></li>
-            <li><a href="#tabs-Accomplishements">Accomplishements</a></li>
-            <li><a href="#tabs-Comments">Comments</a></li>
-            <li><a href="#tabs-FollowUp">FollowUp</a></li>
-            <li><a href="#tabs-Status-History">Status History</a></li>
-        </ul>
+            <ul>
+                <li><a href="#tabs-General">General</a></li>
+                <li><a href="#tabs-Preferences">Preferences</a></li>
+                <li><a href="#tabs-Matching-S">Matching-S</a></li>
+                <li><a href="#tabs-Children">Children</a></li>
+                <li><a href="#tabs-Computer">Computer</a></li>
+                <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
+                <li><a href="#tabs-Assessment-Goals">Assessment Goals</a></li>
+                <li><a href="#tabs-Roles-and-Goals">Roles and Goals</a></li>
+                <li><a href="#tabs-Accomplishements">Accomplishements</a></li>
+                <li><a href="#tabs-Comments">Comments</a></li>
+                <li><a href="#tabs-FollowUp">FollowUp</a></li>
+                <li><a href="#tabs-Status-History">Status History</a></li>
+            </ul>
 
 
-        <div id="tabs-General">
-            @Html.Partial("../Student/_Student-General-View", Model) 
-        </div>
+            <div id="tabs-General">
+                @Html.Partial("_Student-General-View", Model) 
+            </div>
        
-        <div id="tabs-Matching-S">
-            Matching-S
-        </div>
+            <div id="tabs-Matching-S">
+                Matching-S
+            </div>
        
-        <div id="tabs-Preferences">
-            @Html.Partial("../Student/_Student-Preferences-View", Model) 
-        </div>
+            <div id="tabs-Preferences">
+                @Html.Partial("_Student-Preferences-View", Model) 
+            </div>
        
-        <div id="tabs-Children">
-            Children
-        </div>
+            <div id="tabs-Children">
+                Children
+            </div>
        
-        <div id="tabs-Computer">
-            Computer
-        </div>
+            <div id="tabs-Computer">
+                Computer
+            </div>
        
-        <div id="tabs-Assessment-Intake">
-            Assessment-Intake
-        </div>
+            <div id="tabs-Assessment-Intake">
+                Assessment-Intake
+            </div>
        
-        <div id="tabs-Assessment-Goals">
-            Assessment-Goals
-        </div>
+            <div id="tabs-Assessment-Goals">
+                Assessment-Goals
+            </div>
        
-        <div id="tabs-Roles-and-Goals">
-            Roles-and-Goals
-        </div>
+            <div id="tabs-Roles-and-Goals">
+                Roles-and-Goals
+            </div>
        
-        <div id="tabs-Accomplishements">
-            Accomplishements
-        </div>
+            <div id="tabs-Accomplishements">
+                Accomplishements
+            </div>
        
-        <div id="tabs-Comments">
-            Comments
-        </div>
+            <div id="tabs-Comments">
+                Comments
+            </div>
        
-        <div id="tabs-FollowUp">
-            FollowUp
-        </div>
+            <div id="tabs-FollowUp">
+                FollowUp
+            </div>
        
-        <div id="tabs-Status-History">
-            Status-History
-        </div>
+            <div id="tabs-Status-History">
+                Status-History
+            </div>
+
+        } @* </form> *@
     </div>
 
     @* ----------------------------------------------------- *@
@@ -184,6 +196,7 @@
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>  
     <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/toDictionary.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.serializeJSON.min.js")"></script>
 
 
      @*
@@ -285,7 +298,7 @@
             //var m = $("form").serialize();
             //alert(m);
              $.ajax({
-                url: '@Url.Content("~/Student/Edit")',
+                url: '@Url.Content("~/Home/Edit")', @*'@Url.Content("~/Student/Edit")',*@
                  type: 'get',
                  cache: false,
                  data: { id: currStudentId },       //{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
@@ -300,7 +313,7 @@
                      //alert("complete");
                  }).success(function (data) {
                      editMode = "edit";
-                     alert(editMode);
+                     //alert(editMode);
                      $("#Student-General").empty().append(data);    //$("#Student-General").html(data)
 
                      // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
@@ -313,16 +326,27 @@
 
 
         @* --- SAVE --- *@
-        $('#saveStudent').click(function () {
-            alert("saveStudent for " + editMode);
+        
+        $('#saveStudent').click(function (dta) {
+           // alert("saveStudent");
+            var urlDest = '@Url.Content("~/Home/Create")';
+            //var vm = $('#studentform').serialize();//.serializeJSON();
+            if (editMode == "edit")
+            {
+                urlDest = '@Url.Content("~/Home/Edit")'
+                //alert("saveStudent goes to: " + urlDest);
+                //var json = JSON.stringify(dta);
+                //alert(json);
+           }
             //var m = $("form").serialize();
             //alert(m);
             $.ajax({
-                url: '@Url.Content("~/Student/Edit")',
-                 type: 'post',
+                 url: urlDest,
+                type: 'post',
                  cache: false,
-                 data: { id: currStudentId },       //{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                 data: { studentData: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                  @*
+                 data: { dataO: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                  contentType: 'application/json; charset=utf-8',
                data: { Command: "approve", lastName: last, firstName: first },
                  *@
@@ -341,6 +365,6 @@
                  alert("There was an error calling editStudent: " + errorMessage);
              });
         });
-
+       
     </script>
 }

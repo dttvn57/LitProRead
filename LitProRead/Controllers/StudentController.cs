@@ -70,19 +70,19 @@ namespace LitProRead.Controllers
 
         //
         // GET: /Student/Edit/5
-        //[HttpPost]
-        public ActionResult Edit(int id = 0)      //)JsonResult --- string studentvm
+        public ActionResult Edit(int id = -1)      //)JsonResult --- string studentvm
         {
             //StudentFormViewModel s = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<StudentFormViewModel>(studentvm);
             //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             //var response = new Response(true, "Contact Successfully Submitted");
             //return Json(response);
 
-            var vm = new StudentFormViewModel(id);
+            var vm = new StudentFormViewModel();
             if (vm == null || vm.CurrentStudent == null)
             {
                 return HttpNotFound();
             }
+            vm.Load(id);
             return PartialView("_Student-General-View", vm);
         }
 
@@ -91,15 +91,15 @@ namespace LitProRead.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Student student)
+        public ActionResult Edit(StudentFormViewModel data)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
+                //db.Entry(student).State = EntityState.Modified;
+                //db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(student);
+            return PartialView(data);
         }
 
         //
