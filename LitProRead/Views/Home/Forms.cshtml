@@ -26,17 +26,19 @@
         <form id="studentform" method="post" action="@Url.Action("Forms")" 
             data-otf-ajax="true" data-otf-target="#Student-General">
         <form id="studentform">
-        *@
 
         @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "studentform" }))
+        *@
+
+        @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
         { 
             @*
             @Html.AntiForgeryToken()
-            *@
+              @Html.HiddenFor(x => Model.CurrentStudent.ID)
+          *@
             
             @Html.ValidationSummary(true)
 
-            @* Html.HiddenFor(x => x.Id)*@
             
             <table>
                 <colgroup>
@@ -46,16 +48,24 @@
                         <col style="width:20%;"/>
                         <col style="width:20%;"/>
                 </colgroup>
+@*
+                <tr>
+                    <td>
+                                    @Html.TextBoxFor(x => x.CurrentStudent.ID)
+
+                    </td>
+                </tr>
+*@
                 <tr>
                     <td style="text-align:right; border:0 none;">Last Name
                     </td>
                     <td style="text-align:left; border:0 none;">
-                        @Html.DropDownListFor(x => Model.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange="onStudentLastNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.DropDownListFor(x => Model.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange = "onStudentLastNameChange(this.options[this.selectedIndex].value);" })
                     </td>
                     <td style="text-align:right; border:0 none;">First Name
                     </td>
                     <td style="text-align:left; border:0 none;">
-                        @Html.DropDownListFor(x => Model.StudentListFirstName, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange="onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.DropDownListFor(x => Model.StudentListFirstName, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange = "onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
                     </td>
                 </tr>
 
@@ -65,7 +75,12 @@
                         <button type="button" id="addStudent">Add</button>
                         <button type="button" id="editStudent">Edit</button>
                         <button type="button" id="deleteStudent">Delete</button>
+                        
+                        <input type="submit" value="Save" />
+                        @*
                         <button type="button" id="saveStudent">Save</button>
+                        *@
+
                         <button type="button" id="printStudent">Print</button>
 
                     </td>
@@ -112,7 +127,7 @@
             </div>
        
             <div id="tabs-Preferences">
-                @Html.Partial("_Student-Preferences-View", Model) 
+                @* Html.Partial("_Student-Preferences-View", Model) *@
             </div>
        
             <div id="tabs-Children">
@@ -151,7 +166,7 @@
                 Status-History
             </div>
 
-        } @* </form> *@
+                } @* </form> *@
     </div>
 
     @* ----------------------------------------------------- *@
@@ -318,6 +333,9 @@
 
                      // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
                      $(".datefield").datepicker();
+
+                     //alert($('#CurrentStudent_ID').val);
+
                  }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
                      var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
                      alert("There was an error calling editStudent: " + errorMessage);
@@ -336,7 +354,7 @@
                 urlDest = '@Url.Content("~/Home/Edit")'
                 //alert("saveStudent goes to: " + urlDest);
                 //var json = JSON.stringify(dta);
-                //alert(json);
+                //alert(JSON.stringify($('#studentform').serializeJSON()));
            }
             //var m = $("form").serialize();
             //alert(m);

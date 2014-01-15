@@ -8,15 +8,16 @@ using System.Web.Mvc;
 namespace LitProRead.ViewModels
 {
     [Serializable]
+    [Bind(Exclude = "AreaCodeList, CityList, ContactPrefList, EthnicityList, IncomeList, GenderList, EmployerStatusList, CallLocationList, CountryList, NativeLanguageList, ReadWriteNativeLangList, EducationLevelList, ReferralList, StaffList SourceList, StatusList, StudentProgramList, MailCodeList, CategoryList, KeywordList, TransportationList, StudentContactList, LocationPrefList, TutorSmokerList, StudentListLastName, StudentListFirstName")]
     public class StudentFormViewModel
     {
-        private LitProReadEntities db = new LitProReadEntities();
+        public LitProReadEntities db = new LitProReadEntities();
 
         public int Id { get; set; }
         
         public Student CurrentStudent { get; set; }
 
-        public SelectList SalutationList { get; set; }
+        public IEnumerable<SelectListItem> SalutationList { get; set; }
         public SelectList AreaCodeList { get; private set; }
         public SelectList CityList { get; private set; }
         public SelectList ContactPrefList { get; private set; }
@@ -86,7 +87,7 @@ namespace LitProRead.ViewModels
         {
             this.Id = id;
             this.CurrentStudent = GetStudent(id);
-            this.SalutationList = GetSalutationList();
+            this.SalutationList = GetSalutationList(CurrentStudent.Salutation);
             this.AreaCodeList = GetAreaCodeList();
             this.CityList = GetCityList();
             this.ContactPrefList = GetContactPrefList();
@@ -314,10 +315,22 @@ namespace LitProRead.ViewModels
         }
 
         // SELECT DISTINCTROW Salutation.Salutation FROM Salutation
-        public SelectList GetSalutationList()
+        public IEnumerable<SelectListItem> GetSalutationList(string selected)
         {
             var salutations = db.Database.SqlQuery<string>("SELECT Salutation FROM dbo.Salutation").ToList();
-            return new SelectList(salutations);
+            string selectedValue = selected != null ? selected.Trim() : "";
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var sal in salutations)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = sal.Trim(),
+                    Value = sal.Trim(),
+                    //Selected = selectedValue == sal.Trim() ? true : false
+                });
+
+            }
+            return list;// new SelectList(list.ToList(), "Value", "Text");
         }
 
         // SELECT DISTINCTROW City.City FROM Salutation

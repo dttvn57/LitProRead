@@ -4,7 +4,10 @@
 *@
 
 @model LitProRead.ViewModels.StudentFormViewModel
-
+    @*
+            @Html.HiddenFor(m => m.CurrentStudent.ID)
+    *@
+            @Html.TextBoxFor(m => Model.CurrentStudent.ID)
 <div id="Student-Preferences">
 <table>
     <colgroup>
@@ -66,7 +69,7 @@
                         @Html.Label("Morning")
                     </td>
                     <td>
-                        @Html.CheckBoxFor(m => m.CurrentStudent.AvailMonAM)
+                        @Html.CheckBoxFor(m => Model.CurrentStudent.AvailMonAM)
                     </td>
                     <td>
                         @Html.CheckBoxFor(m => m.CurrentStudent.AvailTueAM)

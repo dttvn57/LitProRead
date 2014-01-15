@@ -4,8 +4,7 @@
 *@
 
 @model LitProRead.ViewModels.StudentFormViewModel
-
-            @Html.HiddenFor(m => m.Id)
+   
 
 <div id="Student-General">
 <table>
@@ -40,6 +39,13 @@
                             <td style="background-color:yellow"></td>
                         }
                     }
+                </tr>
+
+                <tr>
+                    <td>
+@Html.HiddenFor(m => m.CurrentStudent.ID)
+
+                    </td>
                 </tr>
                 <tr>
                     <td>

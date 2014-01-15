@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Objects;
 using System.Data.OleDb;
 using System.IO;
 using System.Linq;
@@ -19,11 +20,24 @@ namespace LitProRead.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(int Id = -1)
         {
-            var vm = new StudentFormViewModel();
-            //vm.studentVM = new StudentViewModel();
-            return View("Forms", vm);
+            if (Id == -1)
+            {
+                var vm = new StudentFormViewModel();
+                //vm.studentVM = new StudentViewModel();
+                return View("Forms", vm);
+            }
+            else
+            {
+                var vm = new StudentFormViewModel();
+                if (vm == null || vm.CurrentStudent == null)
+                {
+                    return HttpNotFound();
+                }
+                vm.Load(Id);
+                return View("Forms", vm);
+            }
         }
 
         //
@@ -44,6 +58,37 @@ namespace LitProRead.Controllers
             return PartialView("_Student-General-View", vm);
         }
 
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult Edit(StudentFormViewModel studentFormVm)//string dataO)
+        {
+            if (ModelState.IsValid)
+            {
+                using (LitProReadEntities db = new LitProReadEntities())
+                {
+                    db.Configuration.ValidateOnSaveEnabled = true;
+                    db.Entry(studentFormVm.CurrentStudent).State = EntityState.Modified;
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (OptimisticConcurrencyException ex)
+                    {
+                        string err = ex.Message;
+                        int i = 0;
+                        i++;
+                        //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
+                        //studentFormVm.db.SaveChanges();
+                    }
+                    //studentFormVm.db.SaveChanges();
+                    return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
+                }
+            }
+            return PartialView(studentFormVm);
+        }
+
+        /***
         //
         // POST: /Student/Edit/5
         [HttpPost]
@@ -71,7 +116,7 @@ namespace LitProRead.Controllers
             }
             return PartialView(studentData);
 
-/****************
+/ ****************
             //var objects = JArray.Parse(dataO); // parse as array  
             //foreach (JObject root in objects)
             //{
@@ -142,8 +187,9 @@ namespace LitProRead.Controllers
                 return RedirectToAction("Index");
             }
             return PartialView(dataO);
- ***************************/
+ *************************** /
         }
+******/
 
         public ActionResult Forms()
         {
