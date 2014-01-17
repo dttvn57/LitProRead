@@ -4,10 +4,6 @@
 *@
 
 @model LitProRead.ViewModels.StudentFormViewModel
-    @*
-            @Html.HiddenFor(m => m.CurrentStudent.ID)
-    *@
-            @Html.TextBoxFor(m => Model.CurrentStudent.ID)
 <div id="Student-Preferences">
 <table>
     <colgroup>
@@ -62,6 +58,12 @@
                     <td>Fri</td>
                     <td>Sat</td>
                     <td>Sun</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.HiddenFor(m => m.CurrentStudent.ID)
+                    </td>
                 </tr>
 
                 <tr>

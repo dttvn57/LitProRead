@@ -8,7 +8,7 @@ using System.Web.Mvc;
 namespace LitProRead.ViewModels
 {
     [Serializable]
-    [Bind(Exclude = "AreaCodeList, CityList, ContactPrefList, EthnicityList, IncomeList, GenderList, EmployerStatusList, CallLocationList, CountryList, NativeLanguageList, ReadWriteNativeLangList, EducationLevelList, ReferralList, StaffList SourceList, StatusList, StudentProgramList, MailCodeList, CategoryList, KeywordList, TransportationList, StudentContactList, LocationPrefList, TutorSmokerList, StudentListLastName, StudentListFirstName")]
+    [Bind(Exclude = "StudentListLastName, StudentListFirstName")]
     public class StudentFormViewModel
     {
         public LitProReadEntities db = new LitProReadEntities();
@@ -18,63 +18,39 @@ namespace LitProRead.ViewModels
         public Student CurrentStudent { get; set; }
 
         public IEnumerable<SelectListItem> SalutationList { get; set; }
-        public SelectList AreaCodeList { get; private set; }
-        public SelectList CityList { get; private set; }
-        public SelectList ContactPrefList { get; private set; }
-        public SelectList EthnicityList { get; private set; }
-        public SelectList IncomeList { get; private set; }
-        public SelectList GenderList { get; private set; }
-        public SelectList EmployerStatusList { get; private set; }
-        public SelectList CallLocationList { get; private set; }
-        public SelectList CountryList { get; private set; }
-        public SelectList NativeLanguageList { get; private set; }
-        public SelectList ReadWriteNativeLangList { get; private set; }
-        public SelectList EducationLevelList { get; private set; }
-        public SelectList ReferralList { get; private set; }
-        public SelectList StaffList { get; private set; }
-        public SelectList SourceList { get; private set; }
+        public IEnumerable<SelectListItem> AreaCodeList { get; private set; }
+        public IEnumerable<SelectListItem> CityList { get; private set; }
+        public IEnumerable<SelectListItem> ContactPrefList { get; private set; }
+        public IEnumerable<SelectListItem> EthnicityList { get; private set; }
+        public IEnumerable<SelectListItem> IncomeList { get; private set; }
+        public IEnumerable<SelectListItem> GenderList { get; private set; }
+        public IEnumerable<SelectListItem> EmployerStatusList { get; private set; }
+        public IEnumerable<SelectListItem> CallLocationList { get; private set; }
+        public IEnumerable<SelectListItem> CountryList { get; private set; }
+        public IEnumerable<SelectListItem> NativeLanguageList { get; private set; }
+        public IEnumerable<SelectListItem> ReadWriteNativeLangList { get; private set; }
+        public IEnumerable<SelectListItem> EducationLevelList { get; private set; }
+        public IEnumerable<SelectListItem> ReferralList { get; private set; }
+        public IEnumerable<SelectListItem> StaffList { get; private set; }
+        public IEnumerable<SelectListItem> SourceList { get; private set; }
 
         public double StudentAge { get; private set; }
-        //public bool CurrentStudentActive { get; set; }
-        //public bool CurrentStudentInActive { get; set; }
 
-        //public bool CurrentStudentAvailMonAM { get; set; }
-        //public bool CurrentStudentAvailTueAM { get; set; }
-        //public bool CurrentStudentAvailWedAM { get; set; }
-        //public bool CurrentStudentAvailThuAM { get; set; }
-        //public bool CurrentStudentAvailFriAM { get; set; }
-        //public bool CurrentStudentAvailSatAM { get; set; }
-        //public bool CurrentStudentAvailSunAM { get; set; }
+        public IEnumerable<SelectListItem> StatusList { get; private set; }
+        public IEnumerable<SelectListItem> StudentProgramList { get; private set; }
+        public IEnumerable<SelectListItem> MailCodeList { get; private set; }
+        public IEnumerable<SelectListItem> CategoryList { get; private set; }
+        public IEnumerable<SelectListItem> KeywordList { get; private set; }
 
-        //public bool CurrentStudentAvailMonPM { get; set; }
-        //public bool CurrentStudentAvailTuePM { get; set; }
-        //public bool CurrentStudentAvailWedPM { get; set; }
-        //public bool CurrentStudentAvailThuPM { get; set; }
-        //public bool CurrentStudentAvailFriPM { get; set; }
-        //public bool CurrentStudentAvailSatPM { get; set; }
-        //public bool CurrentStudentAvailSunPM { get; set; }
+        public IEnumerable<SelectListItem> TransportationList { get; private set; }
+        public IEnumerable<SelectListItem> StudentContactList { get; private set; }
+        public IEnumerable<SelectListItem> LocationPrefList { get; private set; }
+        public IEnumerable<SelectListItem> SmokingPrefList { get; private set; }
+        public IEnumerable<SelectListItem> TutorSmokerList { get; private set; }
 
-        //public bool CurrentStudentAvailMonEVE { get; set; }
-        //public bool CurrentStudentAvailTueEVE { get; set; }
-        //public bool CurrentStudentAvailWedEVE { get; set; }
-        //public bool CurrentStudentAvailThuEVE { get; set; }
-        //public bool CurrentStudentAvailFriEVE { get; set; }
-        //public bool CurrentStudentAvailSatEVE { get; set; }
-        //public bool CurrentStudentAvailSunEVE { get; set; }
+        //public IEnumerable<SelectListItem> StudentListLastName { get; private set; }
+        //public string SelectedLastName { get; set; }
 
-        public SelectList StatusList { get; private set; }
-        public SelectList StudentProgramList { get; private set; }
-        public SelectList MailCodeList { get; private set; }
-        public SelectList CategoryList { get; private set; }
-        public SelectList KeywordList { get; private set; }
-
-        public SelectList TransportationList { get; private set; }
-        public SelectList StudentContactList { get; private set; }
-        public SelectList LocationPrefList { get; private set; }
-        public SelectList SmokingPrefList { get; private set; }
-        public SelectList TutorSmokerList { get; private set; }
-
-        //public List<string> Students { get; set; }
         public SelectList StudentListLastName { get; private set; }
         public SelectList StudentListFirstName { get; private set; }
 
@@ -103,35 +79,9 @@ namespace LitProRead.ViewModels
             this.ReferralList = GetReferralList();
             this.StaffList = GetStaffList();
             this.SourceList = GetSourceList();
-            this.StudentListLastName = GetStudentsLastName(null);
-            this.StudentListFirstName = GetStudentsFirstName(null);
+            this.StudentListLastName = GetStudentsLastName(id);
+            this.StudentListFirstName = GetStudentsFirstName(id);
             this.StudentAge = GetStudentAge();
-            //this.CurrentStudentActive = GetCurrentStudentActive();
-            //this.CurrentStudentInActive = GetCurrentStudentInActive();
-
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailMonAM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailTueAM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailWedAM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailThuAM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailFriAM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSatAM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSunAM();
-
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailMonPM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailTuePM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailWedPM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailThuPM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailFriPM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSatPM();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSunPM();
-
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailMonEVE();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailTueEVE();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailWedEVE();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailThuEVE();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailFriEVE();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSatEVE();
-            //this.CurrentStudentAvailFriAM = GetCurrentStudentAvailSunEVE();
 
             this.TransportationList = GetTransportationList();
             this.StudentContactList = GetStudentContactList();
@@ -315,7 +265,7 @@ namespace LitProRead.ViewModels
         }
 
         // SELECT DISTINCTROW Salutation.Salutation FROM Salutation
-        public IEnumerable<SelectListItem> GetSalutationList(string selected)
+        public IEnumerable<SelectListItem> GetSalutationList(string selected = "")
         {
             var salutations = db.Database.SqlQuery<string>("SELECT Salutation FROM dbo.Salutation").ToList();
             string selectedValue = selected != null ? selected.Trim() : "";
@@ -333,29 +283,29 @@ namespace LitProRead.ViewModels
             return list;// new SelectList(list.ToList(), "Value", "Text");
         }
 
-        // SELECT DISTINCTROW City.City FROM Salutation
-        public SelectList GetCityList()
+        // SELECT DISTINCTROW City.City FROM City
+        public IEnumerable<SelectListItem> GetCityList(string selected = "")
         {
             var cities = db.Database.SqlQuery<string>("SELECT City FROM dbo.City").ToList();
-            return new SelectList(cities);
+            return ParseList(selected, cities);// new SelectList(cities);
         }
 
         // SELECT DISTINCTROW AreaCodes.AreaCodes FROM Salutation
-        public SelectList GetAreaCodeList()
+        public IEnumerable<SelectListItem> GetAreaCodeList(string selected = "")
         {
             var codes = db.Database.SqlQuery<string>("SELECT AreaCodes FROM dbo.AreaCodes").ToList();
-            return new SelectList(codes);
+            return ParseList(selected, codes);
         }
 
         // SELECT ContactPref.ContactPref FROM ContactPref
-        public SelectList GetContactPrefList()
+        public IEnumerable<SelectListItem> GetContactPrefList(string selected = "")
         {
             var prefs = db.Database.SqlQuery<string>("SELECT ContactPref FROM dbo.ContactPref").ToList();
-            return new SelectList(prefs);
+            return ParseList(selected, prefs);
         }
 
         // "Female";"Male"
-        public SelectList GetGenderList()
+        public IEnumerable<SelectListItem> GetGenderList(string selected = "")
         {
             List<string> genders = new List<string>();
             genders.Add("Female");
@@ -363,104 +313,104 @@ namespace LitProRead.ViewModels
             //List<SelectListItem> gender = new List<SelectListItem>();
             //gender.Add(new SelectListItem { Text = "Female", Value = "0" });
             //gender.Add(new SelectListItem { Text = "Male", Value = "1" });
-            return new SelectList(genders);
+            return ParseList(selected, genders);
         }
 
         // SELECT DISTINCTROW Ethnicity.Ethnicity FROM Ethnicity ORDER BY Ethnicity.Ethnicity
-        public SelectList GetEthnicityList()
+        public IEnumerable<SelectListItem> GetEthnicityList(string selected = "")
         {
             var ethnicity = db.Database.SqlQuery<string>("SELECT Ethnicity FROM dbo.Ethnicity ORDER BY Ethnicity").ToList();
-            return new SelectList(ethnicity);
+            return ParseList(selected, ethnicity);
         }
 
         // SELECT Income.Income FROM Income ORDER BY Income.Income
-        public SelectList GetIncomeList()
+        public IEnumerable<SelectListItem> GetIncomeList(string selected = "")
         {
             var income = db.Database.SqlQuery<string>("SELECT Income FROM dbo.Income ORDER BY Income").ToList();
-            return new SelectList(income);
+            return ParseList(selected, income);
         }
 
         //SELECT DISTINCTROW EmployerStatus.EmployerStatus FROM EmployerStatus ORDER BY EmployerStatus.EmployerStatus; 
-        public SelectList GetEmployerStatusList()
+        public IEnumerable<SelectListItem> GetEmployerStatusList(string selected = "")
         {
             var employerStatus = db.Database.SqlQuery<string>("SELECT EmployerStatus FROM dbo.EmployerStatus ORDER BY EmployerStatus").ToList();
-            return new SelectList(employerStatus);
+            return ParseList(selected, employerStatus);
         }
 
         // SELECT CallLocation.CallLocation FROM CallLocation ORDER BY CallLocation.CallLocation; 
-        public SelectList GetCallLocationList()
+        public IEnumerable<SelectListItem> GetCallLocationList(string selected = "")
         {
             var locs = db.Database.SqlQuery<string>("SELECT CallLocation FROM dbo.CallLocation ORDER BY CallLocation").ToList();
-            return new SelectList(locs);
+            return ParseList(selected, locs);
         }
 
         // SELECT DISTINCTROW Country.Country FROM Country ORDER BY Country.Country; 
-        public SelectList GetCountryList()
+        public IEnumerable<SelectListItem> GetCountryList(string selected = "")
         {
             var countries = db.Database.SqlQuery<string>("SELECT Country FROM dbo.Country ORDER BY Country").ToList();
-            return new SelectList(countries);
+            return ParseList(selected, countries);
         }
 
         // SELECT DISTINCTROW NativeLanguage.NativeLanguage FROM NativeLanguage; 
-        public SelectList GetNativeLanguageList()
+        public IEnumerable<SelectListItem> GetNativeLanguageList(string selected = "")
         {
             var langs = db.Database.SqlQuery<string>("SELECT NativeLanguage FROM dbo.NativeLanguage").ToList();
-            return new SelectList(langs);
+            return ParseList(selected, langs);
         }
 
         // "Yes";"No"
-        public SelectList GetReadWriteNativeLangList()
+        public IEnumerable<SelectListItem> GetReadWriteNativeLangList(string selected = "")
         {
             List<string> yn = new List<string>();
             yn.Add("Yes");
             yn.Add("No");
-            return new SelectList(yn);
+            return ParseList(selected, yn);
         }
 
         // SELECT DISTINCT EducationLevel.EducationLevel FROM EducationLevel ORDER BY EducationLevel.EducationLevel; 
-        public SelectList GetEducationLevelList()
+        public IEnumerable<SelectListItem> GetEducationLevelList(string selected = "")
         {
             var levels = db.Database.SqlQuery<string>("SELECT EducationLevel FROM dbo.EducationLevel ORDER BY EducationLevel").ToList();
-            return new SelectList(levels);
+            return ParseList(selected, levels);
         }
 
         // SELECT Referral.Referral FROM Referral; 
-        public SelectList GetReferralList()
+        public IEnumerable<SelectListItem> GetReferralList(string selected = "")
         {
             var refs = db.Database.SqlQuery<string>("SELECT Referral FROM dbo.Referral").ToList();
-            return new SelectList(refs);
+            return ParseList(selected, refs);
         }
 
         // SELECT Staff.Staff FROM Staff ORDER BY [Staff]
-        public SelectList GetStaffList()
+        public IEnumerable<SelectListItem> GetStaffList(string selected = "")
         {
             var staff = db.Database.SqlQuery<string>("SELECT Staff FROM dbo.Staff ORDER BY Staff").ToList();
-            return new SelectList(staff);
+            return ParseList(selected, staff);
         }
 
         // SELECT Source.Source FROM Source ORDER BY [Source]; 
-        public SelectList GetSourceList()
+        public IEnumerable<SelectListItem> GetSourceList(string selected = "")
         {
             var source = db.Database.SqlQuery<string>("SELECT Source FROM dbo.Source ORDER BY Source").ToList();
-            return new SelectList(source);
+            return ParseList(selected, source);
         }
 
         //SELECT Status.Status FROM Status; 
-        public SelectList GetStatusList()
+        public IEnumerable<SelectListItem> GetStatusList(string selected = "")
         {
             var status = db.Database.SqlQuery<string>("SELECT Status FROM dbo.Status").ToList();
-            return new SelectList(status);
+            return ParseList(selected, status);
         }
 
         //SELECT DISTINCTROW StudentProgram.Program FROM StudentProgram ORDER BY StudentProgram.Program; 
-        public SelectList GetStudentProgramList()
+        public IEnumerable<SelectListItem> GetStudentProgramList(string selected = "")
         {
             var program = db.Database.SqlQuery<string>("SELECT Program FROM dbo.StudentProgram ORDER BY Program").ToList();
-            return new SelectList(program);
+            return ParseList(selected, program);
         }
 
         // SELECT DISTINCTROW MailCode.MailCode, MailCode.Description FROM MailCode ORDER BY MailCode.MailCode; 
-        public SelectList GetMailCodeList(string[] selectedValues)
+        public IEnumerable<SelectListItem> GetMailCodeList(string[] selectedValues)
         {
             var codes = db.Database.SqlQuery<_MailCode>("SELECT MailCode, Description FROM dbo.MailCode ORDER BY MailCode");
             //List<SelectListItem> codeList = new List<SelectListItem>();
@@ -475,11 +425,23 @@ namespace LitProRead.ViewModels
                                MailCode = code.mailcode,
                                Description = code.description
                            };
-            return new SelectList(codeList, "MailCode", "Description", selectedValues);
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in codeList)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = item.MailCode.Trim(),
+                    Text = item.Description.Trim(),
+                    //Selected = selectedValue == item.Trim() ? true : false
+                });
+
+            }
+            return list;
+            //return new SelectList(codeList, "MailCode", "Description", selectedValues);
         }
 
         // SELECT DISTINCTROW Category.Category, Category.Description FROM Category ORDER BY Category.Category; 
-        public SelectList GetCategoryList(string[] selectedValues)
+        public IEnumerable<SelectListItem> GetCategoryList(string selectedValue)
         {
             var categories = db.Database.SqlQuery<_Category>("SELECT Category, Description  FROM dbo.Category ORDER BY Category").ToList();
             var catList = from cat in categories
@@ -488,11 +450,23 @@ namespace LitProRead.ViewModels
                                Category = cat.category,
                                Description = cat.description
                            };
-            return new SelectList(catList, "Category", "Description", selectedValues);
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in catList)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = item.Category.Trim(),
+                    Text = item.Description.Trim(),
+                    //Selected = selectedValue == item.Trim() ? true : false
+                });
+
+            }
+            return list;
+            //return new SelectList(catList, "Category", "Description", selectedValues);
         }
 
         // SELECT DISTINCTROW Keyword.Keyword, Keyword.Description FROM Keyword ORDER BY Keyword.Keyword; 
-        public SelectList GetKeywordList(string[] selectedValues)
+        public IEnumerable<SelectListItem> GetKeywordList(string selectedValue)
         {
             var kws = db.Database.SqlQuery<_Keyword>("SELECT Keyword, Description  FROM dbo.Keyword ORDER BY Keyword").ToList();
             var kwList = from kw in kws
@@ -501,49 +475,62 @@ namespace LitProRead.ViewModels
                               Keyword = kw.keyword,
                               Description = kw.description
                           };
-            return new SelectList(kwList, "Keyword", "Description", selectedValues);
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in kwList)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = item.Keyword.Trim(),
+                    Text = item.Description.Trim(),
+                    //Selected = selectedValue == item.Trim() ? true : false
+                });
+
+            }
+            return list;
+            //return new SelectList(kwList, "Keyword", "Description", selectedValues);
         }
 
         //SELECT DISTINCTROW Transportation.Transportation FROM Transportation ORDER BY Transportation.Transportation; 
-        public SelectList GetTransportationList()
+        public IEnumerable<SelectListItem> GetTransportationList(string selected = "")
         {
             var l = db.Database.SqlQuery<string>("SELECT Transportation FROM dbo.Transportation ORDER BY Transportation").ToList();
-            return new SelectList(l);
+            return ParseList(selected, l);
         }
 
         //SELECT DISTINCT StudentContact.StudentContact FROM StudentContact ORDER BY StudentContact.StudentContact; 
-        public SelectList GetStudentContactList()
+        public IEnumerable<SelectListItem> GetStudentContactList(string selected = "")
         {
             var c = db.Database.SqlQuery<string>("SELECT StudentContact FROM dbo.StudentContact ORDER BY StudentContact").ToList();
-            return new SelectList(c);
+            return ParseList(selected, c);
         }
 
         //SELECT DISTINCTROW LocationPref.LocationPref FROM LocationPref ORDER BY LocationPref.LocationPref; 
-        public SelectList GetLocationPrefList()
+        public IEnumerable<SelectListItem> GetLocationPrefList(string selected = "")
         {
             var p = db.Database.SqlQuery<string>("SELECT LocationPref FROM dbo.LocationPref ORDER BY LocationPref").ToList();
-            return new SelectList(p);
+            return ParseList(selected, p);
         }
 
         //SmokingPref - "Smoker";"Non-Smoker"
-        public SelectList GetSmokingPrefList()
+        public IEnumerable<SelectListItem> GetSmokingPrefList(string selected = "")
         {
             List<string> yn = new List<string>();
             yn.Add("Smoker");
             yn.Add("Non-Smoker");
-            return new SelectList(yn);
+            return ParseList(selected, yn);
         }
 
         //TutorSmoker - " ";"Yes";"No"
-        public SelectList GetTutorSmokerList()
+        public IEnumerable<SelectListItem> GetTutorSmokerList(string selected = "")
         {
             List<string> yn = new List<string>();
             yn.Add("Yes");
             yn.Add("No");
-            return new SelectList(yn);
+            return ParseList(selected, yn);
         }
 
-        public SelectList GetStudentsLastName(string[] selectedValues)
+        //public IEnumerable<SelectListItem> GetStudentsLastName(int Id = -1)
+        public SelectList GetStudentsLastName(int Id = -1)
         {
             //var students = (from student in db.Students
             //               orderby student.LastName
@@ -558,13 +545,25 @@ namespace LitProRead.ViewModels
                            orderby student.LastName
                            select new
                            {
-                               ID = student.ID,
+                                ID = student.ID,
                                 LastName = student.LastName + ", " + student.FirstName
                            };
-           return new SelectList(students, "ID", "LastName", selectedValues);
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var student in students)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = student.ID.ToString().Trim(),
+                    Text = student.LastName.Trim(),
+                    Selected = student.ID == Id ? true : false
+                });
+
+            }
+            //return list;    
+            return new SelectList(students, "ID", "LastName");//, selectedValues);
         }
 
-        public SelectList GetStudentsFirstName(string[] selectedValues)
+        public SelectList GetStudentsFirstName(int Id = -1)
         {
             var students = from student in db.Students
                            orderby student.FirstName
@@ -574,7 +573,19 @@ namespace LitProRead.ViewModels
                                FirstName = student.FirstName + " " + student.LastName
                            };
 
-            return new SelectList(students, "ID", "FirstName", selectedValues);
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var student in students)
+            {
+                list.Add(new SelectListItem
+                {
+                    Value = student.ID.ToString().Trim(),
+                    Text = student.FirstName.Trim(),
+                    Selected = student.ID == Id ? true : false
+                });
+
+            }
+            //return list;
+            return new SelectList(students, "ID", "FirstName");
         }
 
         private double GetStudentAge()
@@ -590,218 +601,6 @@ namespace LitProRead.ViewModels
             }
             return age;
         }
-
-        //private bool GetCurrentStudentActive()
-        //{
-        //    bool active = false;
-        //    if (CurrentStudent != null && CurrentStudent.Active != null)
-        //    {
-        //        active = (bool)CurrentStudent.Active;
-        //    }
-        //    return active;
-        //}
-
-        //private bool GetCurrentStudentInActive()
-        //{
-        //    bool active = false;
-        //    if (CurrentStudent != null && CurrentStudent.InActive != null)
-        //    {
-        //        active = (bool)CurrentStudent.InActive;
-        //    }
-        //    return active;
-        //}
-
-        //private bool GetCurrentStudentAvailMonAM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailMonAM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailMonAM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailTueAM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailTueAM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailTueAM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailWedAM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailWedAM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailWedAM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailThuAM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailThuAM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailThuAM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailFriAM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailFriAM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailFriAM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailSatAM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailSatAM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailSatAM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailSunAM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailSunAM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailSunAM;
-        //    }
-        //    return avail;
-        //}
-
-        //private bool GetCurrentStudentAvailMonPM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailMonPM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailMonPM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailTuePM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailTuePM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailTuePM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailWedPM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailWedPM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailWedPM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailThuPM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailThuPM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailThuPM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailFriPM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailFriPM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailFriPM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailSatPM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailSatPM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailSatPM;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailSunPM()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailSunPM != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailSunPM;
-        //    }
-        //    return avail;
-        //}
-        
-        //private bool GetCurrentStudentAvailMonEVE()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailMonEVE != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailMonEVE;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailTueEVE()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailTueEVE != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailTueEVE;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailWedEVE()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailWedEVE != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailWedEVE;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailThuEVE()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailThudEVE != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailThudEVE;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailFriEVE()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailFriEVE != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailFriEVE;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailSatEVE()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailSatEVE != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailSatEVE;
-        //    }
-        //    return avail;
-        //}
-        //private bool GetCurrentStudentAvailSunEVE()
-        //{
-        //    bool avail = false;
-        //    if (CurrentStudent != null && CurrentStudent.AvailSunEVE != null)
-        //    {
-        //        avail = (bool)CurrentStudent.AvailSunEVE;
-        //    }
-        //    return avail;
-        //}
 
         private DateTime? AssignDate(string dateStr)
         {
@@ -834,6 +633,23 @@ namespace LitProRead.ViewModels
                 else
                     CurrentStudent.Active = false;
             }
+        }
+
+        private List<SelectListItem> ParseList(string selected, IEnumerable<string> Items)
+        {
+            string selectedValue = selected != null ? selected.Trim() : "";
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in Items)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = item.Trim(),
+                    Value = item.Trim(),
+                    //Selected = selectedValue == item.Trim() ? true : false
+                });
+
+            }
+            return list;
         }
 
         //private readonly SqlConnection sqlConnection;

@@ -43,8 +43,7 @@
 
                 <tr>
                     <td>
-@Html.HiddenFor(m => m.CurrentStudent.ID)
-
+                        @Html.HiddenFor(m => m.CurrentStudent.ID)
                     </td>
                 </tr>
                 <tr>
@@ -53,12 +52,15 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.Salutation, Model.SalutationList, string.Empty, new { style = "width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.Salutation)
                     </td>
                     <td>
                         @Html.TextBoxFor(m => m.CurrentStudent.FirstName)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.FirstName)
                     </td>
                     <td colspan="2">
                         @Html.TextBoxFor(m => m.CurrentStudent.LastName)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.LastName)
                     </td>
                 </tr>
 
@@ -68,6 +70,7 @@
                     </td>
                     <td colspan="4">
                         @Html.TextBoxFor(m => m.CurrentStudent.Address1)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.Address1)
                     </td>
                 </tr>
 
@@ -77,6 +80,7 @@
                     </td>
                     <td colspan="4">
                         @Html.TextBoxFor(m => m.CurrentStudent.Address2)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.Address2)
                     </td>
                 </tr>
 
@@ -86,12 +90,15 @@
                     </td>
                     <td colspan="2">
                         @Html.DropDownListFor(m => Model.CurrentStudent.City, Model.CityList, string.Empty, new { style="width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.City)
                     </td>
                     <td>
                          @Html.TextBoxFor(m => m.CurrentStudent.State)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.State)
                     </td>
                     <td>
                          @Html.TextBoxFor(m => m.CurrentStudent.Zip)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.Zip)
                     </td>
                 </tr>
 
@@ -101,9 +108,11 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.HomeAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.HomeAreaCode)
                     </td>
                     <td >
                         @Html.TextBoxFor(m => m.CurrentStudent.HomePhone)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.HomePhone)
                     </td>
                 </tr>
 
@@ -114,15 +123,18 @@
                     <td>
                         @* WorkAreaCode *@
                         @Html.DropDownListFor(m => Model.CurrentStudent.WorkAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.WorkAreaCode)
                     </td>
                     <td >
                         @Html.TextBoxFor(m => m.CurrentStudent.WorkPhone)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.WorkPhone)
                     </td>
                     <td>
                         @Html.Label("Ext")
                     </td>
                     <td>
                         @Html.TextBoxFor(m => m.CurrentStudent.WorkPhoneExt, new { style="width:30%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.WorkPhoneExt)
                     </td>
                 </tr>
 
@@ -132,9 +144,11 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.FAXAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.FAXAreaCode)
                     </td>
                     <td >
                         @Html.TextBoxFor(m => m.CurrentStudent.FAX)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.FAX)
                     </td>
                 </tr>
 
@@ -144,9 +158,11 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.CellAreaCode1, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.CellAreaCode1)
                     </td>
                     <td >
                         @Html.TextBoxFor(m => m.CurrentStudent.CellPhone1)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.CellPhone1)
                     </td>
                 </tr>
 
@@ -156,15 +172,18 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.CellAreaCode2, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.CellAreaCode2)
                     </td>
                     <td >
                         @Html.TextBoxFor(m => m.CurrentStudent.CellAreaPhone2)
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.CellAreaPhone2)
                     </td>
                     <td>
                         @Html.Label("Contact Pref")
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.ContactPref, Model.ContactPrefList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.ContactPref)
                     </td>
                 </tr>
 
@@ -176,6 +195,7 @@
                     </td>
                     <td colspan="4">
                         @Html.TextBoxFor(m => m.CurrentStudent.EMail, new { style = "width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.EMail)
                     </td>
                 </tr>
 
@@ -187,6 +207,7 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.Gender, Model.GenderList, string.Empty, new { style = "width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.Gender)
                     </td>
                     @*
                     <td>
@@ -195,12 +216,14 @@
                     *@
                     <td>Ethnicity&nbsp;&nbsp;&nbsp;
                         @Html.DropDownListFor(m => Model.CurrentStudent.Ethnicity, Model.EthnicityList, string.Empty, new { style="width:61%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.Ethnicity)
                     </td>
                     <td>
                         @Html.Label("Income")
                     </td>
                     <td>
                         @Html.DropDownListFor(m => Model.CurrentStudent.Income, Model.IncomeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentStudent.Income)
                     </td>
                 </tr>
 

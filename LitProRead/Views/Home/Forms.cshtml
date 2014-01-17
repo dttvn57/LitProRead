@@ -29,8 +29,10 @@
 
         @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "studentform" }))
         *@
-
+        @*
         @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
+        *@
+        @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "productList", InsertionMode = InsertionMode.Replace }))
         { 
             @*
             @Html.AntiForgeryToken()
@@ -60,12 +62,17 @@
                     <td style="text-align:right; border:0 none;">Last Name
                     </td>
                     <td style="text-align:left; border:0 none;">
+                        @*
+                         <input id="StudentListLastName" type="hidden" style="width: 250px"/>
+                       *@
                         @Html.DropDownListFor(x => Model.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange = "onStudentLastNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.ValidationMessageFor(x => Model.StudentListLastName)
                     </td>
                     <td style="text-align:right; border:0 none;">First Name
                     </td>
                     <td style="text-align:left; border:0 none;">
                         @Html.DropDownListFor(x => Model.StudentListFirstName, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange = "onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.ValidationMessageFor(x => Model.StudentListFirstName)
                     </td>
                 </tr>
 
@@ -127,7 +134,7 @@
             </div>
        
             <div id="tabs-Preferences">
-                @* Html.Partial("_Student-Preferences-View", Model) *@
+                @Html.Partial("_Student-Preferences-View", Model)
             </div>
        
             <div id="tabs-Children">
@@ -166,7 +173,7 @@
                 Status-History
             </div>
 
-                } @* </form> *@
+        } @* </form> *@
     </div>
 
     @* ----------------------------------------------------- *@
@@ -245,7 +252,9 @@
     <script type="text/javascript">
         function onStudentLastNameChange(value) {
             currStudentId = value;
-            //alert(currStudentId);
+            //alert(value);
+            //alert($("#StudentListLastName").select2("val"));
+            //$("#StudentListFirstName").select2("val", "Aaron Ford");
         }
     </script>
     
@@ -261,11 +270,16 @@
             $("#tabs").tabs();
             $("#tabs-Students").tabs();
 
-            $("#StudentListLastName").select2();
-            //$("#studentVM_StudentListLastName").on("change", function (e) {
-            //    currStudentId = $('#studentVM_StudentListLastName').val;
-           //     alert(currStudentId);
-           // });
+            $("#StudentListLastName").select2();    //"data", { id: "2070", text: "Select ID" });
+            @*
+            {
+                initSelection: function (element, callback) {
+                    var data = { id: element.val(), text: element.val() };
+                    alert(data.toString());
+                    //callback(data);
+                }
+            });
+           *@
 
             $("#StudentListFirstName").select2();
 

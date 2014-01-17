@@ -81,11 +81,11 @@ namespace LitProRead.Controllers
                         //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
                         //studentFormVm.db.SaveChanges();
                     }
-                    //studentFormVm.db.SaveChanges();
-                    return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
+                    return View("Forms", studentFormVm);
+                    //return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
                 }
             }
-            return PartialView(studentFormVm);
+            return View(studentFormVm);
         }
 
         /***
