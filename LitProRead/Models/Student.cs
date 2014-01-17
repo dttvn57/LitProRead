@@ -12,7 +12,7 @@ namespace LitProRead.Models
     using System;
     using System.Collections.Generic;
 
-    //[Serializable]
+    [Serializable]
     //public partial class Student
     public class Student
     {

@@ -8,51 +8,52 @@ using System.Web.Mvc;
 namespace LitProRead.ViewModels
 {
     [Serializable]
-    [Bind(Exclude = "StudentListLastName, StudentListFirstName")]
+    //[Bind(Exclude = "StudentListLastName, StudentListFirstName")]
+    [Bind(Exclude = "LitProReadEntities")]
     public class StudentFormViewModel
     {
-        public LitProReadEntities db = new LitProReadEntities();
+        //public LitProReadEntities db = new LitProReadEntities();
 
         public int Id { get; set; }
         
         public Student CurrentStudent { get; set; }
 
-        public IEnumerable<SelectListItem> SalutationList { get; set; }
-        public IEnumerable<SelectListItem> AreaCodeList { get; private set; }
-        public IEnumerable<SelectListItem> CityList { get; private set; }
-        public IEnumerable<SelectListItem> ContactPrefList { get; private set; }
-        public IEnumerable<SelectListItem> EthnicityList { get; private set; }
-        public IEnumerable<SelectListItem> IncomeList { get; private set; }
-        public IEnumerable<SelectListItem> GenderList { get; private set; }
-        public IEnumerable<SelectListItem> EmployerStatusList { get; private set; }
-        public IEnumerable<SelectListItem> CallLocationList { get; private set; }
-        public IEnumerable<SelectListItem> CountryList { get; private set; }
-        public IEnumerable<SelectListItem> NativeLanguageList { get; private set; }
-        public IEnumerable<SelectListItem> ReadWriteNativeLangList { get; private set; }
-        public IEnumerable<SelectListItem> EducationLevelList { get; private set; }
-        public IEnumerable<SelectListItem> ReferralList { get; private set; }
-        public IEnumerable<SelectListItem> StaffList { get; private set; }
-        public IEnumerable<SelectListItem> SourceList { get; private set; }
+        public List<SelectListItem> SalutationList { get; set; }
+        public List<SelectListItem> AreaCodeList { get; private set; }
+        public List<SelectListItem> CityList { get; private set; }
+        public List<SelectListItem> ContactPrefList { get; private set; }
+        public List<SelectListItem> EthnicityList { get; private set; }
+        public List<SelectListItem> IncomeList { get; private set; }
+        public List<SelectListItem> GenderList { get; private set; }
+        public List<SelectListItem> EmployerStatusList { get; private set; }
+        public List<SelectListItem> CallLocationList { get; private set; }
+        public List<SelectListItem> CountryList { get; private set; }
+        public List<SelectListItem> NativeLanguageList { get; private set; }
+        public List<SelectListItem> ReadWriteNativeLangList { get; private set; }
+        public List<SelectListItem> EducationLevelList { get; private set; }
+        public List<SelectListItem> ReferralList { get; private set; }
+        public List<SelectListItem> StaffList { get; private set; }
+        public List<SelectListItem> SourceList { get; private set; }
 
         public double StudentAge { get; private set; }
 
-        public IEnumerable<SelectListItem> StatusList { get; private set; }
-        public IEnumerable<SelectListItem> StudentProgramList { get; private set; }
-        public IEnumerable<SelectListItem> MailCodeList { get; private set; }
-        public IEnumerable<SelectListItem> CategoryList { get; private set; }
-        public IEnumerable<SelectListItem> KeywordList { get; private set; }
+        public List<SelectListItem> StatusList { get; private set; }
+        public List<SelectListItem> StudentProgramList { get; private set; }
+        public List<SelectListItem> MailCodeList { get; private set; }
+        public List<SelectListItem> CategoryList { get; private set; }
+        public List<SelectListItem> KeywordList { get; private set; }
 
-        public IEnumerable<SelectListItem> TransportationList { get; private set; }
-        public IEnumerable<SelectListItem> StudentContactList { get; private set; }
-        public IEnumerable<SelectListItem> LocationPrefList { get; private set; }
-        public IEnumerable<SelectListItem> SmokingPrefList { get; private set; }
-        public IEnumerable<SelectListItem> TutorSmokerList { get; private set; }
+        public List<SelectListItem> TransportationList { get; private set; }
+        public List<SelectListItem> StudentContactList { get; private set; }
+        public List<SelectListItem> LocationPrefList { get; private set; }
+        public List<SelectListItem> SmokingPrefList { get; private set; }
+        public List<SelectListItem> TutorSmokerList { get; private set; }
 
-        //public IEnumerable<SelectListItem> StudentListLastName { get; private set; }
-        //public string SelectedLastName { get; set; }
+        public List<SelectListItem> StudentListLastName { get; private set; }
+        public List<SelectListItem> StudentListFirstName { get; private set; }
 
-        public SelectList StudentListLastName { get; private set; }
-        public SelectList StudentListFirstName { get; private set; }
+        //public SelectList StudentListLastName { get; private set; }
+        //public SelectList StudentListFirstName { get; private set; }
 
         public StudentFormViewModel()
         {
@@ -258,54 +259,69 @@ namespace LitProRead.ViewModels
 
         public Student GetStudent(int id)
         {
-            Student student = db.Students.Find(id);
-            if (student == null)
-                return new Student();
-            return student;
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                Student student = db.Students.Find(id);
+                if (student == null)
+                    return new Student();
+                return student;
+            }
         }
 
         // SELECT DISTINCTROW Salutation.Salutation FROM Salutation
-        public IEnumerable<SelectListItem> GetSalutationList(string selected = "")
+        public List<SelectListItem> GetSalutationList(string selected = "")
         {
-            var salutations = db.Database.SqlQuery<string>("SELECT Salutation FROM dbo.Salutation").ToList();
-            string selectedValue = selected != null ? selected.Trim() : "";
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var sal in salutations)
+            using (LitProReadEntities db = new LitProReadEntities())
             {
-                list.Add(new SelectListItem
+                var salutations = db.Database.SqlQuery<string>("SELECT Salutation FROM dbo.Salutation").ToList();
+                string selectedValue = selected != null ? selected.Trim() : "";
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var sal in salutations)
                 {
-                    Text = sal.Trim(),
-                    Value = sal.Trim(),
-                    //Selected = selectedValue == sal.Trim() ? true : false
-                });
+                    list.Add(new SelectListItem
+                    {
+                        Text = sal.Trim(),
+                        Value = sal.Trim(),
+                        //Selected = selectedValue == sal.Trim() ? true : false
+                    });
 
+                }
+                return list;// new SelectList(list.ToList(), "Value", "Text");
             }
-            return list;// new SelectList(list.ToList(), "Value", "Text");
         }
 
         // SELECT DISTINCTROW City.City FROM City
-        public IEnumerable<SelectListItem> GetCityList(string selected = "")
+        public List<SelectListItem> GetCityList(string selected = "")
         {
-            var cities = db.Database.SqlQuery<string>("SELECT City FROM dbo.City").ToList();
-            return ParseList(selected, cities);// new SelectList(cities);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var cities = db.Database.SqlQuery<string>("SELECT City FROM dbo.City").ToList();
+                return ParseList(selected, cities);// new SelectList(cities);
+            }
         }
 
         // SELECT DISTINCTROW AreaCodes.AreaCodes FROM Salutation
-        public IEnumerable<SelectListItem> GetAreaCodeList(string selected = "")
+        public List<SelectListItem> GetAreaCodeList(string selected = "")
         {
-            var codes = db.Database.SqlQuery<string>("SELECT AreaCodes FROM dbo.AreaCodes").ToList();
-            return ParseList(selected, codes);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var codes = db.Database.SqlQuery<string>("SELECT AreaCodes FROM dbo.AreaCodes").ToList();
+                return ParseList(selected, codes);
+            }
         }
 
         // SELECT ContactPref.ContactPref FROM ContactPref
-        public IEnumerable<SelectListItem> GetContactPrefList(string selected = "")
+        public List<SelectListItem> GetContactPrefList(string selected = "")
         {
-            var prefs = db.Database.SqlQuery<string>("SELECT ContactPref FROM dbo.ContactPref").ToList();
-            return ParseList(selected, prefs);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var prefs = db.Database.SqlQuery<string>("SELECT ContactPref FROM dbo.ContactPref").ToList();
+                return ParseList(selected, prefs);
+            }
         }
 
         // "Female";"Male"
-        public IEnumerable<SelectListItem> GetGenderList(string selected = "")
+        public List<SelectListItem> GetGenderList(string selected = "")
         {
             List<string> genders = new List<string>();
             genders.Add("Female");
@@ -317,49 +333,67 @@ namespace LitProRead.ViewModels
         }
 
         // SELECT DISTINCTROW Ethnicity.Ethnicity FROM Ethnicity ORDER BY Ethnicity.Ethnicity
-        public IEnumerable<SelectListItem> GetEthnicityList(string selected = "")
+        public List<SelectListItem> GetEthnicityList(string selected = "")
         {
-            var ethnicity = db.Database.SqlQuery<string>("SELECT Ethnicity FROM dbo.Ethnicity ORDER BY Ethnicity").ToList();
-            return ParseList(selected, ethnicity);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var ethnicity = db.Database.SqlQuery<string>("SELECT Ethnicity FROM dbo.Ethnicity ORDER BY Ethnicity").ToList();
+                return ParseList(selected, ethnicity);
+            }
         }
 
         // SELECT Income.Income FROM Income ORDER BY Income.Income
-        public IEnumerable<SelectListItem> GetIncomeList(string selected = "")
+        public List<SelectListItem> GetIncomeList(string selected = "")
         {
-            var income = db.Database.SqlQuery<string>("SELECT Income FROM dbo.Income ORDER BY Income").ToList();
-            return ParseList(selected, income);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var income = db.Database.SqlQuery<string>("SELECT Income FROM dbo.Income ORDER BY Income").ToList();
+                return ParseList(selected, income);
+            }
         }
 
         //SELECT DISTINCTROW EmployerStatus.EmployerStatus FROM EmployerStatus ORDER BY EmployerStatus.EmployerStatus; 
-        public IEnumerable<SelectListItem> GetEmployerStatusList(string selected = "")
+        public List<SelectListItem> GetEmployerStatusList(string selected = "")
         {
-            var employerStatus = db.Database.SqlQuery<string>("SELECT EmployerStatus FROM dbo.EmployerStatus ORDER BY EmployerStatus").ToList();
-            return ParseList(selected, employerStatus);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var employerStatus = db.Database.SqlQuery<string>("SELECT EmployerStatus FROM dbo.EmployerStatus ORDER BY EmployerStatus").ToList();
+                return ParseList(selected, employerStatus);
+            }
         }
 
         // SELECT CallLocation.CallLocation FROM CallLocation ORDER BY CallLocation.CallLocation; 
-        public IEnumerable<SelectListItem> GetCallLocationList(string selected = "")
+        public List<SelectListItem> GetCallLocationList(string selected = "")
         {
-            var locs = db.Database.SqlQuery<string>("SELECT CallLocation FROM dbo.CallLocation ORDER BY CallLocation").ToList();
-            return ParseList(selected, locs);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var locs = db.Database.SqlQuery<string>("SELECT CallLocation FROM dbo.CallLocation ORDER BY CallLocation").ToList();
+                return ParseList(selected, locs);
+            }
         }
 
         // SELECT DISTINCTROW Country.Country FROM Country ORDER BY Country.Country; 
-        public IEnumerable<SelectListItem> GetCountryList(string selected = "")
+        public List<SelectListItem> GetCountryList(string selected = "")
         {
-            var countries = db.Database.SqlQuery<string>("SELECT Country FROM dbo.Country ORDER BY Country").ToList();
-            return ParseList(selected, countries);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var countries = db.Database.SqlQuery<string>("SELECT Country FROM dbo.Country ORDER BY Country").ToList();
+                return ParseList(selected, countries);
+            }
         }
 
         // SELECT DISTINCTROW NativeLanguage.NativeLanguage FROM NativeLanguage; 
-        public IEnumerable<SelectListItem> GetNativeLanguageList(string selected = "")
+        public List<SelectListItem> GetNativeLanguageList(string selected = "")
         {
-            var langs = db.Database.SqlQuery<string>("SELECT NativeLanguage FROM dbo.NativeLanguage").ToList();
-            return ParseList(selected, langs);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var langs = db.Database.SqlQuery<string>("SELECT NativeLanguage FROM dbo.NativeLanguage").ToList();
+                return ParseList(selected, langs);
+            }
         }
 
         // "Yes";"No"
-        public IEnumerable<SelectListItem> GetReadWriteNativeLangList(string selected = "")
+        public List<SelectListItem> GetReadWriteNativeLangList(string selected = "")
         {
             List<string> yn = new List<string>();
             yn.Add("Yes");
@@ -368,151 +402,187 @@ namespace LitProRead.ViewModels
         }
 
         // SELECT DISTINCT EducationLevel.EducationLevel FROM EducationLevel ORDER BY EducationLevel.EducationLevel; 
-        public IEnumerable<SelectListItem> GetEducationLevelList(string selected = "")
+        public List<SelectListItem> GetEducationLevelList(string selected = "")
         {
-            var levels = db.Database.SqlQuery<string>("SELECT EducationLevel FROM dbo.EducationLevel ORDER BY EducationLevel").ToList();
-            return ParseList(selected, levels);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var levels = db.Database.SqlQuery<string>("SELECT EducationLevel FROM dbo.EducationLevel ORDER BY EducationLevel").ToList();
+                return ParseList(selected, levels);
+            }
         }
 
         // SELECT Referral.Referral FROM Referral; 
-        public IEnumerable<SelectListItem> GetReferralList(string selected = "")
+        public List<SelectListItem> GetReferralList(string selected = "")
         {
-            var refs = db.Database.SqlQuery<string>("SELECT Referral FROM dbo.Referral").ToList();
-            return ParseList(selected, refs);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var refs = db.Database.SqlQuery<string>("SELECT Referral FROM dbo.Referral").ToList();
+                return ParseList(selected, refs);
+            }
         }
 
         // SELECT Staff.Staff FROM Staff ORDER BY [Staff]
-        public IEnumerable<SelectListItem> GetStaffList(string selected = "")
+        public List<SelectListItem> GetStaffList(string selected = "")
         {
-            var staff = db.Database.SqlQuery<string>("SELECT Staff FROM dbo.Staff ORDER BY Staff").ToList();
-            return ParseList(selected, staff);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var staff = db.Database.SqlQuery<string>("SELECT Staff FROM dbo.Staff ORDER BY Staff").ToList();
+                return ParseList(selected, staff);
+            }
         }
 
         // SELECT Source.Source FROM Source ORDER BY [Source]; 
-        public IEnumerable<SelectListItem> GetSourceList(string selected = "")
+        public List<SelectListItem> GetSourceList(string selected = "")
         {
-            var source = db.Database.SqlQuery<string>("SELECT Source FROM dbo.Source ORDER BY Source").ToList();
-            return ParseList(selected, source);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var source = db.Database.SqlQuery<string>("SELECT Source FROM dbo.Source ORDER BY Source").ToList();
+                return ParseList(selected, source);
+            }
         }
 
         //SELECT Status.Status FROM Status; 
-        public IEnumerable<SelectListItem> GetStatusList(string selected = "")
+        public List<SelectListItem> GetStatusList(string selected = "")
         {
-            var status = db.Database.SqlQuery<string>("SELECT Status FROM dbo.Status").ToList();
-            return ParseList(selected, status);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var status = db.Database.SqlQuery<string>("SELECT Status FROM dbo.Status").ToList();
+                return ParseList(selected, status);
+            }
         }
 
         //SELECT DISTINCTROW StudentProgram.Program FROM StudentProgram ORDER BY StudentProgram.Program; 
-        public IEnumerable<SelectListItem> GetStudentProgramList(string selected = "")
+        public List<SelectListItem> GetStudentProgramList(string selected = "")
         {
-            var program = db.Database.SqlQuery<string>("SELECT Program FROM dbo.StudentProgram ORDER BY Program").ToList();
-            return ParseList(selected, program);
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var program = db.Database.SqlQuery<string>("SELECT Program FROM dbo.StudentProgram ORDER BY Program").ToList();
+                return ParseList(selected, program);
+            }
         }
 
         // SELECT DISTINCTROW MailCode.MailCode, MailCode.Description FROM MailCode ORDER BY MailCode.MailCode; 
-        public IEnumerable<SelectListItem> GetMailCodeList(string[] selectedValues)
+        public List<SelectListItem> GetMailCodeList(string[] selectedValues)
         {
-            var codes = db.Database.SqlQuery<_MailCode>("SELECT MailCode, Description FROM dbo.MailCode ORDER BY MailCode");
-            //List<SelectListItem> codeList = new List<SelectListItem>();
-            //foreach (var code in codes)
-            //{
-            //    codeList.Add(new SelectListItem { Value = code.mailcode, Text = code.description });
-            //}
-
-            var codeList = from code in codes
-                           select new
-                           {
-                               MailCode = code.mailcode,
-                               Description = code.description
-                           };
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var item in codeList)
+            using (LitProReadEntities db = new LitProReadEntities())
             {
-                list.Add(new SelectListItem
-                {
-                    Value = item.MailCode.Trim(),
-                    Text = item.Description.Trim(),
-                    //Selected = selectedValue == item.Trim() ? true : false
-                });
+                var codes = db.Database.SqlQuery<_MailCode>("SELECT MailCode, Description FROM dbo.MailCode ORDER BY MailCode");
+                //List<SelectListItem> codeList = new List<SelectListItem>();
+                //foreach (var code in codes)
+                //{
+                //    codeList.Add(new SelectListItem { Value = code.mailcode, Text = code.description });
+                //}
 
+                var codeList = from code in codes
+                               select new
+                               {
+                                   MailCode = code.mailcode,
+                                   Description = code.description
+                               };
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var item in codeList)
+                {
+                    list.Add(new SelectListItem
+                    {
+                        Value = item.MailCode.Trim(),
+                        Text = item.Description.Trim(),
+                        //Selected = selectedValue == item.Trim() ? true : false
+                    });
+
+                }
+                return list;
+                //return new SelectList(codeList, "MailCode", "Description", selectedValues);
             }
-            return list;
-            //return new SelectList(codeList, "MailCode", "Description", selectedValues);
         }
 
         // SELECT DISTINCTROW Category.Category, Category.Description FROM Category ORDER BY Category.Category; 
-        public IEnumerable<SelectListItem> GetCategoryList(string selectedValue)
+        public List<SelectListItem> GetCategoryList(string selectedValue)
         {
-            var categories = db.Database.SqlQuery<_Category>("SELECT Category, Description  FROM dbo.Category ORDER BY Category").ToList();
-            var catList = from cat in categories
-                           select new
-                           {
-                               Category = cat.category,
-                               Description = cat.description
-                           };
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var item in catList)
+            using (LitProReadEntities db = new LitProReadEntities())
             {
-                list.Add(new SelectListItem
+                var categories = db.Database.SqlQuery<_Category>("SELECT Category, Description  FROM dbo.Category ORDER BY Category").ToList();
+                var catList = from cat in categories
+                              select new
+                              {
+                                  Category = cat.category,
+                                  Description = cat.description
+                              };
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var item in catList)
                 {
-                    Value = item.Category.Trim(),
-                    Text = item.Description.Trim(),
-                    //Selected = selectedValue == item.Trim() ? true : false
-                });
+                    list.Add(new SelectListItem
+                    {
+                        Value = item.Category.Trim(),
+                        Text = item.Description.Trim(),
+                        //Selected = selectedValue == item.Trim() ? true : false
+                    });
 
+                }
+                return list;
+                //return new SelectList(catList, "Category", "Description", selectedValues);
             }
-            return list;
-            //return new SelectList(catList, "Category", "Description", selectedValues);
         }
 
         // SELECT DISTINCTROW Keyword.Keyword, Keyword.Description FROM Keyword ORDER BY Keyword.Keyword; 
-        public IEnumerable<SelectListItem> GetKeywordList(string selectedValue)
+        public List<SelectListItem> GetKeywordList(string selectedValue)
         {
-            var kws = db.Database.SqlQuery<_Keyword>("SELECT Keyword, Description  FROM dbo.Keyword ORDER BY Keyword").ToList();
-            var kwList = from kw in kws
-                          select new
-                          {
-                              Keyword = kw.keyword,
-                              Description = kw.description
-                          };
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var item in kwList)
+            using (LitProReadEntities db = new LitProReadEntities())
             {
-                list.Add(new SelectListItem
+                var kws = db.Database.SqlQuery<_Keyword>("SELECT Keyword, Description  FROM dbo.Keyword ORDER BY Keyword").ToList();
+                var kwList = from kw in kws
+                             select new
+                             {
+                                 Keyword = kw.keyword,
+                                 Description = kw.description
+                             };
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var item in kwList)
                 {
-                    Value = item.Keyword.Trim(),
-                    Text = item.Description.Trim(),
-                    //Selected = selectedValue == item.Trim() ? true : false
-                });
+                    list.Add(new SelectListItem
+                    {
+                        Value = item.Keyword.Trim(),
+                        Text = item.Description.Trim(),
+                        //Selected = selectedValue == item.Trim() ? true : false
+                    });
 
+                }
+                return list;
+                //return new SelectList(kwList, "Keyword", "Description", selectedValues);
             }
-            return list;
-            //return new SelectList(kwList, "Keyword", "Description", selectedValues);
         }
 
         //SELECT DISTINCTROW Transportation.Transportation FROM Transportation ORDER BY Transportation.Transportation; 
-        public IEnumerable<SelectListItem> GetTransportationList(string selected = "")
+        public List<SelectListItem> GetTransportationList(string selected = "")
         {
+                using (LitProReadEntities db = new LitProReadEntities())
+                {
             var l = db.Database.SqlQuery<string>("SELECT Transportation FROM dbo.Transportation ORDER BY Transportation").ToList();
             return ParseList(selected, l);
+                }
         }
 
         //SELECT DISTINCT StudentContact.StudentContact FROM StudentContact ORDER BY StudentContact.StudentContact; 
-        public IEnumerable<SelectListItem> GetStudentContactList(string selected = "")
+        public List<SelectListItem> GetStudentContactList(string selected = "")
         {
+                using (LitProReadEntities db = new LitProReadEntities())
+                {
             var c = db.Database.SqlQuery<string>("SELECT StudentContact FROM dbo.StudentContact ORDER BY StudentContact").ToList();
             return ParseList(selected, c);
+                }
         }
 
         //SELECT DISTINCTROW LocationPref.LocationPref FROM LocationPref ORDER BY LocationPref.LocationPref; 
-        public IEnumerable<SelectListItem> GetLocationPrefList(string selected = "")
+        public List<SelectListItem> GetLocationPrefList(string selected = "")
         {
+                using (LitProReadEntities db = new LitProReadEntities())
+                {
             var p = db.Database.SqlQuery<string>("SELECT LocationPref FROM dbo.LocationPref ORDER BY LocationPref").ToList();
             return ParseList(selected, p);
+                }
         }
 
         //SmokingPref - "Smoker";"Non-Smoker"
-        public IEnumerable<SelectListItem> GetSmokingPrefList(string selected = "")
+        public List<SelectListItem> GetSmokingPrefList(string selected = "")
         {
             List<string> yn = new List<string>();
             yn.Add("Smoker");
@@ -521,7 +591,7 @@ namespace LitProRead.ViewModels
         }
 
         //TutorSmoker - " ";"Yes";"No"
-        public IEnumerable<SelectListItem> GetTutorSmokerList(string selected = "")
+        public List<SelectListItem> GetTutorSmokerList(string selected = "")
         {
             List<string> yn = new List<string>();
             yn.Add("Yes");
@@ -529,63 +599,69 @@ namespace LitProRead.ViewModels
             return ParseList(selected, yn);
         }
 
-        //public IEnumerable<SelectListItem> GetStudentsLastName(int Id = -1)
-        public SelectList GetStudentsLastName(int Id = -1)
+        public List<SelectListItem> GetStudentsLastName(int Id = -1)
+        //public SelectList GetStudentsLastName(int Id = -1)
         {
-            //var students = (from student in db.Students
-            //               orderby student.LastName
-            //               select student)
-            //               .AsEnumerable()
-            //               .Select( x => new
-            //               {
-            //                    ID = x.ID,
-            //                    LastName = string.Format("{0, -5} {1, -5}", x.LastName, x.FirstName) //student.LastName + ", " + student.FirstName
-            //               });
-            var students = from student in db.Students
-                           orderby student.LastName
-                           select new
-                           {
-                                ID = student.ID,
-                                LastName = student.LastName + ", " + student.FirstName
-                           };
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var student in students)
+            using (LitProReadEntities db = new LitProReadEntities())
             {
-                list.Add(new SelectListItem
+                //var students = (from student in db.Students
+                //               orderby student.LastName
+                //               select student)
+                //               .AsEnumerable()
+                //               .Select( x => new
+                //               {
+                //                    ID = x.ID,
+                //                    LastName = string.Format("{0, -5} {1, -5}", x.LastName, x.FirstName) //student.LastName + ", " + student.FirstName
+                //               });
+                var students = from student in db.Students
+                               orderby student.LastName
+                               select new
+                               {
+                                   ID = student.ID,
+                                   LastName = student.LastName + ", " + student.FirstName
+                               };
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var student in students)
                 {
-                    Value = student.ID.ToString().Trim(),
-                    Text = student.LastName.Trim(),
-                    Selected = student.ID == Id ? true : false
-                });
+                    list.Add(new SelectListItem
+                    {
+                        Value = student.ID.ToString().Trim(),
+                        Text = student.LastName.Trim(),
+                        Selected = student.ID == Id ? true : false
+                    });
 
+                }
+                return list;
+                //return new SelectList(students, "ID", "LastName");//, selectedValues);
             }
-            //return list;    
-            return new SelectList(students, "ID", "LastName");//, selectedValues);
         }
 
-        public SelectList GetStudentsFirstName(int Id = -1)
+        public List<SelectListItem> GetStudentsFirstName(int Id = -1)
         {
-            var students = from student in db.Students
-                           orderby student.FirstName
-                           select new
-                           {
-                               ID = student.ID,
-                               FirstName = student.FirstName + " " + student.LastName
-                           };
-
-            List<SelectListItem> list = new List<SelectListItem>();
-            foreach (var student in students)
+            using (LitProReadEntities db = new LitProReadEntities())
             {
-                list.Add(new SelectListItem
-                {
-                    Value = student.ID.ToString().Trim(),
-                    Text = student.FirstName.Trim(),
-                    Selected = student.ID == Id ? true : false
-                });
+                var students = from student in db.Students
+                               orderby student.FirstName
+                               select new
+                               {
+                                   ID = student.ID,
+                                   FirstName = student.FirstName + " " + student.LastName
+                               };
 
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var student in students)
+                {
+                    list.Add(new SelectListItem
+                    {
+                        Value = student.ID.ToString().Trim(),
+                        Text = student.FirstName.Trim(),
+                        Selected = student.ID == Id ? true : false
+                    });
+
+                }
+                return list;
+                //return new SelectList(students, "ID", "FirstName");
             }
-            //return list;
-            return new SelectList(students, "ID", "FirstName");
         }
 
         private double GetStudentAge()
@@ -635,7 +711,7 @@ namespace LitProRead.ViewModels
             }
         }
 
-        private List<SelectListItem> ParseList(string selected, IEnumerable<string> Items)
+        private List<SelectListItem> ParseList(string selected, List<string> Items)
         {
             string selectedValue = selected != null ? selected.Trim() : "";
             List<SelectListItem> list = new List<SelectListItem>();
@@ -666,7 +742,9 @@ namespace LitProRead.ViewModels
         {
             //sqlConnection.Close();
             //sqlConnection.Dispose();
-            db.Dispose();
+            //db.Dispose();
+            int i = 0;
+            i++;
         }
     }
 

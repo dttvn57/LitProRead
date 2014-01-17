@@ -32,7 +32,7 @@
         @*
         @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
         *@
-        @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "productList", InsertionMode = InsertionMode.Replace }))
+        @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { HttpMethod = "POST", OnComplete="_EditComplete", UpdateTargetId = "divStudent", InsertionMode = InsertionMode.Replace }))
         { 
             @*
             @Html.AntiForgeryToken()
@@ -110,8 +110,8 @@
             <hr>
 
             <ul>
-                <li><a href="#tabs-General">General</a></li>
-                <li><a href="#tabs-Preferences">Preferences</a></li>
+                <li><a href="#Student-General">General</a></li>
+                <li><a href="#Student-Preferences">Preferences</a></li>
                 <li><a href="#tabs-Matching-S">Matching-S</a></li>
                 <li><a href="#tabs-Children">Children</a></li>
                 <li><a href="#tabs-Computer">Computer</a></li>
@@ -124,17 +124,22 @@
                 <li><a href="#tabs-Status-History">Status History</a></li>
             </ul>
 
-
-            <div id="tabs-General">
+            
+            <div>
                 @Html.Partial("_Student-General-View", Model) 
             </div>
        
+            <div>
+                @Html.Partial("_Student-Preferences-View", Model)
+            </div>
+    @*
+             <div id="divStudent">
+               @Html.Partial("_Student-All-View", Model) 
+           </div>
+      *@
+           
             <div id="tabs-Matching-S">
                 Matching-S
-            </div>
-       
-            <div id="tabs-Preferences">
-                @Html.Partial("_Student-Preferences-View", Model)
             </div>
        
             <div id="tabs-Children">
@@ -250,6 +255,15 @@
     *@
 
     <script type="text/javascript">
+        function _EditComplete(data) {
+            alert(data.responseText);
+            //var JsonObj = $.parseJSON(data.responseText);
+            //$("#span1").html(JsonObj.Student.Name);
+            //$("#span2").html(JsonObj.Teacher.Name);
+        }
+    </script>
+
+    <script type="text/javascript">
         function onStudentLastNameChange(value) {
             currStudentId = value;
             //alert(value);
@@ -330,6 +344,7 @@
                 url: '@Url.Content("~/Home/Edit")', @*'@Url.Content("~/Student/Edit")',*@
                  type: 'get',
                  cache: false,
+                 
                  data: { id: currStudentId },       //{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                  @*
                  contentType: 'application/json; charset=utf-8',
@@ -342,8 +357,22 @@
                      //alert("complete");
                  }).success(function (data) {
                      editMode = "edit";
-                     //alert(editMode);
-                     $("#Student-General").empty().append(data);    //$("#Student-General").html(data)
+                     alert(editMode);
+
+
+                     var JsonObj = data;    //JSON.parse(data);  //$.parseJSON(data.); //{ "myProp": "Hello" };
+                     //var JsonObj = data.parseJSON();
+
+                     $("#CurrentStudent.LastName").html(data.CurrentStudent.LastName);    //$("#Student-General").html(data)
+
+                     //alert(JSON.stringify(JsonObj));
+                     console.log(JSON.stringify(JsonObj));
+
+                     //$("#span1").html(JsonObj.Student.Name);
+                     //$("#span2").html(JsonObj.Teacher.Name);
+
+                     $("#Student-General").empty().append(data); 
+                     $("#Student-Preferences").empty().append(data); 
 
                      // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
                      $(".datefield").datepicker();

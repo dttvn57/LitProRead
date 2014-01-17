@@ -49,13 +49,20 @@ namespace LitProRead.Controllers
             //var response = new Response(true, "Contact Successfully Submitted");
             //return Json(response);
 
-            var vm = new StudentFormViewModel();
+            var vm = new StudentFormViewModel(); 
             if (vm == null || vm.CurrentStudent == null)
             {
                 return HttpNotFound();
             }
             vm.Load(id);
-            return PartialView("_Student-General-View", vm);
+
+            //MyClass cla = new MyClass { Student = new Student { ID = 1, Name = "Student" }, Teacher = new Teacher { ID = 1, Name = "Teacher" } };
+            JsonResult jsonData = new JsonResult();
+            jsonData.Data = vm;
+            jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jsonData;
+
+            //return PartialView("_Student-All-View", vm);
         }
 
         [HttpPost]
