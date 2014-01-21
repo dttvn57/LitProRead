@@ -30,9 +30,9 @@
         @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "studentform" }))
         *@
         @*
-        @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
-        *@
         @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { HttpMethod = "POST", OnComplete="_EditComplete", UpdateTargetId = "divStudent", InsertionMode = InsertionMode.Replace }))
+        *@
+        @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
         { 
             @*
             @Html.AntiForgeryToken()
@@ -256,7 +256,7 @@
 
     <script type="text/javascript">
         function _EditComplete(data) {
-            alert(data.responseText);
+           // alert(data.responseText);
             //var JsonObj = $.parseJSON(data.responseText);
             //$("#span1").html(JsonObj.Student.Name);
             //$("#span2").html(JsonObj.Teacher.Name);
@@ -266,7 +266,7 @@
     <script type="text/javascript">
         function onStudentLastNameChange(value) {
             currStudentId = value;
-            //alert(value);
+            //alert(currStudentId);
             //alert($("#StudentListLastName").select2("val"));
             //$("#StudentListFirstName").select2("val", "Aaron Ford");
         }
@@ -276,6 +276,30 @@
         function onStudentFirstNameChange(value) {
             currStudentId = value;
             //alert(currStudentId);
+        }
+    </script>
+
+    <script type="text/javascript">
+        function getFormattedDate(date) {
+            //var dt = data.CurrentStudent.ActiveDate.toString();
+            var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
+            return new Date(dt);
+        }
+    </script>
+
+    <script type="text/javascript">
+        function populateStudentForm(data) {
+            $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
+            $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+
+            $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
+
+            if (data.CurrentStudent.AvailTueAM == 'true') {
+                $('#CurrentStudent_AvailTueAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailTueAM').prop("checked", false);
+            }
         }
     </script>
 
@@ -344,35 +368,32 @@
                 url: '@Url.Content("~/Home/Edit")', @*'@Url.Content("~/Student/Edit")',*@
                  type: 'get',
                  cache: false,
-                 
+                 async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
                  data: { id: currStudentId },       //{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                  @*
                  contentType: 'application/json; charset=utf-8',
                data: { Command: "approve", lastName: last, firstName: first },
                  *@
                  }).done(function (data) {
-                     //alert(data);
+                    // alert('done');
                      //$("#Student-General").replaceWith(data);
                  }).complete(function (){
                      //alert("complete");
                  }).success(function (data) {
                      editMode = "edit";
-                     alert(editMode);
+                    // alert(editMode);
 
+                     populateStudentForm(data);
 
-                     var JsonObj = data;    //JSON.parse(data);  //$.parseJSON(data.); //{ "myProp": "Hello" };
-                     //var JsonObj = data.parseJSON();
-
-                     $("#CurrentStudent.LastName").html(data.CurrentStudent.LastName);    //$("#Student-General").html(data)
-
+                     // alert(data.CurrentStudent.LastName);
                      //alert(JSON.stringify(JsonObj));
-                     console.log(JSON.stringify(JsonObj));
+                     //console.log(JSON.stringify(JsonObj));
 
                      //$("#span1").html(JsonObj.Student.Name);
                      //$("#span2").html(JsonObj.Teacher.Name);
 
-                     $("#Student-General").empty().append(data); 
-                     $("#Student-Preferences").empty().append(data); 
+//                     $("#Student-General").empty().append(data); 
+//                     $("#Student-Preferences").empty().append(data); 
 
                      // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
                      $(".datefield").datepicker();
