@@ -1,4 +1,5 @@
-﻿using LitProRead.Models;
+﻿using LitProRead.Helpers;
+using LitProRead.Models;
 using LitProRead.Reports.DataSets;
 using LitProRead.Reports.DataSets.StatusDataSetTableAdapters;
 using LitProRead.ViewModels;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Entity.Validation;
 using System.Data.Objects;
 using System.Data.OleDb;
 using System.IO;
@@ -20,6 +22,27 @@ namespace LitProRead.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
+        public ActionResult GetStudentsName(string searchTerm, int pageSize, int pageNum, bool byLastName)  // true: get by last name
+                                                                                                            // false: get by first name
+        {
+            //Get the paged results and the total count of the results for this query. 
+            LitProReadEntities db = new LitProReadEntities();
+
+            List<Student> students = db.GetStudents(searchTerm, pageSize, pageNum, byLastName);  
+            int studentCount = db.GetStudentsCount(searchTerm, pageSize, pageNum);
+
+            //Translate the attendees into a format the select2 dropdown expects
+            Select2PagedResult pagedStudents = ToSelect2Format(students, studentCount, byLastName);
+
+            //Return the data as a jsonp result
+            return new JsonpResult
+            {
+                Data = pagedStudents,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         public ActionResult Index(int Id = -1)
         {
             if (Id == -1)
@@ -55,6 +78,8 @@ namespace LitProRead.Controllers
                 return HttpNotFound();
             }
             vm.Load(id);
+            //vm.StudentListLastName = vm.GetStudentsLastName(id);  // new SelectList(db.Companies, "CompanyId", "CompanyName");
+            //vm.StudentListFirstName = vm.GetStudentsFirstName(id);  // new SelectList(db.Companies, "CompanyId", "CompanyName");
 
             //MyClass cla = new MyClass { Student = new Student { ID = 1, Name = "Student" }, Teacher = new Teacher { ID = 1, Name = "Teacher" } };
             JsonResult jsonData = new JsonResult();
@@ -80,6 +105,13 @@ namespace LitProRead.Controllers
                     {
                         db.SaveChanges();
                     }
+                    catch (DbEntityValidationException ex)
+                    {
+                        
+                        string err = ex.Message;
+                        int i = 0;
+                        i++;
+                    }
                     catch (OptimisticConcurrencyException ex)
                     {
                         string err = ex.Message;
@@ -88,11 +120,15 @@ namespace LitProRead.Controllers
                         //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
                         //studentFormVm.db.SaveChanges();
                     }
-                    return View("Forms", studentFormVm);
+                    //return View("Forms", studentFormVm);
                     //return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
                 }
             }
-            return View(studentFormVm);
+            //return View(studentFormVm);
+            JsonResult jsonData = new JsonResult();
+            jsonData.Data = studentFormVm;
+            jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jsonData;
         }
 
         /***
@@ -274,6 +310,34 @@ namespace LitProRead.Controllers
             return RedirectToAction("Reports");
         }
 
+        private Select2PagedResult ToSelect2Format(List<Student> students, int totalStudents, bool byLastName)
+        {
+            Select2PagedResult jsonStudents = new Select2PagedResult();
+            jsonStudents.Results = new List<Select2Result>();
+
+            //Loop through our attendees and translate it into a text value and an id for the select list
+            if (byLastName)
+            {
+                foreach (Student a in students)
+                {
+                    jsonStudents.Results.Add(new Select2Result { id = a.ID.ToString(), text = a.LastName + ", " + a.FirstName });
+                }
+            }
+            else
+            {
+                foreach (Student a in students)
+                {
+                    jsonStudents.Results.Add(new Select2Result { id = a.ID.ToString(), text = a.FirstName + " " + a.LastName });
+                }
+
+            }
+
+            //Set the total count of the results from the query.
+            jsonStudents.Total = totalStudents;
+
+            return jsonStudents;
+        }
+
         private Dictionary<string, object> deserializeToDictionary(string jo)
         {
             var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(jo);
@@ -291,5 +355,20 @@ namespace LitProRead.Controllers
             }
             return values2;
         }
+    }
+
+
+
+    //Extra classes to format the results the way the select2 dropdown wants them
+    public class Select2PagedResult
+    {
+        public int Total { get; set; }
+        public List<Select2Result> Results { get; set; }
+    }
+
+    public class Select2Result
+    {
+        public string id { get; set; }
+        public string text { get; set; }
     }
 }

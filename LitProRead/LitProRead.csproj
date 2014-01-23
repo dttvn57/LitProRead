@@ -151,9 +151,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\JsonpResult.cs" />
     <Compile Include="Models\ChildRelationship.cs">
       <DependentUpon>LitProReadModel.tt</DependentUpon>
     </Compile>
@@ -663,6 +665,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\StudentVM.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
     <Compile Include="ViewModels\StudentFormViewModel.cs" />
   </ItemGroup>
@@ -872,6 +875,7 @@
     </Content>
     <Content Include="Views\Shared\_Student-General-View.cshtml" />
     <Content Include="Views\Shared\_Student-Preferences-View.cshtml" />
+    <Content Include="Views\Shared\_Student-All-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -7,11 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using LitProRead.Extensions;
+
 namespace LitProRead.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Linq;
+    //using LitProRead.Extensions;
+
     
     public partial class LitProReadEntities : DbContext
     {
@@ -24,7 +30,49 @@ namespace LitProRead.Models
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
+        public IQueryable<Student> IStudents { get; set; }
+
+        //Return only the results we want
+        public List<Student> GetStudents(string searchTerm, int pageSize, int pageNum, bool byLastName)
+        {
+            return GetStudentsQuery(searchTerm, byLastName)
+                .Skip(pageSize * (pageNum - 1))
+                .Take(pageSize)
+                .ToList();
+        }
+
+        //And the total count of records
+        public int GetStudentsCount(string searchTerm, int pageSize, int pageNum)
+        {
+            return GetStudentsQuery(searchTerm, true)
+                .Count();
+        }
+
+
+        //Our search term
+        private IQueryable<Student> GetStudentsQuery(string searchTerm, bool byLastName)
+        {
+            searchTerm = searchTerm.ToLower();
+            if (byLastName)
+            {
+                return Students
+                    .Where(
+                        a =>
+                        a.LastName.StartsWith(searchTerm)
+                    ).OrderBy(a => a.LastName);
+            }
+            else
+            {
+                return Students
+                    .Where(
+                        a =>
+                        a.FirstName.StartsWith(searchTerm)
+                    ).OrderBy(a => a.FirstName);
+            }
+        }
+
+
         public DbSet<ChildRelationship> ChildRelationships { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<Class___save> Class___save { get; set; }

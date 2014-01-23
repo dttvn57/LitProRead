@@ -9,7 +9,7 @@ namespace LitProRead.ViewModels
 {
     [Serializable]
     //[Bind(Exclude = "StudentListLastName, StudentListFirstName")]
-    [Bind(Exclude = "LitProReadEntities")]
+    //[Bind(Exclude = "LitProReadEntities")]
     public class StudentFormViewModel
     {
         //public LitProReadEntities db = new LitProReadEntities();
@@ -49,8 +49,13 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> SmokingPrefList { get; private set; }
         public List<SelectListItem> TutorSmokerList { get; private set; }
 
-        public List<SelectListItem> StudentListLastName { get; private set; }
-        public List<SelectListItem> StudentListFirstName { get; private set; }
+        public string StudentLastNameID { get; set; }
+        public string StudentFirstNameID { get; set; }
+        public IEnumerable<SelectListItem> StudentListLastName { get; set; }
+        public IEnumerable<SelectListItem> StudentListFirstName { get; set; }
+
+        //public List<SelectListItem> StudentListLastName { get; set; }
+        //public List<SelectListItem> StudentListFirstName { get; private set; }
 
         //public SelectList StudentListLastName { get; private set; }
         //public SelectList StudentListFirstName { get; private set; }
@@ -80,8 +85,8 @@ namespace LitProRead.ViewModels
             this.ReferralList = GetReferralList();
             this.StaffList = GetStaffList();
             this.SourceList = GetSourceList();
-            this.StudentListLastName = GetStudentsLastName(id);
-            this.StudentListFirstName = GetStudentsFirstName(id);
+            //this.StudentListLastName = GetStudentsLastName(id);
+            //this.StudentListFirstName = GetStudentsFirstName(id);
             this.StudentAge = GetStudentAge();
 
             this.TransportationList = GetTransportationList();
@@ -633,10 +638,19 @@ namespace LitProRead.ViewModels
                 }
                 return list;
                 //return new SelectList(students, "ID", "LastName");//, selectedValues);
+//                return new SelectList(students, "ID", "LastName");//, selectedValues);
             }
+        }
+        
+        // no op
+        public void SetStudentsLastName()
+        {
+            int i = 0;
+            i++;
         }
 
         public List<SelectListItem> GetStudentsFirstName(int Id = -1)
+        //public SelectList GetStudentsFirstName(int Id = -1)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {

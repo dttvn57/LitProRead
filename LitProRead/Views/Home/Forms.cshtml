@@ -5,6 +5,14 @@
     var currStudentId = 0;
     var editMode = "add";
 }
+
+<style>
+    .select2-container {
+        width:250px;
+    }
+</style>
+
+
 <div id="tabs">
 
     <ul>
@@ -64,15 +72,25 @@
                     <td style="text-align:left; border:0 none;">
                         @*
                          <input id="StudentListLastName" type="hidden" style="width: 250px"/>
-                       *@
-                        @Html.DropDownListFor(x => Model.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange = "onStudentLastNameChange(this.options[this.selectedIndex].value);" })
-                        @Html.ValidationMessageFor(x => Model.StudentListLastName)
+                         @Html.ValidationMessageFor(x => Model.StudentListLastName)
+                        @Html.ValidationMessageFor(x => Model.StudentListFirstName)
+
+                        @Html.ValidationMessageFor(m => m.StudentLastNameID)
+                        @Html.DropDownListFor(x => x.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange = "onStudentLastNameChange(this.options[this.selectedIndex].value);" })
+                      *@
+                        @Html.TextBoxFor(m => m.StudentLastNameID, new { id = "StudentListLastName", @onfocus = "onStudentLastNameChange();" }) 
+
                     </td>
                     <td style="text-align:right; border:0 none;">First Name
                     </td>
                     <td style="text-align:left; border:0 none;">
-                        @Html.DropDownListFor(x => Model.StudentListFirstName, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange = "onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
-                        @Html.ValidationMessageFor(x => Model.StudentListFirstName)
+
+
+                        @Html.TextBoxFor(m => m.StudentFirstNameID, htmlAttributes: new { id = "StudentListFirstName", @onfocus = "onStudentFirstNameChange();" }) 
+                        @*
+                        @Html.DropDownListFor(x => x.StudentFirstNameID, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange = "onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.ValidationMessageFor(m => m.StudentFirstNameID)
+                        *@
                     </td>
                 </tr>
 
@@ -264,9 +282,10 @@
     </script>
 
     <script type="text/javascript">
-        function onStudentLastNameChange(value) {
-            currStudentId = value;
-            //alert(currStudentId);
+        //function onStudentLastNameChange(value) {
+        function onStudentLastNameChange() {
+            currStudentId = ($("#StudentListLastName").select2("val"));
+            alert(currStudentId);
             //alert($("#StudentListLastName").select2("val"));
             //$("#StudentListFirstName").select2("val", "Aaron Ford");
         }
@@ -274,8 +293,8 @@
     
     <script type="text/javascript">
         function onStudentFirstNameChange(value) {
-            currStudentId = value;
-            //alert(currStudentId);
+            currStudentId = ($("#StudentListFirstName").select2("val"));
+            alert(currStudentId);
         }
     </script>
 
@@ -289,8 +308,11 @@
 
     <script type="text/javascript">
         function populateStudentForm(data) {
+            $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
             $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
+            $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
             $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+            $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
 
             $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
 
@@ -304,12 +326,97 @@
     </script>
 
     <script>
-        $(function () {
+        $(document).ready(function () {
+            var pageSize = 20;
+
+            $(".datefield").datepicker();
             $("#tabs").tabs();
             $("#tabs-Students").tabs();
 
-            $("#StudentListLastName").select2();    //"data", { id: "2070", text: "Select ID" });
+            $("#StudentListLastName").select2(
+            {
+                placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetStudentsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: true
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                }
+            });
+
+            $("#StudentListLastName")
+                .on("change", function (e)
+                {
+                    currentStudentId = e.val;
+                    alert(currentStudentId);
+                })
+
+            $("#StudentListFirstName").select2(
+            {
+                placeholder: 'Enter first name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetStudentsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: false
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                }
+            });
+
+            $("#StudentListFirstName")
+                .on("change", function (e) {
+                    currentStudentId = e.val;
+                    alert(currentStudentId);
+                })
+
+        });
+    </script>
+
+
+    <script>
+        $(function () {
+
+            $("#StudentListFirstName").select2();    //"data", { id: "2070", text: "Select ID" });
             @*
+            $("#tabs").tabs();
+            $("#tabs-Students").tabs();
             {
                 initSelection: function (element, callback) {
                     var data = { id: element.val(), text: element.val() };
@@ -317,12 +424,11 @@
                     //callback(data);
                 }
             });
-           *@
 
-            $("#StudentListFirstName").select2();
 
             $(".datefield").datepicker();
-            
+            *@
+           
        });
     </script>
 
@@ -364,12 +470,13 @@
             //alert("editStudent");
             //var m = $("form").serialize();
             //alert(m);
+            //var studentId = $('#StudentListLastName').select2("val");
              $.ajax({
                 url: '@Url.Content("~/Home/Edit")', @*'@Url.Content("~/Student/Edit")',*@
                  type: 'get',
                  cache: false,
                  async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                 data: { id: currStudentId },       //{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                 data: { id: currentStudentId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                  @*
                  contentType: 'application/json; charset=utf-8',
                data: { Command: "approve", lastName: last, firstName: first },
@@ -433,12 +540,12 @@
                data: { Command: "approve", lastName: last, firstName: first },
                  *@
              }).done(function (data) {
-                 //alert(data);
+                 alert(data);
                  //$("#Student-General").replaceWith(data);
              }).complete(function () {
-                 //alert("complete");
+                 alert("complete");
              }).success(function (data) {
-                 //$("#Student-General").empty().append(data);    //$("#Student-General").html(data)
+                 populateStudentForm(data);
 
                  // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
                  $(".datefield").datepicker();
