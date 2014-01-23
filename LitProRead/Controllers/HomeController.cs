@@ -128,7 +128,8 @@ namespace LitProRead.Controllers
             JsonResult jsonData = new JsonResult();
             jsonData.Data = studentFormVm;
             jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            return jsonData;
+            //return jsonData;
+            return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
         }
 
         /***

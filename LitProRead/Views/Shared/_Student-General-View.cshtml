@@ -27,6 +27,7 @@
                         <col style="width:10%;"/>
                         <col style="width:25%;"/>
                 </colgroup>
+                @*
                 <tr>
                     @for (int i = 0; i < 5; i++)
                     {
@@ -40,7 +41,7 @@
                         }
                     }
                 </tr>
-
+                *@
                 <tr>
                     <td>
                         @Html.HiddenFor(m => m.CurrentStudent.ID)
@@ -358,10 +359,12 @@
                         <col style="width:40%;"/>
                         <col style="width:60%;"/>
                 </colgroup>
+                @*
                 <tr>
                     <td style="background-color:blue"></td>
                     <td style="background-color:green"></td>
                 </tr>
+                *@
                 <tr><td><br /></td></tr>
 
                 <tr>
