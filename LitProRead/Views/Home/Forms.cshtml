@@ -78,7 +78,7 @@
                         @Html.ValidationMessageFor(m => m.StudentLastNameID)
                         @Html.DropDownListFor(x => x.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange = "onStudentLastNameChange(this.options[this.selectedIndex].value);" })
                       *@
-                        @Html.TextBoxFor(m => m.StudentLastNameID, new { id = "StudentListLastName", @onfocus = "onStudentLastNameChange();" }) 
+                        @Html.TextBoxFor(m => m.StudentLastNameID, new { id = "StudentListLastName" }) 
 
                     </td>
                     <td style="text-align:right; border:0 none;">First Name
@@ -86,7 +86,7 @@
                     <td style="text-align:left; border:0 none;">
 
 
-                        @Html.TextBoxFor(m => m.StudentFirstNameID, htmlAttributes: new { id = "StudentListFirstName", @onfocus = "onStudentFirstNameChange();" }) 
+                        @Html.TextBoxFor(m => m.StudentFirstNameID, htmlAttributes: new { id = "StudentListFirstName" }) 
                         @*
                         @Html.DropDownListFor(x => x.StudentFirstNameID, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange = "onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
                         @Html.ValidationMessageFor(m => m.StudentFirstNameID)
@@ -559,6 +559,16 @@
                         var more = (page * pageSize) < data.Total;
                         return { results: data.Results, more: more };
                     }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentStudent_LastName').val() + ", " + $('#CurrentStudent_FirstName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
                 }
             });
 
@@ -566,7 +576,7 @@
                 .on("change", function (e)
                 {
                     currentStudentId = e.val;
-                    //alert(currentStudentId);
+                    alert("Last Name: " + currentStudentId);
                 })
 
             $("#StudentListFirstName").select2(
@@ -596,39 +606,26 @@
                         var more = (page * pageSize) < data.Total;
                         return { results: data.Results, more: more };
                     }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentStudent_FirstName').val() + " " + $('#CurrentStudent_LastName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
                 }
             });
 
             $("#StudentListFirstName")
                 .on("change", function (e) {
                     currentStudentId = e.val;
-                    //alert(currentStudentId);
+                    alert("First Name: " + currentStudentId);
                 })
 
         });
-    </script>
-
-
-    <script>
-        $(function () {
-
-            $("#StudentListFirstName").select2();    //"data", { id: "2070", text: "Select ID" });
-            @*
-            $("#tabs").tabs();
-            $("#tabs-Students").tabs();
-            {
-                initSelection: function (element, callback) {
-                    var data = { id: element.val(), text: element.val() };
-                    alert(data.toString());
-                    //callback(data);
-                }
-            });
-
-
-            $(".datefield").datepicker();
-            *@
-           
-       });
     </script>
 
     <script type="text/javascript">
@@ -714,7 +711,7 @@
 
 
         @* --- SAVE --- *@
-        
+        @*
         $('#saveStudent').click(function (dta) {
            // alert("saveStudent");
             var urlDest = '@Url.Content("~/Home/Create")';
@@ -734,11 +731,11 @@
                  cache: false,
                  //async: false,      // IMPORTANT to have this statement. If not then it'll display a string of the JSON.
                  data: { studentData: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
-                 @*
+                 @ *
                  data: { dataO: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                  contentType: 'application/json; charset=utf-8',
                data: { Command: "approve", lastName: last, firstName: first },
-                 *@
+                 * @
              }).done(function (data) {
                  alert("done");
                  //$("#Student-General").replaceWith(data);
@@ -755,6 +752,6 @@
                  alert("There was an error calling saveStudent: " + errorMessage);
              });
         });
-       
+        *@
     </script>
 }

@@ -124,12 +124,13 @@ namespace LitProRead.Controllers
                     //return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
                 }
             }
-            //return View(studentFormVm);
-            JsonResult jsonData = new JsonResult();
-            jsonData.Data = studentFormVm;
-            jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-            //return jsonData;
-            return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
+            return View("Forms", studentFormVm);
+
+            //JsonResult jsonData = new JsonResult();
+            //jsonData.Data = studentFormVm;
+            //jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            ////return jsonData;
+            //return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
         }
 
         /***
