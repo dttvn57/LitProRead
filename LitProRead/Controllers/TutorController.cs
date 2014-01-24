@@ -13,7 +13,7 @@ namespace LitProRead.Controllers
         private LitProReadEntities db = new LitProReadEntities();
 
         //
-        // GET: /Student/
+        // GET: /Tutor/
 
         public ActionResult Index(int Id = -1)
         {
@@ -35,5 +35,20 @@ namespace LitProRead.Controllers
             }
         }
 
+        //
+        // GET: /Tutor/Edit/5
+        public ActionResult Edit(int id = -1)
+        {
+            var vm = new TutorFormViewModel();
+            if (vm == null || vm.CurrentTutor == null)
+            {
+                return HttpNotFound();
+            }
+            vm.Load(id);
+            JsonResult jsonData = new JsonResult();
+            jsonData.Data = vm;
+            jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jsonData;
+        }
     }
 }

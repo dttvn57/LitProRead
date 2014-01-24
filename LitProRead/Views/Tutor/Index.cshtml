@@ -122,7 +122,8 @@ T U T O R S
             <ul>
                 <li><a href="#Tutor-General">General</a></li>
                 <li><a href="#Tutor-Preferences">Preferences</a></li>
-                <li><a href="#tabs-Matching-S">Matching-S</a></li>
+                <li><a href="#Tutor-Matching-T">Matching-T</a></li>
+                @*
                 <li><a href="#tabs-Children">Children</a></li>
                 <li><a href="#tabs-Computer">Computer</a></li>
                 <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
@@ -132,6 +133,7 @@ T U T O R S
                 <li><a href="#tabs-Comments">Comments</a></li>
                 <li><a href="#tabs-FollowUp">FollowUp</a></li>
                 <li><a href="#tabs-Status-History">Status History</a></li>
+                *@
             </ul>
 
             
@@ -323,7 +325,6 @@ T U T O R S
             else {
                 $('#CurrentTutor_InActive').prop("checked", false);
             }
-            $('#CurrentTutor_InActiveReason').val(data.CurrentTutor.InActiveReason);
             $('#CurrentTutor_Program').val(data.CurrentTutor.Program);
             $('#CurrentTutor_MailCode').val(data.CurrentTutor.MailCode);
             $('#CurrentTutor_Category').val(data.CurrentTutor.Category);
@@ -467,18 +468,16 @@ T U T O R S
             $('#CurrentTutor_TutorContact').val(data.CurrentTutor.TutorContact);
             $('#CurrentTutor_SmokingPref').val(data.CurrentTutor.SmokingPref);
             $('#CurrentTutor_LocationPref').val(data.CurrentTutor.LocationPref);
-            $('#CurrentTutor_TutorSmoker').val(data.CurrentTutor.TutorSmoker);
+            $('#CurrentTutor_StudentSmoker').val(data.CurrentTutor.StudentSmoker);
             $('#CurrentTutor_MedicalInfo').val(data.CurrentTutor.MedicalInfo);
             $('#CurrentTutor_LocationPref2').val(data.CurrentTutor.LocationPref2);
             $('#CurrentTutor_LocationPref3').val(data.CurrentTutor.LocationPref3);
             $('#CurrentTutor_InterestHobbies').val(data.CurrentTutor.InterestHobbies);
-            $('#CurrentTutor_TutorPreference').val(data.CurrentTutor.TutorPreference);
+            $('#CurrentTutor_StudentPreference').val(data.CurrentTutor.StudentPreference);
             $('#CurrentTutor_SpecialInstructions').val(data.CurrentTutor.SpecialInstructions);
             $('#CurrentTutor_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.FirstCalledByDate));
             $('#CurrentTutor_FirstCalledBy').val(data.CurrentTutor.FirstCalledBy);
             $('#CurrentTutor_HowHeard').val(data.CurrentTutor.HowHeard);
-            $('#CurrentTutor_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.PreLibraryCard));
-            $('#CurrentTutor_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.LibraryCard));
         }
     </script>
 
@@ -534,7 +533,7 @@ T U T O R S
             $("#TutorListLastName")
                 .on("change", function (e) {
                     currentTutorId = e.val;
-                    alert("Tutor Last Name: " + currentTutorId);
+                    //alert("Tutor Last Name: " + currentTutorId);
                 })
 
             $("#TutorListFirstName").select2(
@@ -580,7 +579,7 @@ T U T O R S
             $("#TutorListFirstName")
                 .on("change", function (e) {
                     currentTutorId = e.val;
-                    alert("Tutor First Name: " + currentTutorId);
+                    //alert("Tutor First Name: " + currentTutorId);
                 })
 
         });
@@ -590,7 +589,7 @@ T U T O R S
 
         @* --- ADD --- *@
         $('#TutorAdd').click(function () {
-            alert("addTutor");
+            //alert("addTutor");
             var firstName = $('#TutorListFirstName').val;
             var lastName = $('#TutorListLastName').val;
             alert("Last: " + lastName + ", " + "First: " + firstName);
@@ -621,7 +620,7 @@ T U T O R S
 
         @* --- EDIT --- *@
         $('#TutorEdit').click(function () {
-            alert("Tutor: editTutor");
+            //alert("Tutor: editTutor");
             //var m = $("form").serialize();
             //alert(m);
             //var TutorId = $('#TutorListLastName').select2("val");
@@ -636,13 +635,13 @@ T U T O R S
                data: { Command: "approve", lastName: last, firstName: first },
                  *@
              }).done(function (data) {
-                  alert('done');
+                  //alert('done');
                  //$("#Tutor-General").replaceWith(data);
              }).complete(function () {
-                 alert("complete");
+                 //alert("complete");
              }).success(function (data) {
                  editMode = "edit";
-                  alert(editMode);
+                  //alert(editMode);
 
                  populateTutorForm(data);
 
