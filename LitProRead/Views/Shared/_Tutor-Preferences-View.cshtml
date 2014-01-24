@@ -1,0 +1,277 @@
+﻿@model LitProRead.ViewModels.TutorFormViewModel
+<div id="Tutor-Preferences">
+<table>
+    <colgroup>
+            <col style="width:15%;"/>
+            <col style="width:35%;"/>
+            <col style="width:30%;"/>
+            <col style="width:20%;"/>
+    </colgroup>
+    @*
+    <tr>
+        <td style="background-color:red"></td>
+        <td style="background-color:yellow"></td>
+        <td style="background-color:red"></td>
+        <td style="background-color:yellow"></td>
+    </tr>
+    *@
+    <tr>
+        <td>
+
+        </td>
+    </tr>
+
+    @*
+    <tr>
+        <td>
+            @Html.Label("Availability")
+        </td>
+    </tr>
+    *@
+    <tr>
+        <td colspan="2">
+            <fieldset style="border: solid; border-width:1px">
+                <legend style="display: block">Availability</legend>
+
+            <table>
+                <colgroup>
+                        <col style="width:30%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:10%;"/>
+                </colgroup>
+
+                <tr>
+                    <td></td>
+                    <td>Mon</td>
+                    <td>Tue</td>
+                    <td>Wed</td>
+                    <td>Thu</td>
+                    <td>Fri</td>
+                    <td>Sat</td>
+                    <td>Sun</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.HiddenFor(m => m.CurrentTutor.ID)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Morning")
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => Model.CurrentTutor.AvailMonAM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailTueAM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailWedAM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailThuAM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailFriAM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailSatAM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailSunAM)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Afternoon")
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailMonPM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailTuePM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailWedPM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailThuPM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailFriPM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailSatPM)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailSunPM)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Evening")
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailMonEVE)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailTueEVE)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailWedEVE)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailThudEVE)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailFriEVE)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailSatEVE)
+                    </td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.CurrentTutor.AvailSunEVE)
+                    </td>
+                </tr>
+            </table>
+                </fieldset>
+        </td>
+
+        <td style="text-align:right; vertical-align:top">Transportation&nbsp;&nbsp;&nbsp;
+            @Html.DropDownListFor(m => Model.CurrentTutor.Transportation, Model.TransportationList, string.Empty, new { style="width:50%" })  
+        </td>
+
+        <td style="text-align:right; vertical-align:top">
+            <button type="button" id="printThis">Print This</button>
+        </td;>
+    </tr>
+
+    <tr><td><br /></td></tr>
+
+    <tr>
+        <td>
+            @Html.Label("Tutor Contact")
+        </td>
+        <td>
+            @Html.DropDownListFor(m => Model.CurrentTutor.TutorContact, Model.TutorContactList, string.Empty, new { style="width:100%" })  
+        </td>
+        <td style="text-align:right">Smoking Pref&nbsp;&nbsp;&nbsp;
+            @Html.DropDownListFor(m => Model.CurrentTutor.SmokingPref, Model.SmokingPrefList, string.Empty, new { style="width:50%" })  
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("Location Pref")
+        </td>
+        <td>
+            @Html.DropDownListFor(m => Model.CurrentTutor.LocationPref, Model.LocationPrefList, string.Empty, new { style="width:100%" })  
+        </td>
+        <td style="text-align:right">Student Smoker&nbsp;&nbsp;
+            @Html.DropDownListFor(m => Model.CurrentTutor.StudentSmoker, Model.StudentSmokerList, string.Empty, new { style="width:50%" })  
+        </td>
+        @*
+        <td rowspan="9" style="vertical-align:top">
+            @Html.TextAreaFor(m => m.CurrentTutor.MedicalInfo, new { style="width:100%" })
+        </td>
+        *@
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("Location Pref2")
+        </td>
+        <td>
+            @Html.DropDownListFor(m => Model.CurrentTutor.LocationPref2, Model.LocationPrefList, string.Empty, new { style="width:100%" })  
+        </td>
+    </tr>
+
+    <tr>
+    
+    <tr>
+        <td>
+            @Html.Label("Location Pref3")
+        </td>
+        <td>
+            @Html.DropDownListFor(m => Model.CurrentTutor.LocationPref3, Model.LocationPrefList, string.Empty, new { style="width:100%" })  
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("Interest Hobbies")
+        </td>
+        <td>
+            @Html.TextAreaFor(m => m.CurrentTutor.InterestHobbies, new { style="width:100%" })
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("Student Prefrence")
+        </td>
+        <td>
+            @Html.TextAreaFor(m => m.CurrentTutor.StudentPreference, new { style="width:100%" })
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("Special Instructions")
+        </td>
+        <td>
+            @Html.TextAreaFor(m => m.CurrentTutor.SpecialInstructions, new { style="width:100%" })
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("First Called By Date")
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.CurrentTutor.FirstCalledByDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("First Called By")
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.CurrentTutor.FirstCalledBy)
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("How Heard")
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.CurrentTutor.HowHeard)
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.Label("Why Proj Read")
+        </td>
+        <td>
+            @*
+            @Html.TextBoxFor(m => m.CurrentTutor.PreLibraryCard, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Library Card
+            *@
+        </td>
+
+    </tr>
+</table>
+
+</div>

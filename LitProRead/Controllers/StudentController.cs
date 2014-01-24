@@ -9,6 +9,7 @@ using LitProRead.Models;
 using LitProRead.ViewModels;
 using System.Web.Script.Serialization;
 using System.Collections;
+using System.Data.Entity.Validation;
 
 namespace LitProRead.Controllers
 {
@@ -19,9 +20,24 @@ namespace LitProRead.Controllers
         //
         // GET: /Student/
 
-        public ActionResult Index()
+        public ActionResult Index(int Id = -1)
         {
-            return View(db.Students.ToList());
+            if (Id == -1)
+            {
+                var vm = new StudentFormViewModel();
+                //vm.studentVM = new StudentViewModel();
+                return View("Index", vm);
+            }
+            else
+            {
+                var vm = new StudentFormViewModel();
+                if (vm == null || vm.CurrentStudent == null)
+                {
+                    return HttpNotFound();
+                }
+                vm.Load(Id);
+                return View("Index", vm);
+            }
         }
 
         //
@@ -83,23 +99,56 @@ namespace LitProRead.Controllers
                 return HttpNotFound();
             }
             vm.Load(id);
-            return PartialView("_Student-General-View", vm);
+            JsonResult jsonData = new JsonResult();
+            jsonData.Data = vm;
+            jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jsonData;
         }
 
         //
         // POST: /Student/Edit/5
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(StudentFormViewModel data)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Edit(StudentFormViewModel studentFormVm)//string dataO)
         {
             if (ModelState.IsValid)
             {
-                //db.Entry(student).State = EntityState.Modified;
-                //db.SaveChanges();
-                return RedirectToAction("Index");
+                using (LitProReadEntities db = new LitProReadEntities())
+                {
+                    db.Configuration.ValidateOnSaveEnabled = true;
+                    db.Entry(studentFormVm.CurrentStudent).State = EntityState.Modified;
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+
+                        string err = ex.Message;
+                        int i = 0;
+                        i++;
+                    }
+                    catch (OptimisticConcurrencyException ex)
+                    {
+                        string err = ex.Message;
+                        int i = 0;
+                        i++;
+                        //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
+                        //studentFormVm.db.SaveChanges();
+                    }
+                    //return View("Forms", studentFormVm);
+                    //return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
+                }
             }
-            return PartialView(data);
+            return View("Index", studentFormVm);
+
+            //JsonResult jsonData = new JsonResult();
+            //jsonData.Data = studentFormVm;
+            //jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            ////return jsonData;
+            //return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
         }
 
         //

@@ -1,0 +1,510 @@
+﻿@model LitProRead.ViewModels.TutorFormViewModel
+   
+
+<div id="Tutor-General">
+<table>
+    <colgroup>
+            <col style="width:70%;"/>
+            <col style="width:30%;"/>
+    </colgroup>
+    <tr>
+        <td style="background-color:red"></td>
+        <td style="background-color:yellow"></td>
+    </tr>
+    <tr>
+        @* left table *@
+        <td>
+            <table>
+                <colgroup>
+                        <col style="width:25%;"/>
+                        <col style="width:15%;"/>
+                        <col style="width:25%;"/>
+                        <col style="width:10%;"/>
+                        <col style="width:25%;"/>
+                </colgroup>
+                @*
+                <tr>
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            <td style="background-color:red"></td>
+                        }
+                        else
+                        {
+                            <td style="background-color:yellow"></td>
+                        }
+                    }
+                </tr>
+                *@
+                <tr>
+                    <td>
+                        @Html.HiddenFor(m => m.CurrentTutor.ID)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Name*")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.Salutation, Model.SalutationList, string.Empty, new { style = "width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.Salutation)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentTutor.FirstName)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.FirstName)
+                    </td>
+                    <td colspan="2">
+                        @Html.TextBoxFor(m => m.CurrentTutor.LastName)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.LastName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Address1*")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextBoxFor(m => m.CurrentTutor.Address1)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.Address1)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Address2")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextBoxFor(m => m.CurrentTutor.Address2)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.Address2)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("City/State/Zip")
+                    </td>
+                    <td colspan="2">
+                        @Html.DropDownListFor(m => Model.CurrentTutor.City, Model.CityList, string.Empty, new { style="width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.City)
+                    </td>
+                    <td>
+                         @Html.TextBoxFor(m => m.CurrentTutor.State)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.State)
+                    </td>
+                    <td>
+                         @Html.TextBoxFor(m => m.CurrentTutor.Zip)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.Zip)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Primary Area Code/Phone")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.HomeAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.HomeAreaCode)
+                    </td>
+                    <td >
+                        @Html.TextBoxFor(m => m.CurrentTutor.HomePhone)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.HomePhone)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Secondary Area Code/Phone")
+                    </td>
+                    <td>
+                        @* WorkAreaCode *@
+                        @Html.DropDownListFor(m => Model.CurrentTutor.WorkAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.WorkAreaCode)
+                    </td>
+                    <td >
+                        @Html.TextBoxFor(m => m.CurrentTutor.WorkPhone)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.WorkPhone)
+                    </td>
+                    <td>
+                        @Html.Label("Ext")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentTutor.WorkPhoneExt, new { style="width:30%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.WorkPhoneExt)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Fax Area Code/Phone")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.FAXAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.FAXAreaCode)
+                    </td>
+                    <td >
+                        @Html.TextBoxFor(m => m.CurrentTutor.FAX)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.FAX)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Cell 1 Area Code/Phone")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.CellAreaCode1, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.CellAreaCode1)
+                    </td>
+                    <td >
+                        @Html.TextBoxFor(m => m.CurrentTutor.CellPhone1)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.CellPhone1)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Cell 2 Area Code/Phone")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.CellAreaCode2, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.CellAreaCode2)
+                    </td>
+                    <td >
+                        @Html.TextBoxFor(m => m.CurrentTutor.CellAreaPhone2)
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.CellAreaPhone2)
+                    </td>
+                    <td>
+                        @Html.Label("Contact Pref")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.ContactPref, Model.ContactPrefList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.ContactPref)
+                    </td>
+                </tr>
+
+                <tr><td><br></td></tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Email")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextBoxFor(m => m.CurrentTutor.EMail, new { style = "width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.EMail)
+                    </td>
+                </tr>
+
+                <tr><td><br></td></tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Gender")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.Gender, Model.GenderList, string.Empty, new { style = "width:100%" })
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.Gender)
+                    </td>
+                    @*
+                    <td>
+                        @Html.Label("Ethnicity")
+                    </td>
+                    *@
+                    <td>Ethnicity&nbsp;&nbsp;&nbsp;
+                        @Html.DropDownListFor(m => Model.CurrentTutor.Ethnicity, Model.EthnicityList, string.Empty, new { style="width:61%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.Ethnicity)
+                    </td>
+                    <td>
+                        @Html.Label("Income")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.Income, Model.IncomeList, string.Empty, new { style="width:100%" })  
+                        @Html.ValidationMessageFor(m => Model.CurrentTutor.Income)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Occupation")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextBoxFor(m => m.CurrentTutor.Occupation)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Employer")
+                    </td>
+                    <td colspan="2">
+                        @Html.TextBoxFor(m => m.CurrentTutor.Employer)
+                    </td>
+                    <td>
+                        @Html.Label("Emp Status")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.EmployerStatus, Model.EmployerStatusList, string.Empty, new { style="width:100%" })  
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Emergency Contact")
+                    </td>
+                    <td colspan="4">
+                        @Html.TextBoxFor(m => m.CurrentTutor.EmergContact)
+                    </td>
+                </tr>
+
+                <tr>
+                    @*
+                    <td colspan="2">Emergency Area Code/Phone&nbsp;&nbsp;&nbsp;
+                    *@
+                    <td>
+                        @Html.Label("Emergency Area Code/Phone")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.EmergAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentTutor.EmergPhone)
+                    </td>
+                    <td>
+                        @Html.Label("Call Location")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.CallLocation, Model.CallLocationList, string.Empty, new { style="width:100%" })  
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("DOB")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentTutor.DOB, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:100%" })
+                    </td>
+                    <td>Age:&nbsp;&nbsp;&nbsp;
+                        @* Format((   DateDiff("m", [DOB], Now())/12),"0.0") *@
+                        @Html.TextBoxFor(m => m.TutorAge, new { style = "width:20%", disabled = "disabled" })
+                    </td>
+                    <td>
+                        @Html.Label("Birth Country")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.Country, Model.CountryList, string.Empty, new { style="width:100%" })  
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Native Language")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.CurrentTutor.NativeLanguage, Model.NativeLanguageList, string.Empty, new { style = "width:100%" })
+                    </td>
+                    <td>
+                        @Html.Label("Education Level")
+                    </td>
+                    <td colspan="3">
+                        @Html.DropDownListFor(m => m.CurrentTutor.EducationLevel, Model.EducationLevelList, string.Empty, new { style = "width:100%" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Finger Print Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentTutor.FingerPrintDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:100%" })
+                    </td>
+                    <td>
+                        @Html.Label("Referral")
+                    </td>
+                    <td colspan="3">
+                        @Html.DropDownListFor(m => m.CurrentTutor.Referral, Model.ReferralList, string.Empty, new { style = "width:100%" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                    </td>
+                    <td>Staff&nbsp;&nbsp;&nbsp;
+                        @Html.DropDownListFor(m => Model.CurrentTutor.Staff, Model.StaffList, string.Empty, new { style="width:70%" })  
+                    </td>
+                    <td>
+                        @Html.Label("Source")
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => Model.CurrentTutor.Source, Model.SourceList, string.Empty, new { style="width:100%" })  
+                    </td>
+                </tr>
+            </table>
+
+        </td>
+
+        @* right table *@
+        <td style="vertical-align:top">
+            <table>
+                <colgroup>
+                        <col style="width:40%;"/>
+                        <col style="width:60%;"/>
+                </colgroup>
+                @*
+                <tr>
+                    <td style="background-color:blue"></td>
+                    <td style="background-color:green"></td>
+                </tr>
+                *@
+                <tr><td><br /></td></tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Intake Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentTutor.IntakeDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @Html.Label("Start Date")
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CurrentTutor.FirstActive, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+                    </td>
+                </tr>
+
+                <tr><td><br /></td></tr>
+                <tr><td><br /></td></tr>
+            </table>
+
+            <fieldset style="border: solid; border-width:1px">
+                <legend style="display: block">Tutor Status</legend>
+                <table>
+                    <colgroup>
+                            <col style="width:35%;"/>
+                            <col style="width:5%;"/>
+                            <col style="width:55%;"/>
+                    </colgroup>
+                    <tr>
+                        <td colspan="3" style="text-align:right">
+                            <button type="button" id="viewStatusChanges">View Status Changes</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.Label("Active")
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.CurrentTutor.Active) @*m => m.CurrentTutorActive)*@
+                        </td>
+                        <td style="text-align:right">Date&nbsp;&nbsp;&nbsp;
+                            @Html.TextBoxFor(m => m.CurrentTutor.ActiveDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.Label("Status")
+                        </td>
+                        <td colspan="2">
+                            @Html.DropDownListFor(m => Model.CurrentTutor.Status, Model.StatusList, string.Empty, new { style="width:100%" })  
+                        </td>
+                    </tr>
+                    
+                    <tr><td><br /></td></tr>
+
+                    <tr>
+                        <td>
+                            @Html.Label("Inactive")
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.CurrentTutor.InActive)
+                        </td>
+                    </tr>
+
+                </table>
+            </fieldset>
+
+            <br />
+
+            <fieldset style="border: solid; border-width:1px">
+                <legend style="display: block;">Codes</legend>
+                <table>
+                    <colgroup>
+                            <col style="width:40%;"/>
+                            <col style="width:60%;"/>
+                    </colgroup>
+
+                    <tr>
+                        <td>
+                            @Html.Label("Program")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => Model.CurrentTutor.Program, Model.TutorProgramList, string.Empty, new { style="width:100%" })  
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.Label("Mail Code")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => Model.CurrentTutor.MailCode, Model.MailCodeList, string.Empty, new { style="width:100%" })  
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td>
+                            @Html.Label("Category")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => Model.CurrentTutor.Category, Model.CategoryList, string.Empty, new { style="width:100%" })  
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Html.Label("Keyword")
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => Model.CurrentTutor.Keyword, Model.KeywordList, string.Empty, new { style="width:100%" })  
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+        </td>
+    </tr>
+</table>
+
+    @*
+   <div class="pagedList" data-otf-target="#restaurantList">
+       @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+       PagedListRenderOptions.MinimalWithItemCountText)
+   </div>
+
+
+   @foreach (var item in Model)
+   {
+       <div>
+           <h4>@item.Name</h4>
+           <div>
+               @item.City, @item.Country
+           </div>
+           <div>
+               Reviews: @item.CountOfReviews
+           </div>
+           <hr />
+       </div>
+   }
+    *@
+
+</div>
+
+@*
+<script src="~/Scripts/appjs/Tutor-general.partialview.js"></script>
+*@

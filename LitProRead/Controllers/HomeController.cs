@@ -43,24 +43,46 @@ namespace LitProRead.Controllers
             };
         }
 
+        [HttpGet]
+        public ActionResult GetTutorsName(string searchTerm, int pageSize, int pageNum, bool byLastName)  // true: get by last name
+                                                                                                          // false: get by first name
+        {
+            //Get the paged results and the total count of the results for this query. 
+            LitProReadEntities db = new LitProReadEntities();
+
+            List<Tutor> tutors = db.GetTutors(searchTerm, pageSize, pageNum, byLastName);
+            int tutorCount = db.GetTutorsCount(searchTerm, pageSize, pageNum);
+
+            //Translate the attendees into a format the select2 dropdown expects
+            Select2PagedResult pagedTutors = ToSelect2Format(tutors, tutorCount, byLastName);
+
+            //Return the data as a jsonp result
+            return new JsonpResult
+            {
+                Data = pagedTutors,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         public ActionResult Index(int Id = -1)
         {
-            if (Id == -1)
-            {
-                var vm = new StudentFormViewModel();
-                //vm.studentVM = new StudentViewModel();
-                return View("Forms", vm);
-            }
-            else
-            {
-                var vm = new StudentFormViewModel();
-                if (vm == null || vm.CurrentStudent == null)
-                {
-                    return HttpNotFound();
-                }
-                vm.Load(Id);
-                return View("Forms", vm);
-            }
+            return RedirectToAction("Index", "Student");
+            //if (Id == -1)
+            //{
+            //    var vm = new StudentFormViewModel();
+            //    //vm.studentVM = new StudentViewModel();
+            //    return View("Forms", vm);
+            //}
+            //else
+            //{
+            //    var vm = new StudentFormViewModel();
+            //    if (vm == null || vm.CurrentStudent == null)
+            //    {
+            //        return HttpNotFound();
+            //    }
+            //    vm.Load(Id);
+            //    return View("Forms", vm);
+            //}
         }
 
         //
@@ -339,6 +361,34 @@ namespace LitProRead.Controllers
             jsonStudents.Total = totalStudents;
 
             return jsonStudents;
+        }
+
+        private Select2PagedResult ToSelect2Format(List<Tutor> tutors, int totalTutors, bool byLastName)
+        {
+            Select2PagedResult jsonTutors = new Select2PagedResult();
+            jsonTutors.Results = new List<Select2Result>();
+
+            //Loop through our attendees and translate it into a text value and an id for the select list
+            if (byLastName)
+            {
+                foreach (Tutor a in tutors)
+                {
+                    jsonTutors.Results.Add(new Select2Result { id = a.ID.ToString(), text = a.LastName + ", " + a.FirstName });
+                }
+            }
+            else
+            {
+                foreach (Tutor a in tutors)
+                {
+                    jsonTutors.Results.Add(new Select2Result { id = a.ID.ToString(), text = a.FirstName + " " + a.LastName });
+                }
+
+            }
+
+            //Set the total count of the results from the query.
+            jsonTutors.Total = totalTutors;
+
+            return jsonTutors;
         }
 
         private Dictionary<string, object> deserializeToDictionary(string jo)

@@ -40,10 +40,10 @@ namespace LitProRead.Models
         public Nullable<System.DateTime> FingerPrintDate { get; set; }
         public string Source { get; set; }
         public string Staff { get; set; }
-        public Nullable<bool> Active { get; set; }
+        public bool Active { get; set; }
         public Nullable<System.DateTime> ActiveDate { get; set; }
         public string ActiveType { get; set; }
-        public Nullable<bool> InActive { get; set; }
+        public bool InActive { get; set; }
         public Nullable<System.DateTime> InActiveDate { get; set; }
         public string InActiveReason { get; set; }
         public Nullable<System.DateTime> FirstActive { get; set; }
@@ -65,31 +65,31 @@ namespace LitProRead.Models
         public Nullable<System.DateTime> FollowUpDate { get; set; }
         public string FollowUpDesc { get; set; }
         public string Program { get; set; }
-        public Nullable<bool> C1_1Tutoring { get; set; }
-        public Nullable<bool> C_1 { get; set; }
-        public Nullable<bool> C_2 { get; set; }
-        public Nullable<bool> C_3 { get; set; }
-        public Nullable<bool> Family_Literacy { get; set; }
-        public Nullable<bool> FFL_1 { get; set; }
-        public Nullable<bool> FFL_2 { get; set; }
-        public Nullable<bool> FFL_3 { get; set; }
-        public Nullable<bool> CompLab { get; set; }
-        public Nullable<bool> Lab1 { get; set; }
-        public Nullable<bool> Lab2 { get; set; }
-        public Nullable<bool> Lab3 { get; set; }
-        public Nullable<bool> OpenLab { get; set; }
-        public Nullable<bool> SmallGroups { get; set; }
-        public Nullable<bool> InHouse { get; set; }
-        public Nullable<bool> LPT { get; set; }
-        public Nullable<bool> C411 { get; set; }
-        public Nullable<bool> ESL { get; set; }
-        public Nullable<bool> Reading_Sharing { get; set; }
-        public Nullable<bool> OffSite { get; set; }
-        public Nullable<bool> Project90 { get; set; }
-        public Nullable<bool> Jericho { get; set; }
-        public Nullable<bool> Bayshore { get; set; }
-        public Nullable<bool> Headstart { get; set; }
-        public Nullable<bool> AdultSchool { get; set; }
+        public bool C1_1Tutoring { get; set; }
+        public bool C_1 { get; set; }
+        public bool C_2 { get; set; }
+        public bool C_3 { get; set; }
+        public bool Family_Literacy { get; set; }
+        public bool FFL_1 { get; set; }
+        public bool FFL_2 { get; set; }
+        public bool FFL_3 { get; set; }
+        public bool CompLab { get; set; }
+        public bool Lab1 { get; set; }
+        public bool Lab2 { get; set; }
+        public bool Lab3 { get; set; }
+        public bool OpenLab { get; set; }
+        public bool SmallGroups { get; set; }
+        public bool InHouse { get; set; }
+        public bool LPT { get; set; }
+        public bool C411 { get; set; }
+        public bool ESL { get; set; }
+        public bool Reading_Sharing { get; set; }
+        public bool OffSite { get; set; }
+        public bool Project90 { get; set; }
+        public bool Jericho { get; set; }
+        public bool Bayshore { get; set; }
+        public bool Headstart { get; set; }
+        public bool AdultSchool { get; set; }
         public string Income { get; set; }
         public string TutorContact { get; set; }
         public string StudentPreference { get; set; }
@@ -110,27 +110,27 @@ namespace LitProRead.Models
         public string HowHeard { get; set; }
         public Nullable<System.DateTime> WelcomePacketSentDate { get; set; }
         public string WhyProjRead { get; set; }
-        public Nullable<bool> AvailMonAM { get; set; }
-        public Nullable<bool> AvailMonPM { get; set; }
-        public Nullable<bool> AvailMonEVE { get; set; }
-        public Nullable<bool> AvailTueAM { get; set; }
-        public Nullable<bool> AvailTuePM { get; set; }
-        public Nullable<bool> AvailTueEVE { get; set; }
-        public Nullable<bool> AvailWedAM { get; set; }
-        public Nullable<bool> AvailWedPM { get; set; }
-        public Nullable<bool> AvailWedEVE { get; set; }
-        public Nullable<bool> AvailThuAM { get; set; }
-        public Nullable<bool> AvailThuPM { get; set; }
-        public Nullable<bool> AvailThudEVE { get; set; }
-        public Nullable<bool> AvailFriAM { get; set; }
-        public Nullable<bool> AvailFriPM { get; set; }
-        public Nullable<bool> AvailFriEVE { get; set; }
-        public Nullable<bool> AvailSatAM { get; set; }
-        public Nullable<bool> AvailSatPM { get; set; }
-        public Nullable<bool> AvailSatEVE { get; set; }
-        public Nullable<bool> AvailSunAM { get; set; }
-        public Nullable<bool> AvailSunPM { get; set; }
-        public Nullable<bool> AvailSunEVE { get; set; }
+        public bool AvailMonAM { get; set; }
+        public bool AvailMonPM { get; set; }
+        public bool AvailMonEVE { get; set; }
+        public bool AvailTueAM { get; set; }
+        public bool AvailTuePM { get; set; }
+        public bool AvailTueEVE { get; set; }
+        public bool AvailWedAM { get; set; }
+        public bool AvailWedPM { get; set; }
+        public bool AvailWedEVE { get; set; }
+        public bool AvailThuAM { get; set; }
+        public bool AvailThuPM { get; set; }
+        public bool AvailThudEVE { get; set; }
+        public bool AvailFriAM { get; set; }
+        public bool AvailFriPM { get; set; }
+        public bool AvailFriEVE { get; set; }
+        public bool AvailSatAM { get; set; }
+        public bool AvailSatPM { get; set; }
+        public bool AvailSatEVE { get; set; }
+        public bool AvailSunAM { get; set; }
+        public bool AvailSunPM { get; set; }
+        public bool AvailSunEVE { get; set; }
         public string Comments { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }

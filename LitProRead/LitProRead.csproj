@@ -151,6 +151,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
+    <Compile Include="Controllers\TutorController.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -234,6 +235,7 @@
     <Compile Include="Models\Contacts_Query_Query.cs">
       <DependentUpon>LitProReadModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DbHelper.cs" />
     <Compile Include="Models\Donor.cs">
       <DependentUpon>LitProReadModel.tt</DependentUpon>
     </Compile>
@@ -665,13 +667,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\TutorFormViewModel.cs" />
     <Compile Include="ViewModels\StudentVM.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
     <Compile Include="ViewModels\StudentFormViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\chosen.css" />
+    <Content Include="Content\megafish.css" />
     <Content Include="Content\select2.css" />
+    <Content Include="Content\superfish-navbar.css" />
+    <Content Include="Content\superfish-vertical.css" />
+    <Content Include="Content\superfish.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -806,11 +813,13 @@
     <EmbeddedResource Include="Reports\rdlc\StudentWaitTime.rdlc" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\appjs\student-general.partialview.js" />
+    <Content Include="Scripts\hoverIntent.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.serializeJSON.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -823,6 +832,8 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\literacy.js" />
     <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\superfish.js" />
+    <Content Include="Scripts\supersubs.js" />
     <Content Include="Scripts\toDictionary.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -849,7 +860,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Reports.cshtml" />
-    <Content Include="Views\Home\Forms.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config">
@@ -876,6 +886,9 @@
     <Content Include="Views\Shared\_Student-General-View.cshtml" />
     <Content Include="Views\Shared\_Student-Preferences-View.cshtml" />
     <Content Include="Views\Shared\_Student-All-View.cshtml" />
+    <Content Include="Views\Tutor\Index.cshtml" />
+    <Content Include="Views\Shared\_Tutor-General-View.cshtml" />
+    <Content Include="Views\Shared\_Tutor-Preferences-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

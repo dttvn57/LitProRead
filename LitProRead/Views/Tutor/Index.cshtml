@@ -1,0 +1,715 @@
+﻿@model LitProRead.ViewModels.TutorFormViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+    var currTutorId = 0;
+    var editMode = "add";
+}
+
+<style>
+    .select2-container {
+        width:250px;
+    }
+</style>
+
+<div>
+T U T O R S
+</div>
+
+@*
+<div id="tabs">
+*@
+    @* ----------------------------------------------------- *@
+    <div id="tabs-Tutors">
+
+        @*
+        <form id="Tutorform" method="post" action="@Url.Action("Forms")" 
+            data-otf-ajax="true" data-otf-target="#Tutor-General">
+        <form id="Tutorform">
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "Tutorform" }))
+        *@
+        @*
+        @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { HttpMethod = "POST", OnComplete="_EditComplete", UpdateTargetId = "divTutor", InsertionMode = InsertionMode.Replace }))
+        *@
+        @using (Html.BeginForm("Edit", "Tutor", FormMethod.Post))
+        { 
+            @*
+            @Html.AntiForgeryToken()
+              @Html.HiddenFor(x => Model.CurrentTutor.ID)
+          *@
+            
+            @Html.ValidationSummary(true)
+
+            
+            <table>
+                <colgroup>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                </colgroup>
+@*
+                <tr>
+                    <td>
+                                    @Html.TextBoxFor(x => x.CurrentTutor.ID)
+
+                    </td>
+                </tr>
+*@
+                <tr>
+                    <td style="text-align:right; border:0 none;">Last Name
+                    </td>
+                    <td style="text-align:left; border:0 none;">
+                        @*
+                         <input id="TutorListLastName" type="hidden" style="width: 250px"/>
+                         @Html.ValidationMessageFor(x => Model.TutorListLastName)
+                        @Html.ValidationMessageFor(x => Model.TutorListFirstName)
+
+                        @Html.ValidationMessageFor(m => m.TutorLastNameID)
+                        @Html.DropDownListFor(x => x.TutorListLastName, Model.TutorListLastName, string.Empty, new { style = "width: 250px;", @onchange = "onTutorLastNameChange(this.options[this.selectedIndex].value);" })
+                      *@
+                        @Html.TextBoxFor(m => m.TutorLastNameID, new { id = "TutorListLastName" }) 
+
+                    </td>
+                    <td style="text-align:right; border:0 none;">First Name
+                    </td>
+                    <td style="text-align:left; border:0 none;">
+
+
+                        @Html.TextBoxFor(m => m.TutorFirstNameID, htmlAttributes: new { id = "TutorListFirstName" }) 
+                        @*
+                        @Html.DropDownListFor(x => x.TutorFirstNameID, Model.TutorListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange = "onTutorFirstNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.ValidationMessageFor(m => m.TutorFirstNameID)
+                        *@
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="5" style="text-align:center">
+                        <button type="button" id="refreshTutor">Refresh</button>
+                        <button type="button" id="TutorAdd">Add</button>
+                        <button type="button" id="TutorEdit">Edit</button>
+                        <button type="button" id="deleteTutor">Delete</button>
+                        
+                        <input type="submit" value="Save" />
+                        @*
+                        <button type="button" id="saveTutor">Save</button>
+                        *@
+
+                        <button type="button" id="printTutor">Print</button>
+
+                    </td>
+                </tr>
+            </table>
+
+                @*
+                @Html.ListBoxFor(x => Model.TutorVM.TutorListFirstName, Model.TutorVM.TutorListFirstName, new { @class = "chosen", Style = "width: 150px;" })
+                @Html.DropDownListFor(x => Model.TutorVM.TutorListFirstName, Model.TutorVM.TutorListFirstName, "select", new { @ID = "ddlCountry", @class = "chosen-select", Style = "width: 150px;" })
+            
+            
+                    ,new { @class = "chzn-select", data_placeholder = "Choose  Countries..." })
+                @Html.DropDownListFor("", new SelectList(Model.Departments, "DepartmentId", "Name"), string.Empty)
+                <input type="search" name="searchTerm" data-otf-autocomplete="@Url.Action("Autocomplete")" />
+                <input type="submit" value="Search" />
+                *@
+
+            
+        
+            <hr>
+
+            <ul>
+                <li><a href="#Tutor-General">General</a></li>
+                <li><a href="#Tutor-Preferences">Preferences</a></li>
+                <li><a href="#tabs-Matching-S">Matching-S</a></li>
+                <li><a href="#tabs-Children">Children</a></li>
+                <li><a href="#tabs-Computer">Computer</a></li>
+                <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
+                <li><a href="#tabs-Assessment-Goals">Assessment Goals</a></li>
+                <li><a href="#tabs-Roles-and-Goals">Roles and Goals</a></li>
+                <li><a href="#tabs-Accomplishements">Accomplishements</a></li>
+                <li><a href="#tabs-Comments">Comments</a></li>
+                <li><a href="#tabs-FollowUp">FollowUp</a></li>
+                <li><a href="#tabs-Status-History">Status History</a></li>
+            </ul>
+
+            
+            <div>
+                @Html.Partial("_Tutor-General-View", Model) 
+            </div>
+       
+            <div>
+                @Html.Partial("_Tutor-Preferences-View", Model)
+            </div>
+    @*
+             <div id="divTutor">
+               @Html.Partial("_Tutor-All-View", Model) 
+           </div>
+      *@
+           
+            <div id="tabs-Matching-S">
+                Matching-S
+            </div>
+       
+            <div id="tabs-Children">
+                Children
+            </div>
+       
+            <div id="tabs-Computer">
+                Computer
+            </div>
+       
+            <div id="tabs-Assessment-Intake">
+                Assessment-Intake
+            </div>
+       
+            <div id="tabs-Assessment-Goals">
+                Assessment-Goals
+            </div>
+       
+            <div id="tabs-Roles-and-Goals">
+                Roles-and-Goals
+            </div>
+       
+            <div id="tabs-Accomplishements">
+                Accomplishements
+            </div>
+       
+            <div id="tabs-Comments">
+                Comments
+            </div>
+       
+            <div id="tabs-FollowUp">
+                FollowUp
+            </div>
+       
+            <div id="tabs-Status-History">
+                Status-History
+            </div>
+
+        } @* </form> *@
+    </div>
+
+@section scripts
+{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>
+    <link rel="stylesheet" media="screen" href="@Url.Content("~/Content/superfish.css")"/>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/toDictionary.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.serializeJSON.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/superfish.js")"</script>
+
+     @*
+     <script type="text/javascript" src="@Url.Content("~/Scripts/appjs/Tutor-general.partialview.js")"></script>
+  There are two ways.
+    First one is the common way that serializes your form (when your ViewModel data is presented in the view as a form). Ajax call will likely be issued within form submit handler (meaning that this will refer to form DOM element):
+
+    $.ajax({ ..., data: $(this).serialize(), ...});
+
+    As you can see, there's no use of toDictionary in this case because most of the things will work out of the box. Vast majority of forms aren't dynamic so they don't just add additional fields to them.
+
+    Second way is less common and uses a JSON object and posts back that one. In this case there's no completely direct way of providing your server-side ViewModel on the client (unless you JSON-encode it and send it within the view). So when you want your actual ViewModel instance to access on the client then supposedly JSON encode it and put it i.e. as an attribute on some element that represents your model. All you'd have to do afterwards is to
+    1. read that data,
+    2. create Javascript instance of this JSON object
+    3. manipulate it
+    4. serialize it and send it back to server
+
+    var model = $.parseJSON($("#someEl").data("view-model-data"));
+    //manipulate model
+    $.ajax({ ..., data: $.toDictionary(model),... });
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".datefield").datepicker();
+
+        });
+    </script>
+    *@
+
+    @*
+    <script type="text/javascript">
+        function _EditComplete(data) {
+            // alert(data.responseText);
+            //var JsonObj = $.parseJSON(data.responseText);
+            //$("#span1").html(JsonObj.Tutor.Name);
+            //$("#span2").html(JsonObj.Teacher.Name);
+        }
+    </script>
+
+    <script type="text/javascript">
+        //function onTutorLastNameChange(value) {
+        function onTutorLastNameChange() {
+            currTutorId = ($("#TutorListLastName").select2("val"));
+            //alert(currTutorId);
+            //alert($("#TutorListLastName").select2("val"));
+            //$("#TutorListFirstName").select2("val", "Aaron Ford");
+        }
+    </script>
+    
+    <script type="text/javascript">
+        function onTutorFirstNameChange(value) {
+            currTutorId = ($("#TutorListFirstName").select2("val"));
+            //alert(currTutorId);
+        }
+    </script>
+    *@
+
+    <script type="text/javascript">
+        function getFormattedDate(date) {
+            //var dt = data.CurrentTutor.ActiveDate.toString();
+            var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
+            return new Date(dt);
+        }
+    </script>
+
+    <script type="text/javascript">
+        function populateTutorForm(data) {
+            $('#CurrentTutor_ID').val(data.CurrentTutor.ID);
+            $('#CurrentTutor_Salutation').val(data.CurrentTutor.Salutation);
+            $('#CurrentTutor_FirstName').val(data.CurrentTutor.FirstName);
+            $('#CurrentTutor_LastName').val(data.CurrentTutor.LastName);
+            $('#CurrentTutor_Address1').val(data.CurrentTutor.Address1);
+            $('#CurrentTutor_Address2').val(data.CurrentTutor.Address2);
+            $('#CurrentTutor_City').val(data.CurrentTutor.City);
+            $('#CurrentTutor_State').val(data.CurrentTutor.State);
+            $('#CurrentTutor_Zip').val(data.CurrentTutor.Zip);
+            $('#CurrentTutor_HomeAreaCode').val(data.CurrentTutor.HomeAreaCode);
+            $('#CurrentTutor_HomePhone').val(data.CurrentTutor.HomePhone);
+            $('#CurrentTutor_WorkAreaCode').val(data.CurrentTutor.WorkAreaCode);
+            $('#CurrentTutor_WorkPhone').val(data.CurrentTutor.WorkPhone);
+            $('#CurrentTutor_WorkPhoneExt').val(data.CurrentTutor.WorkPhoneExt);
+            $('#CurrentTutor_FAXAreaCode').val(data.CurrentTutor.FAXAreaCode);
+            $('#CurrentTutor_FAX').val(data.CurrentTutor.FAX);
+            $('#CurrentTutor_CellAreaCode1').val(data.CurrentTutor.CellAreaCode1);
+            $('#CurrentTutor_CellPhone1').val(data.CurrentTutor.CellPhone1);
+            $('#CurrentTutor_CellAreaCode2').val(data.CurrentTutor.CellAreaCode2);
+            $('#CurrentTutor_CellAreaPhone2').val(data.CurrentTutor.CellAreaPhone2);
+            $('#CurrentTutor_ContactPref').val(data.CurrentTutor.ContactPref);
+            $('#CurrentTutor_EMail').val(data.CurrentTutor.EMail);
+            $('#CurrentTutor_Gender').val(data.CurrentTutor.Gender);
+            $('#CurrentTutor_Ethnicity').val(data.CurrentTutor.Ethnicity);
+            $('#CurrentTutor_Income').val(data.CurrentTutor.Income);
+            $('#CurrentTutor_Occupation').val(data.CurrentTutor.Occupation);
+            $('#CurrentTutor_Employer').val(data.CurrentTutor.Employer);
+            $('#CurrentTutor_EmployerStatus').val(data.CurrentTutor.EmployerStatus);
+            $('#CurrentTutor_EmergContact').val(data.CurrentTutor.EmergContact);
+            $('#CurrentTutor_EmergAreaCode').val(data.CurrentTutor.EmergAreaCode);
+            $('#CurrentTutor_EmergPhone').val(data.CurrentTutor.EmergPhone);
+            $('#CurrentTutor_CallLocation').val(data.CurrentTutor.CallLocation);
+            $('#CurrentTutor_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.DOB));
+            $('#CurrentTutor_Country').val(data.CurrentTutor.Country);
+            $('#CurrentTutor_NativeLanguage').val(data.CurrentTutor.NativeLanguage);
+            $('#CurrentTutor_EducationLevel').val(data.CurrentTutor.EducationLevel);
+            $('#CurrentTutor_ReadWriteNativeLang').val(data.CurrentTutor.ReadWriteNativeLang);
+            $('#CurrentTutor_Referral').val(data.CurrentTutor.Referral);
+            $('#CurrentTutor_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.FingerPrintDate));
+            $('#CurrentTutor_Staff').val(data.CurrentTutor.Staff);
+            $('#CurrentTutor_Source').val(data.CurrentTutor.Source);
+            $('#CurrentTutor_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.IntakeDate));
+            $('#CurrentTutor_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.FirstActive));
+            if (data.CurrentTutor.Active == true) {
+                $('#CurrentTutor_Active').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_Active').prop("checked", false);
+            }
+            $('#CurrentTutor_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.ActiveDate));
+            $('#CurrentTutor_Status').val(data.CurrentTutor.Status);
+            if (data.CurrentTutor.InActive == true) {
+                $('#CurrentTutor_InActive').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_InActive').prop("checked", false);
+            }
+            $('#CurrentTutor_InActiveReason').val(data.CurrentTutor.InActiveReason);
+            $('#CurrentTutor_Program').val(data.CurrentTutor.Program);
+            $('#CurrentTutor_MailCode').val(data.CurrentTutor.MailCode);
+            $('#CurrentTutor_Category').val(data.CurrentTutor.Category);
+            $('#CurrentTutor_Keyword').val(data.CurrentTutor.Keyword);
+
+            if (data.CurrentTutor.AvailMonAM == true) {
+                $('#CurrentTutor_AvailMonAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailMonAM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailTueAM == true) {
+                $('#CurrentTutor_AvailTueAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailTueAM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailWedAM == true) {
+                $('#CurrentTutor_AvailWedAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailWedAM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailThuAM == true) {
+                $('#CurrentTutor_AvailThuAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailThuAM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailFriAM == true) {
+                $('#CurrentTutor_AvailFriAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailFriAM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailSatAM == true) {
+                $('#CurrentTutor_AvailSatAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailSatAM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailSunAM == true) {
+                $('#CurrentTutor_AvailSunAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailSunAM').prop("checked", false);
+            }
+
+            if (data.CurrentTutor.AvailTueAM == true) {
+                $('#CurrentTutor_AvailTueAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailTueAM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailMonPM == true) {
+                $('#CurrentTutor_AvailMonPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailMonPM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailTuePM == true) {
+                $('#CurrentTutor_AvailTuePM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailTuePM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailWedPM == true) {
+                $('#CurrentTutor_AvailWedPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailWedPM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailThuPM == true) {
+                $('#CurrentTutor_AvailThuPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailThuPM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailFriPM == true) {
+                $('#CurrentTutor_AvailFriPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailFriPM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailSatPM == true) {
+                $('#CurrentTutor_AvailSatPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailSatPM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailSunAM == true) {
+                $('#CurrentTutor_AvailSunPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailSunPM').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailMonEVE == true) {
+                $('#CurrentTutor_AvailMonEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailMonEVE').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailTueEVE == true) {
+                $('#CurrentTutor_AvailTueEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailTueEVE').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailWedEVE == true) {
+                $('#CurrentTutor_AvailWedEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailWedEVE').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailThudEVE == true) {
+                $('#CurrentTutor_AvailThudEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailThudEVE').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailFriEVE == true) {
+                $('#CurrentTutor_AvailFriEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailFriEVE').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailSatEVE == true) {
+                $('#CurrentTutor_AvailSatEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailSatEVE').prop("checked", false);
+            }
+            if (data.CurrentTutor.AvailSunEVE == true) {
+                $('#CurrentTutor_AvailSunEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentTutor_AvailSunEVE').prop("checked", false);
+            }
+
+            $('#CurrentTutor_Transportation').val(data.CurrentTutor.Transportation);
+            $('#CurrentTutor_TutorContact').val(data.CurrentTutor.TutorContact);
+            $('#CurrentTutor_SmokingPref').val(data.CurrentTutor.SmokingPref);
+            $('#CurrentTutor_LocationPref').val(data.CurrentTutor.LocationPref);
+            $('#CurrentTutor_TutorSmoker').val(data.CurrentTutor.TutorSmoker);
+            $('#CurrentTutor_MedicalInfo').val(data.CurrentTutor.MedicalInfo);
+            $('#CurrentTutor_LocationPref2').val(data.CurrentTutor.LocationPref2);
+            $('#CurrentTutor_LocationPref3').val(data.CurrentTutor.LocationPref3);
+            $('#CurrentTutor_InterestHobbies').val(data.CurrentTutor.InterestHobbies);
+            $('#CurrentTutor_TutorPreference').val(data.CurrentTutor.TutorPreference);
+            $('#CurrentTutor_SpecialInstructions').val(data.CurrentTutor.SpecialInstructions);
+            $('#CurrentTutor_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.FirstCalledByDate));
+            $('#CurrentTutor_FirstCalledBy').val(data.CurrentTutor.FirstCalledBy);
+            $('#CurrentTutor_HowHeard').val(data.CurrentTutor.HowHeard);
+            $('#CurrentTutor_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.PreLibraryCard));
+            $('#CurrentTutor_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentTutor.LibraryCard));
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var pageSize = 20;
+            //$('ul.sf-menu').superfish();
+
+            $(".datefield").datepicker();
+            $("#tabs").tabs();
+            $("#tabs-Tutors").tabs();
+
+            $("#TutorListLastName").select2(
+            {
+                placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetTutorsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: true
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentTutor_LastName').val() + ", " + $('#CurrentTutor_FirstName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
+                }
+            });
+
+            $("#TutorListLastName")
+                .on("change", function (e) {
+                    currentTutorId = e.val;
+                    alert("Tutor Last Name: " + currentTutorId);
+                })
+
+            $("#TutorListFirstName").select2(
+            {
+                placeholder: 'Enter first name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetTutorsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: false
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentTutor_FirstName').val() + " " + $('#CurrentTutor_LastName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
+                }
+            });
+
+            $("#TutorListFirstName")
+                .on("change", function (e) {
+                    currentTutorId = e.val;
+                    alert("Tutor First Name: " + currentTutorId);
+                })
+
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        @* --- ADD --- *@
+        $('#TutorAdd').click(function () {
+            alert("addTutor");
+            var firstName = $('#TutorListFirstName').val;
+            var lastName = $('#TutorListLastName').val;
+            alert("Last: " + lastName + ", " + "First: " + firstName);
+            @*
+            var Tutorvm = @(Model.TutorVM);//$("form").serialize();
+            $.ajax({
+                url: '@Url.Content("~/Tutor/Add")',
+                 type: 'get',
+                 cache: false,
+                 data: $.toDictionary(Tutorvm, "Tutorvm"),
+                 contentType: 'application/json; charset=utf-8',
+                 @ *
+                data: { Command: "approve", lastName: last, firstName: first },
+                 * @
+             }).done(function () {
+                 //alert("done");
+
+             }).complete(function () {
+                 //alert("complete");
+             }).success(function (dv) {
+                 //alert("success");
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling editTutor: " + errorMessage);
+             });
+            *@
+        });
+
+        @* --- EDIT --- *@
+        $('#TutorEdit').click(function () {
+            alert("Tutor: editTutor");
+            //var m = $("form").serialize();
+            //alert(m);
+            //var TutorId = $('#TutorListLastName').select2("val");
+            $.ajax({
+                url: '@Url.Content("~/Tutor/Edit")', @*'@Url.Content("~/Tutor/Edit")',*@
+                 type: 'get',
+                 cache: false,
+                 async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                 data: { id: currentTutorId },       //currTutorId{ Tutorvm: m }  ---- $.toDictionary(m, "Tutorvm"),
+                 @*
+                 contentType: 'application/json; charset=utf-8',
+               data: { Command: "approve", lastName: last, firstName: first },
+                 *@
+             }).done(function (data) {
+                  alert('done');
+                 //$("#Tutor-General").replaceWith(data);
+             }).complete(function () {
+                 alert("complete");
+             }).success(function (data) {
+                 editMode = "edit";
+                  alert(editMode);
+
+                 populateTutorForm(data);
+
+                 // alert(data.CurrentTutor.LastName);
+                 //alert(JSON.stringify(JsonObj));
+                 //console.log(JSON.stringify(JsonObj));
+
+                 //$("#span1").html(JsonObj.Tutor.Name);
+                 //$("#span2").html(JsonObj.Teacher.Name);
+
+                 //                     $("#Tutor-General").empty().append(data); 
+                 //                     $("#Tutor-Preferences").empty().append(data); 
+
+                 // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                 $(".datefield").datepicker();
+
+                 //alert($('#CurrentTutor_ID').val);
+
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling editTutor: " + errorMessage);
+             });
+        });
+
+
+        @* --- SAVE --- *@
+        @*
+        $('#saveTutor').click(function (dta) {
+           // alert("saveTutor");
+            var urlDest = '@Url.Content("~/Home/Create")';
+            //var vm = $('#Tutorform').serialize();//.serializeJSON();
+            if (editMode == "edit")
+            {
+                urlDest = '@Url.Content("~/Home/Edit")'
+                //alert("saveTutor goes to: " + urlDest);
+                //var json = JSON.stringify(dta);
+                //alert(JSON.stringify($('#Tutorform').serializeJSON()));
+           }
+            //var m = $("form").serialize();
+            //alert(m);
+            $.ajax({
+                 url: urlDest,
+                type: 'post',
+                 cache: false,
+                 //async: false,      // IMPORTANT to have this statement. If not then it'll display a string of the JSON.
+                 data: { TutorData: JSON.stringify($('#Tutorform').serializeJSON()) },      //{ TutorFormViewModel: vm },       { dataO: postData } -----{ Tutorvm: m }  ---- $.toDictionary(m, "Tutorvm"),
+                 @ *
+                 data: { dataO: JSON.stringify($('#Tutorform').serializeJSON()) },      //{ TutorFormViewModel: vm },       { dataO: postData } -----{ Tutorvm: m }  ---- $.toDictionary(m, "Tutorvm"),
+                 contentType: 'application/json; charset=utf-8',
+               data: { Command: "approve", lastName: last, firstName: first },
+                 * @
+             }).done(function (data) {
+                 alert("done");
+                 //$("#Tutor-General").replaceWith(data);
+             }).complete(function () {
+                 alert("complete");
+             }).success(function (data) {
+                 alert("success");
+                 populateTutorForm(data);
+
+                 // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                 $(".datefield").datepicker();
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling saveTutor: " + errorMessage);
+             });
+        });
+        *@
+    </script>
+}

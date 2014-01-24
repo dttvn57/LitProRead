@@ -238,11 +238,12 @@
 
 @section scripts
 {
-    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>  
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>
+    <link rel="stylesheet" media="screen" href="@Url.Content("~/Content/superfish.css")"/>
     <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/toDictionary.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.serializeJSON.min.js")"></script>
-
+    <script type="text/javascript" src="@Url.Content("~/Scripts/superfish.js")"</script>
 
      @*
      <script type="text/javascript" src="@Url.Content("~/Scripts/appjs/student-general.partialview.js")"></script>
@@ -271,32 +272,6 @@
         });
     </script>
     *@
-
-    <script type="text/javascript">
-        function _EditComplete(data) {
-           // alert(data.responseText);
-            //var JsonObj = $.parseJSON(data.responseText);
-            //$("#span1").html(JsonObj.Student.Name);
-            //$("#span2").html(JsonObj.Teacher.Name);
-        }
-    </script>
-
-    <script type="text/javascript">
-        //function onStudentLastNameChange(value) {
-        function onStudentLastNameChange() {
-            currStudentId = ($("#StudentListLastName").select2("val"));
-            //alert(currStudentId);
-            //alert($("#StudentListLastName").select2("val"));
-            //$("#StudentListFirstName").select2("val", "Aaron Ford");
-        }
-    </script>
-    
-    <script type="text/javascript">
-        function onStudentFirstNameChange(value) {
-            currStudentId = ($("#StudentListFirstName").select2("val"));
-            //alert(currStudentId);
-        }
-    </script>
 
     <script type="text/javascript">
         function getFormattedDate(date) {
@@ -527,6 +502,7 @@
     <script>
         $(document).ready(function () {
             var pageSize = 20;
+            $('ul.sf-menu').superfish();
 
             $(".datefield").datepicker();
             $("#tabs").tabs();
@@ -663,7 +639,7 @@
 
         @* --- EDIT --- *@
         $('#editStudent').click(function () {
-            //alert("editStudent");
+            alert("editStudent");
             //var m = $("form").serialize();
             //alert(m);
             //var studentId = $('#StudentListLastName').select2("val");

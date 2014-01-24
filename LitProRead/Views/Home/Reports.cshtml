@@ -262,12 +262,16 @@
 
 @section scripts
 {
+    <link rel="stylesheet" media="screen" href="@Url.Content("~/Content/superfish.css")"/>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/superfish.js")"</script>
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")        @* for Tabs *@
+    @*
+*@
     <script>
         $(function () {
+            //$('ul.sf-menu').superfish();
             $("#tabs").tabs();
-        });
-
-        $(function () {
             $(".datefield").datepicker();
         });
     </script>

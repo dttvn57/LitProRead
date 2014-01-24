@@ -8,6 +8,20 @@
         @Styles.Render("~/Content/css")
         @Styles.Render("~/Content/themes/base/css")  @* for Tabs *@
         @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/literacy")
+
+    <link rel="stylesheet" type="text/css" href="/superfish/css/superfish.css" media="screen" />
+    <script type="text/javascript" src="/superfish/js/hoverIntent.js"></script>
+    <script type="text/javascript" src="/superfish/js/superfish.js"></script>
+    <script type="text/javascript">
+ 
+        // initialise plugins
+        jQuery(function () {
+            jQuery('ul.sf-menu').superfish();
+        });
+ 
+    </script>
+
     </head>
     <body>
         <header>
@@ -17,10 +31,66 @@
                 </div>
                 <div class="float-right">
                     <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Forms", "Forms", "Home")</li>
+
+        <ul class="sf-menu">
+            <li class="current"><a href="#a">Forms</a>
+                <ul>
+                    <li>
+                        @*
+                        <a href="#aa">Students</a> 
+                        *@
+                        @Html.ActionLink("Students", "Index", "Student")
+                    </li>
+                    <li>@Html.ActionLink("Tutors", "Index", "Tutor")</a> </li>
+
+                    @*
+                    <li class="current"><a href="#ab">menu item</a>
+                        <ul>
+                            <li class="current"><a href="#">menu item</a></li>
+                            <li><a href="#aba">menu item</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">menu item</a>
+                        <ul>
+                            <li><a href="#">menu item</a></li>
+                            <li><a href="#">menu item</a></li>
+                            <li><a href="#">menu item</a></li>
+                        </ul>
+                    </li>
+                    *@
+                </ul>
+            </li>
+
+                @*
+            <li>
+                @Html.ActionLink("Home", "Index", "Home")
+                <a href="#">menu item</a> 
+            </li>
+                *@
+
+            <li><a href="#">Reports</a>
+                <ul>
+                    <li>
+                        @Html.ActionLink("CLLS", "Reports", "Home")
+                    </li>
+                </ul>
+            </li>
+            @*
+            <li><a href="#">menu item</a> </li>
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            *@
+        </ul>
+
+                        @*
+                        <ul class="sf-menu">
+                            <li class="current">@Html.ActionLink("Forms", "Forms", "Home")</li>
+                                <ul>
+                                    <li>@Html.ActionLink("Students", "Edit", "Student")</li>
+
+                                </ul>
                             <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
                         </ul>
+                        *@
                     </nav>
                 </div>
             </div>
@@ -42,8 +112,9 @@
         @*
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/jqueryui")        @ * for Tabs * @
-        *@
+
         @Scripts.Render("~/bundles/literacy")
+        *@
         @RenderSection("scripts", required: false)
     </body>
 </html>

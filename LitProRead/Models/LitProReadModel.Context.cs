@@ -72,6 +72,44 @@ namespace LitProRead.Models
             }
         }
 
+        //Return only the results we want
+        public List<Tutor> GetTutors(string searchTerm, int pageSize, int pageNum, bool byLastName)
+        {
+            return GetTutorsQuery(searchTerm, byLastName)
+                .Skip(pageSize * (pageNum - 1))
+                .Take(pageSize)
+                .ToList();
+        }
+
+        //And the total count of records
+        public int GetTutorsCount(string searchTerm, int pageSize, int pageNum)
+        {
+            return GetTutorsQuery(searchTerm, true)
+                .Count();
+        }
+
+
+        //Our search term
+        private IQueryable<Tutor> GetTutorsQuery(string searchTerm, bool byLastName)
+        {
+            searchTerm = searchTerm.ToLower();
+            if (byLastName)
+            {
+                return Tutors
+                    .Where(
+                        a =>
+                        a.LastName.StartsWith(searchTerm)
+                    ).OrderBy(a => a.LastName);
+            }
+            else
+            {
+                return Tutors
+                    .Where(
+                        a =>
+                        a.FirstName.StartsWith(searchTerm)
+                    ).OrderBy(a => a.FirstName);
+            }
+        }
 
         public DbSet<ChildRelationship> ChildRelationships { get; set; }
         public DbSet<Class> Classes { get; set; }

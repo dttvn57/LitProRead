@@ -1,1239 +1,715 @@
-﻿@model IEnumerable<LitProRead.Models.Student>
+﻿@model LitProRead.ViewModels.StudentFormViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Home Page";
+    var currStudentId = 0;
+    var editMode = "add";
 }
 
-<h2>Index</h2>
+<style>
+    .select2-container {
+        width:250px;
+    }
+</style>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LitProID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Salutation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.City)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.State)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Zip)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HomeAreaCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HomePhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WorkAreaCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WorkPhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WorkPhoneExt)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FAXAreaCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FAX)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CellAreaCode1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CellPhone1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CellAreaCode2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CellAreaPhone2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContactPref)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EMail)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FingerPrintDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Source)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Staff)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Active)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ActiveDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ActiveType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InActiveDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InActiveReason)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MailCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DOB)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Country)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Occupation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmergContact)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmergAreaCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmergPhone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Employer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployerStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Referral)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Keyword)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FollowUpDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FollowUpDesc)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FFL)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InitialSurveyDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FollowUpSurveyDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Program)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.C1_1Tutoring)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.C_1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.C_2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.C_3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Family_Literacy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FFL_1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FFL_2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FFL_3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CompLab)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Lab1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Lab2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Lab3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OpenLab)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SmallGroups)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InHouse)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LPT)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.C411)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ESL)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Reading_Sharing)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OffSite)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Project90)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Jericho)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Bayshore)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Headstart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AdultSchool)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Income)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StudentContact)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TutorPreference)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LocationPref)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LocationPref2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LocationPref3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Transportation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InterestHobbies)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SmokingPref)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TutorSmoker)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CallLocation)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SpecialInstructions)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MedicalInfo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NativeLanguage)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReadWriteNativeLang)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EducationLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PreLibraryCard)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LibraryCard)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IntakeDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstCalledBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstCalledByDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HowHeard)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NeedChildCare)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TotalChildren)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child1Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child1Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child1DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child1Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child2Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child2Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child2DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child2Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child3Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child3Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child3DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child3Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child4Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child4Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child4DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child4Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child5Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child5Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child5DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child5Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child6Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child6Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child6DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child6Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child7Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child7Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child7DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child7Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child8Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child8Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child8DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child8Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child9Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child9Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child9DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child9Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child10Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child10Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child10DateBorn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Child10Ethnicity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailMonAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailMonPM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailMonEVE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailTueAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailTuePM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailTueEVE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailWedAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailWedPM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailWedEVE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailThuAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailThuPM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailThudEVE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailFriAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailFriPM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailFriEVE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailSatAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailSatPM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailSatEVE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailSunAM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailSunPM)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AvailSunEVE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessIntakeDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessIntel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessWork)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessFamilyMember)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessLifeLongLearner)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessCommunityMember)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessReadTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessMiscues)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssessWordRec)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish4)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate4)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish5)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate5)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish6)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate6)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish7)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate7)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish8)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate8)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish9)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate9)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Accomplish10)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AcDate10)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccomplishNotes)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comments)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateModified)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastModifiedBy)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Hyperlink1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Hyperlink2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Hyperlink3)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Hyperlink4)
-        </th>
-        <th></th>
-    </tr>
+<div>
+S T U D E N T S
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LitProID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Salutation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.City)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.State)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Zip)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HomeAreaCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HomePhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkAreaCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WorkPhoneExt)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FAXAreaCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FAX)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CellAreaCode1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CellPhone1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CellAreaCode2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CellAreaPhone2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContactPref)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EMail)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FingerPrintDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Source)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Staff)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Active)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ActiveDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ActiveType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InActiveDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InActiveReason)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MailCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DOB)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Country)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Occupation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmergContact)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmergAreaCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmergPhone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EmployerStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Referral)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Keyword)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FollowUpDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FollowUpDesc)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FFL)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InitialSurveyDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FollowUpSurveyDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Program)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.C1_1Tutoring)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.C_1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.C_2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.C_3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Family_Literacy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FFL_1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FFL_2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FFL_3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CompLab)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lab1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lab2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Lab3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OpenLab)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SmallGroups)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InHouse)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LPT)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.C411)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ESL)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Reading_Sharing)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OffSite)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project90)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Jericho)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Bayshore)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Headstart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AdultSchool)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Income)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudentContact)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TutorPreference)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationPref)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationPref2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LocationPref3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Transportation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InterestHobbies)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SmokingPref)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TutorSmoker)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CallLocation)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SpecialInstructions)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MedicalInfo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NativeLanguage)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReadWriteNativeLang)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EducationLevel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PreLibraryCard)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LibraryCard)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IntakeDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstCalledBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstCalledByDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HowHeard)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NeedChildCare)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TotalChildren)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child1Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child1Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child1DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child1Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child2Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child2Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child2DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child2Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child3Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child3Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child3DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child3Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child4Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child4Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child4DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child4Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child5Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child5Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child5DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child5Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child6Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child6Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child6DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child6Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child7Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child7Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child7DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child7Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child8Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child8Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child8DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child8Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child9Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child9Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child9DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child9Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child10Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child10Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child10DateBorn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Child10Ethnicity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailMonAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailMonPM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailMonEVE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailTueAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailTuePM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailTueEVE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailWedAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailWedPM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailWedEVE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailThuAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailThuPM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailThudEVE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailFriAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailFriPM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailFriEVE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailSatAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailSatPM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailSatEVE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailSunAM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailSunPM)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AvailSunEVE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessIntakeDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessIntel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessLevel)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessWork)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessFamilyMember)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessLifeLongLearner)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessCommunityMember)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessReadTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessMiscues)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssessWordRec)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish4)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate4)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish5)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate5)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish6)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate6)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish7)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate7)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish8)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate8)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish9)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate9)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Accomplish10)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AcDate10)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccomplishNotes)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comments)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateModified)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastModifiedBy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hyperlink1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hyperlink2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hyperlink3)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hyperlink4)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+@*
+<div id="tabs">
+*@
+    @* ----------------------------------------------------- *@
+    <div id="tabs-Students">
+
+        @*
+        <form id="studentform" method="post" action="@Url.Action("Forms")" 
+            data-otf-ajax="true" data-otf-target="#Student-General">
+        <form id="studentform">
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "studentform" }))
+        *@
+        @*
+        @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { HttpMethod = "POST", OnComplete="_EditComplete", UpdateTargetId = "divStudent", InsertionMode = InsertionMode.Replace }))
+        *@
+        @using (Html.BeginForm("Edit", "Student", FormMethod.Post))
+        { 
+            @*
+            @Html.AntiForgeryToken()
+              @Html.HiddenFor(x => Model.CurrentStudent.ID)
+          *@
+            
+            @Html.ValidationSummary(true)
+
+            
+            <table>
+                <colgroup>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                        <col style="width:20%;"/>
+                </colgroup>
+@*
+                <tr>
+                    <td>
+                                    @Html.TextBoxFor(x => x.CurrentStudent.ID)
+
+                    </td>
+                </tr>
+*@
+                <tr>
+                    <td style="text-align:right; border:0 none;">Last Name
+                    </td>
+                    <td style="text-align:left; border:0 none;">
+                        @*
+                         <input id="StudentListLastName" type="hidden" style="width: 250px"/>
+                         @Html.ValidationMessageFor(x => Model.StudentListLastName)
+                        @Html.ValidationMessageFor(x => Model.StudentListFirstName)
+
+                        @Html.ValidationMessageFor(m => m.StudentLastNameID)
+                        @Html.DropDownListFor(x => x.StudentListLastName, Model.StudentListLastName, string.Empty, new { style = "width: 250px;", @onchange = "onStudentLastNameChange(this.options[this.selectedIndex].value);" })
+                      *@
+                        @Html.TextBoxFor(m => m.StudentLastNameID, new { id = "StudentListLastName" }) 
+
+                    </td>
+                    <td style="text-align:right; border:0 none;">First Name
+                    </td>
+                    <td style="text-align:left; border:0 none;">
+
+
+                        @Html.TextBoxFor(m => m.StudentFirstNameID, htmlAttributes: new { id = "StudentListFirstName" }) 
+                        @*
+                        @Html.DropDownListFor(x => x.StudentFirstNameID, Model.StudentListFirstName, string.Empty, htmlAttributes: new { style = "width: 250px;", @onchange = "onStudentFirstNameChange(this.options[this.selectedIndex].value);" })
+                        @Html.ValidationMessageFor(m => m.StudentFirstNameID)
+                        *@
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="5" style="text-align:center">
+                        <button type="button" id="refreshStudent">Refresh</button>
+                        <button type="button" id="studentAdd">Add</button>
+                        <button type="button" id="studentEdit">Edit</button>
+                        <button type="button" id="deleteStudent">Delete</button>
+                        
+                        <input type="submit" value="Save" />
+                        @*
+                        <button type="button" id="saveStudent">Save</button>
+                        *@
+
+                        <button type="button" id="printStudent">Print</button>
+
+                    </td>
+                </tr>
+            </table>
+
+                @*
+                @Html.ListBoxFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, new { @class = "chosen", Style = "width: 150px;" })
+                @Html.DropDownListFor(x => Model.studentVM.StudentListFirstName, Model.studentVM.StudentListFirstName, "select", new { @ID = "ddlCountry", @class = "chosen-select", Style = "width: 150px;" })
+            
+            
+                    ,new { @class = "chzn-select", data_placeholder = "Choose  Countries..." })
+                @Html.DropDownListFor("", new SelectList(Model.Departments, "DepartmentId", "Name"), string.Empty)
+                <input type="search" name="searchTerm" data-otf-autocomplete="@Url.Action("Autocomplete")" />
+                <input type="submit" value="Search" />
+                *@
+
+            
+        
+            <hr>
+
+            <ul>
+                <li><a href="#Student-General">General</a></li>
+                <li><a href="#Student-Preferences">Preferences</a></li>
+                <li><a href="#tabs-Matching-S">Matching-S</a></li>
+                <li><a href="#tabs-Children">Children</a></li>
+                <li><a href="#tabs-Computer">Computer</a></li>
+                <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
+                <li><a href="#tabs-Assessment-Goals">Assessment Goals</a></li>
+                <li><a href="#tabs-Roles-and-Goals">Roles and Goals</a></li>
+                <li><a href="#tabs-Accomplishements">Accomplishements</a></li>
+                <li><a href="#tabs-Comments">Comments</a></li>
+                <li><a href="#tabs-FollowUp">FollowUp</a></li>
+                <li><a href="#tabs-Status-History">Status History</a></li>
+            </ul>
+
+            
+            <div>
+                @Html.Partial("_Student-General-View", Model) 
+            </div>
+       
+            <div>
+                @Html.Partial("_Student-Preferences-View", Model)
+            </div>
+    @*
+             <div id="divStudent">
+               @Html.Partial("_Student-All-View", Model) 
+           </div>
+      *@
+           
+            <div id="tabs-Matching-S">
+                Matching-S
+            </div>
+       
+            <div id="tabs-Children">
+                Children
+            </div>
+       
+            <div id="tabs-Computer">
+                Computer
+            </div>
+       
+            <div id="tabs-Assessment-Intake">
+                Assessment-Intake
+            </div>
+       
+            <div id="tabs-Assessment-Goals">
+                Assessment-Goals
+            </div>
+       
+            <div id="tabs-Roles-and-Goals">
+                Roles-and-Goals
+            </div>
+       
+            <div id="tabs-Accomplishements">
+                Accomplishements
+            </div>
+       
+            <div id="tabs-Comments">
+                Comments
+            </div>
+       
+            <div id="tabs-FollowUp">
+                FollowUp
+            </div>
+       
+            <div id="tabs-Status-History">
+                Status-History
+            </div>
+
+        } @* </form> *@
+    </div>
+
+@section scripts
+{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>
+    <link rel="stylesheet" media="screen" href="@Url.Content("~/Content/superfish.css")"/>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/toDictionary.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.serializeJSON.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/superfish.js")"</script>
+
+     @*
+     <script type="text/javascript" src="@Url.Content("~/Scripts/appjs/student-general.partialview.js")"></script>
+  There are two ways.
+    First one is the common way that serializes your form (when your ViewModel data is presented in the view as a form). Ajax call will likely be issued within form submit handler (meaning that this will refer to form DOM element):
+
+    $.ajax({ ..., data: $(this).serialize(), ...});
+
+    As you can see, there's no use of toDictionary in this case because most of the things will work out of the box. Vast majority of forms aren't dynamic so they don't just add additional fields to them.
+
+    Second way is less common and uses a JSON object and posts back that one. In this case there's no completely direct way of providing your server-side ViewModel on the client (unless you JSON-encode it and send it within the view). So when you want your actual ViewModel instance to access on the client then supposedly JSON encode it and put it i.e. as an attribute on some element that represents your model. All you'd have to do afterwards is to
+    1. read that data,
+    2. create Javascript instance of this JSON object
+    3. manipulate it
+    4. serialize it and send it back to server
+
+    var model = $.parseJSON($("#someEl").data("view-model-data"));
+    //manipulate model
+    $.ajax({ ..., data: $.toDictionary(model),... });
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".datefield").datepicker();
+
+        });
+    </script>
+    *@
+
+    @*
+    <script type="text/javascript">
+        function _EditComplete(data) {
+            // alert(data.responseText);
+            //var JsonObj = $.parseJSON(data.responseText);
+            //$("#span1").html(JsonObj.Student.Name);
+            //$("#span2").html(JsonObj.Teacher.Name);
+        }
+    </script>
+
+    <script type="text/javascript">
+        //function onStudentLastNameChange(value) {
+        function onStudentLastNameChange() {
+            currStudentId = ($("#StudentListLastName").select2("val"));
+            //alert(currStudentId);
+            //alert($("#StudentListLastName").select2("val"));
+            //$("#StudentListFirstName").select2("val", "Aaron Ford");
+        }
+    </script>
+    
+    <script type="text/javascript">
+        function onStudentFirstNameChange(value) {
+            currStudentId = ($("#StudentListFirstName").select2("val"));
+            //alert(currStudentId);
+        }
+    </script>
+    *@
+
+    <script type="text/javascript">
+        function getFormattedDate(date) {
+            //var dt = data.CurrentStudent.ActiveDate.toString();
+            var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
+            return new Date(dt);
+        }
+    </script>
+
+    <script type="text/javascript">
+        function populateStudentForm(data) {
+            $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
+            $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
+            $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
+            $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+            $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
+            $('#CurrentStudent_Address2').val(data.CurrentStudent.Address2);
+            $('#CurrentStudent_City').val(data.CurrentStudent.City);
+            $('#CurrentStudent_State').val(data.CurrentStudent.State);
+            $('#CurrentStudent_Zip').val(data.CurrentStudent.Zip);
+            $('#CurrentStudent_HomeAreaCode').val(data.CurrentStudent.HomeAreaCode);
+            $('#CurrentStudent_HomePhone').val(data.CurrentStudent.HomePhone);
+            $('#CurrentStudent_WorkAreaCode').val(data.CurrentStudent.WorkAreaCode);
+            $('#CurrentStudent_WorkPhone').val(data.CurrentStudent.WorkPhone);
+            $('#CurrentStudent_WorkPhoneExt').val(data.CurrentStudent.WorkPhoneExt);
+            $('#CurrentStudent_FAXAreaCode').val(data.CurrentStudent.FAXAreaCode);
+            $('#CurrentStudent_FAX').val(data.CurrentStudent.FAX);
+            $('#CurrentStudent_CellAreaCode1').val(data.CurrentStudent.CellAreaCode1);
+            $('#CurrentStudent_CellPhone1').val(data.CurrentStudent.CellPhone1);
+            $('#CurrentStudent_CellAreaCode2').val(data.CurrentStudent.CellAreaCode2);
+            $('#CurrentStudent_CellAreaPhone2').val(data.CurrentStudent.CellAreaPhone2);
+            $('#CurrentStudent_ContactPref').val(data.CurrentStudent.ContactPref);
+            $('#CurrentStudent_EMail').val(data.CurrentStudent.EMail);
+            $('#CurrentStudent_Gender').val(data.CurrentStudent.Gender);
+            $('#CurrentStudent_Ethnicity').val(data.CurrentStudent.Ethnicity);
+            $('#CurrentStudent_Income').val(data.CurrentStudent.Income);
+            $('#CurrentStudent_Occupation').val(data.CurrentStudent.Occupation);
+            $('#CurrentStudent_Employer').val(data.CurrentStudent.Employer);
+            $('#CurrentStudent_EmployerStatus').val(data.CurrentStudent.EmployerStatus);
+            $('#CurrentStudent_EmergContact').val(data.CurrentStudent.EmergContact);
+            $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
+            $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
+            $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
+            $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.DOB));
+            $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
+            $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
+            $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
+            $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
+            $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
+            $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FingerPrintDate));
+            $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
+            $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
+            $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.IntakeDate));
+            $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstActive));
+            if (data.CurrentStudent.Active == true) {
+                $('#CurrentStudent_Active').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_Active').prop("checked", false);
+            }
+            $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
+            $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
+            if (data.CurrentStudent.InActive == true) {
+                $('#CurrentStudent_InActive').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_InActive').prop("checked", false);
+            }
+            $('#CurrentStudent_InActiveReason').val(data.CurrentStudent.InActiveReason);
+            $('#CurrentStudent_Program').val(data.CurrentStudent.Program);
+            $('#CurrentStudent_MailCode').val(data.CurrentStudent.MailCode);
+            $('#CurrentStudent_Category').val(data.CurrentStudent.Category);
+            $('#CurrentStudent_Keyword').val(data.CurrentStudent.Keyword);
+
+            if (data.CurrentStudent.AvailMonAM == true) {
+                $('#CurrentStudent_AvailMonAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailMonAM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailTueAM == true) {
+                $('#CurrentStudent_AvailTueAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailTueAM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailWedAM == true) {
+                $('#CurrentStudent_AvailWedAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailWedAM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailThuAM == true) {
+                $('#CurrentStudent_AvailThuAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailThuAM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailFriAM == true) {
+                $('#CurrentStudent_AvailFriAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailFriAM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailSatAM == true) {
+                $('#CurrentStudent_AvailSatAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailSatAM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailSunAM == true) {
+                $('#CurrentStudent_AvailSunAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailSunAM').prop("checked", false);
+            }
+
+            if (data.CurrentStudent.AvailTueAM == true) {
+                $('#CurrentStudent_AvailTueAM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailTueAM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailMonPM == true) {
+                $('#CurrentStudent_AvailMonPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailMonPM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailTuePM == true) {
+                $('#CurrentStudent_AvailTuePM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailTuePM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailWedPM == true) {
+                $('#CurrentStudent_AvailWedPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailWedPM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailThuPM == true) {
+                $('#CurrentStudent_AvailThuPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailThuPM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailFriPM == true) {
+                $('#CurrentStudent_AvailFriPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailFriPM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailSatPM == true) {
+                $('#CurrentStudent_AvailSatPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailSatPM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailSunAM == true) {
+                $('#CurrentStudent_AvailSunPM').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailSunPM').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailMonEVE == true) {
+                $('#CurrentStudent_AvailMonEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailMonEVE').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailTueEVE == true) {
+                $('#CurrentStudent_AvailTueEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailTueEVE').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailWedEVE == true) {
+                $('#CurrentStudent_AvailWedEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailWedEVE').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailThudEVE == true) {
+                $('#CurrentStudent_AvailThudEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailThudEVE').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailFriEVE == true) {
+                $('#CurrentStudent_AvailFriEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailFriEVE').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailSatEVE == true) {
+                $('#CurrentStudent_AvailSatEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailSatEVE').prop("checked", false);
+            }
+            if (data.CurrentStudent.AvailSunEVE == true) {
+                $('#CurrentStudent_AvailSunEVE').prop("checked", true);
+            }
+            else {
+                $('#CurrentStudent_AvailSunEVE').prop("checked", false);
+            }
+
+            $('#CurrentStudent_Transportation').val(data.CurrentStudent.Transportation);
+            $('#CurrentStudent_StudentContact').val(data.CurrentStudent.StudentContact);
+            $('#CurrentStudent_SmokingPref').val(data.CurrentStudent.SmokingPref);
+            $('#CurrentStudent_LocationPref').val(data.CurrentStudent.LocationPref);
+            $('#CurrentStudent_TutorSmoker').val(data.CurrentStudent.TutorSmoker);
+            $('#CurrentStudent_MedicalInfo').val(data.CurrentStudent.MedicalInfo);
+            $('#CurrentStudent_LocationPref2').val(data.CurrentStudent.LocationPref2);
+            $('#CurrentStudent_LocationPref3').val(data.CurrentStudent.LocationPref3);
+            $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
+            $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
+            $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
+            $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
+            $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
+            $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
+            $('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
+            $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var pageSize = 20;
+            //$('ul.sf-menu').superfish();
+
+            $(".datefield").datepicker();
+            $("#tabs").tabs();
+            $("#tabs-Students").tabs();
+
+            $("#StudentListLastName").select2(
+            {
+                placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetStudentsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: true
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentStudent_LastName').val() + ", " + $('#CurrentStudent_FirstName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
+                }
+            });
+
+            $("#StudentListLastName")
+                .on("change", function (e) {
+                    currentStudentId = e.val;
+                    alert("Student Last Name: " + currentStudentId);
+                })
+
+            $("#StudentListFirstName").select2(
+            {
+                placeholder: 'Enter first name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetStudentsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: false
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentStudent_FirstName').val() + " " + $('#CurrentStudent_LastName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
+                }
+            });
+
+            $("#StudentListFirstName")
+                .on("change", function (e) {
+                    currentStudentId = e.val;
+                    alert("Student First Name: " + currentStudentId);
+                })
+
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        @* --- ADD --- *@
+        $('#studentAdd').click(function () {
+            alert("addStudent");
+            var firstName = $('#StudentListFirstName').val;
+            var lastName = $('#StudentListLastName').val;
+            alert("Last: " + lastName + ", " + "First: " + firstName);
+            @*
+            var studentvm = @(Model.studentVM);//$("form").serialize();
+            $.ajax({
+                url: '@Url.Content("~/Student/Add")',
+                 type: 'get',
+                 cache: false,
+                 data: $.toDictionary(studentvm, "studentvm"),
+                 contentType: 'application/json; charset=utf-8',
+                 @ *
+                data: { Command: "approve", lastName: last, firstName: first },
+                 * @
+             }).done(function () {
+                 //alert("done");
+
+             }).complete(function () {
+                 //alert("complete");
+             }).success(function (dv) {
+                 //alert("success");
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling editStudent: " + errorMessage);
+             });
+            *@
+        });
+
+        @* --- EDIT --- *@
+        $('#studentEdit').click(function () {
+            alert("Student: editStudent");
+            //var m = $("form").serialize();
+            //alert(m);
+            //var studentId = $('#StudentListLastName').select2("val");
+            $.ajax({
+                url: '@Url.Content("~/Student/Edit")', @*'@Url.Content("~/Student/Edit")',*@
+                 type: 'get',
+                 cache: false,
+                 async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                 data: { id: currentStudentId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                 @*
+                 contentType: 'application/json; charset=utf-8',
+               data: { Command: "approve", lastName: last, firstName: first },
+                 *@
+             }).done(function (data) {
+                  alert('done');
+                 //$("#Student-General").replaceWith(data);
+             }).complete(function () {
+                 alert("complete");
+             }).success(function (data) {
+                 editMode = "edit";
+                  alert(editMode);
+
+                 populateStudentForm(data);
+
+                 // alert(data.CurrentStudent.LastName);
+                 //alert(JSON.stringify(JsonObj));
+                 //console.log(JSON.stringify(JsonObj));
+
+                 //$("#span1").html(JsonObj.Student.Name);
+                 //$("#span2").html(JsonObj.Teacher.Name);
+
+                 //                     $("#Student-General").empty().append(data); 
+                 //                     $("#Student-Preferences").empty().append(data); 
+
+                 // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                 $(".datefield").datepicker();
+
+                 //alert($('#CurrentStudent_ID').val);
+
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling editStudent: " + errorMessage);
+             });
+        });
+
+
+        @* --- SAVE --- *@
+        @*
+        $('#saveStudent').click(function (dta) {
+           // alert("saveStudent");
+            var urlDest = '@Url.Content("~/Home/Create")';
+            //var vm = $('#studentform').serialize();//.serializeJSON();
+            if (editMode == "edit")
+            {
+                urlDest = '@Url.Content("~/Home/Edit")'
+                //alert("saveStudent goes to: " + urlDest);
+                //var json = JSON.stringify(dta);
+                //alert(JSON.stringify($('#studentform').serializeJSON()));
+           }
+            //var m = $("form").serialize();
+            //alert(m);
+            $.ajax({
+                 url: urlDest,
+                type: 'post',
+                 cache: false,
+                 //async: false,      // IMPORTANT to have this statement. If not then it'll display a string of the JSON.
+                 data: { studentData: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                 @ *
+                 data: { dataO: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                 contentType: 'application/json; charset=utf-8',
+               data: { Command: "approve", lastName: last, firstName: first },
+                 * @
+             }).done(function (data) {
+                 alert("done");
+                 //$("#Student-General").replaceWith(data);
+             }).complete(function () {
+                 alert("complete");
+             }).success(function (data) {
+                 alert("success");
+                 populateStudentForm(data);
+
+                 // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                 $(".datefield").datepicker();
+             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                 alert("There was an error calling saveStudent: " + errorMessage);
+             });
+        });
+        *@
+    </script>
 }
-
-</table>
