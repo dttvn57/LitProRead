@@ -148,7 +148,6 @@ T U T O R S
              <div id="divTutor">
                @Html.Partial("_Tutor-All-View", Model) 
            </div>
-      *@
            
             <div id="tabs-Matching-S">
                 Matching-S
@@ -189,7 +188,7 @@ T U T O R S
             <div id="tabs-Status-History">
                 Status-History
             </div>
-
+      *@
         } @* </form> *@
     </div>
 
@@ -582,6 +581,7 @@ T U T O R S
                     //alert("Tutor First Name: " + currentTutorId);
                 })
 
+
         });
     </script>
 
@@ -659,6 +659,8 @@ T U T O R S
                  $(".datefield").datepicker();
 
                  //alert($('#CurrentTutor_ID').val);
+
+
 
              }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
                  var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  

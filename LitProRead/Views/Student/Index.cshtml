@@ -226,7 +226,669 @@ S T U D E N T S
 
         });
     </script>
+
+     <script>
+         function getFormattedDate(date) {
+         //$.fn.getFormattedDate = function(date) {
+            //var dt = data.CurrentStudent.ActiveDate.toString();
+            if (date == null)
+                return null;
+            var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
+            return new Date(dt);
+        };
+    </script>
     *@
+
+    @* 1/30/14 for some reason, if they are not here then the select2() won't work *@
+    <script>
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var pageSize = 20;
+            //$('ul.sf-menu').superfish();
+
+            $(".datefield").datepicker();
+            $("#tabs").tabs();
+            $("#tabs-Students").tabs();
+
+            $("#StudentListLastName").select2(
+            {
+                placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetStudentsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: true
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentStudent_LastName').val() + ", " + $('#CurrentStudent_FirstName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
+                }
+            });
+
+            $("#StudentListLastName").on("change", function (e) {
+                    currentStudentId = e.val;
+                    alert("Student Last Name: " + currentStudentId);
+            });
+
+            $("#StudentListFirstName").select2(
+            {
+                placeholder: 'Enter first name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetStudentsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: false
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentStudent_FirstName').val() + " " + $('#CurrentStudent_LastName').val();
+                    var data = { id: id, text: text };
+                    callback(data);
+                }
+            });
+
+            $("#StudentListFirstName").on("change", function (e) {
+                    currentStudentId = e.val;
+                    alert("Student First Name: " + currentStudentId);
+            });
+
+@*
+        });  // $(document).ready()
+    </script>
+
+    <script type="text/javascript">
+*@
+
+            @* --- ADD --- *@
+            $('#studentAdd').click(function () {
+                alert("addStudent");
+                var firstName = $('#StudentListFirstName').val;
+                var lastName = $('#StudentListLastName').val;
+                alert("Last: " + lastName + ", " + "First: " + firstName);
+                @*
+                var studentvm = @(Model.studentVM);//$("form").serialize();
+                $.ajax({
+                    url: '@Url.Content("~/Student/Add")',
+                     type: 'get',
+                     cache: false,
+                     data: $.toDictionary(studentvm, "studentvm"),
+                     contentType: 'application/json; charset=utf-8',
+                     @ *
+                    data: { Command: "approve", lastName: last, firstName: first },
+                     * @
+                 }).done(function () {
+                     //alert("done");
+
+                 }).complete(function () {
+                     //alert("complete");
+                 }).success(function (dv) {
+                     //alert("success");
+                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                     alert("There was an error calling editStudent: " + errorMessage);
+                 });
+                *@
+            });
+
+            @* --- EDIT --- *@
+            $('#studentEdit').click(function () {
+
+                //alert("Student: editStudent");
+                //var m = $("form").serialize();
+                //alert(m);
+                //var studentId = $('#StudentListLastName').select2("val");
+                $.ajax({
+                    url: '@Url.Content("~/Student/Edit")', @*'@Url.Content("~/Student/Edit")',*@
+                     type: 'get',
+                     cache: false,
+                     async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                     data: { id: currentStudentId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                     @*
+                     contentType: 'application/json; charset=utf-8',
+                   data: { Command: "approve", lastName: last, firstName: first },
+                     *@
+                 }).done(function (data) {
+                      //alert('done');
+                     //$("#Student-General").replaceWith(data);
+                 }).complete(function () {
+                     //alert("complete");
+                 }).success(function (data) {
+                     editMode = "edit";
+                      //alert(editMode);
+
+                     $.fn.populateStudentForm(data);
+
+                     @*
+                      $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
+                      $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
+                      $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
+                      $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+                      $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
+                      $('#CurrentStudent_Address2').val(data.CurrentStudent.Address2);
+                      $('#CurrentStudent_City').val(data.CurrentStudent.City);
+                      $('#CurrentStudent_State').val(data.CurrentStudent.State);
+                      $('#CurrentStudent_Zip').val(data.CurrentStudent.Zip);
+                      $('#CurrentStudent_HomeAreaCode').val(data.CurrentStudent.HomeAreaCode);
+                      $('#CurrentStudent_HomePhone').val(data.CurrentStudent.HomePhone);
+                      $('#CurrentStudent_WorkAreaCode').val(data.CurrentStudent.WorkAreaCode);
+                      $('#CurrentStudent_WorkPhone').val(data.CurrentStudent.WorkPhone);
+                      $('#CurrentStudent_WorkPhoneExt').val(data.CurrentStudent.WorkPhoneExt);
+                      $('#CurrentStudent_FAXAreaCode').val(data.CurrentStudent.FAXAreaCode);
+                      $('#CurrentStudent_FAX').val(data.CurrentStudent.FAX);
+                      $('#CurrentStudent_CellAreaCode1').val(data.CurrentStudent.CellAreaCode1);
+                      $('#CurrentStudent_CellPhone1').val(data.CurrentStudent.CellPhone1);
+                      $('#CurrentStudent_CellAreaCode2').val(data.CurrentStudent.CellAreaCode2);
+                      $('#CurrentStudent_CellAreaPhone2').val(data.CurrentStudent.CellAreaPhone2);
+                      $('#CurrentStudent_ContactPref').val(data.CurrentStudent.ContactPref);
+                      $('#CurrentStudent_EMail').val(data.CurrentStudent.EMail);
+                      $('#CurrentStudent_Gender').val(data.CurrentStudent.Gender);
+                      $('#CurrentStudent_Ethnicity').val(data.CurrentStudent.Ethnicity);
+                      $('#CurrentStudent_Income').val(data.CurrentStudent.Income);
+                      $('#CurrentStudent_Occupation').val(data.CurrentStudent.Occupation);
+                      $('#CurrentStudent_Employer').val(data.CurrentStudent.Employer);
+                      $('#CurrentStudent_EmployerStatus').val(data.CurrentStudent.EmployerStatus);
+                      $('#CurrentStudent_EmergContact').val(data.CurrentStudent.EmergContact);
+                      $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
+                      $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
+                      $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
+
+                      var fmt = $.fn.getFormattedDate(data.CurrentStudent.DOB);
+                     $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                      $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
+                      $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
+                      $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
+                      $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
+                      $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
+
+                      fmt = $.fn.getFormattedDate(data.CurrentStudent.FingerPrintDate);
+                      $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                      $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
+                      $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
+
+                      fmt = $.fn.getFormattedDate(data.CurrentStudent.IntakeDate);
+                      $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                      fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstActive);
+                     $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                      if (data.CurrentStudent.Active == true) {
+                          $('#CurrentStudent_Active').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_Active').prop("checked", false);
+                      }
+                     //$('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
+                      $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
+                      if (data.CurrentStudent.InActive == true) {
+                          $('#CurrentStudent_InActive').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_InActive').prop("checked", false);
+                      }
+                      $('#CurrentStudent_InActiveReason').val(data.CurrentStudent.InActiveReason);
+                      $('#CurrentStudent_Program').val(data.CurrentStudent.Program);
+                      $('#CurrentStudent_MailCode').val(data.CurrentStudent.MailCode);
+                      $('#CurrentStudent_Category').val(data.CurrentStudent.Category);
+                      $('#CurrentStudent_Keyword').val(data.CurrentStudent.Keyword);
+
+                      if (data.CurrentStudent.AvailMonAM == true) {
+                          $('#CurrentStudent_AvailMonAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailMonAM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailTueAM == true) {
+                          $('#CurrentStudent_AvailTueAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailWedAM == true) {
+                          $('#CurrentStudent_AvailWedAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailWedAM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailThuAM == true) {
+                          $('#CurrentStudent_AvailThuAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailThuAM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailFriAM == true) {
+                          $('#CurrentStudent_AvailFriAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailFriAM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailSatAM == true) {
+                          $('#CurrentStudent_AvailSatAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailSatAM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailSunAM == true) {
+                          $('#CurrentStudent_AvailSunAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailSunAM').prop("checked", false);
+                      }
+
+                      if (data.CurrentStudent.AvailTueAM == true) {
+                          $('#CurrentStudent_AvailTueAM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailMonPM == true) {
+                          $('#CurrentStudent_AvailMonPM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailMonPM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailTuePM == true) {
+                          $('#CurrentStudent_AvailTuePM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailTuePM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailWedPM == true) {
+                          $('#CurrentStudent_AvailWedPM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailWedPM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailThuPM == true) {
+                          $('#CurrentStudent_AvailThuPM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailThuPM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailFriPM == true) {
+                          $('#CurrentStudent_AvailFriPM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailFriPM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailSatPM == true) {
+                          $('#CurrentStudent_AvailSatPM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailSatPM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailSunAM == true) {
+                          $('#CurrentStudent_AvailSunPM').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailSunPM').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailMonEVE == true) {
+                          $('#CurrentStudent_AvailMonEVE').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailMonEVE').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailTueEVE == true) {
+                          $('#CurrentStudent_AvailTueEVE').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailTueEVE').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailWedEVE == true) {
+                          $('#CurrentStudent_AvailWedEVE').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailWedEVE').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailThudEVE == true) {
+                          $('#CurrentStudent_AvailThudEVE').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailThudEVE').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailFriEVE == true) {
+                          $('#CurrentStudent_AvailFriEVE').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailFriEVE').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailSatEVE == true) {
+                          $('#CurrentStudent_AvailSatEVE').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailSatEVE').prop("checked", false);
+                      }
+                      if (data.CurrentStudent.AvailSunEVE == true) {
+                          $('#CurrentStudent_AvailSunEVE').prop("checked", true);
+                      }
+                      else {
+                          $('#CurrentStudent_AvailSunEVE').prop("checked", false);
+                      }
+
+                      $('#CurrentStudent_Transportation').val(data.CurrentStudent.Transportation);
+                      $('#CurrentStudent_StudentContact').val(data.CurrentStudent.StudentContact);
+                      $('#CurrentStudent_SmokingPref').val(data.CurrentStudent.SmokingPref);
+                      $('#CurrentStudent_LocationPref').val(data.CurrentStudent.LocationPref);
+                      $('#CurrentStudent_TutorSmoker').val(data.CurrentStudent.TutorSmoker);
+                      $('#CurrentStudent_MedicalInfo').val(data.CurrentStudent.MedicalInfo);
+                      $('#CurrentStudent_LocationPref2').val(data.CurrentStudent.LocationPref2);
+                      $('#CurrentStudent_LocationPref3').val(data.CurrentStudent.LocationPref3);
+                      $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
+                      $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
+                      $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
+                      //$('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
+                      $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
+                      $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
+                     //$('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
+                      //$('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
+                     *@
+
+                     // alert(data.CurrentStudent.LastName);
+                     //alert(JSON.stringify(JsonObj));
+                     //console.log(JSON.stringify(JsonObj));
+
+                     //$("#span1").html(JsonObj.Student.Name);
+                     //$("#span2").html(JsonObj.Teacher.Name);
+
+                     //                     $("#Student-General").empty().append(data); 
+                     //                     $("#Student-Preferences").empty().append(data); 
+
+                     // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                     $(".datefield").datepicker();
+
+                     //alert($('#CurrentStudent_ID').val);
+
+                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                     alert("There was an error calling editStudent: " + errorMessage);
+                 });
+            });
+
+            $.fn.populateStudentForm = function (data) {              
+                $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
+                $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
+                $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
+                $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+                $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
+                $('#CurrentStudent_Address2').val(data.CurrentStudent.Address2);
+                $('#CurrentStudent_City').val(data.CurrentStudent.City);
+                $('#CurrentStudent_State').val(data.CurrentStudent.State);
+                $('#CurrentStudent_Zip').val(data.CurrentStudent.Zip);
+                $('#CurrentStudent_HomeAreaCode').val(data.CurrentStudent.HomeAreaCode);
+                $('#CurrentStudent_HomePhone').val(data.CurrentStudent.HomePhone);
+                $('#CurrentStudent_WorkAreaCode').val(data.CurrentStudent.WorkAreaCode);
+                $('#CurrentStudent_WorkPhone').val(data.CurrentStudent.WorkPhone);
+                $('#CurrentStudent_WorkPhoneExt').val(data.CurrentStudent.WorkPhoneExt);
+                $('#CurrentStudent_FAXAreaCode').val(data.CurrentStudent.FAXAreaCode);
+                $('#CurrentStudent_FAX').val(data.CurrentStudent.FAX);
+                $('#CurrentStudent_CellAreaCode1').val(data.CurrentStudent.CellAreaCode1);
+                $('#CurrentStudent_CellPhone1').val(data.CurrentStudent.CellPhone1);
+                $('#CurrentStudent_CellAreaCode2').val(data.CurrentStudent.CellAreaCode2);
+                $('#CurrentStudent_CellAreaPhone2').val(data.CurrentStudent.CellAreaPhone2);
+                $('#CurrentStudent_ContactPref').val(data.CurrentStudent.ContactPref);
+                $('#CurrentStudent_EMail').val(data.CurrentStudent.EMail);
+                $('#CurrentStudent_Gender').val(data.CurrentStudent.Gender);
+                $('#CurrentStudent_Ethnicity').val(data.CurrentStudent.Ethnicity);
+                $('#CurrentStudent_Income').val(data.CurrentStudent.Income);
+                $('#CurrentStudent_Occupation').val(data.CurrentStudent.Occupation);
+                $('#CurrentStudent_Employer').val(data.CurrentStudent.Employer);
+                $('#CurrentStudent_EmployerStatus').val(data.CurrentStudent.EmployerStatus);
+                $('#CurrentStudent_EmergContact').val(data.CurrentStudent.EmergContact);
+                $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
+                $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
+                $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
+
+                var fmt = $.fn.getFormattedDate(data.CurrentStudent.DOB);
+                $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
+                $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
+                $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
+                $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
+                $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.FingerPrintDate);
+                $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
+                $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.IntakeDate);
+                $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstActive);
+                $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                if (data.CurrentStudent.Active == true) {
+                    $('#CurrentStudent_Active').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_Active').prop("checked", false);
+                }
+                //$('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
+                $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
+                if (data.CurrentStudent.InActive == true) {
+                    $('#CurrentStudent_InActive').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_InActive').prop("checked", false);
+                }
+                $('#CurrentStudent_InActiveReason').val(data.CurrentStudent.InActiveReason);
+                $('#CurrentStudent_Program').val(data.CurrentStudent.Program);
+                $('#CurrentStudent_MailCode').val(data.CurrentStudent.MailCode);
+                $('#CurrentStudent_Category').val(data.CurrentStudent.Category);
+                $('#CurrentStudent_Keyword').val(data.CurrentStudent.Keyword);
+
+                if (data.CurrentStudent.AvailMonAM == true) {
+                    $('#CurrentStudent_AvailMonAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailMonAM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailTueAM == true) {
+                    $('#CurrentStudent_AvailTueAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailWedAM == true) {
+                    $('#CurrentStudent_AvailWedAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailWedAM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailThuAM == true) {
+                    $('#CurrentStudent_AvailThuAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailThuAM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailFriAM == true) {
+                    $('#CurrentStudent_AvailFriAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailFriAM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailSatAM == true) {
+                    $('#CurrentStudent_AvailSatAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailSatAM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailSunAM == true) {
+                    $('#CurrentStudent_AvailSunAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailSunAM').prop("checked", false);
+                }
+
+                if (data.CurrentStudent.AvailTueAM == true) {
+                    $('#CurrentStudent_AvailTueAM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailMonPM == true) {
+                    $('#CurrentStudent_AvailMonPM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailMonPM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailTuePM == true) {
+                    $('#CurrentStudent_AvailTuePM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailTuePM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailWedPM == true) {
+                    $('#CurrentStudent_AvailWedPM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailWedPM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailThuPM == true) {
+                    $('#CurrentStudent_AvailThuPM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailThuPM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailFriPM == true) {
+                    $('#CurrentStudent_AvailFriPM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailFriPM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailSatPM == true) {
+                    $('#CurrentStudent_AvailSatPM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailSatPM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailSunAM == true) {
+                    $('#CurrentStudent_AvailSunPM').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailSunPM').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailMonEVE == true) {
+                    $('#CurrentStudent_AvailMonEVE').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailMonEVE').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailTueEVE == true) {
+                    $('#CurrentStudent_AvailTueEVE').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailTueEVE').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailWedEVE == true) {
+                    $('#CurrentStudent_AvailWedEVE').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailWedEVE').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailThudEVE == true) {
+                    $('#CurrentStudent_AvailThudEVE').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailThudEVE').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailFriEVE == true) {
+                    $('#CurrentStudent_AvailFriEVE').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailFriEVE').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailSatEVE == true) {
+                    $('#CurrentStudent_AvailSatEVE').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailSatEVE').prop("checked", false);
+                }
+                if (data.CurrentStudent.AvailSunEVE == true) {
+                    $('#CurrentStudent_AvailSunEVE').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_AvailSunEVE').prop("checked", false);
+                }
+
+                $('#CurrentStudent_Transportation').val(data.CurrentStudent.Transportation);
+                $('#CurrentStudent_StudentContact').val(data.CurrentStudent.StudentContact);
+                $('#CurrentStudent_SmokingPref').val(data.CurrentStudent.SmokingPref);
+                $('#CurrentStudent_LocationPref').val(data.CurrentStudent.LocationPref);
+                $('#CurrentStudent_TutorSmoker').val(data.CurrentStudent.TutorSmoker);
+                $('#CurrentStudent_MedicalInfo').val(data.CurrentStudent.MedicalInfo);
+                $('#CurrentStudent_LocationPref2').val(data.CurrentStudent.LocationPref2);
+                $('#CurrentStudent_LocationPref3').val(data.CurrentStudent.LocationPref3);
+                $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
+                $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
+                $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
+                //$('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
+                $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
+                $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
+                //$('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
+                //$('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
+            };
+
+            $.fn.getFormattedDate = function(date) {
+                //var dt = data.CurrentStudent.ActiveDate.toString();
+                if (date == null)
+                    return null;
+                var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
+                return new Date(dt);
+            };
+
+        });  // $(document).ready()
+
+    </script>
+
 
     @*
     <script type="text/javascript">
@@ -252,15 +914,6 @@ S T U D E N T S
         function onStudentFirstNameChange(value) {
             currStudentId = ($("#StudentListFirstName").select2("val"));
             //alert(currStudentId);
-        }
-    </script>
-    *@
-
-    <script type="text/javascript">
-        function getFormattedDate(date) {
-            //var dt = data.CurrentStudent.ActiveDate.toString();
-            var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
-            return new Date(dt);
         }
     </script>
 
@@ -298,24 +951,24 @@ S T U D E N T S
             $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
             $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
             $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
-            $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.DOB));
+            //$('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.DOB));
             $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
             $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
             $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
             $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
             $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
-            $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FingerPrintDate));
+           // $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FingerPrintDate));
             $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
             $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
-            $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.IntakeDate));
-            $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstActive));
+            //$('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.IntakeDate));
+            //$('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstActive));
             if (data.CurrentStudent.Active == true) {
                 $('#CurrentStudent_Active').prop("checked", true);
             }
             else {
                 $('#CurrentStudent_Active').prop("checked", false);
             }
-            $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
+            //$('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
             $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
             if (data.CurrentStudent.InActive == true) {
                 $('#CurrentStudent_InActive').prop("checked", true);
@@ -474,242 +1127,13 @@ S T U D E N T S
             $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
             $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
             $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
-            $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
+           // $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
             $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
             $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
-            $('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
-            $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
+            //$('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
+           // $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
         }
     </script>
+    *@
 
-    <script>
-        $(document).ready(function () {
-            var pageSize = 20;
-            //$('ul.sf-menu').superfish();
-
-            $(".datefield").datepicker();
-            $("#tabs").tabs();
-            $("#tabs-Students").tabs();
-
-            $("#StudentListLastName").select2(
-            {
-                placeholder: 'Enter last name',
-                //Does the user have to enter any data before sending the ajax request
-                minimumInputLength: 0,
-                allowClear: true,
-                ajax: {
-                    //How long the user has to pause their typing before sending the next request
-                    quietMillis: 150,
-                    //The url of the json service
-                    url: '@Url.Action("GetStudentsName", "Home")',
-                    dataType: 'jsonp',
-                    //Our search term and what page we are on
-                    data: function (term, page) {
-                        return {
-                            pageSize: pageSize,
-                            pageNum: page,
-                            searchTerm: term,
-                            byLastName: true
-                        };
-                    },
-                    results: function (data, page) {
-                        //Used to determine whether or not there are more results available,
-                        //and if requests for more data should be sent in the infinite scrolling                    
-                        var more = (page * pageSize) < data.Total;
-                        return { results: data.Results, more: more };
-                    }
-                },
-                initSelection: function (element, callback) {
-                    // the input tag has a value attribute preloaded that points to a preselected movie's id
-                    // this function resolves that id attribute to an object that select2 can render
-                    // using its formatResult renderer - that way the movie name is shown preselected
-                    var id = element.val();
-                    //var text = element.data('text');
-                    var text = $('#CurrentStudent_LastName').val() + ", " + $('#CurrentStudent_FirstName').val();
-                    var data = { id: id, text: text };
-                    callback(data);
-                }
-            });
-
-            $("#StudentListLastName")
-                .on("change", function (e) {
-                    currentStudentId = e.val;
-                    alert("Student Last Name: " + currentStudentId);
-                })
-
-            $("#StudentListFirstName").select2(
-            {
-                placeholder: 'Enter first name',
-                //Does the user have to enter any data before sending the ajax request
-                minimumInputLength: 0,
-                allowClear: true,
-                ajax: {
-                    //How long the user has to pause their typing before sending the next request
-                    quietMillis: 150,
-                    //The url of the json service
-                    url: '@Url.Action("GetStudentsName", "Home")',
-                    dataType: 'jsonp',
-                    //Our search term and what page we are on
-                    data: function (term, page) {
-                        return {
-                            pageSize: pageSize,
-                            pageNum: page,
-                            searchTerm: term,
-                            byLastName: false
-                        };
-                    },
-                    results: function (data, page) {
-                        //Used to determine whether or not there are more results available,
-                        //and if requests for more data should be sent in the infinite scrolling                    
-                        var more = (page * pageSize) < data.Total;
-                        return { results: data.Results, more: more };
-                    }
-                },
-                initSelection: function (element, callback) {
-                    // the input tag has a value attribute preloaded that points to a preselected movie's id
-                    // this function resolves that id attribute to an object that select2 can render
-                    // using its formatResult renderer - that way the movie name is shown preselected
-                    var id = element.val();
-                    //var text = element.data('text');
-                    var text = $('#CurrentStudent_FirstName').val() + " " + $('#CurrentStudent_LastName').val();
-                    var data = { id: id, text: text };
-                    callback(data);
-                }
-            });
-
-            $("#StudentListFirstName")
-                .on("change", function (e) {
-                    currentStudentId = e.val;
-                    alert("Student First Name: " + currentStudentId);
-                })
-
-        });
-    </script>
-
-    <script type="text/javascript">
-
-        @* --- ADD --- *@
-        $('#studentAdd').click(function () {
-            alert("addStudent");
-            var firstName = $('#StudentListFirstName').val;
-            var lastName = $('#StudentListLastName').val;
-            alert("Last: " + lastName + ", " + "First: " + firstName);
-            @*
-            var studentvm = @(Model.studentVM);//$("form").serialize();
-            $.ajax({
-                url: '@Url.Content("~/Student/Add")',
-                 type: 'get',
-                 cache: false,
-                 data: $.toDictionary(studentvm, "studentvm"),
-                 contentType: 'application/json; charset=utf-8',
-                 @ *
-                data: { Command: "approve", lastName: last, firstName: first },
-                 * @
-             }).done(function () {
-                 //alert("done");
-
-             }).complete(function () {
-                 //alert("complete");
-             }).success(function (dv) {
-                 //alert("success");
-             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
-                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
-                 alert("There was an error calling editStudent: " + errorMessage);
-             });
-            *@
-        });
-
-        @* --- EDIT --- *@
-        $('#studentEdit').click(function () {
-            alert("Student: editStudent");
-            //var m = $("form").serialize();
-            //alert(m);
-            //var studentId = $('#StudentListLastName').select2("val");
-            $.ajax({
-                url: '@Url.Content("~/Student/Edit")', @*'@Url.Content("~/Student/Edit")',*@
-                 type: 'get',
-                 cache: false,
-                 async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                 data: { id: currentStudentId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
-                 @*
-                 contentType: 'application/json; charset=utf-8',
-               data: { Command: "approve", lastName: last, firstName: first },
-                 *@
-             }).done(function (data) {
-                  alert('done');
-                 //$("#Student-General").replaceWith(data);
-             }).complete(function () {
-                 alert("complete");
-             }).success(function (data) {
-                 editMode = "edit";
-                  alert(editMode);
-
-                 populateStudentForm(data);
-
-                 // alert(data.CurrentStudent.LastName);
-                 //alert(JSON.stringify(JsonObj));
-                 //console.log(JSON.stringify(JsonObj));
-
-                 //$("#span1").html(JsonObj.Student.Name);
-                 //$("#span2").html(JsonObj.Teacher.Name);
-
-                 //                     $("#Student-General").empty().append(data); 
-                 //                     $("#Student-Preferences").empty().append(data); 
-
-                 // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
-                 $(".datefield").datepicker();
-
-                 //alert($('#CurrentStudent_ID').val);
-
-             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
-                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
-                 alert("There was an error calling editStudent: " + errorMessage);
-             });
-        });
-
-
-        @* --- SAVE --- *@
-        @*
-        $('#saveStudent').click(function (dta) {
-           // alert("saveStudent");
-            var urlDest = '@Url.Content("~/Home/Create")';
-            //var vm = $('#studentform').serialize();//.serializeJSON();
-            if (editMode == "edit")
-            {
-                urlDest = '@Url.Content("~/Home/Edit")'
-                //alert("saveStudent goes to: " + urlDest);
-                //var json = JSON.stringify(dta);
-                //alert(JSON.stringify($('#studentform').serializeJSON()));
-           }
-            //var m = $("form").serialize();
-            //alert(m);
-            $.ajax({
-                 url: urlDest,
-                type: 'post',
-                 cache: false,
-                 //async: false,      // IMPORTANT to have this statement. If not then it'll display a string of the JSON.
-                 data: { studentData: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
-                 @ *
-                 data: { dataO: JSON.stringify($('#studentform').serializeJSON()) },      //{ StudentFormViewModel: vm },       { dataO: postData } -----{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
-                 contentType: 'application/json; charset=utf-8',
-               data: { Command: "approve", lastName: last, firstName: first },
-                 * @
-             }).done(function (data) {
-                 alert("done");
-                 //$("#Student-General").replaceWith(data);
-             }).complete(function () {
-                 alert("complete");
-             }).success(function (data) {
-                 alert("success");
-                 populateStudentForm(data);
-
-                 // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
-                 $(".datefield").datepicker();
-             }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
-                 var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
-                 alert("There was an error calling saveStudent: " + errorMessage);
-             });
-        });
-        *@
-    </script>
 }

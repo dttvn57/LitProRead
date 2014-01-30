@@ -1,0 +1,182 @@
+﻿@model LitProRead.ViewModels.StudentFormViewModel
+   
+
+<div id="Student-Matching-S">
+    @using (Html.BeginForm("Edit", "Student", FormMethod.Post))
+    { 
+        @*
+        @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => Model.CurrentStudent.ID)
+        *@
+            
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(m => m.CurrentStudent.ID)
+
+        
+        <table>
+            <colgroup>
+                    <col style="width:13%;"/>
+                    <col style="width:15%;"/>
+                    <col style="width:18%;"/>
+                    <col style="width:18%;"/>
+                    <col style="width:18%;"/>
+                    <col style="width:18%;"/>
+            </colgroup>
+
+            <tr>
+                @for (int i = 0; i < 6; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        <td style="background-color:red"></td>
+                    }
+                    else
+                    {
+                        <td style="background-color:yellow"></td>
+                    }
+                }
+            </tr>
+
+
+            <tr>
+                <td colspan="4" style="text-align: left; color: blue">
+                    @Html.LabelForModel(Model.CurrentStudent.FirstName)
+                    @*
+                    &nbsp;&nbsp;@Html.LabelFor(m => m.CurrentStudent.LastName)
+                    *@
+                </td>
+            </tr>
+
+            <tr><td colspan="6"><hr /></td></tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Choose Tutor")
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.TutorNameID, new { id = "TutorNameList" }) 
+                </td>
+                <td colspan="4" style="text-align:right">
+                    <button type="button" id="studentMatchTPrint">Print This</button>
+                    <button type="button" id="studentMatchTViewStatusChange">View Status Change</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button type="button" id="studentMatchTAdd">Add</button>
+                    <button type="button" id="studentMatchTEdit">Edit</button>
+                    <button type="button" id="studentMatchTDelete">Delete</button>
+                        
+                    <input type="submit" value="Save" />
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Student Name")
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.CurrentStudent.LastName) 
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.CurrentStudent.FirstName, new { id = "G_CurrentStudentFirstName" }) 
+                </td>
+                <td>T-Status&nbsp;&nbsp;
+                    @Html.DropDownListFor(m => Model.CurrentStudent.HomeAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                </td>
+            </tr>
+
+            <tr><td colspan="6"><hr /></td></tr>
+
+        </table>
+    } @* form *@
+</div>
+
+@*
+     <script type="text/javascript">
+        function loadUIs() {
+            var pageSize = 20;
+            $("#TutorNameList").select2(
+            {
+                placeholder: '',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetTutorsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: false
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+            });
+
+            $("#TutorNameList")
+                .on("change", function (e) {
+                    //currentTutorId = e.val;
+                    //alert("Tutor Last Name: " + currentTutorId);
+                })
+        }
+    </script>
+
+
+@section scripts
+{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#TutorNameList").select2(
+            {
+                placeholder: '',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetTutorsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: true
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+            });
+
+            $("#TutorNameList")
+                .on("change", function (e) {
+                    //currentTutorId = e.val;
+                    //alert("Tutor Last Name: " + currentTutorId);
+                })
+        });
+    </script>
+}
+*@

@@ -49,6 +49,9 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> SmokingPrefList { get; private set; }
         public List<SelectListItem> TutorSmokerList { get; private set; }
 
+        public List<SelectListItem> TutorList { get; private set; }
+        public string TutorNameID { get; set; }
+
         public string StudentLastNameID { get; set; }
         public string StudentFirstNameID { get; set; }
         public IEnumerable<SelectListItem> StudentListLastName { get; set; }
@@ -602,6 +605,16 @@ namespace LitProRead.ViewModels
             yn.Add("Yes");
             yn.Add("No");
             return ParseList(selected, yn);
+        }
+
+        //SELECT DISTINCTROW qryTutors.LastName, qryTutors.FirstName, qryTutors.ID FROM qryTutors ORDER BY qryTutors.LastName, qryTutors.FirstName; 
+        public List<SelectListItem> GetTutorList(string selected = "")
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var p = db.Database.SqlQuery<string>("SELECT qryTutors.LastName, qryTutors.FirstName, qryTutors.ID FROM qryTutors ORDER BY qryTutors.LastName, qryTutors.FirstName").ToList();
+                return ParseList(selected, p);
+            }
         }
 
         public List<SelectListItem> GetStudentsLastName(int Id = -1)
