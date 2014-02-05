@@ -88,6 +88,28 @@ namespace LitProRead.Models
                 .Count();
         }
 
+        public List<Pair> GetMatchedTutorForStudent(int studentID, int pageSize, int pageNum)
+        {
+            var q = 
+                from pair in Pairs
+                where pair.SID == studentID
+                join tutor in Tutors on pair.TID equals tutor.ID //into pt 
+                //from p in pt.DefaultIfEmpty() 
+                select new { SID = pair.TID,
+                                 TutorLastName = tutor.LastName,
+                                 TutorFirstName = tutor.FirstName,
+                                 MatchDate = pair.MatchDate
+
+                };
+
+            List<Pair> list = new List<Pair>();
+            foreach (var item in q)
+            {
+                list.Add(new Pair { SID = item.SID, TutorLName = item.TutorLastName, TutorFName = item.TutorFirstName, MatchDate = item.MatchDate });
+            }
+            return list;
+        }
+
 
         //Our search term
         private IQueryable<Tutor> GetTutorsQuery(string searchTerm, bool byLastName)
@@ -110,6 +132,7 @@ namespace LitProRead.Models
                     ).OrderBy(a => a.FirstName);
             }
         }
+
 
         public DbSet<ChildRelationship> ChildRelationships { get; set; }
         public DbSet<Class> Classes { get; set; }

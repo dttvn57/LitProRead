@@ -17,6 +17,7 @@ namespace LitProRead.ViewModels
         public int Id { get; set; }
         
         public Student CurrentStudent { get; set; }
+        public Pair MatchSPair { get; set; }
 
         public List<SelectListItem> SalutationList { get; set; }
         public List<SelectListItem> AreaCodeList { get; private set; }

@@ -10,12 +10,33 @@ using LitProRead.ViewModels;
 using System.Web.Script.Serialization;
 using System.Collections;
 using System.Data.Entity.Validation;
+using System.Threading;
 
 namespace LitProRead.Controllers
 {
     public class StudentController : Controller
     {
         private LitProReadEntities db = new LitProReadEntities();
+
+
+        [HttpPost]
+        public JsonResult MatchSList(int SID, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                IEnumerable<Pair> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex);
+
+                var matchSCount = query.Where(p => p.SID == SID).Count();
+                //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
+                return Json(new { Result = "OK", Records = query, TotalRecordCount = matchSCount });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
 
         //
         // GET: /Student/

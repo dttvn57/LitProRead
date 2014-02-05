@@ -2,6 +2,8 @@
 using LitProRead.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -49,6 +51,39 @@ namespace LitProRead.Controllers
             jsonData.Data = vm;
             jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jsonData;
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult Edit(TutorFormViewModel tutorFormVm)
+        {
+            if (ModelState.IsValid)
+            {
+                using (LitProReadEntities db = new LitProReadEntities())
+                {
+                    db.Configuration.ValidateOnSaveEnabled = true;
+                    db.Entry(tutorFormVm.CurrentTutor).State = EntityState.Modified;
+
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (DbEntityValidationException ex)
+                    {
+
+                        string err = ex.Message;
+                        int i = 0;
+                        i++;
+                    }
+                    catch (OptimisticConcurrencyException ex)
+                    {
+                        string err = ex.Message;
+                        int i = 0;
+                        i++;
+                    }
+                }
+            }
+            return View("Index", tutorFormVm);
         }
     }
 }

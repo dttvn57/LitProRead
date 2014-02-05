@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Home Page";
     var currStudentId = 0;
+    var currentTutortId = 0;
     var editMode = "add";
 }
 
@@ -122,7 +123,7 @@ S T U D E N T S
             <ul>
                 <li><a href="#Student-General">General</a></li>
                 <li><a href="#Student-Preferences">Preferences</a></li>
-                <li><a href="#tabs-Matching-S">Matching-S</a></li>
+                <li><a href="#Student-Matching-S">Matching-S</a></li>
                 <li><a href="#tabs-Children">Children</a></li>
                 <li><a href="#tabs-Computer">Computer</a></li>
                 <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
@@ -148,8 +149,8 @@ S T U D E N T S
            </div>
       *@
            
-            <div id="tabs-Matching-S">
-                Matching-S
+            <div id="Student-Matching-S">
+                @Html.Partial("_Student-Matching-S-View", Model)
             </div>
        
             <div id="tabs-Children">
@@ -294,7 +295,7 @@ S T U D E N T S
 
             $("#StudentListLastName").on("change", function (e) {
                     currentStudentId = e.val;
-                    alert("Student Last Name: " + currentStudentId);
+                    //alert("Student Last Name: " + currentStudentId);
             });
 
             $("#StudentListFirstName").select2(
@@ -339,8 +340,55 @@ S T U D E N T S
 
             $("#StudentListFirstName").on("change", function (e) {
                     currentStudentId = e.val;
-                    alert("Student First Name: " + currentStudentId);
+                    //alert("Student First Name: " + currentStudentId);
             });
+
+
+            $("#TutorNameList").select2(
+            {
+                placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetTutorsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: true
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentStudent_FirstName').val() + " " + $('#CurrentStudent_LastName').val();
+                    var data = { id: id, text: text };
+                    //callback(data);
+                }
+            });
+
+            $("#TutorNameList").on("change", function (e) {
+                currentTutortId = e.val;
+                //alert("Tutor First Name: " + currentTutortId);
+            });
+
 
 @*
         });  // $(document).ready()
@@ -408,230 +456,6 @@ S T U D E N T S
 
                      $.fn.populateStudentForm(data);
 
-                     @*
-                      $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
-                      $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
-                      $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
-                      $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
-                      $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
-                      $('#CurrentStudent_Address2').val(data.CurrentStudent.Address2);
-                      $('#CurrentStudent_City').val(data.CurrentStudent.City);
-                      $('#CurrentStudent_State').val(data.CurrentStudent.State);
-                      $('#CurrentStudent_Zip').val(data.CurrentStudent.Zip);
-                      $('#CurrentStudent_HomeAreaCode').val(data.CurrentStudent.HomeAreaCode);
-                      $('#CurrentStudent_HomePhone').val(data.CurrentStudent.HomePhone);
-                      $('#CurrentStudent_WorkAreaCode').val(data.CurrentStudent.WorkAreaCode);
-                      $('#CurrentStudent_WorkPhone').val(data.CurrentStudent.WorkPhone);
-                      $('#CurrentStudent_WorkPhoneExt').val(data.CurrentStudent.WorkPhoneExt);
-                      $('#CurrentStudent_FAXAreaCode').val(data.CurrentStudent.FAXAreaCode);
-                      $('#CurrentStudent_FAX').val(data.CurrentStudent.FAX);
-                      $('#CurrentStudent_CellAreaCode1').val(data.CurrentStudent.CellAreaCode1);
-                      $('#CurrentStudent_CellPhone1').val(data.CurrentStudent.CellPhone1);
-                      $('#CurrentStudent_CellAreaCode2').val(data.CurrentStudent.CellAreaCode2);
-                      $('#CurrentStudent_CellAreaPhone2').val(data.CurrentStudent.CellAreaPhone2);
-                      $('#CurrentStudent_ContactPref').val(data.CurrentStudent.ContactPref);
-                      $('#CurrentStudent_EMail').val(data.CurrentStudent.EMail);
-                      $('#CurrentStudent_Gender').val(data.CurrentStudent.Gender);
-                      $('#CurrentStudent_Ethnicity').val(data.CurrentStudent.Ethnicity);
-                      $('#CurrentStudent_Income').val(data.CurrentStudent.Income);
-                      $('#CurrentStudent_Occupation').val(data.CurrentStudent.Occupation);
-                      $('#CurrentStudent_Employer').val(data.CurrentStudent.Employer);
-                      $('#CurrentStudent_EmployerStatus').val(data.CurrentStudent.EmployerStatus);
-                      $('#CurrentStudent_EmergContact').val(data.CurrentStudent.EmergContact);
-                      $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
-                      $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
-                      $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
-
-                      var fmt = $.fn.getFormattedDate(data.CurrentStudent.DOB);
-                     $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                      $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
-                      $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
-                      $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
-                      $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
-                      $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
-
-                      fmt = $.fn.getFormattedDate(data.CurrentStudent.FingerPrintDate);
-                      $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                      $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
-                      $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
-
-                      fmt = $.fn.getFormattedDate(data.CurrentStudent.IntakeDate);
-                      $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-
-                      fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstActive);
-                     $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                      if (data.CurrentStudent.Active == true) {
-                          $('#CurrentStudent_Active').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_Active').prop("checked", false);
-                      }
-                     //$('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
-                      $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
-                      if (data.CurrentStudent.InActive == true) {
-                          $('#CurrentStudent_InActive').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_InActive').prop("checked", false);
-                      }
-                      $('#CurrentStudent_InActiveReason').val(data.CurrentStudent.InActiveReason);
-                      $('#CurrentStudent_Program').val(data.CurrentStudent.Program);
-                      $('#CurrentStudent_MailCode').val(data.CurrentStudent.MailCode);
-                      $('#CurrentStudent_Category').val(data.CurrentStudent.Category);
-                      $('#CurrentStudent_Keyword').val(data.CurrentStudent.Keyword);
-
-                      if (data.CurrentStudent.AvailMonAM == true) {
-                          $('#CurrentStudent_AvailMonAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailMonAM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailTueAM == true) {
-                          $('#CurrentStudent_AvailTueAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailTueAM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailWedAM == true) {
-                          $('#CurrentStudent_AvailWedAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailWedAM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailThuAM == true) {
-                          $('#CurrentStudent_AvailThuAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailThuAM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailFriAM == true) {
-                          $('#CurrentStudent_AvailFriAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailFriAM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailSatAM == true) {
-                          $('#CurrentStudent_AvailSatAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailSatAM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailSunAM == true) {
-                          $('#CurrentStudent_AvailSunAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailSunAM').prop("checked", false);
-                      }
-
-                      if (data.CurrentStudent.AvailTueAM == true) {
-                          $('#CurrentStudent_AvailTueAM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailTueAM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailMonPM == true) {
-                          $('#CurrentStudent_AvailMonPM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailMonPM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailTuePM == true) {
-                          $('#CurrentStudent_AvailTuePM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailTuePM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailWedPM == true) {
-                          $('#CurrentStudent_AvailWedPM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailWedPM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailThuPM == true) {
-                          $('#CurrentStudent_AvailThuPM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailThuPM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailFriPM == true) {
-                          $('#CurrentStudent_AvailFriPM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailFriPM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailSatPM == true) {
-                          $('#CurrentStudent_AvailSatPM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailSatPM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailSunAM == true) {
-                          $('#CurrentStudent_AvailSunPM').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailSunPM').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailMonEVE == true) {
-                          $('#CurrentStudent_AvailMonEVE').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailMonEVE').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailTueEVE == true) {
-                          $('#CurrentStudent_AvailTueEVE').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailTueEVE').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailWedEVE == true) {
-                          $('#CurrentStudent_AvailWedEVE').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailWedEVE').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailThudEVE == true) {
-                          $('#CurrentStudent_AvailThudEVE').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailThudEVE').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailFriEVE == true) {
-                          $('#CurrentStudent_AvailFriEVE').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailFriEVE').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailSatEVE == true) {
-                          $('#CurrentStudent_AvailSatEVE').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailSatEVE').prop("checked", false);
-                      }
-                      if (data.CurrentStudent.AvailSunEVE == true) {
-                          $('#CurrentStudent_AvailSunEVE').prop("checked", true);
-                      }
-                      else {
-                          $('#CurrentStudent_AvailSunEVE').prop("checked", false);
-                      }
-
-                      $('#CurrentStudent_Transportation').val(data.CurrentStudent.Transportation);
-                      $('#CurrentStudent_StudentContact').val(data.CurrentStudent.StudentContact);
-                      $('#CurrentStudent_SmokingPref').val(data.CurrentStudent.SmokingPref);
-                      $('#CurrentStudent_LocationPref').val(data.CurrentStudent.LocationPref);
-                      $('#CurrentStudent_TutorSmoker').val(data.CurrentStudent.TutorSmoker);
-                      $('#CurrentStudent_MedicalInfo').val(data.CurrentStudent.MedicalInfo);
-                      $('#CurrentStudent_LocationPref2').val(data.CurrentStudent.LocationPref2);
-                      $('#CurrentStudent_LocationPref3').val(data.CurrentStudent.LocationPref3);
-                      $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
-                      $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
-                      $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
-                      //$('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
-                      $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
-                      $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
-                     //$('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
-                      //$('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
-                     *@
-
                      // alert(data.CurrentStudent.LastName);
                      //alert(JSON.stringify(JsonObj));
                      //console.log(JSON.stringify(JsonObj));
@@ -656,6 +480,10 @@ S T U D E N T S
             $.fn.populateStudentForm = function (data) {              
                 $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
                 $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
+
+                $('#MatchT_CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
+                $('#MatchT_CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+
                 $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
                 $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
                 $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
@@ -711,7 +539,9 @@ S T U D E N T S
                 else {
                     $('#CurrentStudent_Active').prop("checked", false);
                 }
-                //$('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.ActiveDate);
+                $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
                 $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
                 if (data.CurrentStudent.InActive == true) {
                     $('#CurrentStudent_InActive').prop("checked", true);
@@ -870,11 +700,17 @@ S T U D E N T S
                 $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
                 $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
                 $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
-                //$('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstCalledByDate);
+                $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
                 $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
                 $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
-                //$('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
-                //$('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.PreLibraryCard);
+                $('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.LibraryCard);
+                $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
             };
 
             $.fn.getFormattedDate = function(date) {

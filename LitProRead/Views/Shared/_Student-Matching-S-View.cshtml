@@ -1,13 +1,332 @@
-﻿@model LitProRead.ViewModels.StudentFormViewModel
-   
+﻿@using System.Text
 
+@model LitProRead.ViewModels.StudentFormViewModel
+ 
+@section CssImport
+{
+    <style>
+        .child-opener-image
+        {
+            cursor: pointer;
+        }
+        .child-opener-image-column
+        {
+            text-align: center;
+        }
+        .jtable-dialog-form
+        {
+            min-width: 220px;
+        }
+        .jtable-dialog-form input[type="text"]
+        {
+            min-width: 200px;
+        }
+    </style>
+    <link href="@Url.Content("~/Scripts/validationEngine/validationEngine.jquery.css")" rel="stylesheet" type="text/css" />
+}
+@section JavascriptImport
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/validationEngine/jquery.validationEngine.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/validationEngine/jquery.validationEngine-en.js")"></script>
+}  
+
+<table>
+    <colgroup>
+            <col style="width:13%;"/>
+            <col style="width:15%;"/>
+            <col style="width:18%;"/>
+            <col style="width:23%;"/>
+            <col style="width:13%;"/>
+            <col style="width:18%;"/>
+    </colgroup>
+
+    <tr>
+        @for (int i = 0; i < 6; i++)
+        {
+            if (i % 2 == 0)
+            {
+                <td style="background-color:red"></td>
+            }
+            else
+            {
+                <td style="background-color:yellow"></td>
+            }
+        }
+    </tr>
+
+
+    <tr>
+        <td colspan="4" style="text-align: left; color: blue">
+            @Html.LabelForModel(Model.CurrentStudent.FirstName)
+            @*
+            &nbsp;&nbsp;@Html.LabelFor(m => m.CurrentStudent.LastName)
+            *@
+        </td>
+    </tr>
+
+    <tr><td colspan="6"><hr /></td></tr>
+
+    <tr>
+        <td>
+            @Html.Label("Choose Tutor")
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.TutorNameID, new { id = "TutorNameList" }) 
+        </td>
+
+        
+        <td colspan="4" style="text-align:right">
+            <button type="button" id="studentMatchTPrint">Print This</button>
+            <button type="button" id="studentMatchTViewStatusChange">View Status Change</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            @*
+            <button type="button" id="studentMatchTAdd">Add</button>
+            <button type="button" id="studentMatchTEdit">Edit</button>
+            <button type="button" id="studentMatchTDelete">Delete</button>
+                <input type="submit" value="Save" />
+            *@       
+
+        </td>
+    </tr>
+    <tr><td colspan="6"><hr /></td></tr>
+</table>
+
+<div id="Student-Matching-S">
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#Student-Matching-S').jtable({
+            title: 'Matched Tutors',
+            paging: true, //Enable paging
+            sorting: true, //Enable sorting
+            defaultSorting: 'Name ASC',
+            //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
+            actions: {
+                listAction: '@Url.Action("MatchSList", "Student")',
+                deleteAction: '@Url.Action("DeleteStudent")',
+                updateAction: '@Url.Action("UpdateStudent")',
+                createAction: '@Url.Action("CreateStudent")'
+            },
+            fields: {
+                SID: {
+                    key: true,
+                    create: false,
+                    edit: false,
+                    list: false
+                },
+                //CHILD TABLE DEFINITION FOR "PHONE NUMBERS"
+                Phones: {
+                    title: '',
+                    width: '5%',
+                    sorting: false,
+                    edit: false,
+                    create: false,
+                    listClass: 'child-opener-image-column',
+                    display: function (studentData) {
+                        //Create an image that will be used to open child table
+                        var $img = $('<img class="child-opener-image" src="/Content/images/Misc/note.png" title="Edit pair activity" />');
+                        //Open child table when user clicks the image
+                        $img.click(function () {
+                            $('#Student-Matching-S').jtable('openChildTable',
+                                    $img.closest('tr'),
+                                    {
+                                        title: studentData.record.Name + ' - Phone numbers',
+                                        actions: {
+                                            listAction: '@Url.Action("MatchSList", "Student")',
+
+                                            //listAction: '@Url.Action("PhoneList")?StudentId=' + studentData.record.StudentId,
+                                            deleteAction: '@Url.Action("DeletePhone")',
+                                            updateAction: '@Url.Action("UpdatePhone")',
+                                            createAction: '@Url.Action("CreatePhone")'
+                                        },
+                                        fields: {
+                                            StudentId: {
+                                                type: 'hidden',
+                                                defaultValue: studentData.record.StudentId
+                                            },
+                                            PhoneId: {
+                                                key: true,
+                                                create: false,
+                                                edit: false,
+                                                list: false
+                                            },
+                                            PhoneType: {
+                                                title: 'Phone type',
+                                                width: '30%',
+                                                options: { '1': 'Home phone', '2': 'Office phone', '3': 'Cell phone' }
+                                            },
+                                            Number: {
+                                                title: 'Phone Number',
+                                                width: '30%'
+                                            },
+                                            MatchDate: {
+                                                title: 'Match date',
+                                                width: '20%',
+                                                type: 'date',
+                                                displayFormat: 'yy-mm-dd',
+                                                create: false,
+                                                edit: false
+                                            }
+                                        }
+                                    }, function (data) { //opened handler
+                                        data.childTable.jtable('load', { SID: 18 });
+                                    });
+                        });
+                        //Return image to show on the person row
+                        return $img;
+                    }
+                },
+                //CHILD TABLE DEFINITION FOR "EXAMS"
+                @*
+                Exams: {
+                    title: '',
+                    width: '5%',
+                    sorting: false,
+                    edit: false,
+                    create: false,
+                    listClass: 'child-opener-image-column',
+                    display: function (studentData) {
+                        //Create an image that will be used to open child table
+                        var $img = $('<img class="child-opener-image" src="/Content/images/Misc/note.png" title="Edit exam results" />');
+                        //Open child table when user clicks the image
+                        $img.click(function () {
+                            $('#StudentTableContainer').jtable('openChildTable',
+                                    $img.closest('tr'), //Parent row
+                                    {
+                                    title: studentData.record.Name + ' - Exam Results',
+                                    actions: {
+                                        listAction: '@Url.Action("ExamList")?StudentId=' + studentData.record.StudentId,
+                                        deleteAction: '@Url.Action("DeleteExam")',
+                                        updateAction: '@Url.Action("UpdateExam")',
+                                        createAction: '@Url.Action("CreateExam")'
+                                    },
+                                    fields: {
+                                        StudentId: {
+                                            type: 'hidden',
+                                            defaultValue: studentData.record.StudentId
+                                        },
+                                        StudentExamId: {
+                                            key: true,
+                                            create: false,
+                                            edit: false,
+                                            list: false
+                                        },
+                                        CourseName: {
+                                            title: 'Course name',
+                                            width: '40%'
+                                        },
+                                        ExamDate: {
+                                            title: 'Exam date',
+                                            width: '30%',
+                                            type: 'date',
+                                            displayFormat: 'yy-mm-dd'
+                                        },
+                                        Degree: {
+                                            title: 'Degree',
+                                            width: '10%',
+                                            options: ["AA", "BA", "BB", "CB", "CC", "DC", "DD", "FF"]
+                                        }
+                                    }
+                                }, function (data) { //opened handler
+                                    data.childTable.jtable('load');
+                                });
+                        });
+                        //Return image to show on the person row
+                        return $img;
+                    }
+                },
+                *@
+
+                TutorLName: {
+                    title: 'Last Name',
+                    width: '20%'
+                },
+                TutorFName: {
+                    title: 'First Name',
+                    width: '20%'
+                },
+                MatchDate: {
+                    title: 'Match Date',
+                    width: '15%',
+                    type: 'date',
+                    displayFormat: 'yy/mm/dd'
+                }
+                @*
+                EmailAddress: {
+                    title: 'Email address',
+                    list: false
+                },
+                Password: {
+                    title: 'User Password',
+                    type: 'password',
+                    list: false
+                },
+                Gender: {
+                    title: 'Gender',
+                    width: '11%',
+                    options: { 'M': 'Male', 'F': 'Female' }
+                },
+                CityId: {
+                    title: 'City',
+                    width: '12%',
+                    options: '@Url.Action("GetCityOptions")'
+                },
+                MatchDate: {
+                    title: 'Match Date',
+                    width: '15%',
+                    type: 'date',
+                    displayFormat: 'yy/mm/dd'
+                },
+                Education: {
+                    title: 'Education',
+                    list: false,
+                    type: 'radiobutton',
+                    options: { '1': 'Primary school', '2': 'High school', '3': 'University' }
+                },
+                About: {
+                    title: 'About this person',
+                    type: 'textarea',
+                    list: false
+                },
+                IsActive: {
+                    title: 'Status',
+                    width: '12%',
+                    type: 'checkbox',
+                    values: { 'false': 'Passive', 'true': 'Active' },
+                    defaultValue: 'true'
+                },
+                RecordDate: {
+                    title: 'Record date',
+                    width: '15%',
+                    type: 'date',
+                    displayFormat: 'yy-mm-dd',
+                    create: false,
+                    edit: false,
+                    sorting: false //This column is not sortable!
+                }
+                *@
+            }
+        });
+
+        //Load person list from server
+        $('#Student-Matching-S').jtable('load', { SID: 18 });
+
+    });
+
+</script>
+
+    @*
 <div id="Student-Matching-S">
     @using (Html.BeginForm("Edit", "Student", FormMethod.Post))
     { 
-        @*
+        @ *
         @Html.AntiForgeryToken()
             @Html.HiddenFor(x => Model.CurrentStudent.ID)
-        *@
+        * @
             
         @Html.ValidationSummary(true)
 
@@ -19,8 +338,8 @@
                     <col style="width:13%;"/>
                     <col style="width:15%;"/>
                     <col style="width:18%;"/>
-                    <col style="width:18%;"/>
-                    <col style="width:18%;"/>
+                    <col style="width:23%;"/>
+                    <col style="width:13%;"/>
                     <col style="width:18%;"/>
             </colgroup>
 
@@ -42,9 +361,9 @@
             <tr>
                 <td colspan="4" style="text-align: left; color: blue">
                     @Html.LabelForModel(Model.CurrentStudent.FirstName)
-                    @*
+                    @ *
                     &nbsp;&nbsp;@Html.LabelFor(m => m.CurrentStudent.LastName)
-                    *@
+                    * @
                 </td>
             </tr>
 
@@ -69,27 +388,99 @@
 
                 </td>
             </tr>
+            <tr><td colspan="6"><hr /></td></tr>
+            <tr>
+                <td>
+                    @Html.Label("Tutor Name")
+                </td>
+                <td>
+                    @Html.TextBox("MatchT.CurrentStudent.FirstName", Model.CurrentStudent.FirstName, htmlAttributes: new { disabled = "disabled" }) 
+                </td>
+                <td>
+                    @Html.TextBox("MatchT.CurrentStudent.LastName", Model.CurrentStudent.LastName, htmlAttributes: new { disabled = "disabled" }) 
+                </td>
+                <td style="text-align:right">T-Status&nbsp;&nbsp;
+                    @Html.DropDownList("MatchT.CurrentStudent.S-Status", Model.AreaCodeList, string.Empty, new { style="width:60%" })  
+                </td>
+                <td style="text-align:right">Pair Status
+                </td>
+                <td>
+                    @Html.DropDownList("MatchT.CurrentStudent.S-Status", Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                </td>
+            </tr>
 
             <tr>
                 <td>
                     @Html.Label("Student Name")
                 </td>
                 <td>
-                    @Html.TextBoxFor(m => m.CurrentStudent.LastName) 
+                    @Html.TextBox("MatchT.CurrentStudent.FirstName", Model.CurrentStudent.FirstName, htmlAttributes: new { disabled = "disabled" }) 
                 </td>
                 <td>
-                    @Html.TextBoxFor(m => m.CurrentStudent.FirstName, new { id = "G_CurrentStudentFirstName" }) 
+                    @Html.TextBox("MatchT.CurrentStudent.LastName", Model.CurrentStudent.LastName, htmlAttributes: new { disabled = "disabled" }) 
                 </td>
-                <td>T-Status&nbsp;&nbsp;
-                    @Html.DropDownListFor(m => Model.CurrentStudent.HomeAreaCode, Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                <td style="text-align:right">S-Status&nbsp;&nbsp;
+                    @Html.DropDownList("MatchT.CurrentStudent.S-Status", Model.AreaCodeList, string.Empty, new { style="width:60%" })  
+                </td>
+                <td style="text-align:right">Status Date
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.CurrentStudent.DOB, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
                 </td>
             </tr>
 
-            <tr><td colspan="6"><hr /></td></tr>
+            <tr>
+                <td>
+                    @Html.Label("Pair Activity")
+                </td>
+                <td colspan="3">
+                </td>
+                <td style="text-align:right">Pair Program
+                </td>
+                <td>
+                    @Html.DropDownList("MatchT.CurrentStudent.S-Status", Model.AreaCodeList, string.Empty, new { style="width:100%" })  
+                </td>
+            </tr>
 
+            <tr>
+                <td colspan="4">
+                </td>
+                <td style="text-align:right">Match Date
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.CurrentStudent.DOB, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                </td>
+                <td style="text-align:right">Dissolve Date
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.CurrentStudent.DOB, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                </td>
+                <td style="text-align:right">Month of Service
+                </td>
+                <td>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                </td>
+                <td style="text-align:right">Comments
+                </td>
+            </tr>
         </table>
-    } @* form *@
+    } @ * form * @
 </div>
+    *@
 
 @*
      <script type="text/javascript">
