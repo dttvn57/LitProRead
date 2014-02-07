@@ -116,9 +116,13 @@ div.jtable-main-container table.jtable thead th.jtable-column-header div.jtable-
   z-index: 2;
   cursor: col-resize;
 }
+
+
 div.jtable-main-container table.jtable thead th.jtable-command-column-header {
   text-align: center;
 }
+
+
 div.jtable-main-container table.jtable thead th.jtable-column-header-selecting {
   text-align: center;
   width: 1%;
@@ -139,10 +143,14 @@ div.jtable-main-container table.jtable tbody tr > td .jtable-command-button {
 div.jtable-main-container table.jtable tbody tr > td .jtable-command-button span {
   display: none;
 }
+
+
 div.jtable-main-container table.jtable tbody tr > td.jtable-command-column {
   text-align: center;
   vertical-align: middle;
 }
+
+
 div.jtable-main-container table.jtable tbody tr > td.jtable-selecting-column {
   text-align: center;
   vertical-align: middle;

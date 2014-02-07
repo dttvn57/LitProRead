@@ -22,7 +22,9 @@
             min-width: 200px;
         }
     </style>
+    @*
     <link href="@Url.Content("~/Scripts/validationEngine/validationEngine.jquery.css")" rel="stylesheet" type="text/css" />
+    *@
 }
 @section JavascriptImport
 {
@@ -75,19 +77,19 @@
         </td>
 
         
+            @*
         <td colspan="4" style="text-align:right">
             <button type="button" id="studentMatchTPrint">Print This</button>
             <button type="button" id="studentMatchTViewStatusChange">View Status Change</button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-            @*
             <button type="button" id="studentMatchTAdd">Add</button>
             <button type="button" id="studentMatchTEdit">Edit</button>
             <button type="button" id="studentMatchTDelete">Delete</button>
                 <input type="submit" value="Save" />
-            *@       
 
         </td>
+            *@       
     </tr>
     <tr><td colspan="6"><hr /></td></tr>
 </table>
@@ -119,9 +121,10 @@
                     list: false
                 },
                 //CHILD TABLE DEFINITION FOR "PHONE NUMBERS"
+                @*
                 Phones: {
-                    title: '',
-                    width: '5%',
+                    title: 'Pair Activity',
+                    width: '3%',
                     sorting: false,
                     edit: false,
                     create: false,
@@ -181,7 +184,7 @@
                     }
                 },
                 //CHILD TABLE DEFINITION FOR "EXAMS"
-                @*
+
                 Exams: {
                     title: '',
                     width: '5%',
@@ -239,12 +242,13 @@
                         return $img;
                     }
                 },
-                *@
+                  *@
 
                 TutorLName: {
                     title: 'Last Name',
                     width: '20%'
-                },
+                }
+               @*
                 TutorFName: {
                     title: 'First Name',
                     width: '20%'
@@ -254,8 +258,7 @@
                     width: '15%',
                     type: 'date',
                     displayFormat: 'yy/mm/dd'
-                }
-                @*
+                },
                 EmailAddress: {
                     title: 'Email address',
                     list: false

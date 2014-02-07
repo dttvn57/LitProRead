@@ -14,26 +14,85 @@
         <title>@ViewBag.Title - Literacy Pro Read</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Styles.Render("~/Content/themes/base/css")  @* for Tabs *@
-        @Scripts.Render("~/bundles/modernizr")
-        @Scripts.Render("~/bundles/literacy")
 
+       <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
+            @*
+         *@
+
+
+     <link href="@Url.Content("~/Content/chosen.css")" rel="stylesheet" type="text/css" />
+      <link href="@Url.Content("~/Content/highlight.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/megafish.css")" rel="stylesheet" type="text/css" />
+         <link href="@Url.Content("~/Content/select2.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/superfish-navbar.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/superfish-vertical.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/superfish.css")" rel="stylesheet" type="text/css" />
+
+       @Styles.Render("~/Content/css")  @* take thiis out will give correct jTable UI and tabs, but no OUTER template and NO superfish *@
+       @Styles.Render("~/Content/themes/base/css")  @*  for Tabs??? *@
+
+        @*
+            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+                        "~/Content/themes/base/jquery.ui.core.css",
+                        "~/Content/themes/base/jquery.ui.resizable.css",
+                        "~/Content/themes/base/jquery.ui.selectable.css",
+                        "~/Content/themes/base/jquery.ui.accordion.css",
+                        "~/Content/themes/base/jquery.ui.autocomplete.css",
+                        "~/Content/themes/base/jquery.ui.button.css",
+                        "~/Content/themes/base/jquery.ui.dialog.css",
+                        "~/Content/themes/base/jquery.ui.slider.css",
+                        "~/Content/themes/base/jquery.ui.tabs.css",
+                        "~/Content/themes/base/jquery.ui.datepicker.css",
+                        "~/Content/themes/base/jquery.ui.progressbar.css",
+                        "~/Content/themes/base/jquery.ui.theme.css",
+                     "~/Scripts/appjs/student-general.partialview.js"));
+*@
 
         @* jTable *@
-        @*
+
+
         <link href="@Url.Content("~/Content/themes/metroblue/jquery-ui.css")" rel="stylesheet" type="text/css" />
-        *@
         <link href="@Url.Content("~/Content/highlight.css")" rel="stylesheet" type="text/css" />
+
         <link href="@Url.Content("~/Scripts/jtable/themes/" + jTableStyle)" rel="stylesheet" type="text/css" />
 
         <link href="@Url.Content("~/Scripts/syntaxhighligher/styles/shCore.css")" rel="stylesheet" type="text/css" />
         <link href="@Url.Content("~/Scripts/syntaxhighligher/styles/shThemeDefault.css")" rel="stylesheet" type="text/css" />
 
-        @RenderSection("CssImport", false)
 
+       @*
+        @RenderSection("CssImport", false)
+        *@
+    <style>
+        .child-opener-image
+        {
+            cursor: pointer;
+        }
+        .child-opener-image-column
+        {
+            text-align: center;
+        }
+        .jtable-dialog-form
+        {
+            min-width: 220px;
+        }
+        .jtable-dialog-form input[type="text"]
+        {
+            min-width: 200px;
+        }
+    </style>
+
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/literacy")
+
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    @*
         <script src="@Url.Content("~/Scripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/jquery-ui-1.9.2.min.js")" type="text/javascript"></script>
+    *@
 
         <script src="@Url.Content("~/Scripts/syntaxhighligher/shCore.js")" type="text/javascript"></script>
         <script src="@Url.Content("~/Scripts/syntaxhighligher/shBrushJScript.js")" type="text/javascript"></script>
@@ -51,10 +110,16 @@
 
 
 
-
+    @*
     <link rel="stylesheet" type="text/css" href="/superfish/css/superfish.css" media="screen" />
     <script type="text/javascript" src="/superfish/js/hoverIntent.js"></script>
     <script type="text/javascript" src="/superfish/js/superfish.js"></script>
+    *@
+    <link href="@Url.Content("~/Content/superfish.css")" rel="stylesheet" type="text/css"  media="screen"/>
+    <script src="@Url.Content("~/Scripts/hoverIntent.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/superfish.js")" type="text/javascript"></script>
+
+
     <script type="text/javascript">
  
         // initialise plugins
