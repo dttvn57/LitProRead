@@ -26,9 +26,9 @@ namespace LitProRead.Controllers
             {
                 Thread.Sleep(200);
 
-                IEnumerable<Pair> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex);
+                IEnumerable<PairViewModel> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex);
 
-                var matchSCount = query.Where(p => p.SID == SID).Count();
+                var matchSCount = query.Count();
                 //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
                 return Json(new { Result = "OK", Records = query, TotalRecordCount = matchSCount });
             }
@@ -38,6 +38,25 @@ namespace LitProRead.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult MatchSPairsList(int SID, int TID, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                IEnumerable<PairHour> query = db.GetPairHoursForStudentAndTutor(SID, TID, jtPageSize, jtStartIndex);
+
+                var count = query.Count();
+                //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
+                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+        
         //
         // GET: /Student/
 
@@ -170,6 +189,20 @@ namespace LitProRead.Controllers
             //jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             ////return jsonData;
             //return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
+        }
+
+        [HttpPost]
+        public JsonResult UpdateStudent(Pair pair)
+        {
+            try
+            {
+                //_repository.PersonRepository.UpdatePerson(person);
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
         }
 
         //

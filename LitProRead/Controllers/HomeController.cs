@@ -64,6 +64,43 @@ namespace LitProRead.Controllers
             };
         }
 
+        [HttpPost]
+        public JsonResult GetStatus()
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                try
+                {
+                    var status = db.Database.SqlQuery<string>("SELECT Status FROM dbo.Status").ToList();
+                    int val = 1;
+                    var opts = from c in status
+                        select new { DisplayText = c, Value = val++ };
+
+
+                    //List<SelectListItem> list = new List<SelectListItem>();
+                    //foreach (var item in status)
+                    //{
+                    //    Select2PagedResult 
+                    //    list.Add(new SelectListItem
+                    //    {
+                    //        d
+                             
+                    //       //t Text = item.Trim(),
+                    //       // Value = item.Trim(),
+                    //        //Selected = selectedValue == item.Trim() ? true : false
+                    //    });
+
+                    //}
+
+                    return Json(new { Result = "OK", Options = opts });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+            }
+        }
+
         public ActionResult Index(int Id = -1)
         {
             return RedirectToAction("Index", "Student");

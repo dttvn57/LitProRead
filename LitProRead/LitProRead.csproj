@@ -667,6 +667,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\PairViewModel.cs" />
     <Compile Include="ViewModels\TutorFormViewModel.cs" />
     <Compile Include="ViewModels\StudentVM.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
@@ -823,7 +824,14 @@
     <EmbeddedResource Include="Reports\rdlc\StudentWaitTime.rdlc" />
     <Content Include="Scripts\appjs\student-general.partialview.js" />
     <Content Include="Scripts\hoverIntent.js" />
+    <Content Include="Scripts\jquery-1.9.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-1.9.0.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.0.js" />
+    <Content Include="Scripts\jquery-1.9.0.min.js" />
+    <Content Include="Scripts\jquery-ui-1.10.0.js" />
+    <Content Include="Scripts\jquery-ui-1.10.0.min.js" />
+    <Content Include="Scripts\jquery-ui-1.9.2.min.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.serializeJSON.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />

@@ -11,6 +11,7 @@ using LitProRead.Extensions;
 
 namespace LitProRead.Models
 {
+    using LitProRead.ViewModels;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -88,29 +89,106 @@ namespace LitProRead.Models
                 .Count();
         }
 
-        public List<Pair> GetMatchedTutorForStudent(int studentID, int pageSize, int pageNum)
+        public List<PairViewModel> GetMatchedTutorForStudent(int studentID, int pageSize, int pageNum)
         {
-            var q = 
+            var stuStatus = Students.Find(studentID).Status;
+            var pairs = 
                 from pair in Pairs
                 where pair.SID == studentID
                 join tutor in Tutors on pair.TID equals tutor.ID //into pt 
                 //from p in pt.DefaultIfEmpty() 
-                select new { SID = pair.TID,
-                                 TutorLastName = tutor.LastName,
-                                 TutorFirstName = tutor.FirstName,
-                                 MatchDate = pair.MatchDate
-
+                select new { SID = studentID,
+                             TID = pair.TID,
+                            TutorLastName = tutor.LastName,
+                            TutorFirstName = tutor.FirstName,
+                            TStatus = tutor.Status,
+                            SStatus = stuStatus,
+                            MatchDate = pair.MatchDate,
+                            DissolveDate = pair.DissolveDate,
+                            PairStatus = pair.PairStatus,
+                            PairStatusDate = pair.PairStatusDate,
+                            PairProgram = pair.PairProgram,
+                            DateCreated = pair.DateCreated,
+                            DateModified = pair.DateModified,
+                            LastModifiedBy = pair.LastModifiedBy,
+                            SSMA_TimeStamp = pair.SSMA_TimeStamp,
                 };
 
-            List<Pair> list = new List<Pair>();
-            foreach (var item in q)
+            List<PairViewModel> list = new List<PairViewModel>();
+            foreach (var pair in pairs)
             {
-                list.Add(new Pair { SID = item.SID, TutorLName = item.TutorLastName, TutorFName = item.TutorFirstName, MatchDate = item.MatchDate });
+                list.Add(new PairViewModel
+                {
+                    SID = pair.SID,
+                    TID = pair.TID,
+                    TutorLName = pair.TutorLastName,
+                    TutorFName = pair.TutorFirstName,
+                    MatchDate = pair.MatchDate,
+                    DissolveDate = pair.DissolveDate,
+                    PairStatus = pair.PairStatus,
+                    PairStatusDate = pair.PairStatusDate,
+                    PairProgram = pair.PairProgram,
+                    DateCreated = pair.DateCreated,
+                    DateModified = pair.DateModified,
+                    LastModifiedBy = pair.LastModifiedBy,
+                    SSMA_TimeStamp = pair.SSMA_TimeStamp,
+                    TStatus = pair.TStatus,
+                    SStatus = pair.SStatus
+                });
             }
             return list;
         }
 
+        public List<PairHour> GetPairHoursForStudentAndTutor(int studentID, int tutorID, int pageSize, int pageNum)
+        {
+            //var stuStatus = Students.Find(studentID).Status;
+            var pairs =
+                from pairHour in PairHours
+                where pairHour.SID == studentID && pairHour.TID == tutorID
+                //join tutor in Tutors on pair.TID equals tutor.ID //into pt 
+                //from p in pt.DefaultIfEmpty() 
+                //select new { SID = studentID,
+                //             TID = pair.TID,
+                //            TutorLastName = tutor.LastName,
+                //            TutorFirstName = tutor.FirstName,
+                //            TStatus = tutor.Status,
+                //            SStatus = stuStatus,
+                //            MatchDate = pair.MatchDate,
+                //            DissolveDate = pair.DissolveDate,
+                //            PairStatus = pair.PairStatus,
+                //            PairStatusDate = pair.PairStatusDate,
+                //            PairProgram = pair.PairProgram,
+                //            DateCreated = pair.DateCreated,
+                //            DateModified = pair.DateModified,
+                //            LastModifiedBy = pair.LastModifiedBy,
+                //            SSMA_TimeStamp = pair.SSMA_TimeStamp,
+                //};
+                select pairHour;
 
+            //List<PairHour> list = new List<PairHour>();
+            //foreach (var pair in pairs)
+            //{
+            //    list.Add(new PairViewModel
+            //    {
+            //        SID = pair.SID,
+            //        TID = pair.TID,
+            //        TutorLName = pair.TutorLastName,
+            //        TutorFName = pair.TutorFirstName,
+            //        MatchDate = pair.MatchDate,
+            //        DissolveDate = pair.DissolveDate,
+            //        PairStatus = pair.PairStatus,
+            //        PairStatusDate = pair.PairStatusDate,
+            //        PairProgram = pair.PairProgram,
+            //        DateCreated = pair.DateCreated,
+            //        DateModified = pair.DateModified,
+            //        LastModifiedBy = pair.LastModifiedBy,
+            //        SSMA_TimeStamp = pair.SSMA_TimeStamp,
+            //        TStatus = pair.TStatus,
+            //        SStatus = pair.SStatus
+            //    });
+            //}
+            return pairs.ToList();
+        }
         //Our search term
         private IQueryable<Tutor> GetTutorsQuery(string searchTerm, bool byLastName)
         {
