@@ -107,7 +107,7 @@
             paging: true, //Enable paging
             sorting: true, //Enable sorting
             defaultSorting: 'Name ASC',
-            //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
+            openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
             actions: {
                 listAction: '@Url.Action("MatchSList", "Student")',
                 deleteAction: '@Url.Action("DeleteStudent")',
@@ -137,7 +137,7 @@
                             $('#Student-Matching-S').jtable('openChildTable',
                                     $img.closest('tr'),
                                     {
-                                        title: studentData.record.Name,
+                                        title: studentData.TutorLName,
                                         actions: {
                                             listAction: '@Url.Action("MatchSPairsList", "Student")',
 
@@ -149,11 +149,11 @@
                                         fields: {
                                             SID: {
                                                 type: 'hidden',
-                                                defaultValue: studentData.record.SID
+                                                defaultValue: studentData.SID
                                             },
                                             TID: {
                                                 type: 'hidden',
-                                                defaultValue: studentData.record.TID
+                                                defaultValue: studentData.TID
                                             },
                                             @*
                                             PhoneId: {
@@ -168,6 +168,10 @@
                                                 options: { '1': 'Home phone', '2': 'Office phone', '3': 'Cell phone' }
                                             },
                                             *@
+                                            HoursMet: {
+                                                title: 'Hours Met',
+                                                width: '5%'
+                                            },
                                             DateMet: {
                                                 title: 'Date Met',
                                                 width: '10%',
@@ -175,10 +179,6 @@
                                                 displayFormat: 'yy-mm-dd',
                                                 create: false,
                                                 edit: false
-                                            },
-                                            HoursMet: {
-                                                title: 'Hours Met',
-                                                width: '5%'
                                             }
                                         }
                                     }, function (data) { //opened handler
