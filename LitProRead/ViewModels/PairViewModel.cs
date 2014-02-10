@@ -22,7 +22,7 @@ namespace LitProRead.ViewModels
         public string StudentLName { get; set; }
         public Nullable<System.DateTime> MatchDate { get; set; }
         public Nullable<System.DateTime> DissolveDate { get; set; }
-        public string PairStatus { get; set; }
+        public int PairStatusID { get; set; }
         public Nullable<System.DateTime> PairStatusDate { get; set; }
         public string PairProgram { get; set; }
         public string Comments { get; set; }
@@ -30,8 +30,8 @@ namespace LitProRead.ViewModels
         public Nullable<System.DateTime> DateModified { get; set; }
         public string LastModifiedBy { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
-        public string SStatus { get; set; }
-        public string TStatus { get; set; }
+        public int SStatusID { get; set; }
+        public int TStatusID { get; set; }
 
         public PairViewModel()
         {

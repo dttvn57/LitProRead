@@ -117,6 +117,9 @@ namespace LitProRead.Models
             List<PairViewModel> list = new List<PairViewModel>();
             foreach (var pair in pairs)
             {
+                int pairStatusId = GetStatusId(pair.PairStatus);
+                int tStatusId = GetStatusId(pair.TStatus);
+                int sStatusId = GetStatusId(pair.SStatus);
                 list.Add(new PairViewModel
                 {
                     SID = pair.SID,
@@ -125,15 +128,15 @@ namespace LitProRead.Models
                     TutorFName = pair.TutorFirstName,
                     MatchDate = pair.MatchDate,
                     DissolveDate = pair.DissolveDate,
-                    PairStatus = pair.PairStatus,
+                    PairStatusID = pairStatusId,  //pair.PairStatus,
                     PairStatusDate = pair.PairStatusDate,
                     PairProgram = pair.PairProgram,
                     DateCreated = pair.DateCreated,
                     DateModified = pair.DateModified,
                     LastModifiedBy = pair.LastModifiedBy,
                     SSMA_TimeStamp = pair.SSMA_TimeStamp,
-                    TStatus = pair.TStatus,
-                    SStatus = pair.SStatus
+                    TStatusID = tStatusId,      //pair.TStatus,
+                    SStatusID = sStatusId       //pair.SStatus
                 });
             }
             return list;
@@ -211,6 +214,24 @@ namespace LitProRead.Models
             }
         }
 
+        private int GetStatusId(string status)
+        {
+            if (status.Equals("Active", StringComparison.OrdinalIgnoreCase))
+                return 0;
+            else if (status.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
+                return 1;
+            else if (status.Equals("Prospective", StringComparison.OrdinalIgnoreCase))
+                return 2;
+            else if (status.Equals("Sabbatical", StringComparison.OrdinalIgnoreCase))
+                return 3;
+            else if (status.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
+                return 4;
+            else if (status.Equals("Waiting", StringComparison.OrdinalIgnoreCase))
+                return 5;
+            else if (status.Equals("Left", StringComparison.OrdinalIgnoreCase))
+                return 6;
+           return 7;
+        }
 
         public DbSet<ChildRelationship> ChildRelationships { get; set; }
         public DbSet<Class> Classes { get; set; }
