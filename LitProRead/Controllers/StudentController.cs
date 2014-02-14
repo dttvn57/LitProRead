@@ -44,7 +44,8 @@ namespace LitProRead.Controllers
             try
             {
                 Thread.Sleep(200);
-
+                //SID = 39;
+                //TID = 141;
                 IEnumerable<PairHour> query = db.GetPairHoursForStudentAndTutor(SID, TID, jtPageSize, jtStartIndex);
 
                 var count = query.Count();

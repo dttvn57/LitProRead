@@ -296,6 +296,7 @@ S T U D E N T S
             $("#StudentListLastName").on("change", function (e) {
                     currentStudentId = e.val;
                     //alert("Student Last Name: " + currentStudentId);
+                    $('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
 
             $("#StudentListFirstName").select2(
@@ -341,6 +342,7 @@ S T U D E N T S
             $("#StudentListFirstName").on("change", function (e) {
                     currentStudentId = e.val;
                     //alert("Student First Name: " + currentStudentId);
+                    $('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
 
 
@@ -386,7 +388,7 @@ S T U D E N T S
 
             $("#TutorNameList").on("change", function (e) {
                 currentTutortId = e.val;
-                //alert("Tutor First Name: " + currentTutortId);
+                alert("Tutor: " + currentTutortId);
             });
 
 

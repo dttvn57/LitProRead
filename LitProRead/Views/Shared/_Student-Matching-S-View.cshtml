@@ -168,21 +168,26 @@
                                                 options: { '1': 'Home phone', '2': 'Office phone', '3': 'Cell phone' }
                                             },
                                             *@
-                                            HoursMet: {
-                                                title: 'Hours Met',
-                                                width: '5%'
-                                            },
                                             DateMet: {
                                                 title: 'Date Met',
-                                                width: '10%',
+                                                //width: '10%',
                                                 type: 'date',
                                                 displayFormat: 'yy-mm-dd',
                                                 create: false,
                                                 edit: false
+                                            },
+                                            HoursMet: {
+                                                title: 'Hours Met'
+                                                //width: '5%'
+                                            },
+                                            Activity: {
+                                                title: 'Activity'
                                             }
                                         }
-                                    }, function (data) { //opened handler
-                                        data.childTable.jtable('load', { SID: 18, TID: 48 });
+                                    },
+
+                                    function (data) { //opened handler
+                                        data.childTable.jtable('load', { SID: studentData.record.SID, TID: studentData.record.TID });
                                     });
                         });
                         //Return image to show on the person row
@@ -379,7 +384,7 @@
         });
 
         //Load person list from server
-        $('#Student-Matching-S').jtable('load', { SID: 18 });
+        //$('#Student-Matching-S').jtable('load', { SID: 18 });
 
     });
 
