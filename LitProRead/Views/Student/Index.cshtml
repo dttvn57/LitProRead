@@ -296,7 +296,7 @@ S T U D E N T S
             $("#StudentListLastName").on("change", function (e) {
                     currentStudentId = e.val;
                     //alert("Student Last Name: " + currentStudentId);
-                    $('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+                    //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
 
             $("#StudentListFirstName").select2(
@@ -342,7 +342,7 @@ S T U D E N T S
             $("#StudentListFirstName").on("change", function (e) {
                     currentStudentId = e.val;
                     //alert("Student First Name: " + currentStudentId);
-                    $('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+                    //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
 
 
@@ -387,8 +387,9 @@ S T U D E N T S
             });
 
             $("#TutorNameList").on("change", function (e) {
-                currentTutortId = e.val;
-                alert("Tutor: " + currentTutortId);
+                currentTutortId = $("#TutorNameList").select2('data').text; // e.val() returns the ID, or
+                                                                            // $("#TutorNameList").select2('data').id  returns the ID
+                //alert("Tutor: " + currentTutortId + " => " + $("#TutorNameList").val());
             });
 
 
@@ -479,7 +480,9 @@ S T U D E N T S
                  });
             });
 
-            $.fn.populateStudentForm = function (data) {              
+            $.fn.populateStudentForm = function (data) {
+                $('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+
                 $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
                 $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
 

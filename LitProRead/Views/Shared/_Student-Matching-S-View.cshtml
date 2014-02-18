@@ -110,9 +110,9 @@
             openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
             actions: {
                 listAction: '@Url.Action("MatchSList", "Student")',
-                deleteAction: '@Url.Action("DeleteStudent")',
-                updateAction: '@Url.Action("UpdateStudent", "Student")',
-                createAction: '@Url.Action("CreateStudent")'
+                deleteAction: '@Url.Action("DeleteMatchS")',
+                updateAction: '@Url.Action("UpdateMatchS", "Student")',
+                createAction: '@Url.Action("CreateMatchS", "Student")'
             },
             fields: {
                 SID: {
@@ -142,9 +142,9 @@
                                             listAction: '@Url.Action("MatchSPairsList", "Student")',
 
                                             @*listAction: '@Url.Action("PhoneList")?StudentId=' + studentData.record.StudentId,*@
-                                            deleteAction: '@Url.Action("DeletePhone")',
-                                            updateAction: '@Url.Action("UpdatePhone")',
-                                            createAction: '@Url.Action("CreatePhone")'
+                                            deleteAction: '@Url.Action("DeleteMatchSPairs", "Student")',
+                                            updateAction: '@Url.Action("UpdateMatchSPairs", "Student")',
+                                            createAction: '@Url.Action("CreateMatchSPairs", "Student")'
                                         },
                                         fields: {
                                             SID: {
@@ -172,9 +172,9 @@
                                                 title: 'Date Met',
                                                 //width: '10%',
                                                 type: 'date',
-                                                displayFormat: 'yy-mm-dd',
-                                                create: false,
-                                                edit: false
+                                                displayFormat: 'yy-mm-dd'
+                                                //create: false,
+                                                //edit: false
                                             },
                                             HoursMet: {
                                                 title: 'Hours Met'
@@ -258,13 +258,24 @@
                   *@
 
                 TutorLName: {
-                    title: 'Last Name',
-                    width: '10%'
+                    title: 'Tutor Name',
+                    width: '10%',
+                    //edit: false,
+                    input: function (data) {
+                        //data.record.TutorLName = $("#TutorNameList").val();
+                        if (data.record) {
+                            return '<input type="text" name="TutorLName" style="width:200px" value="' + data.record.TutorLName + '" />';
+                        } else {
+                            var tutorName = $("#TutorNameList").select2('data').text; //$("#TutorNameList").val();
+                            //return '<input type="text" name="Name" style="width:200px" value="enter your name here" />';
+                            return '<input type="text" name="TutorLName" style="width:200px" value="' + tutorName + '" />';
+                        }
+                    }
                 },
-                TutorFName: {
-                    title: 'First Name',
-                    width: '10%'
-                },
+                //TutorFName: {
+                //    title: 'First Name',
+                //    width: '10%'
+                //},
                 TStatusID: {
                     title: 'T-Status',
                     width: '10%',
@@ -380,6 +391,21 @@
                     sorting: false //This column is not sortable!
                 }
                 *@
+            },      //fields
+
+            formCreated: function (event, data) {
+                var m = 0;
+                //data.form.find('input[name="TutorLName"]') = "DANG";
+                //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
+            },
+
+            //formSubmitting: function (event, data) {
+            //    return data.form.validationEngine('validate');             
+            //},
+            
+            formClosed: function (event, data) {
+                var m = 0;
+                //data.form.validationEngine('hide'); data.form.validationEngine('detach'); 
             }
         });
 

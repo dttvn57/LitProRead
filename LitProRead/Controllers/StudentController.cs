@@ -18,7 +18,6 @@ namespace LitProRead.Controllers
     {
         private LitProReadEntities db = new LitProReadEntities();
 
-
         [HttpPost]
         public JsonResult MatchSList(int SID, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
         {
@@ -39,6 +38,42 @@ namespace LitProRead.Controllers
         }
 
         [HttpPost]
+        public JsonResult CreateMatchS(PairViewModel pairVm)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                //IEnumerable<PairViewModel> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex);
+
+                //var matchSCount = query.Count();
+                //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
+                return Json(new { Result = "OK", Record = pairVm });    //new PairViewModel() });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateMatchS(Pair pair)
+        {
+            try
+            {
+                //_repository.PersonRepository.UpdatePerson(person);
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        //
+        // GET: /Student/Delete/5
+
+        [HttpPost]
         public JsonResult MatchSPairsList(int SID, int TID, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
         {
             try
@@ -57,7 +92,27 @@ namespace LitProRead.Controllers
                 return Json(new { Result = "ERROR", Message = ex.Message });
             }
         }
-        
+
+        [HttpPost]
+        public JsonResult CreateMatchSPairs(PairViewModel pairVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Pair Activity is not valid! Please correct it and try again." });
+                }
+
+                var addedPair = new PairHour();// _repository.StudentRepository.AddStudent(student);
+                //return Json(new { Result = "OK", Record = addedStudent });
+                return Json(new { Result = "OK", Record = addedPair });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
         //
         // GET: /Student/
 
@@ -191,23 +246,6 @@ namespace LitProRead.Controllers
             ////return jsonData;
             //return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
         }
-
-        [HttpPost]
-        public JsonResult UpdateStudent(Pair pair)
-        {
-            try
-            {
-                //_repository.PersonRepository.UpdatePerson(person);
-                return Json(new { Result = "OK" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { Result = "ERROR", Message = ex.Message });
-            }
-        }
-
-        //
-        // GET: /Student/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
