@@ -112,6 +112,8 @@ namespace LitProRead.Models
                             DateModified = pair.DateModified,
                             LastModifiedBy = pair.LastModifiedBy,
                             SSMA_TimeStamp = pair.SSMA_TimeStamp,
+                            UniqID = pair.UniqID,
+                            Comments = pair.Comments
                 };
 
             List<PairViewModel> list = new List<PairViewModel>();
@@ -122,6 +124,7 @@ namespace LitProRead.Models
                 int sStatusId = GetStatusId(pair.SStatus);
                 list.Add(new PairViewModel
                 {
+                    UniqID = pair.UniqID,
                     SID = pair.SID,
                     TID = pair.TID,
                     TutorLName = pair.TutorLastName,
@@ -136,7 +139,8 @@ namespace LitProRead.Models
                     LastModifiedBy = pair.LastModifiedBy,
                     SSMA_TimeStamp = pair.SSMA_TimeStamp,
                     TStatusID = tStatusId,      //pair.TStatus,
-                    SStatusID = sStatusId       //pair.SStatus
+                    SStatusID = sStatusId,       //pair.SStatus
+                    Comments = pair.Comments
                 });
             }
             return list;
@@ -260,23 +264,45 @@ namespace LitProRead.Models
             }
         }
 
+        public static string GetStatus(int statusId)
+        {
+            switch (statusId)
+            {
+                case 1:
+                    return "Dissolved";
+                case 2:
+                    return "Inactive";
+                case 3:
+                    return "Left";
+                case 4:
+                    return "Prospective";
+                case 5:
+                    return "Sabbatical";
+                case 6:
+                    return "Waiting";
+                case 0:
+                default:
+                    return "Active";
+            }
+        }
+
         private int GetStatusId(string status)
         {
             if (status.Equals("Active", StringComparison.OrdinalIgnoreCase))
                 return 0;
-            else if (status.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
+            else if (status.Equals("Dissolved", StringComparison.OrdinalIgnoreCase))
                 return 1;
-            else if (status.Equals("Prospective", StringComparison.OrdinalIgnoreCase))
-                return 2;
-            else if (status.Equals("Sabbatical", StringComparison.OrdinalIgnoreCase))
-                return 3;
             else if (status.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
-                return 4;
-            else if (status.Equals("Waiting", StringComparison.OrdinalIgnoreCase))
-                return 5;
+                return 2;
             else if (status.Equals("Left", StringComparison.OrdinalIgnoreCase))
+                return 3;
+            else if (status.Equals("Prospective", StringComparison.OrdinalIgnoreCase))
+                return 4;
+            else if (status.Equals("Sabbatical", StringComparison.OrdinalIgnoreCase))
+                return 5;
+            else if (status.Equals("Waiting", StringComparison.OrdinalIgnoreCase))
                 return 6;
-           return 7;
+           return 0;
         }
 
         public DbSet<ChildRelationship> ChildRelationships { get; set; }

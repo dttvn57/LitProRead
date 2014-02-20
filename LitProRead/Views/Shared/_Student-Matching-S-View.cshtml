@@ -2,6 +2,10 @@
 
 @model LitProRead.ViewModels.StudentFormViewModel
  
+@{
+    var currStudentId2 = 0;
+}
+
 @section CssImport
 {
     <style>
@@ -21,10 +25,13 @@
         {
             min-width: 200px;
         }
+        .jtable-input-readonly
+        {
+            background-color:lightgray;
+        }
     </style>
-    @*
+
     <link href="@Url.Content("~/Scripts/validationEngine/validationEngine.jquery.css")" rel="stylesheet" type="text/css" />
-    *@
 }
 @section JavascriptImport
 {
@@ -115,12 +122,56 @@
                 createAction: '@Url.Action("CreateMatchS", "Student")'
             },
             fields: {
-                SID: {
-                    key: true,
-                    create: false,
-                    edit: false,
-                    list: false
+                UniqID: {
+                    title: 'UniqID',
+                    list: true,
+                    input: function (data) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="UniqID" value="' + data.value + '"/>';
+                        if (data.value) {
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
                 },
+                SID: {
+                    title: 'SID',
+                    //key: true
+                    //create: false,
+                    //edit: false,
+                    //list: false
+
+                    //create: true,
+                    //edit: true,
+                    list: true,
+                    input: function (data) {
+                             return '<input type="text" readonly class="jtable-input-readonly" name="SID" value="' + data.value + '"/>';
+                       if (data.value) {
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
+                },
+                TID: {
+                    title: 'TID',
+                    //create: false,
+                    //edit: false,
+                    //list: false
+                    list: true,
+                    input: function (data) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="TID" value="' + data.value + '"/>';
+                        if (data.value) {
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
+                },
+
                 //CHILD TABLE DEFINITION FOR "Pair Activity"
                 PairActivity: {
                     title: 'Pair Activity',
@@ -187,6 +238,7 @@
                                     },
 
                                     function (data) { //opened handler
+                                        currStudentId2 = studentData.record.SID;
                                         data.childTable.jtable('load', { SID: studentData.record.SID, TID: studentData.record.TID });
                                     });
                         });
@@ -394,8 +446,15 @@
             },      //fields
 
             formCreated: function (event, data) {
-                var m = 0;
-                //data.form.find('input[name="TutorLName"]') = "DANG";
+                if (data.formType == "create") {
+                    var v = $("#TutorNameList").val();
+                    data.form.find('input[name="TID"]').val(v);
+                    v = $('#CurrentStudent_ID').val();
+                    data.form.find('input[name="SID"]').val(v);
+
+                    data.form.find('input[name="UniqID"]').val(0);
+                }
+                //data.form.validationEngine();
                 //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
             },
 
@@ -404,8 +463,9 @@
             //},
             
             formClosed: function (event, data) {
-                var m = 0;
-                //data.form.validationEngine('hide'); data.form.validationEngine('detach'); 
+                //data.form.validationEngine('hide');
+                //data.form.validationEngine('detach');
+                //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             }
         });
 

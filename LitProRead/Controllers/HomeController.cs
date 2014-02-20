@@ -72,7 +72,7 @@ namespace LitProRead.Controllers
                 try
                 {
                     var status = db.Database.SqlQuery<string>("SELECT Status FROM dbo.Status").ToList();
-                    int val = 1;
+                    int val = 0;
                     var opts = from c in status
                         select new { DisplayText = c, Value = val++ };
 

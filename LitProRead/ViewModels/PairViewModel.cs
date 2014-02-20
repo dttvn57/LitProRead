@@ -12,7 +12,7 @@ namespace LitProRead.ViewModels
     //[Bind(Exclude = "LitProReadEntities")]
     public class PairViewModel
     {
-        public int Id { get; set; }
+        public int UniqID { get; set; }
         
         public int TID { get; set; }
         public int SID { get; set; }
@@ -43,6 +43,26 @@ namespace LitProRead.ViewModels
 
         public void LoadTutor(int id)
         {
+        }
+
+        public void SetTo(Pair dest, bool create)
+        {
+            if (create)
+            {
+                dest.DateCreated = DateCreated;
+                dest.SID = SID;
+                dest.TID = TID;
+
+            }
+            dest.Comments = Comments;
+            dest.DateModified = DateModified;
+            dest.DissolveDate = DissolveDate;
+            dest.LastModifiedBy = LastModifiedBy;
+            dest.MatchDate = MatchDate;
+            dest.PairProgram = PairProgram;
+            dest.PairStatus = LitProReadEntities.GetStatus(PairStatusID);
+            dest.PairStatusDate = PairStatusDate;
+            //dest.SSMA_TimeStamp = DateTime.Now.;
         }
     }
 }

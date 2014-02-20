@@ -11,9 +11,11 @@ namespace LitProRead.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Pair
     {
+        [Key]
         public int UniqID { get; set; }
         public int TID { get; set; }
         public int SID { get; set; }

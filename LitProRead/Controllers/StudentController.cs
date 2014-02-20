@@ -40,15 +40,42 @@ namespace LitProRead.Controllers
         [HttpPost]
         public JsonResult CreateMatchS(PairViewModel pairVm)
         {
+            //try
+            //{
+            //    Thread.Sleep(200);
+
+            //    //IEnumerable<PairViewModel> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex);
+
+            //    //var matchSCount = query.Count();
+            //    //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
+            //    return Json(new { Result = "OK", Record = pairVm });    //new PairViewModel() });
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Json(new { Result = "ERROR", Message = ex.Message });
+            //}
             try
             {
-                Thread.Sleep(200);
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Pair Activity form is not valid! Please correct it and try again." });
+                }
 
-                //IEnumerable<PairViewModel> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex);
+                var addedPair = new Pair();
 
-                //var matchSCount = query.Count();
-                //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
-                return Json(new { Result = "OK", Record = pairVm });    //new PairViewModel() });
+                //addedPair.UniqID = 1;
+                //int maxCount = db.Pairs.Count();
+                //if (maxCount > 0)
+                //{
+                //    Pair p = db.Pairs.Find(maxCount - 1);
+                //    addedPair.UniqID = p.UniqID + 1;
+                //}
+
+                pairVm.SetTo(addedPair, true);
+                db.Pairs.Add(addedPair);
+                db.SaveChanges();
+                //var addedPairHour = pairVm; // _repository.StudentRepository.AddStudent(student);
+                return Json(new { Result = "OK", Record = pairVm });
             }
             catch (Exception ex)
             {
@@ -57,11 +84,39 @@ namespace LitProRead.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateMatchS(Pair pair)
+        public JsonResult UpdateMatchS(PairViewModel pairVm)
         {
             try
             {
-                //_repository.PersonRepository.UpdatePerson(person);
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Pair Activity form is not valid! Please correct it and try again." });
+                }
+
+                var editPair = db.Pairs.FirstOrDefault(p => p.UniqID == pairVm.UniqID);
+                if (editPair == null)
+                {
+                    return Json(new { Result = "ERROR", Message = "Can't locate the Pair Acitity record (" + pairVm.UniqID.ToString() + ")" });
+                }
+
+                pairVm.SetTo(editPair, false);
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.Entry(editPair).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+
                 return Json(new { Result = "OK" });
             }
             catch (Exception ex)
