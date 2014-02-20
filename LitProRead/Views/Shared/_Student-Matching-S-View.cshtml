@@ -117,12 +117,13 @@
             openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
             actions: {
                 listAction: '@Url.Action("MatchSList", "Student")',
-                deleteAction: '@Url.Action("DeleteMatchS")',
+                deleteAction: '@Url.Action("DeleteMatchS", "Student")',
                 updateAction: '@Url.Action("UpdateMatchS", "Student")',
                 createAction: '@Url.Action("CreateMatchS", "Student")'
             },
             fields: {
                 UniqID: {
+                    key: true,
                     title: 'UniqID',
                     list: true,
                     input: function (data) {

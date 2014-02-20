@@ -125,6 +125,26 @@ namespace LitProRead.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult DeleteMatchS(int UniqID)
+        {
+            try
+            {
+                Thread.Sleep(50);
+                Pair pair = db.Pairs.FirstOrDefault(p => p.UniqID == UniqID);
+                if (pair == null)
+                    return Json(new { Result = "ERROR", Message = "can't delete Pair Activity " + UniqID.ToString() });
+
+                db.Pairs.Remove(pair);
+                db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
         //
         // GET: /Student/Delete/5
 
