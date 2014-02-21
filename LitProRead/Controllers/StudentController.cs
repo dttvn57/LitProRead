@@ -320,12 +320,17 @@ namespace LitProRead.Controllers
             //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             //var response = new Response(true, "Contact Successfully Submitted");
             //return Json(response);
+            if (id == 0 || id == -1)
+            {
+                return HttpNotFound();
+            }
 
             var vm = new StudentFormViewModel();
             if (vm == null || vm.CurrentStudent == null)
             {
                 return HttpNotFound();
             }
+
             vm.Load(id);
             JsonResult jsonData = new JsonResult();
             jsonData.Data = vm;

@@ -2,7 +2,11 @@
 
 @{
     ViewBag.Title = "Home Page";
-    var currStudentId = 0;
+    var currentStudentId = 0;
+    if (Model != null && Model.CurrentStudent != null)
+    {
+        currentStudentId = Model.CurrentStudent.ID;
+    }
     var currentTutortId = 0;
     var editMode = "add";
 }
@@ -37,8 +41,8 @@ S T U D E N T S
         { 
             @*
             @Html.AntiForgeryToken()
-              @Html.HiddenFor(x => Model.CurrentStudent.ID)
           *@
+              @Html.HiddenFor(x => Model.CurrentStudent.ID)
             
             @Html.ValidationSummary(true)
 
@@ -294,9 +298,9 @@ S T U D E N T S
             });
 
             $("#StudentListLastName").on("change", function (e) {
-                    currentStudentId = e.val;
-                    //alert("Student Last Name: " + currentStudentId);
-                    //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+                currentStudentId = e.val;
+                //alert("Student Last Name: " + currentStudentId);
+                //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
 
             $("#StudentListFirstName").select2(
@@ -340,9 +344,9 @@ S T U D E N T S
             });
 
             $("#StudentListFirstName").on("change", function (e) {
-                    currentStudentId = e.val;
-                    //alert("Student First Name: " + currentStudentId);
-                    //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+                currentStudentId = e.val;
+                //alert("Student First Name: " + currentStudentId);
+                //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
 
 
@@ -388,12 +392,12 @@ S T U D E N T S
 
             $("#TutorNameList").on("change", function (e) {
                 currentTutortId = $("#TutorNameList").select2('data').text; // e.val() returns the ID, or
-                                                                            // $("#TutorNameList").select2('data').id  returns the ID
+                // $("#TutorNameList").select2('data').id  returns the ID
                 //alert("Tutor: " + currentTutortId + " => " + $("#TutorNameList").val());
             });
 
 
-@*
+            @*
         });  // $(document).ready()
     </script>
 
@@ -433,55 +437,58 @@ S T U D E N T S
 
             @* --- EDIT --- *@
             $('#studentEdit').click(function () {
-
-                //alert("Student: editStudent");
+                //alert("studentEdit clicked");
+                //if (currentStudentId != $('#CurrentStudent_ID').val()) {
+                //    currentStudentId = $('#CurrentStudent_ID').val();
+                //}
+                alert("Student: editStudent: " + currentStudentId.toString());
                 //var m = $("form").serialize();
                 //alert(m);
                 //var studentId = $('#StudentListLastName').select2("val");
                 $.ajax({
                     url: '@Url.Content("~/Student/Edit")', @*'@Url.Content("~/Student/Edit")',*@
-                     type: 'get',
-                     cache: false,
-                     async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                     data: { id: currentStudentId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
-                     @*
+                    type: 'get',
+                    cache: false,
+                    async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                    data: { id: currentStudentId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                    @*
                      contentType: 'application/json; charset=utf-8',
                    data: { Command: "approve", lastName: last, firstName: first },
                      *@
-                 }).done(function (data) {
-                      //alert('done');
-                     //$("#Student-General").replaceWith(data);
-                 }).complete(function () {
-                     //alert("complete");
-                 }).success(function (data) {
-                     editMode = "edit";
-                      //alert(editMode);
+                }).done(function (data) {
+                    //alert('done');
+                    //$("#Student-General").replaceWith(data);
+                }).complete(function () {
+                    //alert("complete");
+                }).success(function (data) {
+                    editMode = "edit";
+                    //alert(editMode);
 
-                     $.fn.populateStudentForm(data);
+                    $.fn.populateStudentForm(data);
 
-                     // alert(data.CurrentStudent.LastName);
-                     //alert(JSON.stringify(JsonObj));
-                     //console.log(JSON.stringify(JsonObj));
+                    // alert(data.CurrentStudent.LastName);
+                    //alert(JSON.stringify(JsonObj));
+                    //console.log(JSON.stringify(JsonObj));
 
-                     //$("#span1").html(JsonObj.Student.Name);
-                     //$("#span2").html(JsonObj.Teacher.Name);
+                    //$("#span1").html(JsonObj.Student.Name);
+                    //$("#span2").html(JsonObj.Teacher.Name);
 
-                     //                     $("#Student-General").empty().append(data); 
-                     //                     $("#Student-Preferences").empty().append(data); 
+                    //                     $("#Student-General").empty().append(data); 
+                    //                     $("#Student-Preferences").empty().append(data); 
 
-                     // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
-                     $(".datefield").datepicker();
+                    // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                    $(".datefield").datepicker();
 
-                     //alert($('#CurrentStudent_ID').val);
+                    //alert($('#CurrentStudent_ID').val);
 
-                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
-                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
-                     alert("There was an error calling editStudent: " + errorMessage);
-                 });
+                }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                    var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    alert("There was an error calling editStudent: " + errorMessage);
+                });
             });
 
             $.fn.populateStudentForm = function (data) {
-                $('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+                $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
 
                 $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
                 $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
@@ -725,6 +732,12 @@ S T U D E N T S
                 var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
                 return new Date(dt);
             };
+
+            // this is to care care of the case of after a "save" is executed
+            if ($('#CurrentStudent_ID').val() > 0)
+            {
+                $('#Student-Matching-S').jtable('load', { SID: $('#CurrentStudent_ID').val() });//currentStudentId
+            }   
 
         });  // $(document).ready()
 
