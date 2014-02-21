@@ -101,6 +101,26 @@ namespace LitProRead.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetActivity()
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                try
+                {
+                    var activity = db.Database.SqlQuery<string>("SELECT Activity FROM dbo.Activity").ToList();
+                    int val = 0;
+                    var opts = from c in activity
+                               select new { DisplayText = c, Value = val++ };
+                    return Json(new { Result = "OK", Options = opts });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+            }
+        }
+
         public ActionResult Index(int Id = -1)
         {
             return RedirectToAction("Index", "Student");

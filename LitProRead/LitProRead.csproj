@@ -667,6 +667,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\PairHoursViewModel.cs" />
     <Compile Include="ViewModels\PairViewModel.cs" />
     <Compile Include="ViewModels\TutorFormViewModel.cs" />
     <Compile Include="ViewModels\StudentVM.cs" />

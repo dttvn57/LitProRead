@@ -123,7 +123,7 @@
             },
             fields: {
                 UniqID: {
-                    key: true,
+                    key: true,      //this is to be used in deletion action
                     title: 'UniqID',
                     list: true,
                     input: function (data) {
@@ -199,6 +199,15 @@
                                             createAction: '@Url.Action("CreateMatchSPairs", "Student")'
                                         },
                                         fields: {
+                                            UniqID: {
+                                                key: true,
+                                                type: 'hidden',
+                                                defaultValue: studentData.UniqID
+                                            },    
+                                            PairHours: {
+                                                type: 'hidden',
+                                                defaultValue: studentData.PairHours
+                                            },
                                             SID: {
                                                 type: 'hidden',
                                                 defaultValue: studentData.SID
@@ -207,19 +216,6 @@
                                                 type: 'hidden',
                                                 defaultValue: studentData.TID
                                             },
-                                            @*
-                                            PhoneId: {
-                                                key: true,
-                                                create: false,
-                                                edit: false,
-                                                list: false
-                                            },
-                                            PairHours: {
-                                                title: 'Phone type',
-                                                width: '30%',
-                                                options: { '1': 'Home phone', '2': 'Office phone', '3': 'Cell phone' }
-                                            },
-                                            *@
                                             DateMet: {
                                                 title: 'Date Met',
                                                 //width: '10%',
@@ -232,9 +228,18 @@
                                                 title: 'Hours Met'
                                                 //width: '5%'
                                             },
-                                            Activity: {
-                                                title: 'Activity'
+                                            ActivityID: {
+                                                title: 'Activity',
+                                                options: '@Url.Action("GetActivity", "Home")',
                                             }
+                                        },
+                                        formCreated: function (event, data) {
+                                            if (data.formType == "create") {
+                                                var v = studentData.record.UniqID;
+                                                data.form.find('input[name="PairHours"]').val(v);
+                                            }
+                                            //data.form.validationEngine();
+                                            //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
                                         }
                                     },
 
@@ -332,7 +337,8 @@
                 TStatusID: {
                     title: 'T-Status',
                     width: '10%',
-                    options: '@Url.Action("GetStatus", "Home")'
+                    options: '@Url.Action("GetStatus", "Home")',
+                    list: true
                 },
                 PairStatusID: {
                     title: 'Pair Status',

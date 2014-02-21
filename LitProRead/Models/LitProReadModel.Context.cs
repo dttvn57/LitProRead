@@ -174,7 +174,7 @@ namespace LitProRead.Models
         FROM Students RIGHT JOIN ((Tutors RIGHT JOIN Pairs ON Tutors.ID = Pairs.TID) RIGHT JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
         WHERE (((PairHours.DateMet) Between [Forms]![frmDateSelectionPairStatus]![BeginDate] And [Forms]![frmDateSelectionPairStatus]![EndDate]));
          */
-        public List<PairHour> GetPairHoursForStudentAndTutor(int studentID, int tutorID, int pageSize, int pageNum)
+        public List<PairHoursViewModel> GetPairHoursForStudentAndTutor(int studentID, int tutorID, int pageSize, int pageNum)
         {
             //var stuStatus = Students.Find(studentID).Status;
             //var result = from t in ints1
@@ -192,48 +192,33 @@ namespace LitProRead.Models
             //    where pairHour.SID == studentID && pairHour.TID == tutorID
 
 
-                var query = 
-                    from pair in Pairs
-                    where pair.SID == studentID && pair.TID == tutorID 
-                    select pair into pairGrp
-                    join pairHour in PairHours on pairGrp.UniqID equals pairHour.PairHours into pairPairHours
+            var query = 
+                from pair in Pairs
+                where pair.SID == studentID && pair.TID == tutorID 
+                select pair into pairGrp
+                join pairHour in PairHours on pairGrp.UniqID equals pairHour.PairHours into pairPairHours
 
-                from p in pairPairHours.DefaultIfEmpty()
-                select new 
-                {
-                    p.DateMet, 
-                    p.HoursMet,
-                    p.Activity
-                }; 
-
-                //join tutor in Tutors on pair.TID equals tutor.ID //into pt 
-                //from p in pt.DefaultIfEmpty() 
-                //select new { SID = studentID,
-                //             TID = pair.TID,
-                //            TutorLastName = tutor.LastName,
-                //            TutorFirstName = tutor.FirstName,
-                //            TStatus = tutor.Status,
-                //            SStatus = stuStatus,
-                //            MatchDate = pair.MatchDate,
-                //            DissolveDate = pair.DissolveDate,
-                //            PairStatus = pair.PairStatus,
-                //            PairStatusDate = pair.PairStatusDate,
-                //            PairProgram = pair.PairProgram,
-                //            DateCreated = pair.DateCreated,
-                //            DateModified = pair.DateModified,
-                //            LastModifiedBy = pair.LastModifiedBy,
-                //            SSMA_TimeStamp = pair.SSMA_TimeStamp,
-                //};
-                //select pairHour;
-
-            List<PairHour> list = new List<PairHour>();
-            foreach (var pair in query)
+            from p in pairPairHours.DefaultIfEmpty()
+            select new 
             {
-                list.Add(new PairHour
+                p.UniqID,
+                p.PairHours,
+                p.DateMet, 
+                p.HoursMet,
+                p.Activity
+            }; 
+
+            List<PairHoursViewModel> list = new List<PairHoursViewModel>();
+            foreach (var pairHr in query)
+            {
+                int activityId = GetActivityId(pairHr.Activity);
+                list.Add(new PairHoursViewModel
                 {
-                    DateMet = pair.DateMet,
-                    HoursMet = pair.HoursMet,
-                    Activity = pair.Activity
+                    UniqID = pairHr.UniqID,
+                    PairHours = pairHr.PairHours,
+                    DateMet = pairHr.DateMet,
+                    HoursMet = pairHr.HoursMet,
+                    ActivityID = activityId,   //pair.Activity
                 });
             }
             return list;
@@ -262,6 +247,30 @@ namespace LitProRead.Models
                         a.FirstName.StartsWith(searchTerm)
                     ).OrderBy(a => a.FirstName);
             }
+        }
+
+        public static string GetActivity(int activityId)
+        {
+            switch (activityId)
+            {
+                case 1:
+                    return "Travel Time";
+                case 2:
+                    return "Tutoring";
+                case 0:
+                default:
+                    return "Prep Time";
+            }
+        }
+        private int GetActivityId(string activity)
+        {
+            if (activity.Equals("Prep Time", StringComparison.OrdinalIgnoreCase))
+                return 0;
+            else if (activity.Equals("Travel Time", StringComparison.OrdinalIgnoreCase))
+                return 1;
+            else if (activity.Equals("Tutoring", StringComparison.OrdinalIgnoreCase))
+                return 2;
+            return 0;
         }
 
         public static string GetStatus(int statusId)
