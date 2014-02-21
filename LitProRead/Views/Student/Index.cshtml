@@ -97,7 +97,7 @@ S T U D E N T S
                     <td colspan="5" style="text-align:center">
                         <button type="button" id="studentAdd">Add</button>
                         <button type="button" id="studentEdit">Edit</button>
-                        <button type="button" id="deleteStudent">Delete</button>
+                        <button type="button" id="studentDelete">Delete</button>
                         
                         <input type="submit" value="Save" />
                         @*
@@ -408,7 +408,7 @@ S T U D E N T S
 
             @* --- ADD --- *@
             $('#studentAdd').click(function () {
-                alert("studentAdd");
+                //alert("studentAdd");
                 $('#EditMode').val("add");
                 location.reload(true);
 
@@ -494,6 +494,29 @@ S T U D E N T S
                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
                     alert("There was an error calling editStudent: " + errorMessage);
                 });
+            });
+
+            $('#studentDelete').click(function () {
+                //alert("studentDelete");
+
+               $.ajax({
+                    url: '@Url.Content("~/Student/Delete")',
+                     //type: 'get',
+                     //cache: false,
+                    // async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                   data: { id: currentStudentId },
+                     //contentType: 'application/json; charset=utf-8',
+                 }).done(function () {
+                     //alert("done");
+
+                 }).complete(function () {
+                     //alert("complete");
+                 }).success(function (dv) {
+                     //alert("success");
+                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                     alert("There was an error calling editStudent: " + errorMessage);
+                 });
             });
 
             $.fn.populateStudentForm = function (data) {

@@ -334,6 +334,11 @@ namespace LitProRead.Controllers
             }
 
             vm.Load(id);
+            if (vm.CurrentStudent != null && vm.CurrentStudent.ID <= 0)
+            {
+                return View("Index", new StudentFormViewModel());
+            }
+
             JsonResult jsonData = new JsonResult();
             jsonData.Data = vm;
             jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
@@ -413,6 +418,17 @@ namespace LitProRead.Controllers
             if (student == null)
             {
                 return HttpNotFound();
+            }
+
+            try {
+                db.Students.Remove(student);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                int i = 0;
+                i++;
+                //return Json(new { Result = "ERROR", Message = ex.Message });
             }
             return View(student);
         }
