@@ -64,9 +64,12 @@ namespace LitProRead.ViewModels
         //public SelectList StudentListLastName { get; private set; }
         //public SelectList StudentListFirstName { get; private set; }
 
+        public string EditMode { get; set; }
+
         public StudentFormViewModel()
         {
             Load(-1);
+            EditMode = "add";
         }
 
         public void Load(int id)

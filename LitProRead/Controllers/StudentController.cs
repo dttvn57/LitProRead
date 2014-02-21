@@ -320,15 +320,17 @@ namespace LitProRead.Controllers
             //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
             //var response = new Response(true, "Contact Successfully Submitted");
             //return Json(response);
-            if (id == 0 || id == -1)
+            //if (id == 0 || id == -1)
+            
+            if (id == -1)
             {
-                return HttpNotFound();
+                return View("Index", new StudentFormViewModel());
             }
 
             var vm = new StudentFormViewModel();
             if (vm == null || vm.CurrentStudent == null)
             {
-                return HttpNotFound();
+                return View("Index", new StudentFormViewModel());
             }
 
             vm.Load(id);
@@ -343,36 +345,57 @@ namespace LitProRead.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Edit(StudentFormViewModel studentFormVm)//string dataO)
+        public ActionResult Edit(StudentFormViewModel studentFormVm, string EditMode)//string dataO)
         {
+            //string editMode = studentFormVm.
             if (ModelState.IsValid)
             {
                 using (LitProReadEntities db = new LitProReadEntities())
                 {
-                    db.Configuration.ValidateOnSaveEnabled = true;
-                    db.Entry(studentFormVm.CurrentStudent).State = EntityState.Modified;
+                    if (EditMode == "edit")
+                    {
+                        db.Configuration.ValidateOnSaveEnabled = true;
+                        db.Entry(studentFormVm.CurrentStudent).State = EntityState.Modified;
 
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch (DbEntityValidationException ex)
-                    {
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException ex)
+                        {
 
-                        string err = ex.Message;
-                        int i = 0;
-                        i++;
+                            string err = ex.Message;
+                            int i = 0;
+                            i++;
+                        }
+                        catch (OptimisticConcurrencyException ex)
+                        {
+                            string err = ex.Message;
+                            int i = 0;
+                            i++;
+                            //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
+                            //studentFormVm.db.SaveChanges();
+                        }
+                        //return View("Forms", studentFormVm);
+                        //return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
                     }
-                    catch (OptimisticConcurrencyException ex)
+                    else
                     {
-                        string err = ex.Message;
-                        int i = 0;
-                        i++;
-                        //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
-                        //studentFormVm.db.SaveChanges();
-                    }
-                    //return View("Forms", studentFormVm);
-                    //return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
+                        // "add"
+                        try
+                        {
+                            db.Students.Add(studentFormVm.CurrentStudent);
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            string err = ex.Message;
+                            int i = 0;
+                            i++;
+                            //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
+                            //studentFormVm.db.SaveChanges();
+                        }
+                   }
                 }
             }
             return View("Index", studentFormVm);

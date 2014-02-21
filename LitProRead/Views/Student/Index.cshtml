@@ -8,7 +8,7 @@
         currentStudentId = Model.CurrentStudent.ID;
     }
     var currentTutortId = 0;
-    var editMode = "add";
+    var editMode = "del";
 }
 
 <style>
@@ -37,12 +37,14 @@ S T U D E N T S
         @*
         @using (Ajax.BeginForm("Edit", "Home", new AjaxOptions { HttpMethod = "POST", OnComplete="_EditComplete", UpdateTargetId = "divStudent", InsertionMode = InsertionMode.Replace }))
         *@
+
         @using (Html.BeginForm("Edit", "Student", FormMethod.Post))
         { 
             @*
             @Html.AntiForgeryToken()
           *@
               @Html.HiddenFor(x => Model.CurrentStudent.ID)
+              @Html.HiddenFor(x => Model.EditMode)
             
             @Html.ValidationSummary(true)
 
@@ -93,13 +95,13 @@ S T U D E N T S
 
                 <tr>
                     <td colspan="5" style="text-align:center">
-                        <button type="button" id="refreshStudent">Refresh</button>
                         <button type="button" id="studentAdd">Add</button>
                         <button type="button" id="studentEdit">Edit</button>
                         <button type="button" id="deleteStudent">Delete</button>
                         
                         <input type="submit" value="Save" />
                         @*
+                        <button type="button" id="refreshStudent">Refresh</button>
                         <button type="button" id="saveStudent">Save</button>
                         *@
 
@@ -406,33 +408,40 @@ S T U D E N T S
 
             @* --- ADD --- *@
             $('#studentAdd').click(function () {
+                alert("studentAdd");
+                $('#EditMode').val("add");
+                location.reload(true);
+
+                @*
                 alert("addStudent");
                 var firstName = $('#StudentListFirstName').val;
                 var lastName = $('#StudentListLastName').val;
                 alert("Last: " + lastName + ", " + "First: " + firstName);
-                @*
                 var studentvm = @(Model.studentVM);//$("form").serialize();
-                $.ajax({
-                    url: '@Url.Content("~/Student/Add")',
+                *@
+
+                @*
+               $.ajax({
+                    url: '@Url.Content("~/Student/Index")',
                      type: 'get',
                      cache: false,
-                     data: $.toDictionary(studentvm, "studentvm"),
-                     contentType: 'application/json; charset=utf-8',
-                     @ *
-                    data: { Command: "approve", lastName: last, firstName: first },
-                     * @
+                    // async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                    //data: $.toDictionary(studentvm, "studentvm"),
+                     //contentType: 'application/json; charset=utf-8',
                  }).done(function () {
                      //alert("done");
 
                  }).complete(function () {
-                     //alert("complete");
+                     alert("complete");
+                     //$.ready();
+                     location.reload(true);
                  }).success(function (dv) {
                      //alert("success");
                  }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
                      var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
                      alert("There was an error calling editStudent: " + errorMessage);
                  });
-                *@
+                 *@
             });
 
             @* --- EDIT --- *@
@@ -441,7 +450,7 @@ S T U D E N T S
                 //if (currentStudentId != $('#CurrentStudent_ID').val()) {
                 //    currentStudentId = $('#CurrentStudent_ID').val();
                 //}
-                alert("Student: editStudent: " + currentStudentId.toString());
+                //alert("Student: editStudent: " + currentStudentId.toString());
                 //var m = $("form").serialize();
                 //alert(m);
                 //var studentId = $('#StudentListLastName').select2("val");
@@ -461,7 +470,7 @@ S T U D E N T S
                 }).complete(function () {
                     //alert("complete");
                 }).success(function (data) {
-                    editMode = "edit";
+                    $('#EditMode').val("edit");
                     //alert(editMode);
 
                     $.fn.populateStudentForm(data);
