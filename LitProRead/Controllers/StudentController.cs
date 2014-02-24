@@ -25,9 +25,10 @@ namespace LitProRead.Controllers
             {
                 Thread.Sleep(200);
 
-                IEnumerable<PairViewModel> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex);
+                int matchSCount = 0;
+                IEnumerable<PairViewModel> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex, jtSorting, ref matchSCount);
 
-                var matchSCount = query.Count();
+                //var matchSCount = query.Count();
                 //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
                 return Json(new { Result = "OK", Records = query, TotalRecordCount = matchSCount });
             }

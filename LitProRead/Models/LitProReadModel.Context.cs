@@ -103,7 +103,7 @@ namespace LitProRead.Models
                 .Count();
         }
 
-        public List<PairViewModel> GetMatchedTutorForStudent(int studentID, int pageSize, int pageNum)
+        public List<PairViewModel> GetMatchedTutorForStudent(int studentID, int pageSize, int pageNum, string sort, ref int matchCount)
         {
             var stuStatus = Students.Find(studentID).Status;
             var pairs = 
@@ -129,6 +129,8 @@ namespace LitProRead.Models
                             UniqID = pair.UniqID,
                             Comments = pair.Comments
                 };
+
+            matchCount = pairs.Count();
 
             List<PairViewModel> list = new List<PairViewModel>();
             foreach (var pair in pairs)
@@ -157,7 +159,14 @@ namespace LitProRead.Models
                     Comments = pair.Comments
                 });
             }
-            return list;
+
+            if (pageSize > 0)
+            {
+                IEnumerable <PairViewModel> retList = list.AsEnumerable();
+                return retList.Skip(pageNum).Take(pageSize).ToList();
+            }
+            else
+                return list;
         }
 
         /**

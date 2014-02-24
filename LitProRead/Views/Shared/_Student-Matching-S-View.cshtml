@@ -114,7 +114,7 @@
             paging: true, //Enable paging
             sorting: true, //Enable sorting
             defaultSorting: 'Name ASC',
-            openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
+            //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
             actions: {
                 listAction: '@Url.Action("MatchSList", "Student")',
                 deleteAction: '@Url.Action("DeleteMatchS", "Student")',
@@ -177,6 +177,7 @@
                 PairActivity: {
                     title: 'Pair Activity',
                     width: '8%',
+                    paging: true, //Enable paging
                     sorting: false,
                     edit: false,
                     create: false,
