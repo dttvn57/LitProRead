@@ -66,6 +66,9 @@ S T U D E N T S
                 </tr>
 *@
                 <tr>
+                    <td>
+                        @Html.CheckBox("ActiveOnly", false)Active Only
+                    </td>
                     <td style="text-align:right; border:0 none;">Last Name
                     </td>
                     <td style="text-align:left; border:0 none;">
@@ -274,6 +277,7 @@ S T U D E N T S
                     //Our search term and what page we are on
                     data: function (term, page) {
                         return {
+                            activeOnly: $('#ActiveOnly').is(':checked'),
                             pageSize: pageSize,
                             pageNum: page,
                             searchTerm: term,
@@ -320,6 +324,7 @@ S T U D E N T S
                     //Our search term and what page we are on
                     data: function (term, page) {
                         return {
+                            activeOnly: $('#ActiveOnly').is(':checked'),
                             pageSize: pageSize,
                             pageNum: page,
                             searchTerm: term,

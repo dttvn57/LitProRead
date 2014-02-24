@@ -23,14 +23,14 @@ namespace LitProRead.Controllers
     public class HomeController : Controller
     {
         [HttpGet]
-        public ActionResult GetStudentsName(string searchTerm, int pageSize, int pageNum, bool byLastName)  // true: get by last name
+        public ActionResult GetStudentsName(bool ActiveOnly, string searchTerm, int pageSize, int pageNum, bool byLastName)  // true: get by last name
                                                                                                             // false: get by first name
         {
             //Get the paged results and the total count of the results for this query. 
             LitProReadEntities db = new LitProReadEntities();
 
-            List<Student> students = db.GetStudents(searchTerm, pageSize, pageNum, byLastName);  
-            int studentCount = db.GetStudentsCount(searchTerm, pageSize, pageNum);
+            List<Student> students = db.GetStudents(ActiveOnly, searchTerm, pageSize, pageNum, byLastName);  
+            int studentCount = db.GetStudentsCount(ActiveOnly, searchTerm, pageSize, pageNum);
 
             //Translate the attendees into a format the select2 dropdown expects
             Select2PagedResult pagedStudents = ToSelect2Format(students, studentCount, byLastName);

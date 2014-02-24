@@ -35,41 +35,55 @@ namespace LitProRead.Models
         public IQueryable<Student> IStudents { get; set; }
 
         //Return only the results we want
-        public List<Student> GetStudents(string searchTerm, int pageSize, int pageNum, bool byLastName)
+        public List<Student> GetStudents(bool ActiveOnly, string searchTerm, int pageSize, int pageNum, bool byLastName)
         {
-            return GetStudentsQuery(searchTerm, byLastName)
+            return GetStudentsQuery(ActiveOnly, searchTerm, byLastName)
                 .Skip(pageSize * (pageNum - 1))
                 .Take(pageSize)
                 .ToList();
         }
 
         //And the total count of records
-        public int GetStudentsCount(string searchTerm, int pageSize, int pageNum)
+        public int GetStudentsCount(bool ActiveOnly, string searchTerm, int pageSize, int pageNum)
         {
-            return GetStudentsQuery(searchTerm, true)
+            return GetStudentsQuery(ActiveOnly, searchTerm, true)
                 .Count();
         }
 
 
         //Our search term
-        private IQueryable<Student> GetStudentsQuery(string searchTerm, bool byLastName)
+        private IQueryable<Student> GetStudentsQuery(bool ActiveOnly, string searchTerm, bool byLastName)
         {
             searchTerm = searchTerm.ToLower();
             if (byLastName)
             {
-                return Students
-                    .Where(
-                        a =>
-                        a.LastName.StartsWith(searchTerm)
-                    ).OrderBy(a => a.LastName);
-            }
+                if (ActiveOnly)
+                    return Students
+                        .Where(
+                            a =>
+                            a.LastName.StartsWith(searchTerm) && a.Active == true
+                        ).OrderBy(a => a.LastName).ThenBy(a => a.FirstName);
+                else
+                     return Students
+                        .Where(
+                            a =>
+                            a.LastName.StartsWith(searchTerm)
+                        ).OrderBy(a => a.LastName).ThenBy(a => a.FirstName);
+           }
             else
             {
-                return Students
+                if (ActiveOnly)
+                    return Students
+                    .Where(
+                        a =>
+                        a.FirstName.StartsWith(searchTerm) && a.Active == true
+                    ).OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+                else
+                    return Students
                     .Where(
                         a =>
                         a.FirstName.StartsWith(searchTerm)
-                    ).OrderBy(a => a.FirstName);
+                    ).OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
             }
         }
 
