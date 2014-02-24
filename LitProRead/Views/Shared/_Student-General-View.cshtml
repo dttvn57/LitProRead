@@ -56,11 +56,11 @@
                         @Html.ValidationMessageFor(m => Model.CurrentStudent.Salutation)
                     </td>
                     <td>
-                        @Html.TextBoxFor(m => m.CurrentStudent.FirstName)
+                        @Html.TextBoxFor(m => m.CurrentStudent.FirstName, htmlAttributes: new { placeholder="First Name"})
                         @Html.ValidationMessageFor(m => Model.CurrentStudent.FirstName)
                     </td>
                     <td colspan="2">
-                        @Html.TextBoxFor(m => m.CurrentStudent.LastName)
+                        @Html.TextBoxFor(m => m.CurrentStudent.LastName, htmlAttributes: new { placeholder="Last Name"})
                         @Html.ValidationMessageFor(m => Model.CurrentStudent.LastName)
                     </td>
                 </tr>

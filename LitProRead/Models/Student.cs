@@ -11,6 +11,7 @@ namespace LitProRead.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     [Serializable]
     //public partial class Student
@@ -22,8 +23,12 @@ namespace LitProRead.Models
         public int ID { get; set; }
         public Nullable<int> LitProID { get; set; }
         public string Salutation { get; set; }
+
+        [Required]
         public string FirstName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
         public string City { get; set; }
