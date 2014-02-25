@@ -361,7 +361,7 @@ namespace LitProRead.Controllers
 //            DBAdapter.Fill(DS);
 
             // Assumes that connection is a valid SqlConnection object.
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=LitProRead;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
+            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=LitProRead 2-20-2014;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
             string queryString = "SELECT * FROM dbo.Status";
             System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(queryString, connection);
             DataSet status = new DataSet();
@@ -375,6 +375,9 @@ namespace LitProRead.Controllers
             }
             vm.StudentReportsStatus = statusList;
 
+            /* 2/25/14 - trung
+             * What is this block code for: it doesn't look like the CLLS needs it
+             * 
             StatusDataSet statusDs = new StatusDataSet();
             StatusTableAdapter ad = new StatusTableAdapter();
             DataTable dt = ad.GetData();
@@ -382,6 +385,7 @@ namespace LitProRead.Controllers
             //{
             //    StudentReportsStatus = from s in db.GetTable<Status>();
             //}
+            */
 
             return View(vm);
         }

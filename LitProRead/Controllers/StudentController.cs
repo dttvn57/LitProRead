@@ -413,6 +413,7 @@ namespace LitProRead.Controllers
             //return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
         }
 
+        [HttpPost]
         public ActionResult Delete(int id = 0)
         {
             Student student = db.Students.Find(id);
@@ -437,15 +438,15 @@ namespace LitProRead.Controllers
         //
         // POST: /Student/Delete/5
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    Student student = db.Students.Find(id);
+        //    db.Students.Remove(student);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
 
         protected override void Dispose(bool disposing)
         {

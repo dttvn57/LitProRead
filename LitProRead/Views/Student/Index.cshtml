@@ -100,7 +100,8 @@ S T U D E N T S
                     <td colspan="5" style="text-align:center">
                         <button type="button" id="studentAdd">Add</button>
                         <button type="button" id="studentEdit">Edit</button>
-                        <button type="button" id="studentDelete">Delete</button>
+
+                       <button type="button" id="studentDelete">Delete</button>
                         
                         <input type="submit" value="Save" />
                         @*
@@ -205,6 +206,7 @@ S T U D E N T S
 {
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>
     <link rel="stylesheet" media="screen" href="@Url.Content("~/Content/superfish.css")"/>
+    
     <script type="text/javascript" src="@Url.Content("~/Scripts/select2.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/toDictionary.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.serializeJSON.min.js")"></script>
@@ -501,9 +503,50 @@ S T U D E N T S
                 });
             });
 
-            $('#studentDelete').click(function () {
+            $('#studentDelete').click(function (event) {
                 //alert("studentDelete");
 
+                //if ($('#CurrentStudent_ID').val() > 0) {
+                if (currentStudentId > 0) {
+
+                    event.preventDefault();
+                    $('<div title="Confirm Student Deletion"></div>').dialog({
+                        open: function (event, ui) {
+                            $(this).html("Yes or No?");
+                        },
+                        close: function () {
+                            $(this).remove();
+                        },
+                        resizable: false,
+                        height: 140,
+                        modal: true,
+                        buttons: {
+                            'Yes': function () {
+                                $(this).dialog('close');
+                                //$.post('/Student/Delete');
+                                $.post('@Url.Content("~/Student/Delete")', { "id": currentStudentId },
+                                    function (data) {
+                                        // Successful requests get here
+                                        location.reload(true);
+
+                                        //$('#cart-total').text(data.CartTotal);
+                                        //$("#StudentListLastName").select2("val", "");
+                                        //$("#StudentListFirstName").select2("val", "");
+                                        //$('#MatchT_CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
+
+                                    });
+
+                            },
+                            'No': function () {
+                                $(this).dialog('close');
+                                $.post('url/theOtherValueYouWantToPAss');
+                            }
+                        }
+                    });
+
+                };
+
+                @*
                $.ajax({
                     url: '@Url.Content("~/Student/Delete")',
                      //type: 'get',
@@ -522,7 +565,28 @@ S T U D E N T S
                      var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
                      alert("There was an error calling editStudent: " + errorMessage);
                  });
+                *@
             });
+
+            @*
+            <script>
+            $(function() {
+                $( "#dialog-confirm" ).dialog({
+                    resizable: false,
+                    height:140,
+                    modal: true,
+                    buttons: {
+                        "Delete all items": function() {
+                            $( this ).dialog( "close" );
+                        },
+                        Cancel: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    }
+                });
+            });
+            </script>
+            *@
 
             $.fn.populateStudentForm = function (data) {
                 $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
