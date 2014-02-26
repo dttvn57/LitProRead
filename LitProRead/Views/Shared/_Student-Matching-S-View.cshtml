@@ -113,7 +113,7 @@
             title: 'Matched Tutors',
             paging: true, //Enable paging
             sorting: true, //Enable sorting
-            defaultSorting: 'Name ASC',
+            defaultSorting: 'DateCreated DESC',
             //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
             actions: {
                 listAction: '@Url.Action("MatchSList", "Student")',
@@ -178,15 +178,16 @@
                     title: '',
                     //showCloseButton: true,
                     //openChildAsAccordion: true, 
-                    width: '8%',
+                    width: '2%',
                     //paging: true, 
-                    sorting: false,
+                    //sorting: false,
+                    //defaultSorting: 'DateMet ASC',
                     edit: false,
                     create: false,
                     listClass: 'child-opener-image-column',
                     display: function (studentData) {
                         //Create an image that will be used to open child table
-                        var $img = $('<img class="child-opener-image" src="/Content/images/Misc/note.png" title="Edit pair activity" />');
+                        var $img = $('<img class="child-opener-image" src="/Content/images/Misc/note.png" title="Open pair activities" />');
                         //Open child table when user clicks the image
                         $img.click(function () {
                             $('#Student-Matching-S').jtable('openChildTable',
@@ -224,6 +225,7 @@
                                                 title: 'Date Met',
                                                 //width: '10%',
                                                 type: 'date',
+                                                sorting: true, //This column is sortable!
                                                 displayFormat: 'yy-mm-dd'
                                                 //create: false,
                                                 //edit: false
@@ -322,6 +324,7 @@
                 TutorLName: {
                     title: 'Tutor Name',
                     width: '10%',
+                    sorting: false, //This column is not sortable!
                     //edit: false,
                     input: function (data) {
                         //data.record.TutorLName = $("#TutorNameList").val();
@@ -341,12 +344,14 @@
                 TStatusID: {
                     title: 'T-Status',
                     width: '10%',
+                    sorting: false, //This column is not sortable!
                     options: '@Url.Action("GetStatus", "Home")',
                     list: true
                 },
                 PairStatusID: {
                     title: 'Pair Status',
                     width: '10%',
+                    sorting: false, //This column is not sortable!
                     options: '@Url.Action("GetStatus", "Home")'
                 },
                 PairStatusDate: {
@@ -354,6 +359,7 @@
                     //width: '10%',
                     type: 'date',
                     displayFormat: 'yy/mm/dd',
+                    sorting: false, //This column is not sortable!
                     list: false
                 },
                 PairProgram: {
@@ -365,6 +371,7 @@
                     title: 'Match',
                    // width: '7%',
                     type: 'date',
+                    sorting: false, //This column is not sortable!
                     displayFormat: 'yy/mm/dd',
                     list: false
                 },
@@ -372,6 +379,7 @@
                     title: 'Dissolve',
                     //width: '7%',
                     type: 'date',
+                    sorting: false, //This column is not sortable!
                     displayFormat: 'yy/mm/dd',
                     list: false
                 },
@@ -382,7 +390,7 @@
                 },
                 DateCreated: {
                     title: 'Date Created',
-                    //width: '7%',
+                    width: '7%',
                     type: 'date',
                     displayFormat: 'yy/mm/dd',
                     list: true
@@ -391,10 +399,12 @@
                     title: 'Date Modified',
                     //width: '7%',
                     type: 'date',
+                    sorting: false, //This column is not sortable!
                     displayFormat: 'yy/mm/dd',
                     list: false
                 },
                 LastModifiedBy: {
+                    sorting: false, //This column is not sortable!
                     title: 'Last Modified By',
                     //width: '10%',
                     list: false

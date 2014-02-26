@@ -132,6 +132,15 @@ namespace LitProRead.Models
 
             matchCount = pairs.Count();
 
+            if (string.IsNullOrEmpty(sort) || sort.Equals("DateCreated ASC"))
+            {
+                pairs = pairs.OrderBy(p => p.DateCreated);
+            }
+            else if (sort.Equals("DateCreated DESC"))
+            {
+                pairs = pairs.OrderByDescending(p => p.DateCreated);
+            }
+
             List<PairViewModel> list = new List<PairViewModel>();
             foreach (var pair in pairs)
             {
@@ -197,7 +206,7 @@ namespace LitProRead.Models
         FROM Students RIGHT JOIN ((Tutors RIGHT JOIN Pairs ON Tutors.ID = Pairs.TID) RIGHT JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
         WHERE (((PairHours.DateMet) Between [Forms]![frmDateSelectionPairStatus]![BeginDate] And [Forms]![frmDateSelectionPairStatus]![EndDate]));
          */
-        public List<PairHoursViewModel> GetPairHoursForStudentAndTutor(int studentID, int tutorID, int pageSize, int pageNum)
+        public List<PairHoursViewModel> GetPairHoursForStudentAndTutor(int studentID, int tutorID, int pageSize, int pageNum, string sort = null)
         {
             //var stuStatus = Students.Find(studentID).Status;
             //var result = from t in ints1
@@ -233,6 +242,15 @@ namespace LitProRead.Models
                 //    p.HoursMet,
                 //    p.Activity
                 //};
+
+            if (string.IsNullOrEmpty(sort) || sort.Equals("DateMet ASC"))
+            {
+                query = query.OrderBy(p => p.DateMet);
+            }
+            else if (sort.Equals("DateCreated DESC"))
+            {
+                query = query.OrderByDescending(p => p.DateMet);
+            }
 
             List<PairHoursViewModel> list = new List<PairHoursViewModel>();
             if (query.First() != null)
