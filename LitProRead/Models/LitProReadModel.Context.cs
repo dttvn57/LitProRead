@@ -215,34 +215,40 @@ namespace LitProRead.Models
             //    where pairHour.SID == studentID && pairHour.TID == tutorID
 
 
-            var query = 
+            var query =
                 from pair in Pairs
-                where pair.SID == studentID && pair.TID == tutorID 
+                where pair.SID == studentID && pair.TID == tutorID
                 select pair into pairGrp
+
                 join pairHour in PairHours on pairGrp.UniqID equals pairHour.PairHours into pairPairHours
 
-            from p in pairPairHours.DefaultIfEmpty()
-            select new 
-            {
-                p.UniqID,
-                p.PairHours,
-                p.DateMet, 
-                p.HoursMet,
-                p.Activity
-            }; 
+                from p in pairPairHours.DefaultIfEmpty()
+
+                select p;
+                //select new
+                //{
+                //    p.UniqID,
+                //    p.PairHours,
+                //    p.DateMet,
+                //    p.HoursMet,
+                //    p.Activity
+                //};
 
             List<PairHoursViewModel> list = new List<PairHoursViewModel>();
-            foreach (var pairHr in query)
+            if (query.First() != null)
             {
-                int activityId = GetActivityId(pairHr.Activity);
-                list.Add(new PairHoursViewModel
+                foreach (var pairHr in query)
                 {
-                    UniqID = pairHr.UniqID,
-                    PairHours = pairHr.PairHours,
-                    DateMet = pairHr.DateMet,
-                    HoursMet = pairHr.HoursMet,
-                    ActivityID = activityId,   //pair.Activity
-                });
+                    int activityId = GetActivityId(pairHr.Activity);
+                    list.Add(new PairHoursViewModel
+                    {
+                        UniqID = pairHr.UniqID,
+                        PairHours = pairHr.PairHours,
+                        DateMet = pairHr.DateMet,
+                        HoursMet = pairHr.HoursMet,
+                        ActivityID = activityId,   //pair.Activity
+                    });
+                }
             }
             return list;
         }

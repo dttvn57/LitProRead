@@ -175,9 +175,11 @@
 
                 //CHILD TABLE DEFINITION FOR "Pair Activity"
                 PairActivity: {
-                    title: 'Pair Activity',
+                    title: '',
+                    //showCloseButton: true,
+                    //openChildAsAccordion: true, 
                     width: '8%',
-                    paging: true, //Enable paging
+                    //paging: true, 
                     sorting: false,
                     edit: false,
                     create: false,
@@ -190,7 +192,8 @@
                             $('#Student-Matching-S').jtable('openChildTable',
                                     $img.closest('tr'),
                                     {
-                                        title: studentData.TutorLName,
+                                        title: studentData.record.TutorLName,
+                                        //showCloseButton: true,
                                         actions: {
                                             listAction: '@Url.Action("MatchSPairsList", "Student")',
 
