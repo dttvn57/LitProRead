@@ -180,7 +180,7 @@
                     //openChildAsAccordion: true, 
                     width: '2%',
                     //paging: true, 
-                    //sorting: false,
+                    sorting: false,
                     //defaultSorting: 'DateMet ASC',
                     edit: false,
                     create: false,
@@ -193,7 +193,7 @@
                             $('#Student-Matching-S').jtable('openChildTable',
                                     $img.closest('tr'),
                                     {
-                                        title: studentData.record.TutorLName,
+                                        title: studentData.record.TutorLName + " - Pair Activities",
                                         //showCloseButton: true,
                                         actions: {
                                             listAction: '@Url.Action("MatchSPairsList", "Student")',
@@ -321,6 +321,13 @@
                 },
                   *@
 
+                DateCreated: {
+                    title: 'Date Created',
+                    width: '7%',
+                    type: 'date',
+                    displayFormat: 'yy/mm/dd',
+                    list: true
+                },
                 TutorLName: {
                     title: 'Tutor Name',
                     width: '10%',
@@ -337,10 +344,13 @@
                         }
                     }
                 },
-                //TutorFName: {
-                //    title: 'First Name',
-                //    width: '10%'
-                //},
+                TotalHoursMet: {
+                    title: 'Total Hours Met',
+                    sorting: false, //This column is not sortable!
+                    edit: false,
+                    create: false,
+                    width: '10%'
+                },
                 TStatusID: {
                     title: 'T-Status',
                     width: '10%',
@@ -387,13 +397,6 @@
                     title: 'Comments',
                     width: '10%',
                     list: false
-                },
-                DateCreated: {
-                    title: 'Date Created',
-                    width: '7%',
-                    type: 'date',
-                    displayFormat: 'yy/mm/dd',
-                    list: true
                 },
                 DateModified: {
                     title: 'Date Modified',

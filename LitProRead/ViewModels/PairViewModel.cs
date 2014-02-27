@@ -32,6 +32,7 @@ namespace LitProRead.ViewModels
         public byte[] SSMA_TimeStamp { get; set; }
         public int SStatusID { get; set; }
         public int TStatusID { get; set; }
+        public Nullable<double> TotalHoursMet { get; set; }
 
         public PairViewModel()
         {

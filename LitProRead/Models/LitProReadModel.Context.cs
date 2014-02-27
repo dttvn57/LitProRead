@@ -132,17 +132,44 @@ namespace LitProRead.Models
 
             matchCount = pairs.Count();
 
+            // get the Total Hours Met for the Tutors.
+            var query = pairs.GroupJoin(PairHours,
+                                              p => p.UniqID,
+                                              ph => ph.PairHours,
+                                              (d, t) => new
+                                              {
+                                                  UniqID = d.UniqID,
+                                                  SID = d.SID,
+                                                  TID = d.TID,
+                                                  TutorLName = d.TutorLastName,
+                                                  TutorFName = d.TutorFirstName,
+                                                  MatchDate = d.MatchDate,
+                                                  PairStatus = d.PairStatus,
+                                                  DissolveDate = d.DissolveDate,
+                                                  PairStatusDate = d.PairStatusDate,
+                                                  PairProgram = d.PairProgram,
+                                                  DateCreated = d.DateCreated,
+                                                  DateModified = d.DateModified,
+                                                  LastModifiedBy = d.LastModifiedBy,
+                                                  SSMA_TimeStamp = d.SSMA_TimeStamp,
+                                                  TStatus = d.TStatus,
+                                                  SStatus = d.SStatus,     
+                                                  Comments = d.Comments,
+                                                  TotalHoursMet = t.Sum(x => x.HoursMet)
+                                              });
+
             if (string.IsNullOrEmpty(sort) || sort.Equals("DateCreated ASC"))
             {
-                pairs = pairs.OrderBy(p => p.DateCreated);
+                query = query.OrderBy(p => p.DateCreated);
             }
             else if (sort.Equals("DateCreated DESC"))
             {
-                pairs = pairs.OrderByDescending(p => p.DateCreated);
+                query = query.OrderByDescending(p => p.DateCreated);
             }
 
+            // consolidate results.
             List<PairViewModel> list = new List<PairViewModel>();
-            foreach (var pair in pairs)
+            foreach (var pair in query)
             {
                 int pairStatusId = GetStatusId(pair.PairStatus);
                 int tStatusId = GetStatusId(pair.TStatus);
@@ -152,20 +179,21 @@ namespace LitProRead.Models
                     UniqID = pair.UniqID,
                     SID = pair.SID,
                     TID = pair.TID,
-                    TutorLName = pair.TutorLastName,
-                    TutorFName = pair.TutorFirstName,
+                    TutorLName = pair.TutorLName,
+                    TutorFName = pair.TutorFName,
                     MatchDate = pair.MatchDate,
                     DissolveDate = pair.DissolveDate,
-                    PairStatusID = pairStatusId,  //pair.PairStatus,
+                    PairStatusID = pairStatusId,
                     PairStatusDate = pair.PairStatusDate,
                     PairProgram = pair.PairProgram,
                     DateCreated = pair.DateCreated,
                     DateModified = pair.DateModified,
                     LastModifiedBy = pair.LastModifiedBy,
                     SSMA_TimeStamp = pair.SSMA_TimeStamp,
-                    TStatusID = tStatusId,      //pair.TStatus,
-                    SStatusID = sStatusId,       //pair.SStatus
-                    Comments = pair.Comments
+                    TStatusID = tStatusId,
+                    SStatusID = sStatusId,
+                    Comments = pair.Comments,
+                    TotalHoursMet = pair.TotalHoursMet
                 });
             }
 
