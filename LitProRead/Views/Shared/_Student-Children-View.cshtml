@@ -3,7 +3,6 @@
 @model LitProRead.ViewModels.StudentFormViewModel
  
 @{
-    var currStudentId2 = 0;
 }
 
 @section CssImport
@@ -104,6 +103,12 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        //var student = $('#CurrentStudent_ID').val();
+        //var createURL = '@Url.Action("CreateStudentChildren", "Student")';
+        //if (student == 0)
+        //{
+        //    createURL= '';
+        //}
 
         $('#Student-Children').jtable({
             title: '',
@@ -111,11 +116,25 @@
             sorting: true, //Enable sorting
             defaultSorting: 'DOB DESC',
             //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
+
+            // actions: {
+            //     listAction: 'actions.php?action=list',
+            //
+            //     <?php if($recordCount <5) { ?>
+            //         createAction: 'actions.php?orderId=&action=create',
+            //     <?php }else{ ?>
+            //         createAction: 'actions.php?action=create',
+            //     <?php } ?>
+            //
+            //      updateAction: 'actions.php?action=update',
+            //      deleteAction: 'actions.php?action=delete'
+            //    },
+
             actions: {
                 listAction: '@Url.Action("GetStudentChildren", "Student")',
-                //deleteAction: '@Url.Action("DeleteMatchS", "Student")',
-                //updateAction: '@Url.Action("UpdateMatchS", "Student")',
-                //createAction: '@Url.Action("CreateMatchS", "Student")'
+                deleteAction: '@Url.Action("DeleteStudentChildren", "Student")',
+                updateAction: '@Url.Action("UpdateStudentChildren", "Student")',
+                createAction: '@Url.Action("CreateStudentChildren", "Student")'
             },
             fields: {
                 ID: {
@@ -123,10 +142,18 @@
                     title: 'ID',
                     list: true,
                     input: function (data) {
-                            return '<input type="text" readonly class="jtable-input-readonly" name="ID" value="' + data.value + '"/>';
                         if (data.value) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="ID" value="' + data.value + '"/>';
                         } else {
-                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, 
+                            //create is false for your usage so this else is not needed but shown just so you know when it would be entered
+
+                            // I don't want create recrod dialog to popup if there's Student selected. I cant find a good way to do this so I use a workaround
+                            // by forcing an exception by referncing a non-existing variable
+                            var student = $('#CurrentStudent_ID').val();
+                            if (student == 0) {
+                                var dummy = $("#BAC").val();
+                            }
                         }
                     },
                     width: '5%',
@@ -136,6 +163,23 @@
                     title: 'Child Name',
                     //width: '10%',
                     sorting: false, //This column is not sortable!
+                    input: function (data) {
+                        if (data.record) {
+                            //return '<input type="text" readonly class="jtable-input-readonly" name="ID" value="' + data.value + '"/>';
+                            return '<input type="text" name="ChildName" style="width:200px" value="' + data.record.ChildName + '" />';
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, 
+                            //create is false for your usage so this else is not needed but shown just so you know when it would be entered
+
+                            // I don't want create recrod dialog to popup if there's Student selected. I cant find a good way to do this so I use a workaround
+                            // by forcing an exception by referncing a non-existing variable
+                            var student = $('#CurrentStudent_ID').val();
+                            if (student == 0) {
+                                var tutorName = $("#TutorNameList").select2('data').text; 
+                            }
+                            return '<input type="text" name="ChildName" style="width:200px" value="" />';
+                        }
+                    },
                 },
                 DOB: {
                     title: 'DOB',
@@ -147,11 +191,13 @@
                     title: 'Gender',
                     //width: '10%',
                     sorting: false, //This column is not sortable!
+                    options: '@Url.Action("GetGenderList", "Home")',
                 },
-               Ethnicity: {
+                Ethnicity: {
                     title: 'Ethnicity',
                     //width: '10%',
                     sorting: false, //This column is not sortable!
+                    options: '@Url.Action("GetEthnicityList", "Home")',
                 },
                 LiveWithAdult: {
                     title: 'Live With Adult',

@@ -98,6 +98,44 @@ namespace LitProRead.Models
             }
         }
 
+        // "Female";"Male"
+        public static List<SelectListItem> GetGenderList(string selected = "")
+        {
+            List<string> genders = new List<string>();
+            genders.Add("Female");
+            genders.Add("Male");
+            //List<SelectListItem> gender = new List<SelectListItem>();
+            //gender.Add(new SelectListItem { Text = "Female", Value = "0" });
+            //gender.Add(new SelectListItem { Text = "Male", Value = "1" });
+            return ParseList(selected, genders);
+        }
+
+        // SELECT DISTINCTROW Ethnicity.Ethnicity FROM Ethnicity ORDER BY Ethnicity.Ethnicity
+        public static List<SelectListItem> GetEthnicityList(string selected = "")
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var ethnicity = db.Database.SqlQuery<string>("SELECT Ethnicity FROM dbo.Ethnicity ORDER BY Ethnicity").ToList();
+                return ParseList(selected, ethnicity);
+            }
+        }
+
+        private static List<SelectListItem> ParseList(string selected, List<string> Items)
+        {
+            string selectedValue = selected != null ? selected.Trim() : "";
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in Items)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = item.Trim(),
+                    Value = item.Trim(),
+                    //Selected = selectedValue == item.Trim() ? true : false
+                });
+
+            }
+            return list;
+        }
     }
 
     public class _MailCode

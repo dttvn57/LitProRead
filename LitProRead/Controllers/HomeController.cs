@@ -121,6 +121,65 @@ namespace LitProRead.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetGenderList()
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                try
+                {
+                    List<string> list = new List<string>();
+                    list.Add("Female");
+                    list.Add("Male");
+                    int val = 0;
+                    var opts = from item in list
+                               select new { DisplayText = item, Value = val++ };
+
+
+                    //List<SelectListItem> list = new List<SelectListItem>();
+                    //foreach (var item in status)
+                    //{
+                    //    Select2PagedResult 
+                    //    list.Add(new SelectListItem
+                    //    {
+                    //        d
+
+                    //       //t Text = item.Trim(),
+                    //       // Value = item.Trim(),
+                    //        //Selected = selectedValue == item.Trim() ? true : false
+                    //    });
+
+                    //}
+
+                    return Json(new { Result = "OK", Options = opts });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+            }
+        }
+        
+        [HttpPost]
+        public JsonResult GetEthnicityList()
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                try
+                {
+                    var list = db.Database.SqlQuery<string>("SELECT Ethnicity FROM dbo.Ethnicity ORDER BY Ethnicity").ToList();
+                    int val = 0;
+                    var opts = from item in list
+                               select new { DisplayText = item, Value = val++ };
+                    return Json(new { Result = "OK", Options = opts });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+            }
+        }
+
         public ActionResult Index(int Id = -1)
         {
             return RedirectToAction("Index", "Student");

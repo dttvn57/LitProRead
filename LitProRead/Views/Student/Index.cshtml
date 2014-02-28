@@ -134,15 +134,15 @@ S T U D E N T S
                 <li><a href="#Student-General">General</a></li>
                 <li><a href="#Student-Preferences">Preferences</a></li>
                 <li><a href="#Student-Matching-S">Matching-S</a></li>
-                <li><a href="#tabs-Children">Children</a></li>
-                <li><a href="#tabs-Computer">Computer</a></li>
-                <li><a href="#tabs-Assessment-Intake">Assessment Intake</a></li>
-                <li><a href="#tabs-Assessment-Goals">Assessment Goals</a></li>
-                <li><a href="#tabs-Roles-and-Goals">Roles and Goals</a></li>
-                <li><a href="#tabs-Accomplishements">Accomplishements</a></li>
-                <li><a href="#tabs-Comments">Comments</a></li>
-                <li><a href="#tabs-FollowUp">FollowUp</a></li>
-                <li><a href="#tabs-Status-History">Status History</a></li>
+                <li><a href="#Student-Children">Children</a></li>
+                <li><a href="#Student-Computer">Computer</a></li>
+                <li><a href="#Student-Assessment-Intake">Assessment Intake</a></li>
+                <li><a href="#Student-Assessment-Goals">Assessment Goals</a></li>
+                <li><a href="#Student-Roles-and-Goals">Roles and Goals</a></li>
+                <li><a href="#tabsStudent-Accomplishements">Accomplishements</a></li>
+                <li><a href="#Student-Comments">Comments</a></li>
+                <li><a href="#Student-FollowUp">FollowUp</a></li>
+                <li><a href="#Student-Status-History">Status History</a></li>
             </ul>
 
             
@@ -167,35 +167,35 @@ S T U D E N T S
                 @Html.Partial("_Student-Children-View", Model)
             </div>
        
-            <div id="tabs-Computer">
+            <div id="Student-Computer">
                 Computer
             </div>
        
-            <div id="tabs-Assessment-Intake">
+            <div id="Student-Assessment-Intake">
                 Assessment-Intake
             </div>
        
-            <div id="tabs-Assessment-Goals">
+            <div id="Student-Assessment-Goals">
                 Assessment-Goals
             </div>
        
-            <div id="tabs-Roles-and-Goals">
+            <div id="Student-Roles-and-Goals">
                 Roles-and-Goals
             </div>
        
-            <div id="tabs-Accomplishements">
+            <div id="tabsStudent-Accomplishements">
                 Accomplishements
             </div>
        
-            <div id="tabs-Comments">
+            <div id="Student-Comments">
                 Comments
             </div>
        
-            <div id="tabs-FollowUp">
+            <div id="Student-FollowUp">
                 FollowUp
             </div>
        
-            <div id="tabs-Status-History">
+            <div id="Student-Status-History">
                 Status-History
             </div>
 
@@ -472,13 +472,14 @@ S T U D E N T S
                    data: { Command: "approve", lastName: last, firstName: first },
                      *@
                 }).done(function (data) {
-                    //alert('done');
+                   // alert('done');
                     //$("#Student-General").replaceWith(data);
                 }).complete(function () {
-                    //alert("complete");
+                   // alert("complete");
                 }).success(function (data) {
-                    $('#EditMode').val("edit");
-                    //alert(editMode);
+                    //alert('success');
+                   $('#EditMode').val("edit");
+                   //alert( $('#EditMode').val());
 
                     $.fn.populateStudentForm(data);
 
@@ -590,7 +591,7 @@ S T U D E N T S
 
             $.fn.populateStudentForm = function (data) {
                 $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
-                $('#Student-Children').jtable('load', { StudentFormViewModel: model });//$('#CurrentStudent_ID').val()
+                $('#Student-Children').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
 
                 $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
                 $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);

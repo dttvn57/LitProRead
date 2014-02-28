@@ -261,6 +261,31 @@ namespace LitProRead.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult CreateStudentChildren(PairViewModel pairVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Children form is not valid! Please correct it and try again." });
+                }
+
+                ////var addedPair = new Pair();
+                ////pairVm.SetTo(addedPair, true);
+                ////db.Pairs.Add(addedPair);
+                ////db.SaveChanges();
+                //var addedPairHour = pairVm; // _repository.StudentRepository.AddStudent(student);
+                return Json(new { Result = "OK", Record = pairVm });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message + " (maybe the same Tutor?" });
+            }
+        }
+
+
+        //********************************************************************************************
         //
         // GET: /Student/Delete/5
         //

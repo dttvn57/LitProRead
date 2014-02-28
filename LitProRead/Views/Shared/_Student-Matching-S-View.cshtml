@@ -338,9 +338,14 @@
                         if (data.record) {
                             return '<input type="text" name="TutorLName" style="width:200px" value="' + data.record.TutorLName + '" />';
                         } else {
-                            var tutorName = $("#TutorNameList").select2('data').text; //$("#TutorNameList").val();
+                            // I don't want create recrod dialog to popup if there's Student selected. I cant find a good way to do this so I use a workaround
+                            // by forcing an exception by referncing a non-existing variable
+                            var student = $('#CurrentStudent_ID').val();
+                            if (student == 0) {
+                                var tutorName = $("#TutorNameList").select2('data').text; //$("#TutorNameList").val();
+                            }
                             //return '<input type="text" name="Name" style="width:200px" value="enter your name here" />';
-                            return '<input type="text" name="TutorLName" style="width:200px" value="' + tutorName + '" />';
+                            return '<input type="text" name="TutorLName" style="width:200px" value="" />';
                         }
                     }
                 },

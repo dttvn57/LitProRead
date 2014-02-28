@@ -91,8 +91,8 @@ namespace LitProRead.ViewModels
             this.AreaCodeList = GetAreaCodeList();
             this.CityList = GetCityList();
             this.ContactPrefList = GetContactPrefList();
-            this.GenderList = GetGenderList();
-            this.EthnicityList = GetEthnicityList();
+            this.GenderList = DbHelper.GetGenderList();
+            this.EthnicityList = DbHelper.GetEthnicityList();
             this.IncomeList = GetIncomeList();
             this.EmployerStatusList = GetEmployerStatusList();
             this.CallLocationList = GetCallLocationList();
@@ -188,28 +188,6 @@ namespace LitProRead.ViewModels
             {
                 var prefs = db.Database.SqlQuery<string>("SELECT ContactPref FROM dbo.ContactPref").ToList();
                 return ParseList(selected, prefs);
-            }
-        }
-
-        // "Female";"Male"
-        public List<SelectListItem> GetGenderList(string selected = "")
-        {
-            List<string> genders = new List<string>();
-            genders.Add("Female");
-            genders.Add("Male");
-            //List<SelectListItem> gender = new List<SelectListItem>();
-            //gender.Add(new SelectListItem { Text = "Female", Value = "0" });
-            //gender.Add(new SelectListItem { Text = "Male", Value = "1" });
-            return ParseList(selected, genders);
-        }
-
-        // SELECT DISTINCTROW Ethnicity.Ethnicity FROM Ethnicity ORDER BY Ethnicity.Ethnicity
-        public List<SelectListItem> GetEthnicityList(string selected = "")
-        {
-            using (LitProReadEntities db = new LitProReadEntities())
-            {
-                var ethnicity = db.Database.SqlQuery<string>("SELECT Ethnicity FROM dbo.Ethnicity ORDER BY Ethnicity").ToList();
-                return ParseList(selected, ethnicity);
             }
         }
 
