@@ -163,8 +163,8 @@ S T U D E N T S
                 @Html.Partial("_Student-Matching-S-View", Model)
             </div>
        
-            <div id="tabs-Children">
-                Children
+            <div id="Student-Children">
+                @Html.Partial("_Student-Children-View", Model)
             </div>
        
             <div id="tabs-Computer">
@@ -590,6 +590,7 @@ S T U D E N T S
 
             $.fn.populateStudentForm = function (data) {
                 $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
+                $('#Student-Children').jtable('load', { StudentFormViewModel: model });//$('#CurrentStudent_ID').val()
 
                 $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
                 $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);

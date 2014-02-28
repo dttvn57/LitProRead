@@ -206,6 +206,19 @@ namespace LitProRead.Models
                 return list;
         }
 
+        public List<StudentChildren> GetStudentChildren(int id)
+        {
+            var query = from c in StudentChildrens
+                        where c.ID == id
+                        select c;
+
+            if (query.Count() == 0)
+                return new List<StudentChildren>();
+
+            return query.ToList();
+        }
+
+
         /**
          using (SFA2DBDataContext db = new SFA2DBDataContext())
             {
@@ -228,7 +241,8 @@ namespace LitProRead.Models
         Tutors.FirstName & " " & Tutors.LastName AS TutorName, Students.FirstName & " " & Students.Lastname AS StudentName, 
         Pairs.DissolveDate, PairHours.Activity, Pairs.PairStatus, Pairs.MatchDate, 
         IIf(IsNull([DissolveDate]),
-        DateDiff("m",[MatchDate],Now()),DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, 
+        DateDiff("m",[MatchDate],Now()),
+        DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, 
         Pairs.PairProgram, Pairs.PairStatusDate
 
         FROM Students RIGHT JOIN ((Tutors RIGHT JOIN Pairs ON Tutors.ID = Pairs.TID) RIGHT JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID

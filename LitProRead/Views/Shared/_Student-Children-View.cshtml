@@ -1,0 +1,207 @@
+﻿@using System.Text
+
+@model LitProRead.ViewModels.StudentFormViewModel
+ 
+@{
+    var currStudentId2 = 0;
+}
+
+@section CssImport
+{
+    <style>
+        .child-opener-image
+        {
+            cursor: pointer;
+        }
+        .child-opener-image-column
+        {
+            text-align: center;
+        }
+        .jtable-dialog-form
+        {
+            min-width: 220px;
+        }
+        .jtable-dialog-form input[type="text"]
+        {
+            min-width: 200px;
+        }
+        .jtable-input-readonly
+        {
+            background-color:lightgray;
+        }
+    </style>
+
+    <link href="@Url.Content("~/Scripts/validationEngine/validationEngine.jquery.css")" rel="stylesheet" type="text/css" />
+}
+@section JavascriptImport
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/validationEngine/jquery.validationEngine.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/validationEngine/jquery.validationEngine-en.js")"></script>
+}  
+
+<table>
+    <colgroup>
+            <col style="width:5%;"/>
+            <col style="width:20%;"/>
+            <col style="width:15%;"/>
+            <col style="width:25%;"/>
+            <col style="width:25%;"/>
+            <col style="width:10%;"/>
+    </colgroup>
+
+    @*
+    <tr>
+        @for (int i = 0; i < 6; i++)
+        {
+            if (i % 2 == 0)
+            {
+                <td style="background-color:red"></td>
+            }
+            else
+            {
+                <td style="background-color:yellow"></td>
+            }
+        }
+    </tr>
+    *@
+
+    <tr>
+        <td colspan="4" style="text-align: left; color: blue">
+            @Html.LabelForModel(Model.CurrentStudent.FirstName)
+            @*
+            &nbsp;&nbsp;@Html.LabelFor(m => m.CurrentStudent.LastName)
+            *@
+        </td>
+    </tr>
+
+    <tr><td colspan="6"><hr /></td></tr>
+
+    <tr>
+        <td style="text-align: center;">FFL
+        </td>
+        <td style="text-align: center;">Follow Up Survey Date
+        </td>
+        <td style="text-align: center;">Initial Survey Date
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center;">
+            @Html.CheckBoxFor(m => m.CurrentStudent.FFL, false)
+        </td>
+        <td style="text-align: center;">
+            @Html.TextBoxFor(m => m.CurrentStudent.FollowUpSurveyDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+        </td>
+        <td style="text-align: center;">
+            @Html.TextBoxFor(m => m.CurrentStudent.InitialSurveyDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+        </td>
+    </tr>
+
+    <tr><td></br></td></tr>
+</table>
+
+<div id="Student-Children">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#Student-Children').jtable({
+            title: '',
+            paging: true, //Enable paging
+            sorting: true, //Enable sorting
+            defaultSorting: 'DOB DESC',
+            //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
+            actions: {
+                listAction: '@Url.Action("GetStudentChildren", "Student")',
+                //deleteAction: '@Url.Action("DeleteMatchS", "Student")',
+                //updateAction: '@Url.Action("UpdateMatchS", "Student")',
+                //createAction: '@Url.Action("CreateMatchS", "Student")'
+            },
+            fields: {
+                ID: {
+                    key: true,      //this is to be used in deletion action
+                    title: 'ID',
+                    list: true,
+                    input: function (data) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="ID" value="' + data.value + '"/>';
+                        if (data.value) {
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
+                },
+                ChildName: {
+                    title: 'Child Name',
+                    //width: '10%',
+                    sorting: false, //This column is not sortable!
+                },
+                DOB: {
+                    title: 'DOB',
+                    //width: '7%',
+                    type: 'date',
+                    displayFormat: 'yy/mm/dd'
+                },
+                Gender: {
+                    title: 'Gender',
+                    //width: '10%',
+                    sorting: false, //This column is not sortable!
+                },
+               Ethnicity: {
+                    title: 'Ethnicity',
+                    //width: '10%',
+                    sorting: false, //This column is not sortable!
+                },
+                LiveWithAdult: {
+                    title: 'Live With Adult',
+                    sorting: false, //This column is not sortable!
+                    edit: false,
+                    create: false,
+                    width: '10%'
+                },
+                ChildRelationship: {
+                   title: 'Child Relationship',
+                   //type: checkbox,
+                    //width: '10%',
+                    sorting: false
+                },
+                Comments: {
+                    title: 'Comments',
+                    //type: textarea,
+                    sorting: false,
+                    list: false
+                }
+                    @*
+               *@
+            }      //fields
+
+            ///formCreated: function (event, data) {
+            ///    if (data.formType == "create") {
+            ///        var v = $("#TutorNameList").val();
+            ///        data.form.find('input[name="TID"]').val(v);
+            ///        v = $('#CurrentStudent_ID').val();
+            ///        data.form.find('input[name="SID"]').val(v);
+
+            ///        data.form.find('input[name="UniqID"]').val(0);
+            ///    }
+                //data.form.validationEngine();
+                //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
+            ///},
+
+            //formSubmitting: function (event, data) {
+            //    return data.form.validationEngine('validate');             
+            //},
+            
+            ///formClosed: function (event, data) {
+                //data.form.validationEngine('hide');
+                //data.form.validationEngine('detach');
+                //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+            ///}
+        });
+
+        //$('#Student-Children').jtable('load', { SID: 18 });
+
+    });
+</script>
+

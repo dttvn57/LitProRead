@@ -244,6 +244,23 @@ namespace LitProRead.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetStudentChildren(int studentId)
+        {
+            try
+            {
+                Thread.Sleep(200);
+                IEnumerable<StudentChildren> query = db.GetStudentChildren(studentId);
+
+                var count = query.Count();
+                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
         //
         // GET: /Student/Delete/5
         //

@@ -19,6 +19,14 @@ namespace LitProRead.ViewModels
         public Student CurrentStudent { get; set; }
         public Pair MatchSPair { get; set; }
 
+        public List<StudentChildren> StudentChildrenList { get; set; }
+        //private ICollection<StudentChildren> _StudentChildrenList;
+        //public virtual ICollection<StudentChildren> StudentChildrenList
+        //{
+        //    get { return _StudentChildrenList ?? (_StudentChildrenList = new HashSet<StudentChildren>()); }
+        //    set { _StudentChildrenList = value; }
+        //}
+
         public List<SelectListItem> SalutationList { get; set; }
         public List<SelectListItem> AreaCodeList { get; private set; }
         public List<SelectListItem> CityList { get; private set; }
@@ -76,6 +84,9 @@ namespace LitProRead.ViewModels
         {
             this.Id = id;
             this.CurrentStudent = GetStudent(id);
+
+            this.StudentChildrenList = GetStudentChildren(id);
+
             this.SalutationList = GetSalutationList(CurrentStudent.Salutation);
             this.AreaCodeList = GetAreaCodeList();
             this.CityList = GetCityList();
@@ -109,166 +120,6 @@ namespace LitProRead.ViewModels
             this.KeywordList = DbHelper.GetKeywordList(null);
         }
 
-        //public void Populate(Dictionary<string, string> values)
-        //{
-        //    Id = Convert.ToInt32(values["Id"]);
-        //    CurrentStudent = GetStudent(Id);
-        //    if (CurrentStudent != null)
-        //    {
-        //        if (CurrentStudent.Salutation != null && CurrentStudent.Salutation.Equals(values["CurrentStudent.Salutation"]) == false)
-        //            CurrentStudent.Salutation = values["CurrentStudent.Salutation"];
-        //        if (CurrentStudent.Salutation == null && values["CurrentStudent.Salutation"] != "")
-        //            CurrentStudent.Salutation = values["CurrentStudent.Salutation"];
-        //        if (CurrentStudent.FirstName != null && CurrentStudent.FirstName.Equals(values["CurrentStudent.FirstName"]) == false)
-        //            CurrentStudent.FirstName = values["CurrentStudent.FirstName"];
-        //        if (CurrentStudent.LastName != null && CurrentStudent.LastName.Equals(values["CurrentStudent.LastName"]) == false)
-        //            CurrentStudent.LastName = values["CurrentStudent.LastName"];
-        //        if (CurrentStudent.Address1 != null && CurrentStudent.Address1.Equals(values["CurrentStudent.Address1"]) == false)
-        //            CurrentStudent.Address1 = values["CurrentStudent.Address1"];
-        //        if (CurrentStudent.Address2 != null && CurrentStudent.Address2.Equals(values["CurrentStudent.Address2"]) == false)
-        //            CurrentStudent.Address2 = values["CurrentStudent.Address2"];
-        //        if (CurrentStudent.City != null && CurrentStudent.City.Equals(values["CurrentStudent.City"]) == false)
-        //            CurrentStudent.City = values["CurrentStudent.City"];
-        //        if (CurrentStudent.State != null && CurrentStudent.State.Equals(values["CurrentStudent.State"]) == false)
-        //            CurrentStudent.State = values["CurrentStudent.State"];
-        //        if (CurrentStudent.Zip != null && CurrentStudent.Zip.Equals(values["CurrentStudent.Zip"]) == false)
-        //            CurrentStudent.Zip = values["CurrentStudent.Zip"];
-        //        if (CurrentStudent.HomeAreaCode != null && CurrentStudent.HomeAreaCode.Equals(values["CurrentStudent.HomeAreaCode"]) == false)
-        //            CurrentStudent.HomeAreaCode = values["CurrentStudent.HomeAreaCode"];
-        //        if (CurrentStudent.HomePhone != null && CurrentStudent.HomePhone.Equals(values["CurrentStudent.HomePhone"]) == false)
-        //            CurrentStudent.HomePhone = values["CurrentStudent.HomePhone"];
-        //        if (CurrentStudent.WorkAreaCode != null && CurrentStudent.WorkAreaCode.Equals(values["CurrentStudent.WorkAreaCode"]) == false)
-        //            CurrentStudent.WorkAreaCode = values["CurrentStudent.WorkAreaCode"];
-        //        if (CurrentStudent.WorkPhone != null && CurrentStudent.WorkPhone.Equals(values["CurrentStudent.WorkPhone"]) == false)
-        //            CurrentStudent.WorkPhone = values["CurrentStudent.WorkPhone"];
-        //        if (CurrentStudent.WorkPhoneExt != null && CurrentStudent.WorkPhoneExt.Equals(values["CurrentStudent.WorkPhoneExt"]) == false)
-        //            CurrentStudent.WorkPhoneExt = values["CurrentStudent.WorkPhoneExt"];
-        //        if (CurrentStudent.FAXAreaCode != null && CurrentStudent.FAXAreaCode.Equals(values["CurrentStudent.FAXAreaCode"]) == false)
-        //            CurrentStudent.FAXAreaCode = values["CurrentStudent.FAXAreaCode"];
-        //        if (CurrentStudent.FAX != null && CurrentStudent.FAX.Equals(values["CurrentStudent.FAX"]) == false)
-        //            CurrentStudent.FAX = values["CurrentStudent.FAX"];
-        //        if (CurrentStudent.CellAreaCode1 != null && CurrentStudent.CellAreaCode1.Equals(values["CurrentStudent.CellAreaCode1"]) == false)
-        //            CurrentStudent.CellAreaCode1 = values["CurrentStudent.CellAreaCode1"];
-        //        if (CurrentStudent.CellPhone1 != null && CurrentStudent.CellPhone1.Equals(values["CurrentStudent.CellPhone1"]) == false)
-        //            CurrentStudent.CellPhone1 = values["CurrentStudent.CellPhone1"];
-        //        if (CurrentStudent.CellAreaCode2 != null && CurrentStudent.CellAreaCode2.Equals(values["CurrentStudent.CellAreaCode2"]) == false)
-        //            CurrentStudent.CellAreaCode2 = values["CurrentStudent.CellAreaCode2"];
-        //        if (CurrentStudent.CellAreaPhone2 != null && CurrentStudent.CellAreaPhone2.Equals(values["CurrentStudent.CellAreaPhone2"]) == false)
-        //            CurrentStudent.CellAreaPhone2 = values["CurrentStudent.CellAreaPhone2"];
-        //        if (CurrentStudent.ContactPref != null && CurrentStudent.ContactPref.Equals(values["CurrentStudent.ContactPref"]) == false)
-        //            CurrentStudent.ContactPref = values["CurrentStudent.ContactPref"];
-        //        if (CurrentStudent.EMail != null && CurrentStudent.EMail.Equals(values["CurrentStudent.EMail"]) == false)
-        //            CurrentStudent.EMail = values["CurrentStudent.EMail"];
-        //        if (CurrentStudent.Gender != null && CurrentStudent.Gender.Equals(values["CurrentStudent.Gender"]) == false)
-        //            CurrentStudent.Gender = values["CurrentStudent.Gender"];
-        //        if (CurrentStudent.Ethnicity != null && CurrentStudent.Ethnicity.Equals(values["CurrentStudent.Ethnicity"]) == false)
-        //            CurrentStudent.Ethnicity = values["CurrentStudent.Ethnicity"];
-        //        if (CurrentStudent.Income != null && CurrentStudent.Income.Equals(values["CurrentStudent.Income"]) == false)
-        //            CurrentStudent.Income = values["CurrentStudent.Income"];
-        //        if (CurrentStudent.Occupation != null && CurrentStudent.Occupation.Equals(values["CurrentStudent.Occupation"]) == false)
-        //            CurrentStudent.Occupation = values["CurrentStudent.Occupation"];
-        //        if (CurrentStudent.Employer != null && CurrentStudent.Employer.Equals(values["CurrentStudent.Employer"]) == false)
-        //            CurrentStudent.Employer = values["CurrentStudent.Employer"];
-        //        if (CurrentStudent.EmployerStatus != null && CurrentStudent.EmployerStatus.Equals(values["CurrentStudent.EmployerStatus"]) == false)
-        //            CurrentStudent.EmployerStatus = values["CurrentStudent.EmployerStatus"];
-        //        if (CurrentStudent.EmergContact != null && CurrentStudent.EmergContact.Equals(values["CurrentStudent.EmergContact"]) == false)
-        //            CurrentStudent.EmergContact = values["CurrentStudent.EmergContact"];
-
-        //        if (CurrentStudent.EmergAreaCode != null && CurrentStudent.EmergAreaCode.Equals(values["CurrentStudent.EmergAreaCode"]) == false)
-        //            CurrentStudent.EmergAreaCode = values["CurrentStudent.EmergAreaCode"];
-        //        if (CurrentStudent.EmergPhone != null && CurrentStudent.EmergPhone.Equals(values["CurrentStudent.EmergPhone"]) == false)
-        //            CurrentStudent.EmergPhone = values["CurrentStudent.EmergPhone"];
-        //        if (CurrentStudent.CallLocation != null && CurrentStudent.CallLocation.Equals(values["CurrentStudent.CallLocation"]) == false)
-        //            CurrentStudent.CallLocation = values["CurrentStudent.CallLocation"];
-        //        CurrentStudent.DOB = AssignDate(values["CurrentStudent.DOB"]);
-        //        //DateTime dob = DateTime.Parse(values["CurrentStudent.DOB"]);
-        //        //if (CurrentStudent.DOB != null)
-        //        //{
-        //        //    if (dob != CurrentStudent.DOB)
-        //        //        CurrentStudent.DOB = dob;
-        //        //}
-        //        //else
-        //        //{
-        //        //    CurrentStudent.DOB = dob;               
-        //        //}
-        //        if (CurrentStudent.Country != null && CurrentStudent.Country.Equals(values["CurrentStudent.Country"]) == false)
-        //            CurrentStudent.Country = values["CurrentStudent.Country"];
-        //        if (CurrentStudent.NativeLanguage != null && CurrentStudent.NativeLanguage.Equals(values["CurrentStudent.NativeLanguage"]) == false)
-        //            CurrentStudent.NativeLanguage = values["CurrentStudent.NativeLanguage"];
-        //        if (CurrentStudent.EducationLevel != null && CurrentStudent.EducationLevel.Equals(values["CurrentStudent.EducationLevel"]) == false)
-        //            CurrentStudent.EducationLevel = values["CurrentStudent.EducationLevel"];
-        //        if (CurrentStudent.ReadWriteNativeLang != null && CurrentStudent.ReadWriteNativeLang.Equals(values["CurrentStudent.ReadWriteNativeLang"]) == false)
-        //            CurrentStudent.ReadWriteNativeLang = values["CurrentStudent.ReadWriteNativeLang"];
-        //        if (CurrentStudent.Referral != null && CurrentStudent.Referral.Equals(values["CurrentStudent.Referral"]) == false)
-        //            CurrentStudent.Referral = values["CurrentStudent.Referral"];
-
-        //        CurrentStudent.FingerPrintDate = AssignDate(values["CurrentStudent.FingerPrintDate"]);
-
-        //        if (CurrentStudent.Staff != null && CurrentStudent.Staff.Equals(values["CurrentStudent.Staff"]) == false)
-        //            CurrentStudent.Staff = values["CurrentStudent.Staff"];
-        //        if (CurrentStudent.Source != null && CurrentStudent.Source.Equals(values["CurrentStudent.Source"]) == false)
-        //            CurrentStudent.Source = values["CurrentStudent.Source"];
-
-        //        CurrentStudent.IntakeDate = AssignDate(values["CurrentStudent.IntakeDate"]);
-        //        //DateTime intakeDate = DateTime.Parse(values["CurrentStudent.IntakeDate"]);
-        //        //if (CurrentStudent.IntakeDate != null)
-        //        //{
-        //        //    if (intakeDate != CurrentStudent.IntakeDate)
-        //        //        CurrentStudent.IntakeDate = intakeDate;
-        //        //}
-        //        //else
-        //        //{
-        //        //    CurrentStudent.IntakeDate = intakeDate;
-        //        //}
-
-        //        CurrentStudent.FirstActive = AssignDate(values["CurrentStudent.FirstActive"]);
-        //        //DateTime firstActive = DateTime.Parse(values["CurrentStudent.FirstActive"]);
-        //        //if (CurrentStudent.FirstActive != null)
-        //        //{
-        //        //    if (firstActive != CurrentStudent.FirstActive)
-        //        //        CurrentStudent.FirstActive = firstActive;
-        //        //}
-        //        //else
-        //        //{
-        //        //    CurrentStudent.FirstActive = firstActive;
-        //        //}
-
-        //        ///SetCurrentActive(values["CurrentStudentActive"]);
-        //        if (CurrentStudent.Active != null)
-        //        {
-        //            if (values["CurrentStudent.Active"] == "false")
-        //                CurrentStudent.Active = false;
-        //            else
-        //                CurrentStudent.Active = true;
-        //        }
-        //        else
-        //        {
-                
-        //        }
-
-        //        CurrentStudent.ActiveDate = AssignDate(values["CurrentStudent.ActiveDate"]);
-
-        //        if (CurrentStudent.Status != null && CurrentStudent.Status.Equals(values["CurrentStudent.Status"]) == false)
-        //            CurrentStudent.Status = values["CurrentStudent.Status"];
-        //        if (values["CurrentStudent.InActive"] == "false")
-        //            CurrentStudent.InActive = false;
-        //        else
-        //            CurrentStudent.InActive = true;
-        //        if (CurrentStudent.InActiveReason != null && CurrentStudent.InActiveReason.Equals(values["CurrentStudent.InActiveReason"]) == false)
-        //            CurrentStudent.InActiveReason = values["CurrentStudent.InActiveReason"];
-        //        if (CurrentStudent.Program != null && CurrentStudent.Program.Equals(values["CurrentStudent.Program"]) == false)
-        //            CurrentStudent.Program = values["CurrentStudent.Program"];
-        //        if (CurrentStudent.MailCode != null && CurrentStudent.MailCode.Equals(values["CurrentStudent.MailCode"]) == false)
-        //            CurrentStudent.MailCode = values["CurrentStudent.MailCode"];
-        //        if (CurrentStudent.Category != null && CurrentStudent.Category.Equals(values["CurrentStudent.Category"]) == false)
-        //            CurrentStudent.Category = values["CurrentStudent.Category"];
-        //        if (CurrentStudent.Keyword != null && CurrentStudent.Keyword.Equals(values["CurrentStudent.Keyword"]) == false)
-        //            CurrentStudent.Keyword = values["CurrentStudent.Keyword"];
-
-        //        CurrentStudent.AvailMonAM = values["CurrentStudent.AvailMonAM"] == "false" ? false : true;
-        //    }
-        //}
-
         public Student GetStudent(int id)
         {
             using (LitProReadEntities db = new LitProReadEntities())
@@ -278,6 +129,14 @@ namespace LitProRead.ViewModels
                     return new Student();
                 return student;
             }
+        }
+
+        public List<StudentChildren> GetStudentChildren(int id)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                return db.GetStudentChildren(id);
+            }       
         }
 
         // SELECT DISTINCTROW Salutation.Salutation FROM Salutation
