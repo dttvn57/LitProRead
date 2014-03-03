@@ -78,9 +78,9 @@
     <tr>
         <td style="text-align: center;">FFL
         </td>
-        <td style="text-align: center;">Follow Up Survey Date
-        </td>
         <td style="text-align: center;">Initial Survey Date
+        </td>
+        <td style="text-align: center;">Follow Up Survey Date
         </td>
     </tr>
     <tr>
@@ -88,10 +88,10 @@
             @Html.CheckBoxFor(m => m.CurrentStudent.FFL, false)
         </td>
         <td style="text-align: center;">
-            @Html.TextBoxFor(m => m.CurrentStudent.FollowUpSurveyDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+            @Html.TextBoxFor(m => m.CurrentStudent.InitialSurveyDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
         </td>
         <td style="text-align: center;">
-            @Html.TextBoxFor(m => m.CurrentStudent.InitialSurveyDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
+            @Html.TextBoxFor(m => m.CurrentStudent.FollowUpSurveyDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
         </td>
     </tr>
 
@@ -137,8 +137,11 @@
                 createAction: '@Url.Action("CreateStudentChildren", "Student")'
             },
             fields: {
-                ID: {
+                AutoNum: {
                     key: true,      //this is to be used in deletion action
+                    visibility: 'hidden'
+                },
+                ID: {
                     title: 'ID',
                     list: true,
                     input: function (data) {
@@ -153,6 +156,9 @@
                             var student = $('#CurrentStudent_ID').val();
                             if (student == 0) {
                                 var dummy = $("#BAC").val();
+                            }
+                            else {
+                                return '<input type="text" readonly class="jtable-input-readonly" name="ID" value="' + student + '"/>';
                             }
                         }
                     },
@@ -187,13 +193,13 @@
                     type: 'date',
                     displayFormat: 'yy/mm/dd'
                 },
-                Gender: {
+                GenderID: {
                     title: 'Gender',
                     //width: '10%',
                     sorting: false, //This column is not sortable!
                     options: '@Url.Action("GetGenderList", "Home")',
                 },
-                Ethnicity: {
+                EthnicityID: {
                     title: 'Ethnicity',
                     //width: '10%',
                     sorting: false, //This column is not sortable!
@@ -202,15 +208,19 @@
                 LiveWithAdult: {
                     title: 'Live With Adult',
                     sorting: false, //This column is not sortable!
-                    edit: false,
-                    create: false,
+                    //edit: false,
+                    //create: false,
+                    type: 'checkbox',
+                    values: { 'false': 'No', 'true': 'Yes' },
+                    defaultValue: 'false',
                     width: '10%'
                 },
-                ChildRelationship: {
+                ChildRelationshipID: {
                    title: 'Child Relationship',
                    //type: checkbox,
                     //width: '10%',
-                    sorting: false
+                   sorting: false, //This column is not sortable!
+                   options: '@Url.Action("GetChildRelationshipList", "Home")',
                 },
                 Comments: {
                     title: 'Comments',
@@ -220,24 +230,22 @@
                 }
                     @*
                *@
-            }      //fields
+            },      //fields
 
-            ///formCreated: function (event, data) {
-            ///    if (data.formType == "create") {
-            ///        var v = $("#TutorNameList").val();
-            ///        data.form.find('input[name="TID"]').val(v);
-            ///        v = $('#CurrentStudent_ID').val();
-            ///        data.form.find('input[name="SID"]').val(v);
-
-            ///        data.form.find('input[name="UniqID"]').val(0);
-            ///    }
+            formCreated: function (event, data) {
+                if (data.formType == "create") {
+                    var v = $('#CurrentStudent_ID').val();
+                    data.form.find('input[name="ID"]').val(v);
+                }
                 //data.form.validationEngine();
                 //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
-            ///},
+            },
 
-            //formSubmitting: function (event, data) {
-            //    return data.form.validationEngine('validate');             
-            //},
+            formSubmitting: function (event, data) {
+                if (data.formType == "create") {
+                }
+                //return data.form.validationEngine('validate');
+            },
             
             ///formClosed: function (event, data) {
                 //data.form.validationEngine('hide');

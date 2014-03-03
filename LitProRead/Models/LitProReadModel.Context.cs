@@ -206,16 +206,37 @@ namespace LitProRead.Models
                 return list;
         }
 
-        public List<StudentChildren> GetStudentChildren(int id)
+        public List<StudentChildrenViewModel> GetStudentChildren(int id)
         {
             var query = from c in StudentChildrens
                         where c.ID == id
                         select c;
 
             if (query.Count() == 0)
-                return new List<StudentChildren>();
+                return new List<StudentChildrenViewModel>();
 
-            return query.ToList();
+            List<StudentChildrenViewModel> list = new List<StudentChildrenViewModel>();
+            foreach (var item in query)
+            {
+                int genderId = GetGenderId(item.Gender);
+                int ethnicityId = GetEthnicityId(item.Ethnicity);
+                int relationshipId = GetChildRelationshipId(item.ChildRelationship);
+                list.Add(new StudentChildrenViewModel
+                {
+                    AutoNum = item.AutoNum,
+                    ID = item.ID,
+                    ChildName = item.ChildName,
+                    DOB = item.DOB,
+                    GenderID = genderId,
+                    EthnicityID = ethnicityId,
+                    LiveWithAdult = item.LiveWithAdult,
+                    ChildRelationshipID = relationshipId,
+                    Comments = item.Comments,
+                    SSMA_TimeStamp = item.SSMA_TimeStamp
+                });
+            }
+
+            return list;
         }
 
 
@@ -401,6 +422,118 @@ namespace LitProRead.Models
             else if (status.Equals("Waiting", StringComparison.OrdinalIgnoreCase))
                 return 6;
            return 0;
+        }
+
+        public static string GetGender(int genderId)
+        {
+            switch (genderId)
+            {
+                case 1:
+                    return "Female";
+                case 2:
+                    return "Male";
+                case 0:
+                default:
+                    return "---";
+            }
+        }
+        private int GetGenderId(string gender)
+        {
+            if (gender == null || gender.Equals("---"))
+                return 0;
+            if (gender.Equals("Female", StringComparison.OrdinalIgnoreCase))
+                return 1;
+            else if (gender.Equals("Male", StringComparison.OrdinalIgnoreCase))
+                return 2;
+            return 0;
+        }
+
+        public static string GetEthnicity(int ethnicityId)
+        {
+            switch (ethnicityId)
+            {
+                case 1:
+                    return "African";
+                case 2:
+                    return "Algerian";
+                case 3:
+                    return "Asian";
+                case 4:
+                    return "Black";
+                case 5:
+                    return "Ethiopian";
+                case 6:
+                    return "Hispanic";
+                case 7:
+                    return "Native American";
+                case 8:
+                    return "Other";
+                case 9:
+                    return "Pacific Islander";
+                case 10:
+                    return "Unknown";
+                case 11:
+                    return "White";
+                case 0:
+                default:
+                    return "---";
+            }
+        }
+        private int GetEthnicityId(string ethnicity)
+        {
+            if (ethnicity == null || ethnicity.Equals("---"))
+                return 0;
+            if (ethnicity.Equals("African", StringComparison.OrdinalIgnoreCase))
+                return 1;
+            else if (ethnicity.Equals("Algerian", StringComparison.OrdinalIgnoreCase))
+                return 2;
+            else if (ethnicity.Equals("Asian", StringComparison.OrdinalIgnoreCase))
+                return 3;
+            else if (ethnicity.Equals("Black", StringComparison.OrdinalIgnoreCase))
+                return 4;
+            else if (ethnicity.Equals("Ethiopian", StringComparison.OrdinalIgnoreCase))
+                return 5;
+            else if (ethnicity.Equals("Hispanic", StringComparison.OrdinalIgnoreCase))
+                return 6;
+            else if (ethnicity.Equals("Native American", StringComparison.OrdinalIgnoreCase))
+                return 7;
+            else if (ethnicity.Equals("Other", StringComparison.OrdinalIgnoreCase))
+                return 8;
+            else if (ethnicity.Equals("Pacific Islander", StringComparison.OrdinalIgnoreCase))
+                return 9;
+            else if (ethnicity.Equals("Unknown", StringComparison.OrdinalIgnoreCase))
+                return 10;
+            else if (ethnicity.Equals("White", StringComparison.OrdinalIgnoreCase))
+                return 11;
+            return 0;
+        }
+
+        public static string GetChildRelationship(int Id)
+        {
+            switch (Id)
+            {
+                case 1:
+                    return "Custodial";
+                case 2:
+                    return "Distant";
+                case 3:
+                    return "Parent";
+                case 0:
+                default:
+                    return "---";
+            }
+        }
+        private int GetChildRelationshipId(string relatioship)
+        {
+            if (relatioship == null || relatioship.Equals("---"))
+                return 0;
+            if (relatioship.Equals("Custodial", StringComparison.OrdinalIgnoreCase))
+                return 1;
+            else if (relatioship.Equals("Distant", StringComparison.OrdinalIgnoreCase))
+                return 2;
+            else if (relatioship.Equals("Parent", StringComparison.OrdinalIgnoreCase))
+                return 3;
+            return 0;
         }
 
         public DbSet<ChildRelationship> ChildRelationships { get; set; }

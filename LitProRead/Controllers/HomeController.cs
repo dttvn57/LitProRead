@@ -129,6 +129,7 @@ namespace LitProRead.Controllers
                 try
                 {
                     List<string> list = new List<string>();
+                    list.Add("---");
                     list.Add("Female");
                     list.Add("Male");
                     int val = 0;
@@ -168,8 +169,35 @@ namespace LitProRead.Controllers
                 try
                 {
                     var list = db.Database.SqlQuery<string>("SELECT Ethnicity FROM dbo.Ethnicity ORDER BY Ethnicity").ToList();
+                    List<string> modList = new List<string>();
+                    modList.Add("---");
+                    modList.AddRange(list);
+
                     int val = 0;
-                    var opts = from item in list
+                    var opts = from item in modList
+                               select new { DisplayText = item, Value = val++ };
+                    return Json(new { Result = "OK", Options = opts });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+            }
+        }
+
+        public JsonResult GetChildRelationshipList()
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                try
+                {
+                    var list = db.Database.SqlQuery<string>("SELECT ChildRelationship FROM dbo.ChildRelationship ORDER BY ChildRelationship").ToList();
+                    List<string> modList = new List<string>();
+                    modList.Add("---");
+                    modList.AddRange(list);
+
+                    int val = 0;
+                    var opts = from item in modList
                                select new { DisplayText = item, Value = val++ };
                     return Json(new { Result = "OK", Options = opts });
                 }

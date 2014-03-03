@@ -826,6 +826,20 @@ S T U D E N T S
 
                 fmt = $.fn.getFormattedDate(data.CurrentStudent.LibraryCard);
                 $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                // Children
+                if (data.CurrentStudent.FFL == true) {
+                    $('#CurrentStudent_FFL').prop("checked", true);
+                }
+                else {
+                    $('#CurrentStudent_FFL').prop("checked", false);
+                }
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.InitialSurveyDate);
+                $('#CurrentStudent_InitialSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                fmt = $.fn.getFormattedDate(data.CurrentStudent.FollowUpSurveyDate);
+                $('#CurrentStudent_FollowUpSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
             };
 
             $.fn.getFormattedDate = function(date) {

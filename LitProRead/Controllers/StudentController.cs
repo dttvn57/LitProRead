@@ -250,7 +250,7 @@ namespace LitProRead.Controllers
             try
             {
                 Thread.Sleep(200);
-                IEnumerable<StudentChildren> query = db.GetStudentChildren(studentId);
+                IEnumerable<StudentChildrenViewModel> query = db.GetStudentChildren(studentId);
 
                 var count = query.Count();
                 return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
@@ -262,21 +262,20 @@ namespace LitProRead.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateStudentChildren(PairViewModel pairVm)
+        public JsonResult CreateStudentChildren(StudentChildrenViewModel studentChildrenVm)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return Json(new { Result = "ERROR", Message = "Children form is not valid! Please correct it and try again." });
+                    return Json(new { Result = "ERROR", Message = "Student Children form is not valid! Please correct it and try again." });
                 }
 
-                ////var addedPair = new Pair();
-                ////pairVm.SetTo(addedPair, true);
-                ////db.Pairs.Add(addedPair);
-                ////db.SaveChanges();
-                //var addedPairHour = pairVm; // _repository.StudentRepository.AddStudent(student);
-                return Json(new { Result = "OK", Record = pairVm });
+                var addedStudentChildren = new StudentChildren();
+                studentChildrenVm.SetTo(addedStudentChildren, true);
+                db.StudentChildrens.Add(addedStudentChildren);
+                db.SaveChanges();
+                return Json(new { Result = "OK", Record = studentChildrenVm });
             }
             catch (Exception ex)
             {
@@ -284,6 +283,67 @@ namespace LitProRead.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult UpdateStudentChildren(StudentChildrenViewModel studentChildrenVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Student Children form is not valid! Please correct it and try again." });
+                }
+
+                var editStudentChildren = db.StudentChildrens.FirstOrDefault(p => p.AutoNum == studentChildrenVm.AutoNum);
+                if (editStudentChildren == null)
+                {
+                    return Json(new { Result = "ERROR", Message = "Can't locate the Student Children record (" + studentChildrenVm.AutoNum.ToString() + ")" });
+                }
+
+                studentChildrenVm.SetTo(editStudentChildren, false);
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.Entry(editStudentChildren).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteStudentChildren(int AutoNum)
+        {
+            try
+            {
+                Thread.Sleep(50);
+                StudentChildren item = db.StudentChildrens.FirstOrDefault(p => p.AutoNum == AutoNum);
+                if (item == null)
+                    return Json(new { Result = "ERROR", Message = "can't delete Student Children " + AutoNum.ToString() });
+
+                db.StudentChildrens.Remove(item);
+                db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
 
         //********************************************************************************************
         //

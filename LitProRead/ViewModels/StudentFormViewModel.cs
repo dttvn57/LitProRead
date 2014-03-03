@@ -19,7 +19,7 @@ namespace LitProRead.ViewModels
         public Student CurrentStudent { get; set; }
         public Pair MatchSPair { get; set; }
 
-        public List<StudentChildren> StudentChildrenList { get; set; }
+        public List<StudentChildrenViewModel> StudentChildrenList { get; set; }
         //private ICollection<StudentChildren> _StudentChildrenList;
         //public virtual ICollection<StudentChildren> StudentChildrenList
         //{
@@ -131,7 +131,7 @@ namespace LitProRead.ViewModels
             }
         }
 
-        public List<StudentChildren> GetStudentChildren(int id)
+        public List<StudentChildrenViewModel> GetStudentChildren(int id)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
