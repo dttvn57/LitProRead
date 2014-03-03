@@ -854,6 +854,7 @@ S T U D E N T S
             if ($('#CurrentStudent_ID').val() > 0)
             {
                 $('#Student-Matching-S').jtable('load', { SID: $('#CurrentStudent_ID').val() });//currentStudentId
+                $('#Student-Children').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
             }   
 
         });  // $(document).ready()

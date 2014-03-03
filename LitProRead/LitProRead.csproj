@@ -667,6 +667,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\StudentChildrenViewModel.cs" />
     <Compile Include="ViewModels\PairHoursViewModel.cs" />
     <Compile Include="ViewModels\PairViewModel.cs" />
     <Compile Include="ViewModels\TutorFormViewModel.cs" />
@@ -1019,6 +1020,7 @@
     <Content Include="Views\Shared\_Tutor-General-View.cshtml" />
     <Content Include="Views\Shared\_Tutor-Preferences-View.cshtml" />
     <Content Include="Views\Shared\_Student-Matching-S-View.cshtml" />
+    <Content Include="Views\Shared\_Student-Children-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
