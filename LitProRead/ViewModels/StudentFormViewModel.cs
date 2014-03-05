@@ -27,7 +27,8 @@ namespace LitProRead.ViewModels
         //    set { _StudentChildrenList = value; }
         //}
 
-         public List<StudentCommentsViewModel> StudentCommentsList { get; set; }
+        public List<StudentCommentsViewModel> StudentCommentsList { get; set; }
+        public List<StudentFollowUpViewModel> StudentFollowUpsList { get; set; }
 
         public List<SelectListItem> SalutationList { get; set; }
         public List<SelectListItem> AreaCodeList { get; private set; }
@@ -89,6 +90,7 @@ namespace LitProRead.ViewModels
 
             this.StudentChildrenList = GetStudentChildren(id);
             this.StudentCommentsList = GetStudentComments(id);
+            this.StudentFollowUpsList = GetStudentFollowUps(id);
 
             this.SalutationList = GetSalutationList(CurrentStudent.Salutation);
             this.AreaCodeList = GetAreaCodeList();
@@ -162,6 +164,29 @@ namespace LitProRead.ViewModels
                 }
                 return list;
                 //return db.GetStudentComments(id);
+            }
+        }
+
+        public List<StudentFollowUpViewModel> GetStudentFollowUps(int id)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                List<StudentFollowUpViewModel> list = db.GetStudentFollowUps(id);
+                //List<StudentFollowUpViewModel> list = new List<StudentFollowUpViewModel>();
+                //foreach (var item in query)
+                //{
+                //    list.Add(new StudentFollowUpViewModel
+                //        {
+                //            UniqID = item.UniqID,
+                //            ID = item.ID,
+                //            FollowUpDate = item.FollowUpDate,
+                //            FollowUpDesc = item.FollowUpDesc,
+                //            DateCreated = item.DateCreated,
+                //            DateModified = item.DateModified,
+                //            LastModifiedBy = item.LastModifiedBy
+                //        });
+                //}
+                return list;
             }
         }
 

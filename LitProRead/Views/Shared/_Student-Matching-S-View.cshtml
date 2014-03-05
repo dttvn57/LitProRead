@@ -365,7 +365,7 @@
                 },
                 PairStatusID: {
                     title: 'Pair Status',
-                    width: '10%',
+                    //width: '10%',
                     sorting: false, //This column is not sortable!
                     options: '@Url.Action("GetStatus", "Home")'
                 },
@@ -400,12 +400,13 @@
                 },
                 Comments: {
                     title: 'Comments',
+                    type: 'textarea',
                     width: '10%',
                     list: false
                 },
                 DateModified: {
                     title: 'Date Modified',
-                    //width: '7%',
+                    width: '7%',
                     type: 'date',
                     sorting: false, //This column is not sortable!
                     displayFormat: 'yy/mm/dd',

@@ -519,6 +519,115 @@ namespace LitProRead.Controllers
             }
         }
 
+        //*** Student FollowUp ***
+        [HttpPost]
+        public JsonResult GetStudentFollowUps(int studentId)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                var query = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
+
+                var count = query.Count();
+                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CreateStudentFollowUp(StudentFollowUpViewModel studentFollowUpVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Student Follow Up form is not valid! Please correct it and try again." });
+                }
+
+                // add to the in-memory list
+                var query = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
+                if (query == null)
+                {
+                    query = new List<StudentFollowUpViewModel>();
+                    Session["StudentFollowUpsList"] = query;
+                }
+                studentFollowUpVm.New = true;
+                query.Add(studentFollowUpVm);
+                return Json(new { Result = "OK", Record = studentFollowUpVm });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateStudentFollowUp(StudentFollowUpViewModel studentFollowUpVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Student Follow Up form is not valid! Please correct it and try again." });
+                }
+
+                var query = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
+                foreach (var item in query)
+                {
+                    if (item.UniqID == studentFollowUpVm.UniqID)
+                    {
+                        item.ID = studentFollowUpVm.ID;
+                        item.FollowUpDate = studentFollowUpVm.FollowUpDate;
+                        item.FollowUpDesc = studentFollowUpVm.FollowUpDesc;
+                        item.DateCreated = studentFollowUpVm.DateCreated;
+                        item.DateModified = studentFollowUpVm.DateModified;
+                        item.LastModifiedBy = studentFollowUpVm.LastModifiedBy;
+                        break;
+                    }
+                }
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        // go thru the list and either Add or Update based on record's filed "New" 
+        private void SaveStudentFollowUps(List<StudentFollowUpViewModel> followups)
+        {
+            if (followups == null || followups.Count() == 0)
+                return;
+
+            int studentId = (int)followups.FirstOrDefault().ID;
+            try
+            {
+                foreach (var item in followups)
+                {
+                    var followUp = new StudentFollowUp();
+                    item.SetTo(followUp, item.New);
+
+                    if (item.New)
+                    {
+                        db.StudentFollowUps.Add(followUp);
+                    }
+                    else
+                    {
+                        db.Configuration.ValidateOnSaveEnabled = true;
+                        db.Entry(followUp).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+            
+            }
+        }
 
         //********************************************************************************************
         //
@@ -532,6 +641,7 @@ namespace LitProRead.Controllers
             {
                 var vm = new StudentFormViewModel();
                 Session["StudentCommentsList"] = vm.StudentCommentsList;
+                Session["StudentFollowUpsList"] = vm.StudentFollowUpsList;
                 return View("Index", vm);
             }
             else
@@ -619,6 +729,7 @@ namespace LitProRead.Controllers
             }
 
             Session["StudentCommentsList"] = vm.StudentCommentsList;
+            Session["StudentFollowUpsList"] = vm.StudentFollowUpsList;
 
             JsonResult jsonData = new JsonResult();
             jsonData.Data = vm;
@@ -650,6 +761,10 @@ namespace LitProRead.Controllers
                             // student comments
                             var comments = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
                             SaveStudentComments(comments);
+
+                            // student followups
+                            var followups = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
+                            SaveStudentFollowUps(followups);
                         }
                         catch (DbEntityValidationException ex)
                         {
@@ -676,6 +791,14 @@ namespace LitProRead.Controllers
                         {
                             db.Students.Add(studentFormVm.CurrentStudent);
                             db.SaveChanges();
+
+                            // student comments
+                            var comments = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
+                            SaveStudentComments(comments);
+
+                            // student followups
+                            var followups = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
+                            SaveStudentFollowUps(followups);
                         }
                         catch (Exception ex)
                         {

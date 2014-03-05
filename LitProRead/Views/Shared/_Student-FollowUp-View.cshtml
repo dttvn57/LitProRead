@@ -1,30 +1,25 @@
 ﻿@model LitProRead.ViewModels.StudentFormViewModel
 
-<div id="Student-Comments">
+<div id="Student-FollowUp">
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#Student-Comments').jtable({
+        $('#Student-FollowUp').jtable({
             title: '',
             paging: true, //Enable paging
             sorting: true, //Enable sorting
-            defaultSorting: 'CommentDate DESC',
+            defaultSorting: 'FollowUpDate DESC',
 
             actions: {
-                listAction: '@Url.Action("GetStudentComments", "Student")',
-                updateAction: '@Url.Action("UpdateStudentComments", "Student")',
-                createAction: '@Url.Action("CreateStudentComments", "Student")'
+                listAction: '@Url.Action("GetStudentFollowUps", "Student")',
+                updateAction: '@Url.Action("UpdateStudentFollowUp", "Student")',
+                createAction: '@Url.Action("CreateStudentFollowUp", "Student")'
             },
             fields: {
-                Index: {
-                    list: false,
-                    input: function (data) {
-                        if (data.value) {
-                            return '<input type="text" readonly class="jtable-input-readonly" name="Index" value="' + data.value + '"/>';
-                        } else {
-                        }
-                    },
+                UniqID: {
+                    key: true,      //this is to be used in deletion action
+                    visibility: 'hidden'
                 },
                 ID: {
                     title: 'ID',
@@ -50,17 +45,31 @@
                     width: '5%',
                     visibility: 'hidden'
                 },
-                CommentDate: {
-                    title: 'Comment Date',
+                FollowUpDate: {
+                    title: 'Follow Up Date',
                     //width: '7%',
                     type: 'date',
                     displayFormat: 'yy/mm/dd'
                 },
-                Comment: {
-                    title: 'Comments',
+                FollowUpDesc: {
+                    title: 'FollowUp',
                     type: 'textarea',
                     sorting: false,
                     list: true,
+                },
+                DateCreated: {
+                    title: 'Date Created',
+                    //width: '7%',
+                    type: 'date',
+                    sorting: false,
+                    displayFormat: 'yy/mm/dd'
+                },
+                DateModified: {
+                    title: 'Date Modified',
+                    //width: '7%',
+                    type: 'date',
+                    sorting: false,
+                    displayFormat: 'yy/mm/dd'
                 }
             },      //fields
 
@@ -78,10 +87,10 @@
                 }
                 //return data.form.validationEngine('validate');
             },
-            
+
             ///formClosed: function (event, data) {
-                //data.form.validationEngine('hide');
-                //data.form.validationEngine('detach');
+            //data.form.validationEngine('hide');
+            //data.form.validationEngine('detach');
             ///}
         });
 

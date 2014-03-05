@@ -263,6 +263,34 @@ namespace LitProRead.Models
             return list;
         }
 
+        public List<StudentFollowUpViewModel> GetStudentFollowUps(int id)
+        {
+            var query = from c in StudentFollowUps
+                        where c.ID == id
+                        select c;
+
+            if (query.Count() == 0)
+                return new List<StudentFollowUpViewModel>();
+
+            List<StudentFollowUpViewModel> list = new List<StudentFollowUpViewModel>();
+            foreach (var item in query)
+            {
+                list.Add(new StudentFollowUpViewModel
+                {
+                    New = false,        // not a new FollowUp record
+                    UniqID = item.UniqID,
+                    ID = item.ID,
+                    FollowUpDate = item.FollowUpDate,
+                    FollowUpDesc = item.FollowUpDesc,
+                    DateCreated = item.DateCreated,
+                    DateModified = item.DateModified,
+                    LastModifiedBy = item.LastModifiedBy
+                });
+            }
+
+            return list;
+        }
+
         /**
          using (SFA2DBDataContext db = new SFA2DBDataContext())
             {
@@ -558,6 +586,11 @@ namespace LitProRead.Models
                 return 3;
             return 0;
         }
+
+        //SELECT [FirstName] & " " & [LastName] AS Name, [HomeAreaCode] & " " & [HomePhone] AS Home, [WorkAreaCode] & " " & [WorkPhone] AS [Work], StudentFollowUp.FollowUpDate, StudentFollowUp.FollowUpDesc, Students.ID, StudentFollowUp.LastModifiedBy, StudentFollowUp.UniqID
+        //FROM Students INNER JOIN StudentFollowUp ON Students.ID = StudentFollowUp.ID
+        //WHERE (((StudentFollowUp.FollowUpDate)=Date()))
+        //ORDER BY Students.LastName;
 
         public DbSet<ChildRelationship> ChildRelationships { get; set; }
         public DbSet<Class> Classes { get; set; }

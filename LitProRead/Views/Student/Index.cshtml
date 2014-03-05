@@ -198,7 +198,7 @@ S T U D E N T S
             </div>
        
             <div id="Student-FollowUp">
-                FollowUp
+                @Html.Partial("_Student-FollowUp-View", Model)
             </div>
        
             <div id="Student-Status-History">
@@ -599,6 +599,7 @@ S T U D E N T S
                 $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
                 $('#Student-Children').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
                 $('#Student-Comments').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
+                $('#Student-FollowUp').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
 
                 $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
                 $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
@@ -863,6 +864,7 @@ S T U D E N T S
                 $('#Student-Matching-S').jtable('load', { SID: $('#CurrentStudent_ID').val() });//currentStudentId
                 $('#Student-Children').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
                 $('#Student-Comments').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
+                $('#Student-FollowUp').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
             }   
 
         });  // $(document).ready()
