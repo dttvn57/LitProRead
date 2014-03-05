@@ -103,7 +103,7 @@ S T U D E N T S
 
                        <button type="button" id="studentDelete">Delete</button>
                         
-                        <input type="submit" value="Save" />
+                        <input type="submit"  id="studentSave" value="Save" />
                         @*
                         <button type="button" id="refreshStudent">Refresh</button>
                         <button type="button" id="saveStudent">Save</button>
@@ -266,6 +266,20 @@ S T U D E N T S
             var pageSize = 20;
             //$('ul.sf-menu').superfish();
 
+            $("input").removeClass("editmode");
+            $("select").removeClass("editmode");
+
+            // disable "Edit" button
+            var mode = $('#EditMode').val();
+            if (mode == "edit") {
+                $('#studentEdit').prop('disabled', false);
+            }
+            else {
+                $('#studentEdit').prop('disabled', true);
+            }
+            $('#studentDelete').prop('disabled', true);
+            $('#studentSave').prop('disabled', true);
+
             $(".datefield").datepicker();
             $("#tabs").tabs();
             $("#tabs-Students").tabs();
@@ -313,6 +327,12 @@ S T U D E N T S
 
             $("#StudentListLastName").on("change", function (e) {
                 currentStudentId = e.val;
+                if (currentStudentId > 0) {
+                    // enable "Edit" button
+                    $('#studentEdit').prop('disabled', false);
+                    $('#studentDelete').prop('disabled', false);
+                    $('#studentSave').prop('disabled', false);
+                }
                 //alert("Student Last Name: " + currentStudentId);
                 //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
@@ -360,6 +380,12 @@ S T U D E N T S
 
             $("#StudentListFirstName").on("change", function (e) {
                 currentStudentId = e.val;
+                if (currentStudentId > 0) {
+                    // enable "Edit" button
+                    $('#studentEdit').prop('disabled', false);
+                    $('#studentDelete').prop('disabled', false);
+                    $('#studentSave').prop('disabled', false);
+                }
                 //alert("Student First Name: " + currentStudentId);
                 //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
             });
@@ -423,9 +449,23 @@ S T U D E N T S
             $('#studentAdd').click(function () {
                 //alert("studentAdd");
                 $('#EditMode').val("add");
-                location.reload(true);
+
+                // disable "Edit" button
+                $('#studentEdit').prop('disabled', true);
+                $('#studentSave').prop('disabled', false);
+
+                //$.fn.populateStudentForm("");
+
+                $("input").addClass("editmode");
+                $("select").addClass("editmode");
+
+                //location.reload(true);
 
                 @*
+                $('#CurrentStudent_Salutation').val("");
+                $('#CurrentStudent_FirstName').val("");
+                $('#CurrentStudent_LastName').val("");
+
                 alert("addStudent");
                 var firstName = $('#StudentListFirstName').val;
                 var lastName = $('#StudentListLastName').val;
@@ -459,6 +499,9 @@ S T U D E N T S
 
             @* --- EDIT --- *@
             $('#studentEdit').click(function () {
+                $("input").addClass("editmode");
+                $("select").addClass("editmode");
+
                 //alert("studentEdit clicked");
                 //if (currentStudentId != $('#CurrentStudent_ID').val()) {
                 //    currentStudentId = $('#CurrentStudent_ID').val();
@@ -596,258 +639,383 @@ S T U D E N T S
             *@
 
             $.fn.populateStudentForm = function (data) {
-                $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
-                $('#Student-Children').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
-                $('#Student-Comments').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
-                $('#Student-FollowUp').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
+                if (data == "") {
+                    $('#CurrentStudent_ID').val(data);
+                    $('#CurrentStudent_Salutation').val(data);
 
-                $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
-                $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
+                    $('#MatchT_CurrentStudent_FirstName').val(data);
+                    $('#MatchT_CurrentStudent_LastName').val(data);
 
-                $('#MatchT_CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
-                $('#MatchT_CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+                    $('#CurrentStudent_FirstName').val(data);
+                    $('#CurrentStudent_LastName').val(data);
+                    $('#CurrentStudent_Address1').val(data);
+                    $('#CurrentStudent_Address2').val(data);
+                    $('#CurrentStudent_City').val(data);
+                    $('#CurrentStudent_State').val(data);
+                    $('#CurrentStudent_Zip').val(data);
+                    $('#CurrentStudent_HomeAreaCode').val(data);
+                    $('#CurrentStudent_HomePhone').val(data);
+                    $('#CurrentStudent_WorkAreaCode').val(data);
+                    $('#CurrentStudent_WorkPhone').val(data);
+                    $('#CurrentStudent_WorkPhoneExt').val(data);
+                    $('#CurrentStudent_FAXAreaCode').val(data);
+                    $('#CurrentStudent_FAX').val(data);
+                    $('#CurrentStudent_CellAreaCode1').val(data);
+                    $('#CurrentStudent_CellPhone1').val(data);
+                    $('#CurrentStudent_CellAreaCode2').val(data);
+                    $('#CurrentStudent_CellAreaPhone2').val(data);
+                    $('#CurrentStudent_ContactPref').val(data);
+                    $('#CurrentStudent_EMail').val(data);
+                    $('#CurrentStudent_Gender').val(data);
+                    $('#CurrentStudent_Ethnicity').val(data);
+                    $('#CurrentStudent_Income').val(data);
+                    $('#CurrentStudent_Occupation').val(data);
+                    $('#CurrentStudent_Employer').val(data);
+                    $('#CurrentStudent_EmployerStatus').val(data);
+                    $('#CurrentStudent_EmergContact').val(data);
+                    $('#CurrentStudent_EmergAreaCode').val(data);
+                    $('#CurrentStudent_EmergPhone').val(data);
+                    $('#CurrentStudent_CallLocation').val(data);
 
-                $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
-                $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
-                $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
-                $('#CurrentStudent_Address2').val(data.CurrentStudent.Address2);
-                $('#CurrentStudent_City').val(data.CurrentStudent.City);
-                $('#CurrentStudent_State').val(data.CurrentStudent.State);
-                $('#CurrentStudent_Zip').val(data.CurrentStudent.Zip);
-                $('#CurrentStudent_HomeAreaCode').val(data.CurrentStudent.HomeAreaCode);
-                $('#CurrentStudent_HomePhone').val(data.CurrentStudent.HomePhone);
-                $('#CurrentStudent_WorkAreaCode').val(data.CurrentStudent.WorkAreaCode);
-                $('#CurrentStudent_WorkPhone').val(data.CurrentStudent.WorkPhone);
-                $('#CurrentStudent_WorkPhoneExt').val(data.CurrentStudent.WorkPhoneExt);
-                $('#CurrentStudent_FAXAreaCode').val(data.CurrentStudent.FAXAreaCode);
-                $('#CurrentStudent_FAX').val(data.CurrentStudent.FAX);
-                $('#CurrentStudent_CellAreaCode1').val(data.CurrentStudent.CellAreaCode1);
-                $('#CurrentStudent_CellPhone1').val(data.CurrentStudent.CellPhone1);
-                $('#CurrentStudent_CellAreaCode2').val(data.CurrentStudent.CellAreaCode2);
-                $('#CurrentStudent_CellAreaPhone2').val(data.CurrentStudent.CellAreaPhone2);
-                $('#CurrentStudent_ContactPref').val(data.CurrentStudent.ContactPref);
-                $('#CurrentStudent_EMail').val(data.CurrentStudent.EMail);
-                $('#CurrentStudent_Gender').val(data.CurrentStudent.Gender);
-                $('#CurrentStudent_Ethnicity').val(data.CurrentStudent.Ethnicity);
-                $('#CurrentStudent_Income').val(data.CurrentStudent.Income);
-                $('#CurrentStudent_Occupation').val(data.CurrentStudent.Occupation);
-                $('#CurrentStudent_Employer').val(data.CurrentStudent.Employer);
-                $('#CurrentStudent_EmployerStatus').val(data.CurrentStudent.EmployerStatus);
-                $('#CurrentStudent_EmergContact').val(data.CurrentStudent.EmergContact);
-                $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
-                $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
-                $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
+                    var fmt = "";   //$.fn.getFormattedDate(data.CurrentStudent.DOB);
+                    $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_Country').val(data);
+                    $('#CurrentStudent_NativeLanguage').val(data);
+                    $('#CurrentStudent_EducationLevel').val(data);
+                    $('#CurrentStudent_ReadWriteNativeLang').val(data);
+                    $('#CurrentStudent_Referral').val(data);
 
-                var fmt = $.fn.getFormattedDate(data.CurrentStudent.DOB);
-                $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
-                $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
-                $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
-                $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
-                $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.FingerPrintDate);
+                    $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_Staff').val(data);
+                    $('#CurrentStudent_Source').val(data);
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.FingerPrintDate);
-                $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
-                $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.IntakeDate);
+                    $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.IntakeDate);
-                $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstActive);
-                $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                if (data.CurrentStudent.Active == true) {
-                    $('#CurrentStudent_Active').prop("checked", true);
-                }
-                else {
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstActive);
+                    $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
                     $('#CurrentStudent_Active').prop("checked", false);
-                }
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.ActiveDate);
-                $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
-                if (data.CurrentStudent.InActive == true) {
-                    $('#CurrentStudent_InActive').prop("checked", true);
-                }
-                else {
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.ActiveDate);
+                    $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_Status').val(data);
                     $('#CurrentStudent_InActive').prop("checked", false);
-                }
-                $('#CurrentStudent_InActiveReason').val(data.CurrentStudent.InActiveReason);
-                $('#CurrentStudent_Program').val(data.CurrentStudent.Program);
-                $('#CurrentStudent_MailCode').val(data.CurrentStudent.MailCode);
-                $('#CurrentStudent_Category').val(data.CurrentStudent.Category);
-                $('#CurrentStudent_Keyword').val(data.CurrentStudent.Keyword);
+                    $('#CurrentStudent_InActiveReason').val(data);
+                    $('#CurrentStudent_Program').val(data);
+                    $('#CurrentStudent_MailCode').val(data);
+                    $('#CurrentStudent_Category').val(data);
+                    $('#CurrentStudent_Keyword').val(data);
 
-                if (data.CurrentStudent.AvailMonAM == true) {
-                    $('#CurrentStudent_AvailMonAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailMonAM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailTueAM == true) {
-                    $('#CurrentStudent_AvailTueAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailTueAM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailWedAM == true) {
-                    $('#CurrentStudent_AvailWedAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailWedAM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailThuAM == true) {
-                    $('#CurrentStudent_AvailThuAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailThuAM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailFriAM == true) {
-                    $('#CurrentStudent_AvailFriAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailFriAM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailSatAM == true) {
-                    $('#CurrentStudent_AvailSatAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailSatAM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailSunAM == true) {
-                    $('#CurrentStudent_AvailSunAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailSunAM').prop("checked", false);
-                }
+                        $('#CurrentStudent_AvailMonAM').prop("checked", false);
+                        $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                        $('#CurrentStudent_AvailWedAM').prop("checked", false);
+                        $('#CurrentStudent_AvailThuAM').prop("checked", false);
+                        $('#CurrentStudent_AvailFriAM').prop("checked", false);
+                        $('#CurrentStudent_AvailSatAM').prop("checked", false);
+                        $('#CurrentStudent_AvailSunAM').prop("checked", false);
+                        $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                        $('#CurrentStudent_AvailMonPM').prop("checked", false);
+                        $('#CurrentStudent_AvailTuePM').prop("checked", false);
+                        $('#CurrentStudent_AvailWedPM').prop("checked", false);
+                        $('#CurrentStudent_AvailThuPM').prop("checked", false);
+                        $('#CurrentStudent_AvailFriPM').prop("checked", false);
+                        $('#CurrentStudent_AvailSatPM').prop("checked", false);
+                        $('#CurrentStudent_AvailSunPM').prop("checked", false);
+                        $('#CurrentStudent_AvailMonEVE').prop("checked", false);
+                        $('#CurrentStudent_AvailTueEVE').prop("checked", false);
+                        $('#CurrentStudent_AvailWedEVE').prop("checked", false);
+                        $('#CurrentStudent_AvailThudEVE').prop("checked", false);
+                        $('#CurrentStudent_AvailFriEVE').prop("checked", false);
+                        $('#CurrentStudent_AvailSatEVE').prop("checked", false);
+                        $('#CurrentStudent_AvailSunEVE').prop("checked", false);
 
-                if (data.CurrentStudent.AvailTueAM == true) {
-                    $('#CurrentStudent_AvailTueAM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailTueAM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailMonPM == true) {
-                    $('#CurrentStudent_AvailMonPM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailMonPM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailTuePM == true) {
-                    $('#CurrentStudent_AvailTuePM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailTuePM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailWedPM == true) {
-                    $('#CurrentStudent_AvailWedPM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailWedPM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailThuPM == true) {
-                    $('#CurrentStudent_AvailThuPM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailThuPM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailFriPM == true) {
-                    $('#CurrentStudent_AvailFriPM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailFriPM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailSatPM == true) {
-                    $('#CurrentStudent_AvailSatPM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailSatPM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailSunAM == true) {
-                    $('#CurrentStudent_AvailSunPM').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailSunPM').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailMonEVE == true) {
-                    $('#CurrentStudent_AvailMonEVE').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailMonEVE').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailTueEVE == true) {
-                    $('#CurrentStudent_AvailTueEVE').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailTueEVE').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailWedEVE == true) {
-                    $('#CurrentStudent_AvailWedEVE').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailWedEVE').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailThudEVE == true) {
-                    $('#CurrentStudent_AvailThudEVE').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailThudEVE').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailFriEVE == true) {
-                    $('#CurrentStudent_AvailFriEVE').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailFriEVE').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailSatEVE == true) {
-                    $('#CurrentStudent_AvailSatEVE').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailSatEVE').prop("checked", false);
-                }
-                if (data.CurrentStudent.AvailSunEVE == true) {
-                    $('#CurrentStudent_AvailSunEVE').prop("checked", true);
-                }
-                else {
-                    $('#CurrentStudent_AvailSunEVE').prop("checked", false);
-                }
+                    $('#CurrentStudent_Transportation').val(data);
+                    $('#CurrentStudent_StudentContact').val(data);
+                    $('#CurrentStudent_SmokingPref').val(data);
+                    $('#CurrentStudent_LocationPref').val(data);
+                    $('#CurrentStudent_TutorSmoker').val(data);
+                    $('#CurrentStudent_MedicalInfo').val(data);
+                    $('#CurrentStudent_LocationPref2').val(data);
+                    $('#CurrentStudent_LocationPref3').val(data);
+                    $('#CurrentStudent_InterestHobbies').val(data);
+                    $('#CurrentStudent_TutorPreference').val(data);
+                    $('#CurrentStudent_SpecialInstructions').val(data);
 
-                $('#CurrentStudent_Transportation').val(data.CurrentStudent.Transportation);
-                $('#CurrentStudent_StudentContact').val(data.CurrentStudent.StudentContact);
-                $('#CurrentStudent_SmokingPref').val(data.CurrentStudent.SmokingPref);
-                $('#CurrentStudent_LocationPref').val(data.CurrentStudent.LocationPref);
-                $('#CurrentStudent_TutorSmoker').val(data.CurrentStudent.TutorSmoker);
-                $('#CurrentStudent_MedicalInfo').val(data.CurrentStudent.MedicalInfo);
-                $('#CurrentStudent_LocationPref2').val(data.CurrentStudent.LocationPref2);
-                $('#CurrentStudent_LocationPref3').val(data.CurrentStudent.LocationPref3);
-                $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
-                $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
-                $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstCalledByDate);
+                    $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_FirstCalledBy').val(data);
+                    $('#CurrentStudent_HowHeard').val(data);
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstCalledByDate);
-                $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-                $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
-                $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.PreLibraryCard);
+                    $('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.PreLibraryCard);
-                $('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.LibraryCard);
+                    $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.LibraryCard);
-                $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
-
-                // Children
-                if (data.CurrentStudent.FFL == true) {
-                    $('#CurrentStudent_FFL').prop("checked", true);
-                }
-                else {
+                    // Children
                     $('#CurrentStudent_FFL').prop("checked", false);
+
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.InitialSurveyDate);
+                    $('#CurrentStudent_InitialSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                    //fmt = $.fn.getFormattedDate(data.CurrentStudent.FollowUpSurveyDate);
+                    $('#CurrentStudent_FollowUpSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
                 }
+                else {
+                    $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
+                    $('#Student-Children').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
+                    $('#Student-Comments').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
+                    $('#Student-FollowUp').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.InitialSurveyDate);
-                $('#CurrentStudent_InitialSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
+                    $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
 
-                fmt = $.fn.getFormattedDate(data.CurrentStudent.FollowUpSurveyDate);
-                $('#CurrentStudent_FollowUpSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#MatchT_CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
+                    $('#MatchT_CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+
+                    $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
+                    $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
+                    $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
+                    $('#CurrentStudent_Address2').val(data.CurrentStudent.Address2);
+                    $('#CurrentStudent_City').val(data.CurrentStudent.City);
+                    $('#CurrentStudent_State').val(data.CurrentStudent.State);
+                    $('#CurrentStudent_Zip').val(data.CurrentStudent.Zip);
+                    $('#CurrentStudent_HomeAreaCode').val(data.CurrentStudent.HomeAreaCode);
+                    $('#CurrentStudent_HomePhone').val(data.CurrentStudent.HomePhone);
+                    $('#CurrentStudent_WorkAreaCode').val(data.CurrentStudent.WorkAreaCode);
+                    $('#CurrentStudent_WorkPhone').val(data.CurrentStudent.WorkPhone);
+                    $('#CurrentStudent_WorkPhoneExt').val(data.CurrentStudent.WorkPhoneExt);
+                    $('#CurrentStudent_FAXAreaCode').val(data.CurrentStudent.FAXAreaCode);
+                    $('#CurrentStudent_FAX').val(data.CurrentStudent.FAX);
+                    $('#CurrentStudent_CellAreaCode1').val(data.CurrentStudent.CellAreaCode1);
+                    $('#CurrentStudent_CellPhone1').val(data.CurrentStudent.CellPhone1);
+                    $('#CurrentStudent_CellAreaCode2').val(data.CurrentStudent.CellAreaCode2);
+                    $('#CurrentStudent_CellAreaPhone2').val(data.CurrentStudent.CellAreaPhone2);
+                    $('#CurrentStudent_ContactPref').val(data.CurrentStudent.ContactPref);
+                    $('#CurrentStudent_EMail').val(data.CurrentStudent.EMail);
+                    $('#CurrentStudent_Gender').val(data.CurrentStudent.Gender);
+                    $('#CurrentStudent_Ethnicity').val(data.CurrentStudent.Ethnicity);
+                    $('#CurrentStudent_Income').val(data.CurrentStudent.Income);
+                    $('#CurrentStudent_Occupation').val(data.CurrentStudent.Occupation);
+                    $('#CurrentStudent_Employer').val(data.CurrentStudent.Employer);
+                    $('#CurrentStudent_EmployerStatus').val(data.CurrentStudent.EmployerStatus);
+                    $('#CurrentStudent_EmergContact').val(data.CurrentStudent.EmergContact);
+                    $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
+                    $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
+                    $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
+
+                    var fmt = $.fn.getFormattedDate(data.CurrentStudent.DOB);
+                    $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
+                    $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
+                    $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
+                    $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
+                    $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.FingerPrintDate);
+                    $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
+                    $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.IntakeDate);
+                    $('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstActive);
+                    $('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    if (data.CurrentStudent.Active == true) {
+                        $('#CurrentStudent_Active').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_Active').prop("checked", false);
+                    }
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.ActiveDate);
+                    $('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
+                    if (data.CurrentStudent.InActive == true) {
+                        $('#CurrentStudent_InActive').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_InActive').prop("checked", false);
+                    }
+                    $('#CurrentStudent_InActiveReason').val(data.CurrentStudent.InActiveReason);
+                    $('#CurrentStudent_Program').val(data.CurrentStudent.Program);
+                    $('#CurrentStudent_MailCode').val(data.CurrentStudent.MailCode);
+                    $('#CurrentStudent_Category').val(data.CurrentStudent.Category);
+                    $('#CurrentStudent_Keyword').val(data.CurrentStudent.Keyword);
+
+                    if (data.CurrentStudent.AvailMonAM == true) {
+                        $('#CurrentStudent_AvailMonAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailMonAM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailTueAM == true) {
+                        $('#CurrentStudent_AvailTueAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailWedAM == true) {
+                        $('#CurrentStudent_AvailWedAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailWedAM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailThuAM == true) {
+                        $('#CurrentStudent_AvailThuAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailThuAM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailFriAM == true) {
+                        $('#CurrentStudent_AvailFriAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailFriAM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailSatAM == true) {
+                        $('#CurrentStudent_AvailSatAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailSatAM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailSunAM == true) {
+                        $('#CurrentStudent_AvailSunAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailSunAM').prop("checked", false);
+                    }
+
+                    if (data.CurrentStudent.AvailTueAM == true) {
+                        $('#CurrentStudent_AvailTueAM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailMonPM == true) {
+                        $('#CurrentStudent_AvailMonPM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailMonPM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailTuePM == true) {
+                        $('#CurrentStudent_AvailTuePM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailTuePM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailWedPM == true) {
+                        $('#CurrentStudent_AvailWedPM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailWedPM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailThuPM == true) {
+                        $('#CurrentStudent_AvailThuPM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailThuPM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailFriPM == true) {
+                        $('#CurrentStudent_AvailFriPM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailFriPM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailSatPM == true) {
+                        $('#CurrentStudent_AvailSatPM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailSatPM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailSunAM == true) {
+                        $('#CurrentStudent_AvailSunPM').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailSunPM').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailMonEVE == true) {
+                        $('#CurrentStudent_AvailMonEVE').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailMonEVE').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailTueEVE == true) {
+                        $('#CurrentStudent_AvailTueEVE').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailTueEVE').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailWedEVE == true) {
+                        $('#CurrentStudent_AvailWedEVE').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailWedEVE').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailThudEVE == true) {
+                        $('#CurrentStudent_AvailThudEVE').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailThudEVE').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailFriEVE == true) {
+                        $('#CurrentStudent_AvailFriEVE').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailFriEVE').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailSatEVE == true) {
+                        $('#CurrentStudent_AvailSatEVE').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailSatEVE').prop("checked", false);
+                    }
+                    if (data.CurrentStudent.AvailSunEVE == true) {
+                        $('#CurrentStudent_AvailSunEVE').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_AvailSunEVE').prop("checked", false);
+                    }
+
+                    $('#CurrentStudent_Transportation').val(data.CurrentStudent.Transportation);
+                    $('#CurrentStudent_StudentContact').val(data.CurrentStudent.StudentContact);
+                    $('#CurrentStudent_SmokingPref').val(data.CurrentStudent.SmokingPref);
+                    $('#CurrentStudent_LocationPref').val(data.CurrentStudent.LocationPref);
+                    $('#CurrentStudent_TutorSmoker').val(data.CurrentStudent.TutorSmoker);
+                    $('#CurrentStudent_MedicalInfo').val(data.CurrentStudent.MedicalInfo);
+                    $('#CurrentStudent_LocationPref2').val(data.CurrentStudent.LocationPref2);
+                    $('#CurrentStudent_LocationPref3').val(data.CurrentStudent.LocationPref3);
+                    $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
+                    $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
+                    $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.FirstCalledByDate);
+                    $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
+                    $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.PreLibraryCard);
+                    $('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.LibraryCard);
+                    $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                    // Children
+                    if (data.CurrentStudent.FFL == true) {
+                        $('#CurrentStudent_FFL').prop("checked", true);
+                    }
+                    else {
+                        $('#CurrentStudent_FFL').prop("checked", false);
+                    }
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.InitialSurveyDate);
+                    $('#CurrentStudent_InitialSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                    fmt = $.fn.getFormattedDate(data.CurrentStudent.FollowUpSurveyDate);
+                    $('#CurrentStudent_FollowUpSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                }
             };
 
             $.fn.getFormattedDate = function(date) {
