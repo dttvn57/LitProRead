@@ -356,11 +356,9 @@ namespace LitProRead.Controllers
                 Thread.Sleep(200);
 
                 var query = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
-                
-               // IEnumerable<StudentCommentsViewModel> query = db.GetStudentComments(studentId);
-
-                var count = query.Count();
-                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+                var sortedQuery = query.OrderByDescending(c => c.CommentDate).ToList();
+                var count = sortedQuery.Count();
+                return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
             }
             catch (Exception ex)
             {
@@ -521,16 +519,16 @@ namespace LitProRead.Controllers
 
         //*** Student FollowUp ***
         [HttpPost]
-        public JsonResult GetStudentFollowUps(int studentId)
+        public JsonResult GetStudentFollowUps(int studentId, string jtSorting = null)
         {
             try
             {
                 Thread.Sleep(200);
 
                 var query = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
-
-                var count = query.Count();
-                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+                var sortedQuery = query.OrderByDescending(f => f.FollowUpDate).ToList();
+                var count = sortedQuery.Count();
+                return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
             }
             catch (Exception ex)
             {
