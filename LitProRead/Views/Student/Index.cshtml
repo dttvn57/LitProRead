@@ -134,12 +134,15 @@ S T U D E N T S
                 <li><a href="#Student-General">General</a></li>
                 <li><a href="#Student-Preferences">Preferences</a></li>
                 <li><a href="#Student-Matching-S">Matching-S</a></li>
-                <li><a href="#Student-Children">Children</a></li>
-                <li><a href="#Student-Computer">Computer</a></li>
+
+                @*
+                 <li><a href="#Student-Children">Children</a></li>
+               <li><a href="#Student-Computer">Computer</a></li>
                 <li><a href="#Student-Assessment-Intake">Assessment Intake</a></li>
                 <li><a href="#Student-Assessment-Goals">Assessment Goals</a></li>
                 <li><a href="#Student-Roles-and-Goals">Roles and Goals</a></li>
                 <li><a href="#tabsStudent-Accomplishements">Accomplishements</a></li>
+                *@
                 <li><a href="#Student-Comments">Comments</a></li>
                 <li><a href="#Student-FollowUp">FollowUp</a></li>
                 <li><a href="#Student-Status-History">Status History</a></li>
@@ -163,6 +166,7 @@ S T U D E N T S
                 @Html.Partial("_Student-Matching-S-View", Model)
             </div>
        
+    @*
             <div id="Student-Children">
                 @Html.Partial("_Student-Children-View", Model)
             </div>
@@ -172,8 +176,9 @@ S T U D E N T S
             </div>
        
             <div id="Student-Assessment-Intake">
+                Assessment Intake
                 @Html.Partial("_Student-Assessment-Intake-View", Model)
-            </div>
+           </div>
        
             <div id="Student-Assessment-Goals">
                 Assessment-Goals
@@ -186,9 +191,10 @@ S T U D E N T S
             <div id="tabsStudent-Accomplishements">
                 Accomplishements
             </div>
-       
+         *@
+     
             <div id="Student-Comments">
-                Comments
+                @Html.Partial("_Student-Comments-View", Model)
             </div>
        
             <div id="Student-FollowUp">
@@ -592,6 +598,7 @@ S T U D E N T S
             $.fn.populateStudentForm = function (data) {
                 $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
                 $('#Student-Children').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
+                $('#Student-Comments').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
 
                 $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
                 $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
@@ -855,6 +862,7 @@ S T U D E N T S
             {
                 $('#Student-Matching-S').jtable('load', { SID: $('#CurrentStudent_ID').val() });//currentStudentId
                 $('#Student-Children').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
+                $('#Student-Comments').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
             }   
 
         });  // $(document).ready()

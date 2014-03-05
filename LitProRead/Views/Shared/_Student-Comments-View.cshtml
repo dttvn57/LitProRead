@@ -1,0 +1,92 @@
+﻿@model LitProRead.ViewModels.StudentFormViewModel
+
+<div id="Student-Comments">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Student-Comments').jtable({
+            title: '',
+            paging: true, //Enable paging
+            sorting: true, //Enable sorting
+            defaultSorting: 'CommentDate DESC',
+
+            actions: {
+                listAction: '@Url.Action("GetStudentComments", "Student")',
+                updateAction: '@Url.Action("UpdateStudentComments", "Student")',
+                createAction: '@Url.Action("CreateStudentComments", "Student")'
+            },
+            fields: {
+                Index: {
+                    list: false,
+                    input: function (data) {
+                        if (data.value) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="Index" value="' + data.value + '"/>';
+                        } else {
+                        }
+                    },
+                },
+                ID: {
+                    title: 'ID',
+                    list: true,
+                    input: function (data) {
+                        if (data.value) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="ID" value="' + data.value + '"/>';
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, 
+                            //create is false for your usage so this else is not needed but shown just so you know when it would be entered
+
+                            // I don't want create recrod dialog to popup if there's Student selected. I cant find a good way to do this so I use a workaround
+                            // by forcing an exception by referncing a non-existing variable
+                            var student = $('#CurrentStudent_ID').val();
+                            if (student == 0) {
+                                var dummy = $("#BAC2").select2.val();
+                            }
+                            else {
+                                return '<input type="text" readonly class="jtable-input-readonly" name="ID" value="' + student + '"/>';
+                            }
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
+                },
+                CommentDate: {
+                    title: 'Comment Date',
+                    //width: '7%',
+                    type: 'date',
+                    displayFormat: 'yy/mm/dd'
+                },
+                Comment: {
+                    title: 'Comments',
+                    //type: textarea,
+                    sorting: false,
+                    list: true,
+                }
+            },      //fields
+
+            formCreated: function (event, data) {
+                if (data.formType == "create") {
+                    var v = $('#CurrentStudent_ID').val();
+                    data.form.find('input[name="ID"]').val(v);
+                }
+                //data.form.validationEngine();
+                //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
+            },
+
+            formSubmitting: function (event, data) {
+                if (data.formType == "create") {
+                }
+                //return data.form.validationEngine('validate');
+            },
+            
+            ///formClosed: function (event, data) {
+                //data.form.validationEngine('hide');
+                //data.form.validationEngine('detach');
+            ///}
+        });
+
+        //$('#Student-Children').jtable('load', { SID: 18 });
+
+    });
+</script>
+

@@ -27,6 +27,8 @@ namespace LitProRead.ViewModels
         //    set { _StudentChildrenList = value; }
         //}
 
+         public List<StudentCommentsViewModel> StudentCommentsList { get; set; }
+
         public List<SelectListItem> SalutationList { get; set; }
         public List<SelectListItem> AreaCodeList { get; private set; }
         public List<SelectListItem> CityList { get; private set; }
@@ -86,6 +88,7 @@ namespace LitProRead.ViewModels
             this.CurrentStudent = GetStudent(id);
 
             this.StudentChildrenList = GetStudentChildren(id);
+            this.StudentCommentsList = GetStudentComments(id);
 
             this.SalutationList = GetSalutationList(CurrentStudent.Salutation);
             this.AreaCodeList = GetAreaCodeList();
@@ -137,6 +140,29 @@ namespace LitProRead.ViewModels
             {
                 return db.GetStudentChildren(id);
             }       
+        }
+
+        public List<StudentCommentsViewModel> GetStudentComments(int id)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var query = db.GetStudentComments(id);
+                int counter = 0;
+                List<StudentCommentsViewModel> list = new List<StudentCommentsViewModel>();
+                foreach (var item in query)
+                {
+                    list.Add(new StudentCommentsViewModel
+                        {
+                            Index = counter++,
+                            New = false,        // not a new Comment record
+                            ID = item.ID,
+                            CommentDate = item.CommentDate,
+                            Comment = item.Comment
+                        });
+                }
+                return list;
+                //return db.GetStudentComments(id);
+            }
         }
 
         // SELECT DISTINCTROW Salutation.Salutation FROM Salutation

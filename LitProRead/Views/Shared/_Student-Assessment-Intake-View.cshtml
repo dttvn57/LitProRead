@@ -11,25 +11,34 @@
             <col style="width:80%;"/>
     </colgroup>
     @*
+    *@
     <tr>
         <td style="background-color:red"></td>
         <td style="background-color:yellow"></td>
-        <td style="background-color:red"></td>
-        <td style="background-color:yellow"></td>
     </tr>
-    *@
 
     <tr>
         <td>
             @Html.Label("Intake Date")
         </td>
         <td>
-            @Html.DropDownListFor(m => Model.CurrentStudent.StudentContact, Model.StudentContactList, string.Empty, new { style="width:100%" })  
+            @Html.TextBoxFor(m => m.CurrentStudent.IntakeDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
         </td>
     </tr>
     <tr>
         <td>
             @Html.Label("Assess Intel")
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.CurrentStudent.AssessIntel)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Label("Level")
+        </td>
+        <td>
+            @Html.DropDownListFor(m => Model.CurrentStudent.StudentContact, Model.StudentContactList, string.Empty, new { style="width:100%" })  
         </td>
     </tr>
 
@@ -38,113 +47,31 @@
             <fieldset style="border: solid; border-width:1px">
                 <legend style="display: block">Goals</legend>
 
+                    <table>
+                        <colgroup>
+                                <col style="width:20%;"/>
+                                <col style="width:80%;"/>
+                        </colgroup>
+     <tr>
+        <td style="background-color:red"></td>
+        <td style="background-color:yellow"></td>
+    </tr>
+                       <tr>
+                            <td>
+                                @Html.Label("Life Long Learner")
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(m => Model.CurrentStudent.StudentContact, Model.StudentContactList, string.Empty, new { style="width:100%" })  
+                            </td>
+                        </tr>
+                    </table>
+
                 </fieldset>
         </td>
     </tr>
 
     <tr><td><br /></td></tr>
 
-    <tr>
-        <td>
-            @Html.Label("Location Pref")
-        </td>
-        <td>
-            @Html.DropDownListFor(m => Model.CurrentStudent.LocationPref, Model.LocationPrefList, string.Empty, new { style="width:100%" })  
-        </td>
-        <td style="text-align:right">Tutor Smoker&nbsp;&nbsp;
-            @Html.DropDownListFor(m => Model.CurrentStudent.TutorSmoker, Model.TutorSmokerList, string.Empty, new { style="width:50%" })  
-        </td>
-        <td rowspan="9" style="vertical-align:top">
-            @Html.TextAreaFor(m => m.CurrentStudent.MedicalInfo, new { style="width:100%" })
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("Location Pref2")
-        </td>
-        <td>
-            @Html.DropDownListFor(m => Model.CurrentStudent.LocationPref2, Model.LocationPrefList, string.Empty, new { style="width:100%" })  
-        </td>
-    </tr>
-
-    <tr>
-    
-    <tr>
-        <td>
-            @Html.Label("Location Pref3")
-        </td>
-        <td>
-            @Html.DropDownListFor(m => Model.CurrentStudent.LocationPref3, Model.LocationPrefList, string.Empty, new { style="width:100%" })  
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("Interest Hobbies")
-        </td>
-        <td>
-            @Html.TextAreaFor(m => m.CurrentStudent.InterestHobbies, new { style="width:100%" })
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("Tutor Prefrence")
-        </td>
-        <td>
-            @Html.TextAreaFor(m => m.CurrentStudent.TutorPreference, new { style="width:100%" })
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("Special Instructions")
-        </td>
-        <td>
-            @Html.TextAreaFor(m => m.CurrentStudent.SpecialInstructions, new { style="width:100%" })
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("First Called By Date")
-        </td>
-        <td>
-            @Html.TextBoxFor(m => m.CurrentStudent.FirstCalledByDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("First Called By")
-        </td>
-        <td>
-            @Html.TextBoxFor(m => m.CurrentStudent.FirstCalledBy)
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("How Heard")
-        </td>
-        <td>
-            @Html.TextBoxFor(m => m.CurrentStudent.HowHeard)
-        </td>
-    </tr>
-
-    <tr>
-        <td>
-            @Html.Label("Pre Library Card")
-        </td>
-        <td>
-            @Html.TextBoxFor(m => m.CurrentStudent.PreLibraryCard, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Library Card
-        </td>
-        <td>
-            @Html.TextBoxFor(m => m.CurrentStudent.LibraryCard, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:7em" })
-        </td>
-    </tr>
 </table>
 
 </div>

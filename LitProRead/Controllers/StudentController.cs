@@ -140,6 +140,7 @@ namespace LitProRead.Controllers
         //
         // GET: /Student/Delete/5
 
+        //*** Match-S ***
         [HttpPost]
         public JsonResult MatchSPairsList(int SID, int TID, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
         {
@@ -244,6 +245,7 @@ namespace LitProRead.Controllers
             }
         }
 
+        //*** Student Children ***
         [HttpPost]
         public JsonResult GetStudentChildren(int studentId)
         {
@@ -345,6 +347,179 @@ namespace LitProRead.Controllers
             }
         }
 
+        //*** Student Comments ***
+        [HttpPost]
+        public JsonResult GetStudentComments(int studentId)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                var query = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
+                
+               // IEnumerable<StudentCommentsViewModel> query = db.GetStudentComments(studentId);
+
+                var count = query.Count();
+                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CreateStudentComments(StudentCommentsViewModel studentCommentsVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Student Comments form is not valid! Please correct it and try again." });
+                }
+
+                //var addedStudentComments = new StudentComment();
+                //studentCommentsVm.SetTo(addedStudentComments, true);
+
+                //string insertCmd = "INSERT INTO StudentComments (ID, CommentDate, Comment) VALUES (" +
+                //                    "'" + addedStudentComments.ID + "'," +
+                //                    "'" + addedStudentComments.CommentDate + "'," +
+                //                    "'" + addedStudentComments.Comment + "')";  // +                                    "'" + addedStudentComments.SSMA_TimeStamp + "')";
+                //db.Database.ExecuteSqlCommand(insertCmd);
+
+
+
+                //db.StudentComments.Add(addedStudentComments);
+                //db.SaveChanges();
+
+                // add to the in-memory list
+                var query = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
+                if (query == null)
+                {
+                    query = new List<StudentCommentsViewModel>();
+                    Session["StudentCommentsList"] = query;
+                }
+                studentCommentsVm.Index = query.Count();
+                studentCommentsVm.New = true;
+                query.Add(studentCommentsVm);
+                return Json(new { Result = "OK", Record = studentCommentsVm });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message});
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateStudentComments(StudentCommentsViewModel studentCommentsVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Student Comment form is not valid! Please correct it and try again." });
+                }
+
+                //var editStudentComment = db.StudentComments.FirstOrDefault(p => p.ID == studentCommentsVm.ID);
+                //if (editStudentComment == null)
+                //{
+                //    return Json(new { Result = "ERROR", Message = "Can't locate the Student Comment record (" + studentCommentsVm.ID.ToString() + ")" });
+                //}
+
+                //studentCommentsVm.SetTo(editStudentComment, false);
+
+                //db.Configuration.ValidateOnSaveEnabled = true;
+                //db.Entry(editStudentComment).State = EntityState.Modified;
+
+                //try
+                //{
+                //    //string updateCmd = "UPDATE Products SET UnitPrice = UnitPrice + 1.00";
+                //    //string updateCmd = "UPDATE StudentComments SET (CommentDate, Comment) VALUES (" +
+                //    //                    "'" + editStudentComment.ID + "'," +
+                //    //                    "'" + editStudentComment.CommentDate + "'," +
+                //    //                    "'" + editStudentComment.Comment + "')";  // +                                    "'" + addedStudentComments.SSMA_TimeStamp + "')";
+                //    //db.Database.ExecuteSqlCommand(updateCmd);
+                //    db.SaveChanges();
+                //}
+                //catch (DbEntityValidationException ex)
+                //{
+                //    return Json(new { Result = "ERROR", Message = ex.Message });
+                //}
+                //catch (OptimisticConcurrencyException ex)
+                //{
+                //    return Json(new { Result = "ERROR", Message = ex.Message });
+                //}
+
+                var query = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
+                foreach (var item in query)
+                {
+                    if (item.Index == studentCommentsVm.Index)
+                    {
+                        item.Comment = studentCommentsVm.Comment;
+                        item.CommentDate = studentCommentsVm.CommentDate;
+                        break;
+                    }
+                }
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        // NOT being used
+        [HttpPost]
+        public JsonResult DeleteStudentComments(int ID)
+        {
+            try
+            {
+                Thread.Sleep(50);
+                StudentComment item = db.StudentComments.FirstOrDefault(p => p.ID == ID);
+                if (item == null)
+                    return Json(new { Result = "ERROR", Message = "can't delete Student Comment " + ID.ToString() });
+
+                db.StudentComments.Remove(item);
+                db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        // the table StudentComment has no keys so it's not easy to Insert/Update using LINQ.
+        // the work-around here is to delete all exsiting records and insert the new ones.
+        private void SaveStudentComments(List<StudentCommentsViewModel> comments)
+        {
+            if (comments == null || comments.Count() == 0)
+                return;
+
+            int studentId = (int)comments.FirstOrDefault().ID;
+            try
+            {
+                // delete
+                string delCmd = "delete from dbo.StudentComments where ID = " + studentId.ToString();
+                db.Database.ExecuteSqlCommand(delCmd);   
+       
+                // insert
+                foreach (var item in comments)
+                {
+                    string insertCmd = "INSERT INTO StudentComments (ID, CommentDate, Comment) VALUES (" +
+                                        "'" + item.ID + "'," +
+                                        "'" + item.CommentDate + "'," +
+                                        "'" + item.Comment + "')";
+                    db.Database.ExecuteSqlCommand(insertCmd);
+                }
+            }
+            catch (Exception ex)
+            {
+            
+            }
+        }
+
+
         //********************************************************************************************
         //
         // GET: /Student/Delete/5
@@ -356,7 +531,7 @@ namespace LitProRead.Controllers
             if (Id == -1)
             {
                 var vm = new StudentFormViewModel();
-                //vm.studentVM = new StudentViewModel();
+                Session["StudentCommentsList"] = vm.StudentCommentsList;
                 return View("Index", vm);
             }
             else
@@ -427,7 +602,8 @@ namespace LitProRead.Controllers
             
             if (id == -1)
             {
-                return View("Index", new StudentFormViewModel());
+                StudentFormViewModel newVm = new StudentFormViewModel();
+                return View("Index", newVm);
             }
 
             var vm = new StudentFormViewModel();
@@ -441,6 +617,8 @@ namespace LitProRead.Controllers
             {
                 return View("Index", new StudentFormViewModel());
             }
+
+            Session["StudentCommentsList"] = vm.StudentCommentsList;
 
             JsonResult jsonData = new JsonResult();
             jsonData.Data = vm;
@@ -468,6 +646,10 @@ namespace LitProRead.Controllers
                         try
                         {
                             db.SaveChanges();
+
+                            // student comments
+                            var comments = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
+                            SaveStudentComments(comments);
                         }
                         catch (DbEntityValidationException ex)
                         {

@@ -239,6 +239,29 @@ namespace LitProRead.Models
             return list;
         }
 
+        public List<StudentCommentsViewModel> GetStudentComments(int id)
+        {
+            var query = from c in StudentComments
+                        where c.ID == id
+                        select c;
+
+            if (query.Count() == 0)
+                return new List<StudentCommentsViewModel>();
+
+            List<StudentCommentsViewModel> list = new List<StudentCommentsViewModel>();
+            foreach (var item in query)
+            {
+                list.Add(new StudentCommentsViewModel
+                {
+                    ID = item.ID,
+                    CommentDate = item.CommentDate,
+                    Comment = item.Comment,
+                    SSMA_TimeStamp = item.SSMA_TimeStamp
+                });
+            }
+
+            return list;
+        }
 
         /**
          using (SFA2DBDataContext db = new SFA2DBDataContext())
