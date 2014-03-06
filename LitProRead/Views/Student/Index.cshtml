@@ -67,7 +67,7 @@ S T U D E N T S
 *@
                 <tr>
                     <td>
-                        @Html.CheckBox("ActiveOnly", false)Active Only
+                        @Html.CheckBox("ActiveOnly", true)Active Only
                     </td>
                     <td style="text-align:right; border:0 none;">Last Name
                     </td>
@@ -142,10 +142,10 @@ S T U D E N T S
                 <li><a href="#Student-Assessment-Goals">Assessment Goals</a></li>
                 <li><a href="#Student-Roles-and-Goals">Roles and Goals</a></li>
                 <li><a href="#tabsStudent-Accomplishements">Accomplishements</a></li>
+                <li><a href="#Student-Status-History">Status History</a></li>
                 *@
                 <li><a href="#Student-Comments">Comments</a></li>
                 <li><a href="#Student-FollowUp">FollowUp</a></li>
-                <li><a href="#Student-Status-History">Status History</a></li>
             </ul>
 
             
@@ -191,6 +191,10 @@ S T U D E N T S
             <div id="tabsStudent-Accomplishements">
                 Accomplishements
             </div>
+
+            <div id="Student-Status-History">
+                Status-History
+            </div>
          *@
      
             <div id="Student-Comments">
@@ -201,9 +205,6 @@ S T U D E N T S
                 @Html.Partial("_Student-FollowUp-View", Model)
             </div>
        
-            <div id="Student-Status-History">
-                Status-History
-            </div>
 
         } @* </form> *@
     </div>
@@ -267,7 +268,16 @@ S T U D E N T S
             //$('ul.sf-menu').superfish();
 
             $("input").removeClass("editmode");
+            $("textarea").removeClass("editmode");
             $("select").removeClass("editmode");
+            $("input").prop('disabled', true);
+            $("textarea").prop('disabled', true);
+            $("select").prop('disabled', true);
+
+            // always enable the Last Name & First Name dropboxes for search + "active only" checkbox
+            $('#StudentListLastName').prop('disabled', false);
+            $('#StudentListFirstName').prop('disabled', false);
+            $('#ActiveOnly').prop('disabled', false);
 
             // disable "Edit" button
             var mode = $('#EditMode').val();
@@ -279,6 +289,8 @@ S T U D E N T S
             }
             $('#studentDelete').prop('disabled', true);
             $('#studentSave').prop('disabled', true);
+
+
 
             $(".datefield").datepicker();
             $("#tabs").tabs();
@@ -450,11 +462,16 @@ S T U D E N T S
                 //alert("studentAdd");
                 $('#EditMode').val("add");
 
+                // enable
+                $("input").prop('disabled', false);
+                $("textarea").prop('disabled', false);
+                $("select").prop('disabled', false);
+
                 // disable "Edit" button
                 $('#studentEdit').prop('disabled', true);
                 $('#studentSave').prop('disabled', false);
 
-                //$.fn.populateStudentForm("");
+                $.fn.populateStudentForm("");
 
                 $("input").addClass("editmode");
                 $("select").addClass("editmode");
@@ -499,6 +516,12 @@ S T U D E N T S
 
             @* --- EDIT --- *@
             $('#studentEdit').click(function () {
+
+                // enable
+                $("input").prop('disabled', false);
+                $("textarea").prop('disabled', false);
+                $("select").prop('disabled', false);
+
                 $("input").addClass("editmode");
                 $("select").addClass("editmode");
 
@@ -640,7 +663,7 @@ S T U D E N T S
 
             $.fn.populateStudentForm = function (data) {
                 if (data == "") {
-                    $('#CurrentStudent_ID').val(data);
+                    //$('#CurrentStudent_ID').val(data);
                     $('#CurrentStudent_Salutation').val(data);
 
                     $('#MatchT_CurrentStudent_FirstName').val(data);
