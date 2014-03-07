@@ -80,7 +80,7 @@ namespace LitProRead.ViewModels
         public StudentFormViewModel()
         {
             Load(-1);
-            EditMode = "add";
+            EditMode = "view";
         }
 
         public void Load(int id)

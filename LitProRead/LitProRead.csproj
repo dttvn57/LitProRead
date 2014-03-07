@@ -630,6 +630,11 @@
       <DependentUpon>LitProReadModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\DataSets\AuditTrailThisStudent.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuditTrailThisStudent.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSets\CLLSDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -777,6 +782,17 @@
     <Content Include="Reports\DataSets\CLLSDataSet.xsc">
       <DependentUpon>CLLSDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\AuditTrailThisStudent.xsc">
+      <DependentUpon>AuditTrailThisStudent.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\AuditTrailThisStudent.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>AuditTrailThisStudent.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\AuditTrailThisStudent.xss">
+      <DependentUpon>AuditTrailThisStudent.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSets\CLLSDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -801,7 +817,9 @@
     <Content Include="Reports\DataSets\StudentDataSet.xss">
       <DependentUpon>StudentDataSet.xsd</DependentUpon>
     </Content>
+    <EmbeddedResource Include="Reports\rdlc\AuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\rptAuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
     <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>

@@ -267,12 +267,33 @@ S T U D E N T S
             var pageSize = 20;
             //$('ul.sf-menu').superfish();
 
-            $("input").removeClass("editmode");
-            $("textarea").removeClass("editmode");
-            $("select").removeClass("editmode");
-            $("input").prop('disabled', true);
-            $("textarea").prop('disabled', true);
-            $("select").prop('disabled', true);
+            var mode = $('#EditMode').val();
+
+            if (mode == "edit" || mode == "add") {
+                $("input").addClass("editmode");
+                $("textarea").addClass("editmode");
+                $("select").addClass("editmode");
+
+                @*
+                $("input").removeClass("editmode");
+                $("textarea").removeClass("editmode");
+                $("select").removeClass("editmode");
+                $("input").prop('disabled', true);
+                $("textarea").prop('disabled', true);
+                $("select").prop('disabled', true);
+
+                $('#studentDelete').prop('disabled', true);
+                $('#studentSave').prop('disabled', true);
+                *@
+            }
+            else {
+                $("input").prop('disabled', true);
+                $("textarea").prop('disabled', true);
+                $("select").prop('disabled', true);
+
+                $('#studentDelete').prop('disabled', true);
+                $('#studentSave').prop('disabled', true);
+            }
 
             // always enable the Last Name & First Name dropboxes for search + "active only" checkbox
             $('#StudentListLastName').prop('disabled', false);
@@ -280,15 +301,12 @@ S T U D E N T S
             $('#ActiveOnly').prop('disabled', false);
 
             // disable "Edit" button
-            var mode = $('#EditMode').val();
             if (mode == "edit") {
                 $('#studentEdit').prop('disabled', false);
             }
             else {
                 $('#studentEdit').prop('disabled', true);
             }
-            $('#studentDelete').prop('disabled', true);
-            $('#studentSave').prop('disabled', true);
 
 
 
@@ -450,13 +468,6 @@ S T U D E N T S
             });
 
 
-            @*
-        });  // $(document).ready()
-    </script>
-
-    <script type="text/javascript">
-*@
-
             @* --- ADD --- *@
             $('#studentAdd').click(function () {
                 //alert("studentAdd");
@@ -574,6 +585,17 @@ S T U D E N T S
                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
                     alert("There was an error calling editStudent: " + errorMessage);
                 });
+            });
+
+            $('#viewStatusChanges').click(function (event) {
+                //alert("viewStatusChanges");
+                var StudentId = $('#CurrentStudent_ID').val();
+                if (StudentId > 0) {
+                    var url = '@Url.Action("AuditTrailThisStudent", "Reports", new { id = "_IdVal_" })';
+                    url = url.replace("_IdVal_", StudentId);
+                    window.location.href = url;
+                };
+
             });
 
             $('#studentDelete').click(function (event) {

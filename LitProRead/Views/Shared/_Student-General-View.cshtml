@@ -402,6 +402,7 @@
                     <tr>
                         <td colspan="3" style="text-align:right">
                             <button type="button" id="viewStatusChanges">View Status Changes</button>
+                           @* <input type="button" value="View Status Changes" onclick="@("window.location.href='" + @Url.Action("AuditTrailThisStudent", "Reports") + "'")    ;" />*@
                         </td>
                     </tr>
 
@@ -499,6 +500,10 @@
         </td>
     </tr>
 </table>
+
+<script type="text/javascript">
+
+</script>
 
     @*
    <div class="pagedList" data-otf-target="#restaurantList">

@@ -448,7 +448,7 @@ namespace LitProRead.Controllers
 //            DBAdapter.Fill(DS);
 
             // Assumes that connection is a valid SqlConnection object.
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=LitProRead 2-20-2014;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
+            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=.\\sqlexpress;Initial Catalog=LitProRead 2-26-2014;User ID=tdangdb;Password=tdangdb;Integrated Security=True;MultipleActiveResultSets=True;Application Name=EntityFramework");
             string queryString = "SELECT * FROM dbo.Status";
             System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(queryString, connection);
             DataSet status = new DataSet();

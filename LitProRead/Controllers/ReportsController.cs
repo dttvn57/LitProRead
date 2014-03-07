@@ -292,6 +292,41 @@ namespace LitProRead.Controllers
             }
         }
 
+        //SELECT tblAuditTrail.*, [FirstName] & " " & [LastName] AS MyName
+        //FROM tblAuditTrail
+        //WHERE (((tblAuditTrail.ID)="S" & [Forms]![frmMain]![frmStudents].[Form]![ID]))
+        //ORDER BY tblAuditTrail.DateChanged DESC , tblAuditTrail.TimeChanged DESC;
+        public ActionResult AuditTrailThisStudent(string id = "")
+        {
+            //int studentId = Convert.ToInt32(id);
+            string reportType = "PDF";
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var datasource = from item in db.tblAuditTrails.ToList()
+                                 where item.ID.Equals("S" + id)
+                                 orderby item.DateChanged descending, item.TimeChanged descending
+                                 select new
+                                 {
+                                     MyName = item.FirstName + " " + item.LastName,
+                                     DateChanged = item.DateChanged.GetValueOrDefault().ToShortDateString(),
+                                     TimeChanged = item.TimeChanged.GetValueOrDefault().ToShortTimeString(),
+                                     FieldName = item.FieldName,
+                                     OldValue = item.OldValue,
+                                     NewValue = item.NewValue,
+                                     Computer = item.Computer,
+                                     Employee = item.Employee,
+                                     ID = item.ID
+                                 };
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("MyName", datasource.FirstOrDefault().MyName));
+
+                return RunReport(reportType, "AuditTrailThisStudent.rdlc", "AuditTrailThisStudentDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {
             LocalReport lr = new LocalReport();
