@@ -12,7 +12,9 @@
 
     if (TempData["SaveEror"] != null)
     { 
-        <h2 style="color:red">@TempData["SaveEror"]</h2>
+        <div id="EditErrorDiv">
+            <h2 style="color:red">@TempData["SaveEror"]</h2>
+        </div>
     }
 }
 
@@ -272,7 +274,8 @@ S T U D E N T S
             var pageSize = 20;
             //$('ul.sf-menu').superfish();
 
-            var mode = $('#EditMode').val();
+            var mode = @Html.Raw(Json.Encode(Model.EditMode)); 
+            $('#EditMode').val(mode);
 
             if (mode == "edit" || mode == "add") {
                 $("input").addClass("editmode");
@@ -475,7 +478,7 @@ S T U D E N T S
 
             @* --- ADD --- *@
             $('#studentAdd').click(function () {
-                //alert("studentAdd");
+               // alert("studentAdd");
                 $('#EditMode').val("add");
 
                 // enable

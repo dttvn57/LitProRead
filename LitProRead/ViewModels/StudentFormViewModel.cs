@@ -87,6 +87,8 @@ namespace LitProRead.ViewModels
         {
             this.Id = id;
             this.CurrentStudent = GetStudent(id);
+            if (id > 0 && this.CurrentStudent != null)
+                EditMode = "edit";
 
             this.StudentChildrenList = GetStudentChildren(id);
             this.StudentCommentsList = GetStudentComments(id);

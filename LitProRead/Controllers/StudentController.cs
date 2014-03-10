@@ -747,18 +747,7 @@ namespace LitProRead.Controllers
             {
                 using (LitProReadEntities db = new LitProReadEntities())
                 {
-                    // check for dup here (using name + dob)
-                    Student student = db.Students.FirstOrDefault(p => p.LastName == studentFormVm.CurrentStudent.LastName &&
-                                                                      p.FirstName == studentFormVm.CurrentStudent.FirstName &&
-                                                                      p.DOB == studentFormVm.CurrentStudent.DOB);
-                    if (student != null)
-                    {
-                        //ModelState.AddModelError("CustomError", "Duplicate Student");
-                        TempData["SaveEror"] = "Cannot Save: Duplicate Student";
-                        return View("Index", studentFormVm);
-                    }
-
-                    if (EditMode == "edit")
+                    if (studentFormVm.EditMode == "edit")
                     {
                         db.Configuration.ValidateOnSaveEnabled = true;
                         db.Entry(studentFormVm.CurrentStudent).State = EntityState.Modified;
@@ -796,6 +785,19 @@ namespace LitProRead.Controllers
                     else
                     {
                         // "add"
+
+                        // check for dup here (using name + dob)
+                        Student student = db.Students.FirstOrDefault(p => p.LastName == studentFormVm.CurrentStudent.LastName &&
+                                                                          p.FirstName == studentFormVm.CurrentStudent.FirstName &&
+                                                                          p.DOB == studentFormVm.CurrentStudent.DOB);
+                        if (student != null)
+                        {
+                            //ModelState.AddModelError("CustomError", "Duplicate Student");
+                            TempData["SaveEror"] = "Cannot Save: Duplicate Student";
+                            return View("Index", studentFormVm);
+                        }
+
+ 
                         try
                         {
                             db.Students.Add(studentFormVm.CurrentStudent);
@@ -808,6 +810,10 @@ namespace LitProRead.Controllers
                             // student followups
                             var followups = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
                             SaveStudentFollowUps(followups);
+
+                            // change from "add" to "edit"
+                            //studentFormVm.EditMode = "edit";
+                            return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });
                         }
                         catch (Exception ex)
                         {
