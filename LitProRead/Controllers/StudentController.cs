@@ -26,11 +26,19 @@ namespace LitProRead.Controllers
                 Thread.Sleep(200);
 
                 int matchSCount = 0;
-                IEnumerable<PairViewModel> query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex, jtSorting, ref matchSCount);
+                IEnumerable<PairViewModel> query = null;
+                if (SID > 0)
+                {
+                    query = db.GetMatchedTutorForStudent(SID, jtPageSize, jtStartIndex, jtSorting, ref matchSCount);
 
-                //var matchSCount = query.Count();
-                //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
-                return Json(new { Result = "OK", Records = query, TotalRecordCount = matchSCount });
+                    //var matchSCount = query.Count();
+                    //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
+                    return Json(new { Result = "OK", Records = query, TotalRecordCount = matchSCount });
+                }
+                else
+                {
+                    return Json(new { Result = "OK", Records = query, TotalRecordCount = matchSCount });
+                }
             }
             catch (Exception ex)
             {
@@ -252,10 +260,18 @@ namespace LitProRead.Controllers
             try
             {
                 Thread.Sleep(200);
-                IEnumerable<StudentChildrenViewModel> query = db.GetStudentChildren(studentId);
 
-                var count = query.Count();
-                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+                if (studentId > 0)
+                {
+                    IEnumerable<StudentChildrenViewModel> query = db.GetStudentChildren(studentId);
+                    var count = query.Count();
+                    return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+                }
+                else
+                {
+                    List<StudentCommentsViewModel> list = null;
+                    return Json(new { Result = "OK", Records = list, TotalRecordCount = 0 });
+                }
             }
             catch (Exception ex)
             {
@@ -354,11 +370,18 @@ namespace LitProRead.Controllers
             try
             {
                 Thread.Sleep(200);
-
-                var query = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
-                var sortedQuery = query.OrderByDescending(c => c.CommentDate).ToList();
-                var count = sortedQuery.Count();
-                return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
+                if (studentId > 0)
+                {
+                    var query = Session["StudentCommentsList"] as List<StudentCommentsViewModel>;
+                    var sortedQuery = query.OrderByDescending(c => c.CommentDate).ToList();
+                    var count = sortedQuery.Count();
+                    return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
+                }
+                else
+                {
+                    List<StudentCommentsViewModel> list = null;
+                    return Json(new { Result = "OK", Records = list, TotalRecordCount = 0 });
+                }
             }
             catch (Exception ex)
             {
@@ -525,10 +548,18 @@ namespace LitProRead.Controllers
             {
                 Thread.Sleep(200);
 
-                var query = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
-                var sortedQuery = query.OrderByDescending(f => f.FollowUpDate).ToList();
-                var count = sortedQuery.Count();
-                return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
+                if (studentId > 0)
+                {
+                    var query = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
+                    var sortedQuery = query.OrderByDescending(f => f.FollowUpDate).ToList();
+                    var count = sortedQuery.Count();
+                    return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
+                }
+                else
+                {
+                    List<StudentCommentsViewModel> list = null;
+                    return Json(new { Result = "OK", Records = list, TotalRecordCount = 0 });
+                }
             }
             catch (Exception ex)
             {

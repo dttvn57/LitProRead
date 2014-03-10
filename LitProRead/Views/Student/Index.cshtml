@@ -693,6 +693,10 @@ S T U D E N T S
 
             $.fn.populateStudentForm = function (data) {
                 if (data == "") {
+                    $('#Student-Matching-S').jtable('load', { SID: 0 });//$('#CurrentStudent_ID').val()
+                    $('#Student-Children').jtable('load', { studentId: 0 });//$('#CurrentStudent_ID').val()
+                    $('#Student-Comments').jtable('load', { studentId: 0 });//$('#CurrentStudent_ID').val()
+                    $('#Student-FollowUp').jtable('load', { studentId: 0 });//$('#CurrentStudent_ID').val()
                     //$('#CurrentStudent_ID').val(data);
                     $('#CurrentStudent_Salutation').val(data);
 
