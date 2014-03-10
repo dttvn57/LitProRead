@@ -326,6 +326,12 @@ namespace LitProRead.Controllers
             }
         }
 
+        //SELECT Students.ID, Students.LastName, [FirstName] & " " & [LastName] AS Name, 
+        //Students.Status, Students.FFL, Students.InitialSurveyDate, Students.FollowUpSurveyDate, StudentChildren.*, 
+        //IIf(IsNull(StudentChildren.DOB),"",Format((DateDiff("m",StudentChildren.DOB,Now())/12),"0.0")) AS Age
+        //  FROM Students INNER JOIN StudentChildren ON Students.ID = StudentChildren.ID
+        //  WHERE (((Students.FFL)=True))
+        //  ORDER BY Students.LastName;
 
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {

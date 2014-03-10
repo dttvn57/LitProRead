@@ -436,43 +436,82 @@ namespace LitProRead.Models
 
         public static string GetStatus(int statusId)
         {
+            //switch (statusId)
+            //{
+            //    case 1:
+            //        return "Dissolved";
+            //    case 2:
+            //        return "Inactive";
+            //    case 3:
+            //        return "Left";
+            //    case 4:
+            //        return "Prospective";
+            //    case 5:
+            //        return "Sabbatical";
+            //    case 6:
+            //        return "Waiting";
+            //    case 0:
+            //    default:
+            //        return "Active";
+            //}
             switch (statusId)
             {
                 case 1:
-                    return "Dissolved";
+                    return "Active";
                 case 2:
-                    return "Inactive";
+                    return "Dissolved";
                 case 3:
-                    return "Left";
+                    return "Inactive";
                 case 4:
-                    return "Prospective";
+                    return "Left";
                 case 5:
-                    return "Sabbatical";
+                    return "Prospective";
                 case 6:
+                    return "Sabbatical";
+                case 7:
                     return "Waiting";
                 case 0:
                 default:
-                    return "Active";
+                    return "---";
             }
         }
 
         private int GetStatusId(string status)
         {
-            if (status.Equals("Active", StringComparison.OrdinalIgnoreCase))
+            if (status == null || status == "" || status == "---")
                 return 0;
-            else if (status.Equals("Dissolved", StringComparison.OrdinalIgnoreCase))
+
+            if (status.Equals("Active", StringComparison.OrdinalIgnoreCase))
                 return 1;
-            else if (status.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
+            else if (status.Equals("Dissolved", StringComparison.OrdinalIgnoreCase))
                 return 2;
-            else if (status.Equals("Left", StringComparison.OrdinalIgnoreCase))
+            else if (status.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
                 return 3;
-            else if (status.Equals("Prospective", StringComparison.OrdinalIgnoreCase))
+            else if (status.Equals("Left", StringComparison.OrdinalIgnoreCase))
                 return 4;
-            else if (status.Equals("Sabbatical", StringComparison.OrdinalIgnoreCase))
+            else if (status.Equals("Prospective", StringComparison.OrdinalIgnoreCase))
                 return 5;
-            else if (status.Equals("Waiting", StringComparison.OrdinalIgnoreCase))
+            else if (status.Equals("Sabbatical", StringComparison.OrdinalIgnoreCase))
                 return 6;
-           return 0;
+            else if (status.Equals("Waiting", StringComparison.OrdinalIgnoreCase))
+                return 7;
+            return 0;
+
+            // if (status.Equals("Active", StringComparison.OrdinalIgnoreCase))
+           //     return 0;
+           // else if (status.Equals("Dissolved", StringComparison.OrdinalIgnoreCase))
+           //     return 1;
+           // else if (status.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
+           //     return 2;
+           // else if (status.Equals("Left", StringComparison.OrdinalIgnoreCase))
+           //     return 3;
+           // else if (status.Equals("Prospective", StringComparison.OrdinalIgnoreCase))
+           //     return 4;
+           // else if (status.Equals("Sabbatical", StringComparison.OrdinalIgnoreCase))
+           //     return 5;
+           // else if (status.Equals("Waiting", StringComparison.OrdinalIgnoreCase))
+           //     return 6;
+           //return 0;
         }
 
         public static string GetGender(int genderId)

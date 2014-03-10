@@ -747,6 +747,17 @@ namespace LitProRead.Controllers
             {
                 using (LitProReadEntities db = new LitProReadEntities())
                 {
+                    // check for dup here (using name + dob)
+                    Student student = db.Students.FirstOrDefault(p => p.LastName == studentFormVm.CurrentStudent.LastName &&
+                                                                      p.FirstName == studentFormVm.CurrentStudent.FirstName &&
+                                                                      p.DOB == studentFormVm.CurrentStudent.DOB);
+                    if (student != null)
+                    {
+                        //ModelState.AddModelError("CustomError", "Duplicate Student");
+                        TempData["SaveEror"] = "Cannot Save: Duplicate Student";
+                        return View("Index", studentFormVm);
+                    }
+
                     if (EditMode == "edit")
                     {
                         db.Configuration.ValidateOnSaveEnabled = true;

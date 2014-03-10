@@ -819,7 +819,6 @@
     </Content>
     <EmbeddedResource Include="Reports\rdlc\AuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
-    <EmbeddedResource Include="Reports\rdlc\rptAuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
     <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>

@@ -9,6 +9,11 @@
     }
     var currentTutortId = 0;
     var editMode = "del";
+
+    if (TempData["SaveEror"] != null)
+    { 
+        <h2 style="color:red">@TempData["SaveEror"]</h2>
+    }
 }
 
 <style>
@@ -42,11 +47,11 @@ S T U D E N T S
         { 
             @*
             @Html.AntiForgeryToken()
+            @Html.ValidationSummary(false)
           *@
               @Html.HiddenFor(x => Model.CurrentStudent.ID)
               @Html.HiddenFor(x => Model.EditMode)
             
-            @Html.ValidationSummary(true)
 
             
             <table>

@@ -58,6 +58,7 @@ namespace LitProRead.Models
         public string InActiveReason { get; set; }
         public Nullable<System.DateTime> FirstActive { get; set; }
         public string MailCode { get; set; }
+        [Required]
         public Nullable<System.DateTime> DOB { get; set; }
         public string Country { get; set; }
         public string Gender { get; set; }
