@@ -1,0 +1,133 @@
+﻿@model LitProRead.ViewModels.StudentFormViewModel
+
+<div id="Student-Reports-div">
+    <table>
+        <colgroup>
+                <col style="width:35%;"/>
+                <col style="width:5%;"/>
+                <col style="width:5%;"/>
+                <col style="width:55%;"/>
+        </colgroup>
+        <tr>
+            @for (int i = 0; i < 4; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    <td style="background-color:red"></td>
+                }
+                else
+                {
+                    <td style="background-color:yellow"></td>
+                }
+            }
+        </tr>
+
+        <tr><td></br></td></tr>
+        <tr>
+            <td style="text-align:center">
+                <span>Reports</span>
+            </td>
+            <td style="text-align:center"><div id="StudentReportsViewStartDateRangeLabel" style="display: none">Start Date</div>
+                @* Html.Label("Start Date", htmlAttributes: new { id = "StudentReportsViewStartDateRangeLabel", style="display: none;" })*@
+            </td>
+            <td style="text-align:center"><div id="StudentReportsViewEndDateRangeLabel" style="display: none">End Date</div>
+                @* Html.Label("End Date", htmlAttributes: new { id = "StudentReportsViewEndDateRangeLabel", style="display: none;" })*@
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @*
+                @Html.DropDownListFor(m => Model.CurrentStudent.Salutation, Model.SalutationList, string.Empty, new { style = "width:100%" })
+                *@
+                @Html.DropDownList("StudentReports", Model.StudentReports, string.Empty)
+            </td>
+            <td style="text-align:center">
+                @Html.TextBox("StudentReportsStartDate", null, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "display: none; width:7em" })
+            </td>
+            <td style="text-align:center">
+                @Html.TextBox("StudentReportsEndDate", null, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "display: none; width:7em" })
+            </td>
+            <td style="text-align:center">
+                <button type="button" id="runStudentReports" style="display: none">Run</button>
+            </td>
+        </tr>
+
+        <tr><td></br></td></tr>
+
+    </table>
+
+</div>
+
+
+    <script type="text/javascript">
+        $("#StudentReports").change(function () {
+            var selectedStudentReport = $("#StudentReports").val();
+
+            @* $("#selectedReport").val(selectedStudentReport);*@
+
+            //modify the href link
+            //var linkValue = '/Reports/Run/' + selectedStudentReport;
+            //$('#RunReportLink').attr('href', linkValue);
+
+
+            @*alert(selectedStudentReport);
+        $("#StudentReportsDate1").style.display = "block";attr("disabled", false);
+        var studentReportsBeginDate = document.getElementById("StudentReportsBeginDate");
+        var studentReportsEndDate = document.getElementById("StudentReportsEndDate");*@
+            if (selectedStudentReport == '') 
+            {
+                document.getElementById("runStudentReports").style.display = "none";
+            }
+            else
+            {
+                document.getElementById("runStudentReports").style.display = "block";
+            }
+
+            if (selectedStudentReport == 'StudentsMatchHistorybyDateRange' ||
+                selectedStudentReport == 'StudentStatusHistory' ||
+                selectedStudentReport == 'StudentWaitTime')
+            {
+                document.getElementById("StudentReportsViewStartDateRangeLabel").style.display = "block";
+                document.getElementById("StudentReportsViewEndDateRangeLabel").style.display = "block";
+                document.getElementById("StudentReportsStartDate").style.display = "block";
+                document.getElementById("StudentReportsEndDate").style.display = "block";
+            }
+            else {
+                document.getElementById("StudentReportsViewStartDateRangeLabel").style.display = "none";
+                document.getElementById("StudentReportsViewEndDateRangeLabel").style.display = "none";
+                document.getElementById("StudentReportsStartDate").style.display = "none";
+                document.getElementById("StudentReportsEndDate").style.display = "none";
+            }
+        });
+
+        $('#runStudentReports').click(function (value) {
+            var reportType = "PDF";
+            var reportName = $("#StudentReports").val();
+            var beginDate = $("#StudentReportsStartDate").val();
+            var endDate = $("#StudentReportsEndDate").val();
+
+            var url = '@Url.Action("Run", "Reports", new { paramsVal = "_paramsVal_" })';
+            url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "reportName=" + reportName + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate);
+            //alert(url);
+            //window.location.href = url;
+            window.open(url, '_blank'); // <- This is what makes it open in a new window.
+
+            //$.ajax({
+            //    url: '@Url.Action("AddRow", "Verification")',//'@Url.Content("~/Verification/AddRow")',
+            //    type: 'GET',
+            //     contentType: 'application/json; charset=utf-8',
+            //    data: {
+            //        fullName: name,
+            //        title: t,
+            //        homeBranch: branch
+            //    },
+
+            //    success: function (result) {
+            //       //$('#ViewResult').html(result);
+            //    }
+            //});
+
+            return false;
+        });
+    </script>

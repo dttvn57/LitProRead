@@ -153,6 +153,7 @@ S T U D E N T S
                 *@
                 <li><a href="#Student-Comments">Comments</a></li>
                 <li><a href="#Student-FollowUp">FollowUp</a></li>
+                <li><a href="#Student-Reports">Reports</a></li>
             </ul>
 
             
@@ -212,7 +213,10 @@ S T U D E N T S
                 @Html.Partial("_Student-FollowUp-View", Model)
             </div>
        
-
+            <div id="Student-Reports">
+                @Html.Partial("_Student-Reports-View", Model)
+            </div>
+       
         } @* </form> *@
     </div>
 
@@ -601,7 +605,7 @@ S T U D E N T S
                 if (StudentId > 0) {
                     var url = '@Url.Action("AuditTrailThisStudent", "Reports", new { id = "_IdVal_" })';
                     url = url.replace("_IdVal_", StudentId);
-                    window.location.href = url;
+                    window.open(url, '_blank'); // <- This is what makes it open in a new window.
                 };
 
             });

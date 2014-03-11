@@ -212,8 +212,8 @@ namespace LitProRead.Controllers
         {
             string reportType = "";
             string reportName = "";
-            string beginDate = "";
-            string endDate = "";
+            string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+            string endDate = DateTime.Now.ToShortDateString();
             string statusType = "";
 
             if (paramsVal != null)
@@ -229,23 +229,38 @@ namespace LitProRead.Controllers
                 string[] s2 = str[1].Split('=');
                 reportName = s2[1];
 
-                // 3rd and above: the criteria.
-                string[] date = str[2].Split('=');
-                beginDate = date[1];
-                date = str[3].Split('=');
-                endDate = date[1];
 
-                string[] type = str[4].Split('=');
-                statusType = type[1];
+                // 3rd and above: the criteria.
+                if (str.Count() > 2)        // not all reports have a start date
+                {
+                    string[] date = str[2].Split('=');
+                    beginDate = date[1];
+                }
+
+
+                if (str.Count() > 3)        // not all reports have an end date
+                {
+                    string[] date = str[3].Split('=');
+                    endDate = date[1];
+                }
+
+                if (str.Count() > 4)        // not all reports have a status type
+                {
+                    string[] type = str[4].Split('=');
+                    statusType = type[1];
+                }
             }
 
+            if (reportName == "StudentsMatchHistorybyDateRange")
+                return StudentStatusHistory(reportType, beginDate, endDate, statusType);
+            else
             if (reportName == "StudentStatusHistory")
                 return StudentStatusHistory(reportType, beginDate, endDate, statusType);
             else
-                if (reportName == "StudentWaitTime")
-                    return StudentWaitTime(reportType, beginDate, endDate, statusType);
-                else
-                    return View();
+            if (reportName == "StudentWaitTime")
+                return StudentWaitTime(reportType, beginDate, endDate, statusType);
+            else
+                return View();
         }
 
         //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students 

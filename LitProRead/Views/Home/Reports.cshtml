@@ -178,7 +178,7 @@
             </tr>
             <tr>  
                 <td >
-                    @Html.DropDownList("StudentReports", new SelectList(Model.StudentReports), string.Empty)
+                    @Html.DropDownList("ReportStudents", new SelectList(Model.ReportStudents), string.Empty)
                 </td>
                 <td >
                      <button type="button" id="RunReportLink_Students" style="display: none;" >Run</button>
@@ -225,7 +225,7 @@
                     @Html.Label("Choose Status", htmlAttributes: new { id = "StudentReportsChooseStatusLabel", style="display: none;" })&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
                 <td >
-                    @Html.DropDownList("StudentReportsStatus", new SelectList(Model.StudentReportsStatus), string.Empty, htmlAttributes: new { style="display: none" })
+                    @Html.DropDownList("ReportStudentsStatus", new SelectList(Model.ReportStudentsStatus), string.Empty, htmlAttributes: new { style="display: none" })
                 </td>
            </tr>
         </table>

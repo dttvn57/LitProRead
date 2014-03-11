@@ -11,6 +11,7 @@ using System.Web.Script.Serialization;
 using System.Collections;
 using System.Data.Entity.Validation;
 using System.Threading;
+using System.Configuration;
 
 namespace LitProRead.Controllers
 {
@@ -887,6 +888,7 @@ namespace LitProRead.Controllers
             }
             return View(student);
         }
+
 
         //
         // POST: /Student/Delete/5

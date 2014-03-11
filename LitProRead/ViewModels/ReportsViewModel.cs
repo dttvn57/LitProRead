@@ -7,7 +7,7 @@ namespace LitProRead.ViewModels
 {
     public class ReportsViewModel
     {
-        public virtual ICollection<String> StudentReports { get; set; }
-        public virtual ICollection<String> StudentReportsStatus { get; set; }
+        public virtual ICollection<String> ReportStudents { get; set; }
+        public virtual ICollection<String> ReportStudentsStatus { get; set; }
     }
 }

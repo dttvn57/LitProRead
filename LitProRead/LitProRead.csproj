@@ -1043,6 +1043,7 @@
     <Content Include="Views\Shared\_Student-Assessment-Intake-View.cshtml" />
     <Content Include="Views\Shared\_Student-Comments-View.cshtml" />
     <Content Include="Views\Shared\_Student-FollowUp-View.cshtml" />
+    <Content Include="Views\Shared\_Student-Reports-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

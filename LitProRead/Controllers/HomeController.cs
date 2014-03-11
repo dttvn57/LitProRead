@@ -431,7 +431,7 @@ namespace LitProRead.Controllers
                                                             .ToArray();
             var vm = new ReportsViewModel
             {
-                StudentReports = names
+                ReportStudents = names
             };
 
             //vm.StudentReports = new ICollection<string>();
@@ -464,7 +464,7 @@ namespace LitProRead.Controllers
             {
                 statusList.Add((string)row["status"]);
             }
-            vm.StudentReportsStatus = statusList;
+            vm.ReportStudentsStatus = statusList;
 
             /* 2/25/14 - trung
              * What is this block code for: it doesn't look like the CLLS needs it

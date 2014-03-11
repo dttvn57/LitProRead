@@ -1,6 +1,7 @@
 ﻿using LitProRead.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -46,6 +47,9 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> ReferralList { get; private set; }
         public List<SelectListItem> StaffList { get; private set; }
         public List<SelectListItem> SourceList { get; private set; }
+
+        public List<SelectListItem> StudentReports { get; set; }
+        //public virtual ICollection<String> StudentReportsStatus { get; set; }
 
         public double StudentAge { get; private set; }
 
@@ -125,6 +129,8 @@ namespace LitProRead.ViewModels
             this.MailCodeList = DbHelper.GetMailCodeList(null);
             this.CategoryList = DbHelper.GetCategoryList(null);
             this.KeywordList = DbHelper.GetKeywordList(null);
+
+            this.StudentReports = GetStudentReportList();
         }
 
         public Student GetStudent(int id)
@@ -584,6 +590,30 @@ namespace LitProRead.ViewModels
                 //return new SelectList(students, "ID", "FirstName");
             }
         }
+
+        public List<SelectListItem> GetStudentReportList(string selected = "")
+        {
+            // students
+            string[] names = ConfigurationManager.AppSettings.AllKeys
+                                                            .Where(k => k.StartsWith("StudentReport"))
+                                                            .Select(k => ConfigurationManager.AppSettings[k])
+                                                            .ToArray();
+
+            string selectedValue = selected != null ? selected.Trim() : "";
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var name in names)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = name.Trim(),
+                    Value = name.Trim(),
+                    //Selected = selectedValue == sal.Trim() ? true : false
+                });
+
+            }
+            return list;// new SelectList(list.ToList(), "Value", "Text");
+        }
+
 
         private double GetStudentAge()
         {
