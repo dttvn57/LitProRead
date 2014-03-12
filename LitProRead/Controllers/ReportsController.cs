@@ -1,7 +1,10 @@
 ﻿using LitProRead.Models;
+using LitProRead.Reports.DataSets;
+using LitProRead.Reports.DataSets.StudentsMatchHistorybyDateRangeDataSetTableAdapters;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -251,9 +254,9 @@ namespace LitProRead.Controllers
                 }
             }
 
-            if (reportName == "StudentsMatchHistorybyDateRange")
-                return StudentStatusHistory(reportType, beginDate, endDate, statusType);
-            else
+            //if (reportName == "StudentsMatchHistorybyDateRange")
+            //    return StudentsMatchHistorybyDateRange(reportType, beginDate, endDate);
+            //else
             if (reportName == "StudentStatusHistory")
                 return StudentStatusHistory(reportType, beginDate, endDate, statusType);
             else
@@ -341,12 +344,108 @@ namespace LitProRead.Controllers
             }
         }
 
-        //SELECT Students.ID, Students.LastName, [FirstName] & " " & [LastName] AS Name, 
-        //Students.Status, Students.FFL, Students.InitialSurveyDate, Students.FollowUpSurveyDate, StudentChildren.*, 
-        //IIf(IsNull(StudentChildren.DOB),"",Format((DateDiff("m",StudentChildren.DOB,Now())/12),"0.0")) AS Age
-        //  FROM Students INNER JOIN StudentChildren ON Students.ID = StudentChildren.ID
-        //  WHERE (((Students.FFL)=True))
-        //  ORDER BY Students.LastName;
+        //SELECT Pairs.*, 
+        //  IIf(IsNull([DissolveDate]), DateDiff("m",[MatchDate] ,Now()), DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, 
+        //  students.HomeAreaCode & " " & Students.HomePhone AS StudentHome, 
+        //  Students.WorkAreaCode & " " & Students.WorkPhone AS StudentWork, 
+        //  Tutors.HomeAreaCode & " " & Tutors.HomePhone AS TutorHome, 
+        //  Tutors.WorkAreaCode & " " & Tutors.WorkPhone AS TutorWork, 
+        //  Tutors.TutorContact, 
+        //  Students.Status, 
+        //  Tutors.Status
+        //FROM Students INNER JOIN (Tutors INNER JOIN Pairs ON Tutors.ID = Pairs.TID) ON Students.ID = Pairs.SID
+        //WHERE (((Pairs.MatchDate) Between [Forms]![frmStudentMatchHistorybyDateRange]![BeginDate] And [Forms]![frmStudentMatchHistorybyDateRange]![EndDate]));
+        public ActionResult StudentsMatchHistorybyDateRange(string paramsVal)   //string studentId, string beginDate, string endDate)
+        {
+            string id = "0";
+            string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+            string endDate = DateTime.Now.ToShortDateString();
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: student Id
+                string[] s1 = str[0].Split('=');
+                id = s1[1];
+
+                // 2nd: begin date
+                if (str.Count() > 1)        // not all reports have a start date
+                {
+                    string[] date = str[1].Split('=');
+                    beginDate = date[1];
+                }
+
+                // 3rd: end date
+                if (str.Count() > 2)        // not all reports have an end date
+                {
+                    string[] date = str[2].Split('=');
+                    endDate = date[1];
+                }
+            }
+
+            int studentID = Convert.ToInt32(id);
+
+            DateTime date1;
+            if (beginDate != "")
+            {
+                date1 = DateTime.Parse(beginDate);
+            }
+            else
+            {
+                date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+
+            DateTime date2 = DateTime.Now;
+            if (endDate != "")
+            {
+                date2 = DateTime.Parse(endDate);
+            }
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var student = db.Students.Find(studentID);
+                var stuStatus = student.Status;
+                var dataSource =
+                    from pair in db.Pairs
+                    where pair.SID == studentID && pair.MatchDate >= date1 && pair.MatchDate <= date2
+                    join tutor in db.Tutors on pair.TID equals tutor.ID //into pt 
+                    //from p in pt.DefaultIfEmpty() 
+                    select new
+                    {
+                        UniqID = pair.UniqID,
+                        TID = pair.TID,
+                        SID = studentID,
+                        MatchDate = pair.MatchDate,
+                        DissolveDate = pair.DissolveDate,
+                        Comments = pair.Comments,
+                        //TotalHoursMet = t.Sum(x => x.HoursMet)
+
+                        StudentID = studentID,
+                        StudentName = student.FirstName + " " + student.LastName,
+                        StudentHome = student.HomeAreaCode + " " + student.HomePhone,
+                        StudentWork = student.WorkAreaCode + " " + student.WorkPhone,
+                        StudentStatus = student.Status,
+                        
+                        TutorID = tutor.ID,
+                        TutorName = tutor.FirstName + " " + tutor.LastName,
+                        TutorHome = tutor.HomeAreaCode + " " + tutor.HomePhone,
+                        TutorWork = tutor.WorkAreaCode + " " + tutor.WorkPhone,
+                        TutorStatus = tutor.Status,
+                        TutorContact = tutor.TutorContact
+                    };
+
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString()));
+
+                return RunReport("PDF", "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
 
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {

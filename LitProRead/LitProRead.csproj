@@ -657,6 +657,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.cs">
+      <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSets\StudentStatusHistoryDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -819,9 +828,21 @@
     </Content>
     <EmbeddedResource Include="Reports\rdlc\AuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentsMatchHistorybyDateRange.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
     <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsc">
+      <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentsMatchHistorybyDateRangeDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xss">
+      <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Reports\DataSets\StudentStatusHistoryDataSet.xsd">
       <SubType>Designer</SubType>
