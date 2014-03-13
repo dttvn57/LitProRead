@@ -390,7 +390,7 @@ namespace LitProRead.Controllers
             DateTime date1;
             if (beginDate != "")
             {
-                date1 = DateTime.Parse(beginDate);
+                date1 = DateTime.ParseExact(beginDate, @"d/M/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
             }
             else
             {
@@ -400,7 +400,7 @@ namespace LitProRead.Controllers
             DateTime date2 = DateTime.Now;
             if (endDate != "")
             {
-                date2 = DateTime.Parse(endDate);
+                date2 = DateTime.ParseExact(endDate, @"d/M/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
             }
 
             using (LitProReadEntities db = new LitProReadEntities())

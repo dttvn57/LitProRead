@@ -40,7 +40,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -692,7 +697,6 @@
     <Compile Include="ViewModels\StudentFormViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\chosen.css" />
     <Content Include="Content\highlight.css" />
     <Content Include="Content\images\Misc\note.png" />
     <Content Include="Content\megafish.css" />
@@ -754,14 +758,12 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="Content\themes\highlight.css" />
     <Content Include="Content\themes\metroblue\images\ui-icons_2d89ef_0.png" />
     <Content Include="Content\themes\metroblue\images\ui-icons_525252_0.png" />
     <Content Include="Content\themes\metroblue\images\ui-icons_66B3FF_0.png" />
     <Content Include="Content\themes\metroblue\images\ui-icons_d4d4d4_0.png" />
     <Content Include="Content\themes\metroblue\images\ui-icons_ffffff_0.png" />
     <Content Include="Content\themes\metroblue\jquery-ui.css" />
-    <Content Include="Content\themes\ui-icons_2d89ef_0.png" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <EntityDeploy Include="Models\LitProReadModel.edmx">
@@ -794,6 +796,7 @@
     <Content Include="Reports\DataSets\AuditTrailThisStudent.xsc">
       <DependentUpon>AuditTrailThisStudent.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\LitProRead.pubxml" />
     <None Include="Reports\DataSets\AuditTrailThisStudent.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
