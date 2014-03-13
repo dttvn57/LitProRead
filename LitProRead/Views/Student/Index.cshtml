@@ -768,28 +768,28 @@ S T U D E N T S
                     $('#CurrentStudent_Category').val(data);
                     $('#CurrentStudent_Keyword').val(data);
 
-                        $('#CurrentStudent_AvailMonAM').prop("checked", false);
-                        $('#CurrentStudent_AvailTueAM').prop("checked", false);
-                        $('#CurrentStudent_AvailWedAM').prop("checked", false);
-                        $('#CurrentStudent_AvailThuAM').prop("checked", false);
-                        $('#CurrentStudent_AvailFriAM').prop("checked", false);
-                        $('#CurrentStudent_AvailSatAM').prop("checked", false);
-                        $('#CurrentStudent_AvailSunAM').prop("checked", false);
-                        $('#CurrentStudent_AvailTueAM').prop("checked", false);
-                        $('#CurrentStudent_AvailMonPM').prop("checked", false);
-                        $('#CurrentStudent_AvailTuePM').prop("checked", false);
-                        $('#CurrentStudent_AvailWedPM').prop("checked", false);
-                        $('#CurrentStudent_AvailThuPM').prop("checked", false);
-                        $('#CurrentStudent_AvailFriPM').prop("checked", false);
-                        $('#CurrentStudent_AvailSatPM').prop("checked", false);
-                        $('#CurrentStudent_AvailSunPM').prop("checked", false);
-                        $('#CurrentStudent_AvailMonEVE').prop("checked", false);
-                        $('#CurrentStudent_AvailTueEVE').prop("checked", false);
-                        $('#CurrentStudent_AvailWedEVE').prop("checked", false);
-                        $('#CurrentStudent_AvailThudEVE').prop("checked", false);
-                        $('#CurrentStudent_AvailFriEVE').prop("checked", false);
-                        $('#CurrentStudent_AvailSatEVE').prop("checked", false);
-                        $('#CurrentStudent_AvailSunEVE').prop("checked", false);
+                    $('#CurrentStudent_AvailMonAM').prop("checked", false);
+                    $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                    $('#CurrentStudent_AvailWedAM').prop("checked", false);
+                    $('#CurrentStudent_AvailThuAM').prop("checked", false);
+                    $('#CurrentStudent_AvailFriAM').prop("checked", false);
+                    $('#CurrentStudent_AvailSatAM').prop("checked", false);
+                    $('#CurrentStudent_AvailSunAM').prop("checked", false);
+                    $('#CurrentStudent_AvailTueAM').prop("checked", false);
+                    $('#CurrentStudent_AvailMonPM').prop("checked", false);
+                    $('#CurrentStudent_AvailTuePM').prop("checked", false);
+                    $('#CurrentStudent_AvailWedPM').prop("checked", false);
+                    $('#CurrentStudent_AvailThuPM').prop("checked", false);
+                    $('#CurrentStudent_AvailFriPM').prop("checked", false);
+                    $('#CurrentStudent_AvailSatPM').prop("checked", false);
+                    $('#CurrentStudent_AvailSunPM').prop("checked", false);
+                    $('#CurrentStudent_AvailMonEVE').prop("checked", false);
+                    $('#CurrentStudent_AvailTueEVE').prop("checked", false);
+                    $('#CurrentStudent_AvailWedEVE').prop("checked", false);
+                    $('#CurrentStudent_AvailThudEVE').prop("checked", false);
+                    $('#CurrentStudent_AvailFriEVE').prop("checked", false);
+                    $('#CurrentStudent_AvailSatEVE').prop("checked", false);
+                    $('#CurrentStudent_AvailSunEVE').prop("checked", false);
 
                     $('#CurrentStudent_Transportation').val(data);
                     $('#CurrentStudent_StudentContact').val(data);
@@ -822,6 +822,8 @@ S T U D E N T S
 
                     //fmt = $.fn.getFormattedDate(data.CurrentStudent.FollowUpSurveyDate);
                     $('#CurrentStudent_FollowUpSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    
+                    $('#SelectedStudentReport').val(data);
                 }
                 else {
                     $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
@@ -1076,7 +1078,11 @@ S T U D E N T S
 
                     fmt = $.fn.getFormattedDate(data.CurrentStudent.FollowUpSurveyDate);
                     $('#CurrentStudent_FollowUpSurveyDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+
+                    $('#SelectedStudentReport').val("");
                 }
+
+                $.fn.StudentReportsHandler();
             };
 
             $.fn.getFormattedDate = function(date) {
@@ -1085,6 +1091,40 @@ S T U D E N T S
                     return null;
                 var dt = eval("new " + date.toString().replace(/[\\/]/g, ""));
                 return new Date(dt);
+            };
+
+            $.fn.StudentReportsHandler = function() {
+                var selectedStudentReport = $("#SelectedStudentReport").val();
+
+                @*alert(selectedStudentReport);
+                $("#StudentReportsDate1").style.display = "block";attr("disabled", false);
+                var studentReportsBeginDate = document.getElementById("StudentReportsBeginDate");
+                var studentReportsEndDate = document.getElementById("StudentReportsEndDate");*@
+
+                if (selectedStudentReport == '') 
+                {
+                    document.getElementById("runStudentReports").style.display = "none";
+                }
+                else
+                {
+                    document.getElementById("runStudentReports").style.display = "block";
+                }
+
+                if (selectedStudentReport == 'StudentsMatchHistorybyDateRange' ||
+                    selectedStudentReport == 'StudentStatusHistory' ||
+                    selectedStudentReport == 'StudentWaitTime')
+                {
+                    document.getElementById("StudentReportsViewStartDateRangeLabel").style.display = "block";
+                    document.getElementById("StudentReportsViewEndDateRangeLabel").style.display = "block";
+                    document.getElementById("StudentReportsStartDate").style.display = "block";
+                    document.getElementById("StudentReportsEndDate").style.display = "block";
+                }
+                else {
+                    document.getElementById("StudentReportsViewStartDateRangeLabel").style.display = "none";
+                    document.getElementById("StudentReportsViewEndDateRangeLabel").style.display = "none";
+                    document.getElementById("StudentReportsStartDate").style.display = "none";
+                    document.getElementById("StudentReportsEndDate").style.display = "none";
+                }
             };
 
             // this is to care care of the case of after a "save" is executed

@@ -39,8 +39,9 @@
             <td>
                 @*
                 @Html.DropDownListFor(m => Model.CurrentStudent.Salutation, Model.SalutationList, string.Empty, new { style = "width:100%" })
-                *@
                 @Html.DropDownList("StudentReports", Model.StudentReports, string.Empty)
+                *@
+                @Html.DropDownListFor(m => Model.SelectedStudentReport, Model.StudentReports, string.Empty)
             </td>
             <td style="text-align:center">
                 @Html.TextBox("StudentReportsStartDate", null, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "display: none; width:7em" })
@@ -61,20 +62,16 @@
 
 
     <script type="text/javascript">
-        $("#StudentReports").change(function () {
-            var selectedStudentReport = $("#StudentReports").val();
+        $("#SelectedStudentReport").change(function () {
+            $.fn.StudentReportsHandler();
 
-            @* $("#selectedReport").val(selectedStudentReport);*@
+            @*
+            var selectedStudentReport = $("#SelectedStudentReport").val();
 
-            //modify the href link
-            //var linkValue = '/Reports/Run/' + selectedStudentReport;
-            //$('#RunReportLink').attr('href', linkValue);
-
-
-            @*alert(selectedStudentReport);
+            @ *alert(selectedStudentReport);
         $("#StudentReportsDate1").style.display = "block";attr("disabled", false);
         var studentReportsBeginDate = document.getElementById("StudentReportsBeginDate");
-        var studentReportsEndDate = document.getElementById("StudentReportsEndDate");*@
+        var studentReportsEndDate = document.getElementById("StudentReportsEndDate");* @
             if (selectedStudentReport == '') 
             {
                 document.getElementById("runStudentReports").style.display = "none";
@@ -99,6 +96,7 @@
                 document.getElementById("StudentReportsStartDate").style.display = "none";
                 document.getElementById("StudentReportsEndDate").style.display = "none";
             }
+            *@
         });
 
         $('#runStudentReports').click(function (value) {
@@ -113,22 +111,6 @@
             //alert(url);
             //window.location.href = url;
             window.open(url, '_blank'); // <- This is what makes it open in a new window.
-
-            //$.ajax({
-            //    url: '@Url.Action("AddRow", "Verification")',//'@Url.Content("~/Verification/AddRow")',
-            //    type: 'GET',
-            //     contentType: 'application/json; charset=utf-8',
-            //    data: {
-            //        fullName: name,
-            //        title: t,
-            //        homeBranch: branch
-            //    },
-
-            //    success: function (result) {
-            //       //$('#ViewResult').html(result);
-            //    }
-            //});
-
             return false;
         });
     </script>

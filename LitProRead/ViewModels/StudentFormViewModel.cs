@@ -48,6 +48,7 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> StaffList { get; private set; }
         public List<SelectListItem> SourceList { get; private set; }
 
+        public string SelectedStudentReport { get; set; }
         public List<SelectListItem> StudentReports { get; set; }
         //public virtual ICollection<String> StudentReportsStatus { get; set; }
 
