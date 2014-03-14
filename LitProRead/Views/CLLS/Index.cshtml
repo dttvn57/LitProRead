@@ -1,0 +1,165 @@
+﻿@*
+@model LitProRead.ViewModels.ReportsViewModel
+*@
+
+@{
+    ViewBag.Title = "CLLS Report Page";
+
+            DateTime now = DateTime.Now;
+            DateTime date1 = DateTime.Now;
+            DateTime date2 = DateTime.Now;
+            if (now.Month > 6)
+            {
+                date1 = new DateTime(DateTime.Now.Year, 07, 01);
+                date2 = new DateTime(DateTime.Now.Year, 12, 31);
+            }
+            else 
+            {
+                date1 = new DateTime(DateTime.Now.Year, 01, 01);
+                date2 = new DateTime(DateTime.Now.Year, 06, 30);
+            }
+           <table width="75%" style="border:0 none; table-layout: fixed; border-collapse: separate">
+                <colgroup>
+                        <col style="width:55%;"/>
+                        <col style="width:5%;"/>
+                </colgroup>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Begin date:")
+                    </td>
+                    <td >
+                        @Html.TextBox("BeginDate", String.Format("{0:dd/MM/yyyy}", date1.ToShortDateString()),  new { @class = "datefield", style = "width:7em" })
+                        @*
+                        @Html.TextBox("BeginDate", "0:dd/MM/yyyy",  date1.ToShortDateString(), htmlAttributes: new { type = "date" })
+                        *@
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("End date:")
+                    </td>
+                    <td >
+                        @Html.TextBox("EndDate", String.Format("{0:dd/MM/yyyy}", date2.ToShortDateString()),  new { @class = "datefield", style = "width:7em" })
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Continuing Adult Learners from prior reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersFromPriorPeriod", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners who began instruction during this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersBegan", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Total Adult Learners who received instruction during  this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersReceived", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners who left during this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersLeft", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners remaining at the end of this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersRemaining", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Cumulative total:")
+                    </td>
+                    <td>
+                        @Html.TextBox("CumulativeTotal", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adults referred to other programs this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultsReferredToOtherPrograms", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Adult Learners awaiting instruction or rematch at the end of this reporting period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersAwaitingInstruction", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Total number of Adult Learner instruction hours for this filing period:")
+                    </td>
+                    <td>
+                        @Html.TextBox("AdultLearnersInstructionHours", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right">
+                        @Html.Label("Number of books given to Adult Learners:")
+                    </td>
+                    <td>
+                        @Html.TextBox("BooksGiven", null, htmlAttributes: new { style="width:2em"} )
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center" colspan="2">
+                        <button type="button" id="runCLLSReport">Run</button>
+                        @*
+                        <input type="submit" value="Run" />
+                        *@
+                    </td>
+                </tr>
+           </table>
+    
+}
+
+@section scripts
+{
+    <!-- CLLS -->
+    <script type="text/javascript">
+        $('#runCLLSReport').click(function (value) {
+
+            var url = '@Url.Action("CLLS", "Reports", new { paramsVal = "_paramsVal_" })';
+            url = url.replace("_paramsVal_", "reportType=" + "PDF" + '!' +
+                                             "beginDate=" + $("#BeginDate").val() + '!' +
+                                             "endDate=" + $("#EndDate").val() + '!' +
+                                             "AdultLearnersFromPriorPeriod=" + $("#AdultLearnersFromPriorPeriod").val() + '!' +
+                                             "AdultLearnersBegan=" + $("#AdultLearnersBegan").val() + '!' +
+                                             "AdultLearnersReceived=" + $("#AdultLearnersReceived").val() + '!' +
+                                             "AdultLearnersLeft=" + $("#AdultLearnersLeft").val() + '!' +
+                                             "AdultLearnersRemaining=" + $("#AdultLearnersRemaining").val() + '!' +
+                                             "CumulativeTotal=" + $("#CumulativeTotal").val() + '!' +
+                                             "AdultsReferredToOtherPrograms=" + $("#AdultsReferredToOtherPrograms").val() + '!' +
+                                             "AdultLearnersAwaitingInstruction=" + $("#AdultLearnersAwaitingInstruction").val() + '!' +
+                                             "AdultLearnersInstructionHours=" + $("#AdultLearnersInstructionHours").val() + '!' +
+                                             "BooksGiven=" + $("#BooksGiven").val());
+            //alert(url);
+
+            window.open(url, '_blank'); // <- This is what makes it open in a new window.
+            return false;
+        });
+    </script>
+}

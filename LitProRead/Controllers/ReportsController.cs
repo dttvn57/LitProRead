@@ -1,9 +1,11 @@
 ﻿using LitProRead.Models;
 using LitProRead.Reports.DataSets;
 using LitProRead.Reports.DataSets.StudentsMatchHistorybyDateRangeDataSetTableAdapters;
+using LitProRead.ViewModels;
 using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -35,24 +37,122 @@ namespace LitProRead.Controllers
         //
         // GET: /Reports/
         // CLLS
-        public ActionResult CLLS(string reportType = "PDF", string beginDate = "", string endDate = "",
-                                 string AdultLearnersFromPriorPeriod = "",
-                                 string AdultLearnersBegan = "",
-                                 string AdultLearnersReceived = "",
-                                 string AdultLearnersLeft = "",
-                                 string AdultLearnersRemaining = "",
-                                 string CumulativeTotal = "",
-                                 string AdultsReferredToOtherPrograms = "",
-                                 string AdultLearnersAwaitingInstruction = "",
-                                 string AdultLearnersInstructionHours = "",
-                                 string BooksGiven = "")
+        public ActionResult CLLS(string paramsVal)
         {
+            string reportType = "PDF"; 
+            string beginDate = ""; 
+            string endDate = "";
+            string AdultLearnersFromPriorPeriod = "";
+            string AdultLearnersBegan = "";
+            string AdultLearnersReceived = "";
+            string AdultLearnersLeft = "";
+            string AdultLearnersRemaining = "";
+            string CumulativeTotal = "";
+            string AdultsReferredToOtherPrograms = "";
+            string AdultLearnersAwaitingInstruction = "";
+            string AdultLearnersInstructionHours = "";
+            string BooksGiven = "";
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd
+                if (str.Count() > 1)        // not all reports have a start date
+                {
+                    string[] date = str[1].Split('=');
+                    beginDate = date[1];
+                }
+
+                // 3rd
+                if (str.Count() > 2)        // not all reports have an end date
+                {
+                    string[] date = str[2].Split('=');
+                    endDate = date[1];
+                }
+
+                // 4th
+                if (str.Count() > 3)        
+                {
+                    s1 = str[3].Split('=');
+                    AdultLearnersFromPriorPeriod = s1[1];
+                }
+
+                // 5th
+                if (str.Count() > 4)
+                {
+                    s1 = str[4].Split('=');
+                    AdultLearnersBegan = s1[1];
+                }
+
+                // 6th
+                if (str.Count() > 5)
+                {
+                    s1 = str[5].Split('=');
+                    AdultLearnersReceived = s1[1];
+                }
+
+                // 7th
+                if (str.Count() > 6)
+                {
+                    s1 = str[6].Split('=');
+                    AdultLearnersLeft = s1[1];
+                }
+
+                // 8th
+                if (str.Count() > 7)
+                {
+                    s1 = str[7].Split('=');
+                    AdultLearnersRemaining = s1[1];
+                }
+
+                // 9th
+                if (str.Count() > 8)
+                {
+                    s1 = str[8].Split('=');
+                    CumulativeTotal = s1[1];
+                }
+
+                // 10th
+                if (str.Count() > 9)
+                {
+                    s1 = str[9].Split('=');
+                    AdultsReferredToOtherPrograms = s1[1];
+                }
+
+                // 11th
+                if (str.Count() > 10)
+                {
+                    s1 = str[10].Split('=');
+                    AdultLearnersAwaitingInstruction = s1[1];
+                }
+
+                // 12th
+                if (str.Count() > 11)
+                {
+                    s1 = str[11].Split('=');
+                    AdultLearnersInstructionHours = s1[1];
+                }
+
+                // 13th
+                if (str.Count() > 12)
+                {
+                    s1 = str[12].Split('=');
+                    BooksGiven = s1[1];
+                }
+            }
+
             using (LitProReadEntities db = new LitProReadEntities())
             {
                 DateTime date1 = DefaultBeginDate();
                 if (beginDate != "")
                 {
-                    date1 = DateTime.Parse(beginDate);
+                    date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
                 }
                 else
                 {
@@ -65,7 +165,7 @@ namespace LitProRead.Controllers
                 DateTime date2 = DefaultEndDate();
                 if (endDate != "")
                 {
-                    date2 = DateTime.Parse(endDate);
+                    date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
                 }
                 else
                 {
@@ -210,7 +310,66 @@ namespace LitProRead.Controllers
             }
         }
 
-        // Students
+        public ActionResult Students()
+        {
+            // students
+            //string[] names = ConfigurationManager.AppSettings.AllKeys
+            //                                                .Where(k => k.StartsWith("StudentReport"))
+            //                                                .Select(k => ConfigurationManager.AppSettings[k])
+            //                                                .ToArray();
+
+            var vm = new ReportsViewModel         
+            {
+                StudentsReport = ReportsViewModel.GetStudentsReportList() //names
+            };
+
+            //vm.StudentReports = new ICollection<string>();
+            //foreach (var name in names)
+            //{
+            //    vm.StudentReports.Add(name);
+            //}
+
+            //            OleDbConnection connection = new OleDbConnection(
+            //               "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=Inventar.accdb");
+            //            DataSet DS = new DataSet();
+            //            connection.Open();
+            //            string query =
+            //                @"SELECT Status.*
+            //                    FROM Status";
+            //            OleDbDataAdapter DBAdapter = new OleDbDataAdapter();
+            //            DBAdapter.SelectCommand = new OleDbCommand(query, connection);
+            //            DBAdapter.Fill(DS);
+
+            // Assumes that connection is a valid SqlConnection object.
+            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=lib01acldb01.aclibrary.org;Initial Catalog=LitProRead 2-26-2014;User ID=Ulibproread;Password=@libproread;MultipleActiveResultSets=True;Application Name=EntityFramework");
+            string queryString = "SELECT * FROM dbo.Status";
+            System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(queryString, connection);
+            DataSet status = new DataSet();
+            adapter.Fill(status);//, "Status");
+            //List<SelectListItem> list = new List<SelectListItem>();
+
+            List<string> statusList = new List<string>();
+            foreach (DataRow row in status.Tables[0].Rows)
+            {
+                statusList.Add((string)row["status"]);
+            }
+            //vm.StudentsReportStatus = statusList;
+
+            /* 2/25/14 - trung
+             * What is this block code for: it doesn't look like the CLLS needs it
+             * 
+            StatusDataSet statusDs = new StatusDataSet();
+            StatusTableAdapter ad = new StatusTableAdapter();
+            DataTable dt = ad.GetData();
+                //using (LitProReadEntities db = new LitProReadEntities())
+            //{
+            //    StudentReportsStatus = from s in db.GetTable<Status>();
+            //}
+            */
+
+            return View(vm);
+        }
+
         public ActionResult Run(string paramsVal)
         {
             string reportType = "";
@@ -274,10 +433,10 @@ namespace LitProRead.Controllers
             {
                 DateTime date1 = new DateTime(1900, 01, 01);
                 if (beginDate != "")
-                    date1 = DateTime.Parse(beginDate);
+                    date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
                 DateTime date2 = new DateTime(2025, 12, 31);
                 if (endDate != "")
-                    date2 = DateTime.Parse(endDate);
+                    date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
                 var wait = from student in db.Students
                            where statusType != "" ? (student.FirstActive >= date1 && student.FirstActive <= date2) && (student.Status.Equals(statusType)) : (student.FirstActive >= date1 && student.FirstActive <= date2)
                            select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, student.FirstActive, student.Status };
@@ -390,7 +549,7 @@ namespace LitProRead.Controllers
             DateTime date1;
             if (beginDate != "")
             {
-                date1 = DateTime.ParseExact(beginDate, @"d/M/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+                date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
             }
             else
             {
@@ -400,7 +559,7 @@ namespace LitProRead.Controllers
             DateTime date2 = DateTime.Now;
             if (endDate != "")
             {
-                date2 = DateTime.ParseExact(endDate, @"d/M/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+                date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
             }
 
             using (LitProReadEntities db = new LitProReadEntities())

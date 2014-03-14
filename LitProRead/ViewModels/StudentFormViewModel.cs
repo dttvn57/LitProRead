@@ -596,7 +596,7 @@ namespace LitProRead.ViewModels
         {
             // students
             string[] names = ConfigurationManager.AppSettings.AllKeys
-                                                            .Where(k => k.StartsWith("StudentReport"))
+                                                            .Where(k => k.StartsWith("OneStudentReport"))
                                                             .Select(k => ConfigurationManager.AppSettings[k])
                                                             .ToArray();
 
@@ -634,7 +634,7 @@ namespace LitProRead.ViewModels
         {
             try
             {
-                DateTime date = DateTime.Parse(dateStr);
+                DateTime date = DateTime.ParseExact(dateStr, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(dateStr);
                 return date;
                 //if (toDate != null)
                 //{
@@ -654,7 +654,7 @@ namespace LitProRead.ViewModels
 
         public void SetCurrentActive(string active)
         {
-            if (CurrentStudent != null && CurrentStudent.Active != null)
+            if (CurrentStudent != null)// && CurrentStudent.Active != null)
             {
                 if (active.Equals("true"))
                     CurrentStudent.Active = true;

@@ -153,6 +153,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CLLSController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
@@ -1068,6 +1069,8 @@
     <Content Include="Views\Shared\_Student-Comments-View.cshtml" />
     <Content Include="Views\Shared\_Student-FollowUp-View.cshtml" />
     <Content Include="Views\Shared\_Student-Reports-View.cshtml" />
+    <Content Include="Views\CLLS\Index.cshtml" />
+    <Content Include="Views\Reports\Students.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

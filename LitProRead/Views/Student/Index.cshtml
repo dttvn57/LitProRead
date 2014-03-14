@@ -740,6 +740,8 @@ S T U D E N T S
 
                     var fmt = "";   //$.fn.getFormattedDate(data.CurrentStudent.DOB);
                     $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#StudentAge').val(data);
+
                     $('#CurrentStudent_Country').val(data);
                     $('#CurrentStudent_NativeLanguage').val(data);
                     $('#CurrentStudent_EducationLevel').val(data);
@@ -870,6 +872,7 @@ S T U D E N T S
 
                     var fmt = $.fn.getFormattedDate(data.CurrentStudent.DOB);
                     $('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', fmt);
+                    $('#StudentAge').val(data.StudentAge);
                     $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
                     $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
                     $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);

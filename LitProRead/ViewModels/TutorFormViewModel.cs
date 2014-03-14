@@ -605,7 +605,7 @@ namespace LitProRead.ViewModels
         {
             try
             {
-                DateTime date = DateTime.Parse(dateStr);
+                DateTime date = DateTime.ParseExact(dateStr, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(dateStr);
                 return date;
                 //if (toDate != null)
                 //{
