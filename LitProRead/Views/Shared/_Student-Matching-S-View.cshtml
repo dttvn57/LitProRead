@@ -113,8 +113,11 @@
             title: 'Matched Tutors',
             paging: true, //Enable paging
             sorting: true, //Enable sorting
-            defaultSorting: 'DateCreated DESC',
+            defaultSorting: 'DateCreated ASC',
             //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
+            messages: {
+                addNewRecord: '+ New Matched Tutor'
+            },
             actions: {
                 listAction: '@Url.Action("MatchSList", "Student")',
                 deleteAction: '@Url.Action("DeleteMatchS", "Student")',
@@ -178,6 +181,7 @@
                     title: '',
                     //showCloseButton: true,
                     //openChildAsAccordion: true, 
+                    paging: true, //Enable paging
                     width: '2%',
                     //paging: true, 
                     sorting: false,
@@ -187,7 +191,9 @@
                     listClass: 'child-opener-image-column',
                     display: function (studentData) {
                         //Create an image that will be used to open child table
-                        var $img = $('<img class="child-opener-image" src="/Content/images/Misc/note.png" title="Open pair activities" />');
+                       
+                        //var $img = $('<img class="child-opener-image" src="/LibProRead/Images/note.png" title="Open pair activities" />');
+                        var $img = $('<img src="../Images/note.png" title="Open pair activities" />');
                         //Open child table when user clicks the image
                         $img.click(function () {
                             $('#Student-Matching-S').jtable('openChildTable',
@@ -195,6 +201,9 @@
                                     {
                                         title: studentData.record.TutorLName + " - Pair Activities",
                                         //showCloseButton: true,
+                                        messages: {
+                                            addNewRecord: '+ New Activity'
+                                        },
                                         actions: {
                                             listAction: '@Url.Action("MatchSPairsList", "Student")',
 

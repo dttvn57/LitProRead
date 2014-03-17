@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Objects.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -340,19 +341,28 @@ namespace LitProRead.Controllers
             //            DBAdapter.SelectCommand = new OleDbCommand(query, connection);
             //            DBAdapter.Fill(DS);
 
-            // Assumes that connection is a valid SqlConnection object.
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection("Data Source=lib01acldb01.aclibrary.org;Initial Catalog=LitProRead 2-26-2014;User ID=Ulibproread;Password=@libproread;MultipleActiveResultSets=True;Application Name=EntityFramework");
-            string queryString = "SELECT * FROM dbo.Status";
-            System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(queryString, connection);
-            DataSet status = new DataSet();
-            adapter.Fill(status);//, "Status");
-            //List<SelectListItem> list = new List<SelectListItem>();
+            ////// Assumes that connection is a valid SqlConnection object.
+            ////string connectionString = ConfigurationManager.ConnectionStrings["LitProReadEntities"].ConnectionString;
 
-            List<string> statusList = new List<string>();
-            foreach (DataRow row in status.Tables[0].Rows)
-            {
-                statusList.Add((string)row["status"]);
-            }
+            ////// parse out the "data source" sub string
+            ////int index = connectionString.IndexOf("data source");
+            ////connectionString = connectionString.Substring(index, connectionString.Length - index);
+            ////System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(connectionString);     
+            
+            //////"Data Source=lib01acldb01.aclibrary.org;Initial Catalog=LitProRead 2-26-2014;User ID=Ulibproread;Password=@libproread;MultipleActiveResultSets=True;Application Name=EntityFramework");
+            //////"data source=lib01acldb01.aclibrary.org;initial catalog=LitProRead 2-26-2014;User ID=Ulibproread;Password=@libproread; MultipleActiveResultSets=True;App=EntityFramework\""
+
+            ////string queryString = "SELECT * FROM dbo.Status";
+            ////System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter(queryString, connection);
+            ////DataSet status = new DataSet();
+            ////adapter.Fill(status);//, "Status");
+            //////List<SelectListItem> list = new List<SelectListItem>();
+
+            ////List<string> statusList = new List<string>();
+            ////foreach (DataRow row in status.Tables[0].Rows)
+            ////{
+            ////    statusList.Add((string)row["status"]);
+            ////}
             //vm.StudentsReportStatus = statusList;
 
             /* 2/25/14 - trung
@@ -413,6 +423,22 @@ namespace LitProRead.Controllers
                 }
             }
 
+            DateTime date1;
+            if (beginDate != "")
+            {
+                date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+            }
+            else
+            {
+                date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+
+            DateTime date2 = DateTime.Now;
+            if (endDate != "")
+            {
+                date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+            }
+
             //if (reportName == "StudentsMatchHistorybyDateRange")
             //    return StudentsMatchHistorybyDateRange(reportType, beginDate, endDate);
             //else
@@ -421,6 +447,9 @@ namespace LitProRead.Controllers
             else
             if (reportName == "StudentWaitTime")
                 return StudentWaitTime(reportType, beginDate, endDate, statusType);
+            else
+                if (reportName == "StudentAccomplishmentsByActiveDateGreaterThan1Year")
+                return StudentAccomplishmentsByActiveDateGreaterThan1Year(reportType, date1, date2, statusType);
             else
                 return View();
         }
@@ -467,6 +496,85 @@ namespace LitProRead.Controllers
 
                 return RunReport(reportType, "StudentStatusHistory.rdlc", "StudentStatusHistoryDataSet", hist, null, 11, 8.5, 0.25, 0.25);
             }
+        }
+
+        //SELECT Students.ID, [FirstName] & " " & [LastName] AS MyName, Students.FirstName, Students.LastName, Students.Status, Students.Active, Students.ActiveDate, 
+        //      DateDiff("d",[ActiveDate],Now()) AS DaysofSvc, 
+        //      YMD([ActiveDate],Now()) AS MyDate, 
+        //      StudentAccomplishments.AccomplishDate, StudentAccomplishments.Accomplishment, StudentAccomplishments.Comment
+        //FROM Students INNER JOIN StudentAccomplishments ON Students.ID = StudentAccomplishments.ID
+        //WHERE (((Students.Active)=True) 
+        //  AND ((Students.ActiveDate) Between [Forms]![frmDateSelection]![BeginDate] And [Forms]![frmDateSelection]![EndDate]) 
+        //  AND ((DateDiff("d",[ActiveDate],Now()))>365) AND ((StudentAccomplishments.AccomplishDate) Is Not Null));
+        //
+        public ActionResult StudentAccomplishmentsByActiveDateGreaterThan1Year(string reportType, DateTime beginDate, DateTime endDate, string statusType)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var datasource = from student in db.Students
+                           join studentAccomplishments in db.StudentAccomplishments on student.ID equals studentAccomplishments.ID
+                           where student.Active == true && 
+                                 student.ActiveDate >= beginDate && 
+                                 student.ActiveDate <= endDate &&
+                                 System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now) > 365 &&
+                                 studentAccomplishments.AccomplishDate != null
+                           //let datespan = student.ActiveDate != null ? ConvertToTimeSpanString(student.ActiveDate) : "0 days"
+                           select new {
+                               StudentID = student.ID,
+                               StudentName = student.FirstName + " " + student.LastName,
+                               StudentLastName = student.LastName,
+                               StudentFirstName = student.FirstName,
+                               StudentStatus = student.Status,
+                               StudentActive = student.Active,
+                               StudentActiveDate = student.ActiveDate,
+                               DaysofSvc = SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now),
+                               //YTM = ConvertToTimeSpanString(student.ActiveDate),
+                               AccomplishDate = studentAccomplishments.AccomplishDate,
+                               Accomplishment = studentAccomplishments.Accomplishment,
+                               Comment = studentAccomplishments.Comment
+                           };
+
+                //DataSet modDatasource = new DataSet();
+                //foreach (var item in datasource)
+                //{
+                //    string datespan = item.StudentActivateDate != null ? ConvertToTimeSpanString(item.StudentActivateDate) : "0 days";
+                //    modDatasource.
+                //}
+
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", beginDate.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", endDate.ToShortDateString()));
+
+                return RunReport(reportType, "StudentStatusHistory.rdlc", "StudentStatusHistoryDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        private string ConvertToTimeSpanString(DateTime? dt)
+        {
+            if (dt == null)
+                return "0 days";
+
+            DateTime date = (DateTime)dt;
+            DateTime oldDate;
+
+            DateTime.TryParse(date.ToShortDateString(), out oldDate);
+            DateTime currentDate = DateTime.Now;
+
+            TimeSpan difference = currentDate.Subtract(oldDate);
+
+            // This is to convert the timespan to datetime object
+            DateTime DateTimeDifferene = DateTime.MinValue + difference;
+
+            // Min value is 01/01/0001
+            // subtract our addition or 1 on all components to get the 
+            //actual date.
+
+            int InYears = DateTimeDifferene.Year - 1;
+            int InMonths = DateTimeDifferene.Month - 1;
+            int InDays = DateTimeDifferene.Day - 1;
+
+
+            return InYears.ToString() + " Years " + InMonths.ToString() + " Months " + InDays.ToString() + " Days";
         }
 
         //SELECT tblAuditTrail.*, [FirstName] & " " & [LastName] AS MyName

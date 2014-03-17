@@ -382,7 +382,14 @@ namespace LitProRead.Models
                     });
                 }
             }
-            return list;
+
+            if (pageSize > 0)
+            {
+                IEnumerable<PairHoursViewModel> retList = list.AsEnumerable();
+                return retList.Skip(pageNum).Take(pageSize).ToList();
+            }
+            else
+                return list;
         }
 
 
@@ -415,22 +422,26 @@ namespace LitProRead.Models
             switch (activityId)
             {
                 case 1:
-                    return "Travel Time";
+                    return "Prep Time";
                 case 2:
+                    return "Travel Time";
+                case 3:
                     return "Tutoring";
                 case 0:
                 default:
-                    return "Prep Time";
+                    return "---";
             }
         }
         private int GetActivityId(string activity)
         {
+            if (activity == null || activity == "---")
+                    return 0;
             if (activity.Equals("Prep Time", StringComparison.OrdinalIgnoreCase))
-                return 0;
-            else if (activity.Equals("Travel Time", StringComparison.OrdinalIgnoreCase))
                 return 1;
-            else if (activity.Equals("Tutoring", StringComparison.OrdinalIgnoreCase))
+            else if (activity.Equals("Travel Time", StringComparison.OrdinalIgnoreCase))
                 return 2;
+            else if (activity.Equals("Tutoring", StringComparison.OrdinalIgnoreCase))
+                return 3;
             return 0;
         }
 

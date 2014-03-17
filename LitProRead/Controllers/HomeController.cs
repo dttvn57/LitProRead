@@ -113,8 +113,12 @@ namespace LitProRead.Controllers
                 try
                 {
                     var activity = db.Database.SqlQuery<string>("SELECT Activity FROM dbo.Activity").ToList();
+                    List<string> modList = new List<string>();
+                    modList.Add("---");
+                    modList.AddRange(activity);
+
                     int val = 0;
-                    var opts = from c in activity
+                    var opts = from c in modList
                                select new { DisplayText = c, Value = val++ };
                     return Json(new { Result = "OK", Options = opts });
                 }

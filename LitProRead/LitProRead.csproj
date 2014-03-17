@@ -655,6 +655,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StatusDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSets\StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSets\StudentDataSet.cs">
       <DependentUpon>StudentDataSet.xsd</DependentUpon>
     </Compile>
@@ -673,9 +678,9 @@
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\DataSets\StudentStatusHistoryDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Reports\DataSets\StudentWaitTimeDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -822,6 +827,17 @@
     <Content Include="Reports\DataSets\StatusDataSet.xss">
       <DependentUpon>StatusDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsc">
+      <DependentUpon>StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xss">
+      <DependentUpon>StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSets\StudentDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -834,9 +850,6 @@
     <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentsMatchHistorybyDateRange.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
-    <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
-      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
-    </Content>
     <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsc">
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
     </Content>
@@ -848,17 +861,20 @@
     <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xss">
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
     </Content>
-    <None Include="Reports\DataSets\StudentStatusHistoryDataSet.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>StudentStatusHistoryDataSet.Designer.cs</LastGenOutput>
-    </None>
+    <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
+      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
+    </Content>
     <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xss">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Content>
     <Content Include="Reports\DataSets\StudentWaitTimeDataSet.xsc">
       <DependentUpon>StudentWaitTimeDataSet.xsd</DependentUpon>
     </Content>
+    <None Include="Reports\DataSets\StudentStatusHistoryDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentStatusHistoryDataSet.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Reports\DataSets\StudentWaitTimeDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1014,7 +1030,6 @@
     <Content Include="Images\orderedList9.png" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Reports.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config">
