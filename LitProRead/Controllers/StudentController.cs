@@ -156,11 +156,10 @@ namespace LitProRead.Controllers
             try
             {
                 Thread.Sleep(200);
-                //SID = 39;
-                //TID = 141;
-                IEnumerable<PairHoursViewModel> query = db.GetPairHoursForStudentAndTutor(SID, TID, jtPageSize, jtStartIndex, jtSorting);
 
-                var count = query.Count();
+                int count = 0;
+                IEnumerable<PairHoursViewModel> query = db.GetPairHoursForStudentAndTutor(SID, TID, jtPageSize, jtStartIndex, jtSorting, ref count);
+
                 //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
                 return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
             }

@@ -320,7 +320,7 @@ namespace LitProRead.Models
         FROM Students RIGHT JOIN ((Tutors RIGHT JOIN Pairs ON Tutors.ID = Pairs.TID) RIGHT JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
         WHERE (((PairHours.DateMet) Between [Forms]![frmDateSelectionPairStatus]![BeginDate] And [Forms]![frmDateSelectionPairStatus]![EndDate]));
          */
-        public List<PairHoursViewModel> GetPairHoursForStudentAndTutor(int studentID, int tutorID, int pageSize, int pageNum, string sort = null)
+        public List<PairHoursViewModel> GetPairHoursForStudentAndTutor(int studentID, int tutorID, int pageSize, int pageNum, string sort, ref int matchCount)
         {
             //var stuStatus = Students.Find(studentID).Status;
             //var result = from t in ints1
@@ -356,6 +356,9 @@ namespace LitProRead.Models
                 //    p.HoursMet,
                 //    p.Activity
                 //};
+
+            matchCount = query.Count();
+
 
             if (string.IsNullOrEmpty(sort) || sort.Equals("DateMet ASC"))
             {
