@@ -116,7 +116,7 @@
             defaultSorting: 'DateCreated ASC',
             //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
             messages: {
-                addNewRecord: '+ New Matched Tutor'
+                addNewRecord: 'Add New Matched Tutor'
             },
             actions: {
                 listAction: '@Url.Action("MatchSList", "Student")',
@@ -181,7 +181,6 @@
                     title: '',
                     //showCloseButton: true,
                     //openChildAsAccordion: true, 
-                    paging: true, //Enable paging
                     width: '2%',
                     //paging: true, 
                     sorting: false,
@@ -202,8 +201,9 @@
                                         title: studentData.record.TutorLName + " - Pair Activities",
                                         //showCloseButton: true,
                                         messages: {
-                                            addNewRecord: '+ New Activity'
+                                            addNewRecord: 'Add New Activity'
                                         },
+                                        paging: true, //Enable paging
                                         actions: {
                                             listAction: '@Url.Action("MatchSPairsList", "Student")',
 
@@ -230,6 +230,10 @@
                                                 type: 'hidden',
                                                 defaultValue: studentData.TID
                                             },
+                                            ActivityID: {
+                                                title: 'Activity',
+                                                options: '@Url.Action("GetActivity", "Home")',
+                                            },
                                             DateMet: {
                                                 title: 'Date Met',
                                                 //width: '10%',
@@ -243,10 +247,6 @@
                                                 title: 'Hours Met'
                                                 //width: '5%'
                                             },
-                                            ActivityID: {
-                                                title: 'Activity',
-                                                options: '@Url.Action("GetActivity", "Home")',
-                                            }
                                         },
                                         formCreated: function (event, data) {
                                             if (data.formType == "create") {
