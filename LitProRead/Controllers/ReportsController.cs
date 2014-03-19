@@ -1,4 +1,5 @@
-﻿using LitProRead.Models;
+﻿using LitProRead.BusinessObjects;
+using LitProRead.Models;
 using LitProRead.Reports.DataSets;
 using LitProRead.Reports.DataSets.StudentsMatchHistorybyDateRangeDataSetTableAdapters;
 using LitProRead.ViewModels;
@@ -512,40 +513,65 @@ namespace LitProRead.Controllers
             using (LitProReadEntities db = new LitProReadEntities())
             {
                 var datasource = from student in db.Students
-                           join studentAccomplishments in db.StudentAccomplishments on student.ID equals studentAccomplishments.ID
-                           where student.Active == true && 
-                                 student.ActiveDate >= beginDate && 
-                                 student.ActiveDate <= endDate &&
-                                 System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now) > 365 &&
-                                 studentAccomplishments.AccomplishDate != null
-                           //let datespan = student.ActiveDate != null ? ConvertToTimeSpanString(student.ActiveDate) : "0 days"
-                           select new {
-                               StudentID = student.ID,
-                               StudentName = student.FirstName + " " + student.LastName,
-                               StudentLastName = student.LastName,
-                               StudentFirstName = student.FirstName,
-                               StudentStatus = student.Status,
-                               StudentActive = student.Active,
-                               StudentActiveDate = student.ActiveDate,
-                               DaysofSvc = SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now),
-                               //YTM = ConvertToTimeSpanString(student.ActiveDate),
-                               AccomplishDate = studentAccomplishments.AccomplishDate,
-                               Accomplishment = studentAccomplishments.Accomplishment,
-                               Comment = studentAccomplishments.Comment
-                           };
+                                 join studentAccomplishments in db.StudentAccomplishments on student.ID equals studentAccomplishments.ID
+                                 where student.Active == true &&
+                                       student.ActiveDate >= beginDate &&
+                                       student.ActiveDate <= endDate &&
+                                       System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now) > 365 &&
+                                       studentAccomplishments.AccomplishDate != null
+                                 //let datespan = student.ActiveDate != null ? ConvertToTimeSpanString(student.ActiveDate) : "0 days"
+                                 //group new { student, studentAccomplishments } by new { student.ID } into gp
+                                 //let s = gp.FirstOrDefault().student
+                                 //let sa = gp.FirstOrDefault().studentAccomplishments
+                                 select new
+                                 {
+                                     StudentID = student.ID,
+                                     StudentName = student.FirstName + " " + student.LastName,
+                                     StudentLastName = student.LastName,
+                                     StudentFirstName = student.FirstName,
+                                     StudentStatus = student.Status,
+                                     StudentActive = student.Active,
+                                     StudentActiveDate = student.ActiveDate,
+                                     DaysofSvc = SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now),
+                                     AccomplishDate = studentAccomplishments.AccomplishDate,
+                                     Accomplishment = studentAccomplishments.Accomplishment,
+                                     Comment = studentAccomplishments.Comment
+                                 };
 
-                //DataSet modDatasource = new DataSet();
-                //foreach (var item in datasource)
-                //{
-                //    string datespan = item.StudentActivateDate != null ? ConvertToTimeSpanString(item.StudentActivateDate) : "0 days";
-                //    modDatasource.
-                //}
+                List<StudentAccomplishmentBO> list = new List<StudentAccomplishmentBO>();
+                foreach (var item in datasource)
+                {
+                    string datespan = item.StudentActiveDate != null ? ConvertToTimeSpanString(item.StudentActiveDate) : "0 days";
+                    list.Add(new StudentAccomplishmentBO
+                            {
+                                StudentID = item.StudentID,
+                                StudentName = item.StudentName,
+                                StudentLastName = item.StudentLastName,
+                                StudentFirstName = item.StudentFirstName,
+                                StudentStatus = item.StudentStatus,
+                                StudentActive = item.StudentActive,
+                                StudentActiveDate = item.StudentActiveDate,
+                                DaysofSvc = item.DaysofSvc,
+                                YMD = datespan,
+                                AccomplishDate = item.AccomplishDate,
+                                Accomplishment = item.Accomplishment,
+                                Comment = item.Comment
+                            });
+                }
 
+                // get # of accomplishments that > 1
+                int percentageWithMoreThan1Accomplishment = 0;
+                if (list.Count() > 0)
+                {
+                    var grp = list.GroupBy(item => item.StudentID);
+                    percentageWithMoreThan1Accomplishment = grp.Count(item => item.Count() > 1);   
+                }
                 List<ReportParameter> paramList = new List<ReportParameter>();
                 paramList.Add(new ReportParameter("BeginDate", beginDate.ToShortDateString()));
                 paramList.Add(new ReportParameter("EndDate", endDate.ToShortDateString()));
+                paramList.Add(new ReportParameter("PercentageWithMoreThan1Accomplishment", percentageWithMoreThan1Accomplishment.ToString()));
 
-                return RunReport(reportType, "StudentStatusHistory.rdlc", "StudentStatusHistoryDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+                return RunReport(reportType, "StudentAccomplishmentsByActiveDateGreaterThan1Year.rdlc", "StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet", list, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
 

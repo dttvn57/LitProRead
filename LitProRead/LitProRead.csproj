@@ -153,6 +153,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BusinessObjects\StudentAccomplishmentBO.cs" />
     <Compile Include="Controllers\CLLSController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
@@ -848,6 +849,7 @@
     </Content>
     <EmbeddedResource Include="Reports\rdlc\AuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentAccomplishmentsByActiveDateGreaterThan1Year.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentsMatchHistorybyDateRange.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
     <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsc">

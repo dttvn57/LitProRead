@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet" targetNamespace="http://tempuri.org/StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd" xmlns:mstns="http://tempuri.org/StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd" xmlns="http://tempuri.org/StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet" msprop:Generator_UserDSName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTable" msprop:Generator_TableClassName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableDataTable" msprop:Generator_TableVarName="tableStudentAccomplishmentsByActiveDateGreaterThan1YearDataTable" msprop:Generator_TablePropName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTable" msprop:Generator_RowDeletingName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableRowDeleting" msprop:Generator_RowChangingName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableRowChanging" msprop:Generator_RowEvHandlerName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableRowDeleted" msprop:Generator_UserTableName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTable" msprop:Generator_RowChangedName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableRowChanged" msprop:Generator_RowEvArgName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableRowChangeEvent" msprop:Generator_RowClassName="StudentAccomplishmentsByActiveDateGreaterThan1YearDataTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="StudentID" msprop:Generator_ColumnVarNameInTable="columnStudentID" msprop:Generator_ColumnPropNameInRow="StudentID" msprop:Generator_ColumnPropNameInTable="StudentIDColumn" msprop:Generator_UserColumnName="StudentID" type="xs:int" minOccurs="0" />
+              <xs:element name="StudentName" msprop:Generator_ColumnVarNameInTable="columnStudentName" msprop:Generator_ColumnPropNameInRow="StudentName" msprop:Generator_ColumnPropNameInTable="StudentNameColumn" msprop:Generator_UserColumnName="StudentName" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentLastName" msprop:Generator_ColumnVarNameInTable="columnStudentLastName" msprop:Generator_ColumnPropNameInRow="StudentLastName" msprop:Generator_ColumnPropNameInTable="StudentLastNameColumn" msprop:Generator_UserColumnName="StudentLastName" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentFirstName" msprop:Generator_ColumnVarNameInTable="columnStudentFirstName" msprop:Generator_ColumnPropNameInRow="StudentFirstName" msprop:Generator_ColumnPropNameInTable="StudentFirstNameColumn" msprop:Generator_UserColumnName="StudentFirstName" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentStatus" msprop:Generator_ColumnVarNameInTable="columnStudentStatus" msprop:Generator_ColumnPropNameInRow="StudentStatus" msprop:Generator_ColumnPropNameInTable="StudentStatusColumn" msprop:Generator_UserColumnName="StudentStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentActive" msprop:Generator_ColumnVarNameInTable="columnStudentActive" msprop:Generator_ColumnPropNameInRow="StudentActive" msprop:Generator_ColumnPropNameInTable="StudentActiveColumn" msprop:Generator_UserColumnName="StudentActive" type="xs:boolean" minOccurs="0" />
+              <xs:element name="StudentActiveDate" msprop:Generator_ColumnVarNameInTable="columnStudentActiveDate" msprop:Generator_ColumnPropNameInRow="StudentActiveDate" msprop:Generator_ColumnPropNameInTable="StudentActiveDateColumn" msprop:Generator_UserColumnName="StudentActiveDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DaysofSvc" msprop:Generator_ColumnVarNameInTable="columnDaysofSvc" msprop:Generator_ColumnPropNameInRow="DaysofSvc" msprop:Generator_ColumnPropNameInTable="DaysofSvcColumn" msprop:Generator_UserColumnName="DaysofSvc" type="xs:int" minOccurs="0" />
+              <xs:element name="AccomplishDate" msprop:Generator_ColumnVarNameInTable="columnAccomplishDate" msprop:Generator_ColumnPropNameInRow="AccomplishDate" msprop:Generator_ColumnPropNameInTable="AccomplishDateColumn" msprop:Generator_UserColumnName="AccomplishDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Accomplishment" msprop:Generator_ColumnVarNameInTable="columnAccomplishment" msprop:Generator_ColumnPropNameInRow="Accomplishment" msprop:Generator_ColumnPropNameInTable="AccomplishmentColumn" msprop:Generator_UserColumnName="Accomplishment" type="xs:string" minOccurs="0" />
+              <xs:element name="Comment" msprop:Generator_ColumnVarNameInTable="columnComment" msprop:Generator_ColumnPropNameInRow="Comment" msprop:Generator_ColumnPropNameInTable="CommentColumn" msprop:Generator_UserColumnName="Comment" type="xs:string" minOccurs="0" />
+              <xs:element name="YMD" msprop:Generator_ColumnVarNameInTable="columnYMD" msprop:Generator_ColumnPropNameInRow="YMD" msprop:Generator_ColumnPropNameInTable="YMDColumn" msprop:Generator_UserColumnName="YMD" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
