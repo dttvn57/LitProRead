@@ -364,7 +364,7 @@ namespace LitProRead.Models
             {
                 query = query.OrderBy(p => p.DateMet);
             }
-            else if (sort.Equals("DateCreated DESC"))
+            else if (sort.Equals("DateMet DESC"))
             {
                 query = query.OrderByDescending(p => p.DateMet);
             }

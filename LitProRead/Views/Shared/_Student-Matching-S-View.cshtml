@@ -112,9 +112,9 @@
         $('#Student-Matching-S').jtable({
             title: 'Matched Tutors',
             paging: true, //Enable paging
-            pageSize: 5,
+            //pageSize: 5,
             sorting: true, //Enable sorting
-            defaultSorting: 'DateCreated ASC',
+            defaultSorting: 'DateCreated DESC',
             //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
             messages: {
                 addNewRecord: 'Add New Matched Tutor'
@@ -185,7 +185,6 @@
                     width: '2%',
                     //paging: true, 
                     sorting: false,
-                    //defaultSorting: 'DateMet ASC',
                     edit: false,
                     create: false,
                     listClass: 'child-opener-image-column',
@@ -205,7 +204,9 @@
                                             addNewRecord: 'Add New Activity'
                                         },
                                         paging: true, //Enable paging
-                                        pageSize: 5,
+                                        //pageSize: 5,
+                                        sorting: true, //Enable sorting
+                                        defaultSorting: 'DateMet DESC',
                                         actions: {
                                             listAction: '@Url.Action("MatchSPairsList", "Student")',
 
