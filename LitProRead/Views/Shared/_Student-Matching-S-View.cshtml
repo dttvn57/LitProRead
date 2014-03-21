@@ -338,7 +338,18 @@
                     width: '7%',
                     type: 'date',
                     displayFormat: 'yy/mm/dd',
-                    list: true
+                    list: true,
+                    input: function (data) {
+                        if (data.value) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="DateCreated" value="' + data.value + '"/>';
+                        }
+                        else {
+                            var dt = new Date();
+                            var now =  dt.getFullYear() + "/" + (dt.getMonth()+1) + "/" + dt.getDate();
+                             return '<input type="text" readonly class="jtable-input-readonly" name="DateCreated" value="' + now + '"/>';
+                       }
+                    },
+                    visibility: 'hidden'
                 },
                 TutorLName: {
                     title: 'Tutor Name',

@@ -54,8 +54,12 @@ S T U D E N T S
               @Html.HiddenFor(x => Model.CurrentStudent.ID)
               @Html.HiddenFor(x => Model.EditMode)
               @Html.HiddenFor(x => Model.RecordsCnt)
-              @Html.Hidden("ByLastName")
-            
+              @Html.HiddenFor(x => Model.ByLastName)
+              @Html.HiddenFor(x => Model.SelectedLastName)
+              @Html.HiddenFor(x => Model.SelectedLastNameId)
+              @Html.HiddenFor(x => Model.SelectedFirstName)
+              @Html.HiddenFor(x => Model.SelectedFirstNameId)
+           
 
             
             <table>
@@ -380,11 +384,23 @@ S T U D E N T S
                     // the input tag has a value attribute preloaded that points to a preselected movie's id
                     // this function resolves that id attribute to an object that select2 can render
                     // using its formatResult renderer - that way the movie name is shown preselected
-                    var id = element.val();
-                    //var text = element.data('text');
-                    var text = $('#CurrentStudent_LastName').val() + ", " + $('#CurrentStudent_FirstName').val();
-                    var data = { id: id, text: text };
-                    callback(data);
+                    if (mode == "view") 
+                    {
+                        var id = element.val();
+                        //var id2 = $("#StudentListLastName").select2('data').id;
+                        //var text2 = $("#StudentListLastName").select2('data').text;
+
+                        //var text = element.data('text');
+                        var text = $('#CurrentStudent_LastName').val() + ", " + $('#CurrentStudent_FirstName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
+                    else{
+                        var id =  $('#SelectedLastNameId').val();
+                        var text = $('#SelectedLastName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
                 }
             });
 
@@ -393,8 +409,10 @@ S T U D E N T S
 
                 $("#ByLastName").val(true);
 
-                //var text = $("#StudentListLastName").select2('nextSearchTerm');
+                var text = $("#StudentListLastName").select2('data').text;
                 var id = $("#StudentListLastName").select2('data').id;
+                $("#SelectedLastName").val(text);
+                $("#SelectedLastNameId").val(id);
 
 
                 currentStudentId = e.val;
@@ -443,17 +461,31 @@ S T U D E N T S
                     // the input tag has a value attribute preloaded that points to a preselected movie's id
                     // this function resolves that id attribute to an object that select2 can render
                     // using its formatResult renderer - that way the movie name is shown preselected
-                    var id = element.val();
-                    //var text = element.data('text');
-                    var text = $('#CurrentStudent_FirstName').val() + " " + $('#CurrentStudent_LastName').val();
-                    var data = { id: id, text: text };
-                    callback(data);
+                    if (mode == "view") 
+                    {
+                        var id = element.val();
+                        var text = $('#CurrentStudent_FirstName').val() + " " + $('#CurrentStudent_LastName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
+                    else{
+                        var id =  $('#SelectedFirstNameId').val();
+                        var text = $('#SelectedFirstName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
                 }
             });
 
             $("#StudentListFirstName").on("change", function (e) {
                 $("#ByLastName").val(false);
                 currentStudentId = e.val;
+
+                var text = $("#StudentListFirstName").select2('data').text;
+                var id = $("#StudentListFirstName").select2('data').id;
+                $("#SelectedFirstName").val(text);
+                $("#SelectedFirstNameId").val(id);
+
                 if (currentStudentId > 0) {
                     $.fn.handleEditRecord(currentStudentId, "");
                     // enable "Edit" button
@@ -701,7 +733,7 @@ S T U D E N T S
                 }).success(function (data) {
                     //alert('success');
 
-                    $('#EditMode').val("edit");
+                    //$('#EditMode').val("edit");
                     //alert( $('#EditMode').val());
 
                     $.fn.populateStudentForm(data);
