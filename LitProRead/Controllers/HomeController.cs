@@ -22,6 +22,23 @@ namespace LitProRead.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpPost]
+        public JsonResult GetStudentsCount(bool activeOnly)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                try
+                {
+                    int count = db.GetStudentsCount(activeOnly, "", 0, 0);
+                    return Json(new { Result = "OK", Options = count });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+            }
+        }
+
         [HttpGet]
         public ActionResult GetStudentsName(bool ActiveOnly, string searchTerm, int pageSize, int pageNum, bool byLastName)  // true: get by last name
                                                                                                             // false: get by first name

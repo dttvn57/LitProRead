@@ -13,6 +13,13 @@ using System.Data.Entity.Validation;
 using System.Threading;
 using System.Configuration;
 
+// id is the id that is passed into the details method
+//var nextID = db.Products.OrderBy(i => i.ID)
+//                     .SkipWhile(i => i.ID != id)
+//                     .Skip(1)
+//                     .Select(i => i.ID)
+
+//ViewBag.NextID = nextID;
 namespace LitProRead.Controllers
 {
     public class StudentController : Controller
@@ -764,6 +771,46 @@ namespace LitProRead.Controllers
             jsonData.Data = vm;
             jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jsonData;
+        }
+
+        public ActionResult FirstStudent(int currStudentId, bool activeOnly, bool byLastName)
+        {
+            int studentId = currStudentId;
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                studentId = db.FirstStudentId(currStudentId, activeOnly, byLastName);
+            }
+            return Edit(studentId);
+        }
+
+        public ActionResult LastStudent(int currStudentId, bool activeOnly, bool byLastName)
+        {
+            int studentId = currStudentId;
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                studentId = db.LastStudentId(currStudentId, activeOnly, byLastName);
+            }
+            return Edit(studentId);
+        }
+
+        public ActionResult PrevStudent(int currStudentId, bool activeOnly, bool byLastName)
+        {
+            int prevStudentId = currStudentId;
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                prevStudentId = db.PrevStudentId(currStudentId, activeOnly, byLastName);
+            }
+            return Edit(prevStudentId);
+        }
+
+        public ActionResult NextStudent(int currStudentId, bool activeOnly, bool byLastName)
+        {
+            int nextStudentId = currStudentId;
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                nextStudentId = db.NextStudentId(currStudentId, activeOnly, byLastName);
+            }
+            return Edit(nextStudentId);
         }
 
         //

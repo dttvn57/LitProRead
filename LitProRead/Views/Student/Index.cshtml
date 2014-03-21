@@ -53,6 +53,8 @@ S T U D E N T S
           *@
               @Html.HiddenFor(x => Model.CurrentStudent.ID)
               @Html.HiddenFor(x => Model.EditMode)
+              @Html.HiddenFor(x => Model.RecordsCnt)
+              @Html.Hidden("ByLastName")
             
 
             
@@ -111,6 +113,7 @@ S T U D E N T S
                        <button type="button" id="studentDelete">Delete</button>
                         
                         <input type="submit"  id="studentSave" value="Save" />
+                        <button type="button" id="studentCancel">Cancel</button>
                         @*
                         <button type="button" id="refreshStudent">Refresh</button>
                         <button type="button" id="saveStudent">Save</button>
@@ -220,6 +223,19 @@ S T U D E N T S
         } @* </form> *@
     </div>
 
+<div>
+    <img id="studentFirst" src="~/Images/firstRec.jpg"/>
+    <img id="studentPrev" src="~/Images/prevRec.jpg"/>
+    @*
+    <button class="pagingControl" type="button" id="studentPrev"><</button>
+    *@
+    <input class="pagingControl" type="text" id="studentPages" style="width:80px" />
+
+    <img  id="studentNext" src="~/Images/nextRec.jpg"/>
+    <img  id="studentLast" src="~/Images/lastRec.jpg"/>
+
+</div>
+
 @section scripts
 {
     <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/select2.css")"/>
@@ -278,6 +294,9 @@ S T U D E N T S
             var pageSize = 20;
             //$('ul.sf-menu').superfish();
 
+            var pages = $('#RecordsCnt').val() + " Records";
+            $('#studentPages').val(pages);
+
             var mode = @Html.Raw(Json.Encode(Model.EditMode)); 
             $('#EditMode').val(mode);
 
@@ -306,6 +325,8 @@ S T U D E N T S
                 $('#studentDelete').prop('disabled', true);
                 $('#studentSave').prop('disabled', true);
             }
+
+            $("#studentPages").prop('disabled', false);
 
             // always enable the Last Name & First Name dropboxes for search + "active only" checkbox
             $('#StudentListLastName').prop('disabled', false);
@@ -368,6 +389,14 @@ S T U D E N T S
             });
 
             $("#StudentListLastName").on("change", function (e) {
+                // alert("you selected :" + $(this).val());
+
+                $("#ByLastName").val(true);
+
+                //var text = $("#StudentListLastName").select2('nextSearchTerm');
+                var id = $("#StudentListLastName").select2('data').id;
+
+
                 currentStudentId = e.val;
                 if (currentStudentId > 0) {
                     // enable "Edit" button
@@ -377,6 +406,8 @@ S T U D E N T S
                 }
                 //alert("Student Last Name: " + currentStudentId);
                 //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+
+                $.fn.handleEditRecord(currentStudentId);
             });
 
             $("#StudentListFirstName").select2(
@@ -421,12 +452,15 @@ S T U D E N T S
             });
 
             $("#StudentListFirstName").on("change", function (e) {
+                $("#ByLastName").val(false);
                 currentStudentId = e.val;
                 if (currentStudentId > 0) {
                     // enable "Edit" button
                     $('#studentEdit').prop('disabled', false);
                     $('#studentDelete').prop('disabled', false);
                     $('#studentSave').prop('disabled', false);
+
+                    $.fn.handleEditRecord(currentStudentId);
                 }
                 //alert("Student First Name: " + currentStudentId);
                 //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
@@ -479,10 +513,59 @@ S T U D E N T S
                 //alert("Tutor: " + currentTutortId + " => " + $("#TutorNameList").val());
             });
 
+            $('#ActiveOnly').click(function () {
+
+                $.ajax({
+                    url: '@Url.Content("~/Home/GetStudentsCount")',
+                    type: 'post',
+                    cache: false,
+                    // async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                    data: { activeOnly: false},
+                    //contentType: 'application/json; charset=utf-8',
+                }).done(function () {
+                    //alert("done");
+                }).complete(function () {
+                    //alert("complete");
+                }).success(function (data) {
+                    //alert("success: " + data);
+                    var pages = data.toString() + " Records";
+                    $('#studentPages').val(data);
+
+                }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                    var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    alert("There was an error calling editStudent: " + errorMessage);
+                });
+            });
+
+
+            @* --- CANCEL --- *@
+            $('#studentCancel').click(function () {
+                $('#EditMode').val("view");
+
+                $("input").prop('disabled', true);
+                $("textarea").prop('disabled', true);
+                $("select").prop('disabled', true);
+
+                $('#studentDelete').prop('disabled', true);
+                $('#studentSave').prop('disabled', true);
+                $('#studentAdd').prop('disabled', false);
+                $('#studentEdit').prop('disabled', false);
+
+                // always enable the Last Name & First Name dropboxes for search + "active only" checkbox
+                $('#StudentListLastName').prop('disabled', false);
+                $('#StudentListFirstName').prop('disabled', false);
+                $('#ActiveOnly').prop('disabled', false);
+
+                $("input").removeClass("editmode");
+                $("textarea").removeClass("editmode");
+                $("select").removeClass("editmode");
+
+                $("#studentPages").prop('disabled', false);
+            });
 
             @* --- ADD --- *@
             $('#studentAdd').click(function () {
-               // alert("studentAdd");
+                // alert("studentAdd");
                 $('#EditMode').val("add");
 
                 // enable
@@ -499,106 +582,31 @@ S T U D E N T S
                 $("input").addClass("editmode");
                 $("textarea").addClass("editmode");
                 $("select").addClass("editmode");
+            });
 
-                //location.reload(true);
+            @* --- FIRST --- *@
+            $('#studentFirst').click(function () {
+                $.fn.handleRecordNavigation("first");
+            });
 
-                @*
-                $('#CurrentStudent_Salutation').val("");
-                $('#CurrentStudent_FirstName').val("");
-                $('#CurrentStudent_LastName').val("");
+            @* --- LAST --- *@
+            $('#studentLast').click(function () {
+                $.fn.handleRecordNavigation("last");
+            });
 
-                alert("addStudent");
-                var firstName = $('#StudentListFirstName').val;
-                var lastName = $('#StudentListLastName').val;
-                alert("Last: " + lastName + ", " + "First: " + firstName);
-                var studentvm = @(Model.studentVM);//$("form").serialize();
-                *@
+            @* --- PREV --- *@
+            $('#studentPrev').click(function () {
+                $.fn.handleRecordNavigation("prev");
+            });
 
-                @*
-               $.ajax({
-                    url: '@Url.Content("~/Student/Index")',
-                     type: 'get',
-                     cache: false,
-                    // async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                    //data: $.toDictionary(studentvm, "studentvm"),
-                     //contentType: 'application/json; charset=utf-8',
-                 }).done(function () {
-                     //alert("done");
-
-                 }).complete(function () {
-                     alert("complete");
-                     //$.ready();
-                     location.reload(true);
-                 }).success(function (dv) {
-                     //alert("success");
-                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
-                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
-                     alert("There was an error calling editStudent: " + errorMessage);
-                 });
-                 *@
+            @* --- NEXT --- *@
+            $('#studentNext').click(function () {
+                $.fn.handleRecordNavigation("next");
             });
 
             @* --- EDIT --- *@
             $('#studentEdit').click(function () {
-
-                // enable
-                $("input").prop('disabled', false);
-                $("textarea").prop('disabled', false);
-                $("select").prop('disabled', false);
-
-                $("input").addClass("editmode");
-                $("textarea").addClass("editmode");
-                $("select").addClass("editmode");
-
-                //alert("studentEdit clicked");
-                //if (currentStudentId != $('#CurrentStudent_ID').val()) {
-                //    currentStudentId = $('#CurrentStudent_ID').val();
-                //}
-                //alert("Student: editStudent: " + currentStudentId.toString());
-                //var m = $("form").serialize();
-                //alert(m);
-                //var studentId = $('#StudentListLastName').select2("val");
-                $.ajax({
-                    url: '@Url.Content("~/Student/Edit")', @*'@Url.Content("~/Student/Edit")',*@
-                    type: 'get',
-                    cache: false,
-                    async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                    data: { id: currentStudentId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
-                    @*
-                     contentType: 'application/json; charset=utf-8',
-                   data: { Command: "approve", lastName: last, firstName: first },
-                     *@
-                }).done(function (data) {
-                   // alert('done');
-                    //$("#Student-General").replaceWith(data);
-                }).complete(function () {
-                   // alert("complete");
-                }).success(function (data) {
-                    //alert('success');
-                   $('#EditMode').val("edit");
-                   //alert( $('#EditMode').val());
-
-                    $.fn.populateStudentForm(data);
-
-                    // alert(data.CurrentStudent.LastName);
-                    //alert(JSON.stringify(JsonObj));
-                    //console.log(JSON.stringify(JsonObj));
-
-                    //$("#span1").html(JsonObj.Student.Name);
-                    //$("#span2").html(JsonObj.Teacher.Name);
-
-                    //                     $("#Student-General").empty().append(data); 
-                    //                     $("#Student-Preferences").empty().append(data); 
-
-                    // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
-                    $(".datefield").datepicker();
-
-                    //alert($('#CurrentStudent_ID').val);
-
-                }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
-                    var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
-                    alert("There was an error calling editStudent: " + errorMessage);
-                });
+                $.fn.handleEditRecord(currentStudentId);
             });
 
             $('#viewStatusChanges').click(function (event) {
@@ -654,48 +662,120 @@ S T U D E N T S
                     });
 
                 };
-
-                @*
-               $.ajax({
-                    url: '@Url.Content("~/Student/Delete")',
-                     //type: 'get',
-                     //cache: false,
-                    // async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                   data: { id: currentStudentId },
-                     //contentType: 'application/json; charset=utf-8',
-                 }).done(function () {
-                     //alert("done");
-
-                 }).complete(function () {
-                     //alert("complete");
-                 }).success(function (dv) {
-                     //alert("success");
-                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
-                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
-                     alert("There was an error calling editStudent: " + errorMessage);
-                 });
-                *@
             });
 
-            @*
-            <script>
-            $(function() {
-                $( "#dialog-confirm" ).dialog({
-                    resizable: false,
-                    height:140,
-                    modal: true,
-                    buttons: {
-                        "Delete all items": function() {
-                            $( this ).dialog( "close" );
-                        },
-                        Cancel: function() {
-                            $( this ).dialog( "close" );
-                        }
-                    }
+            $.fn.handleRecordNavigation = function (direction) {
+                // enable
+                $("input").prop('disabled', false);
+                $("textarea").prop('disabled', false);
+                $("select").prop('disabled', false);
+
+                $("input").addClass("editmode");
+                $("textarea").addClass("editmode");
+                $("select").addClass("editmode");
+
+                var navUrl = '@Url.Content("~/Student/NextStudent")';
+                if (direction == "prev") {
+                    navUrl = '@Url.Content("~/Student/PrevStudent")';
+                }
+                else
+                if (direction == "first") {
+                    navUrl = '@Url.Content("~/Student/FirstStudent")';
+                }
+                else
+                if (direction == "last") {
+                    navUrl = '@Url.Content("~/Student/LastStudent")';
+                }
+
+                $.ajax({
+                    url: navUrl,
+                    type: 'get',
+                    cache: false,
+                    async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                    data: { currStudentId: currentStudentId, activeOnly: $('#ActiveOnly').is(':checked'), byLastName: $("#ByLastName").val() },  
+                }).done(function (data) {
+                    // alert('done');
+                }).complete(function () {
+                    // alert("complete");
+                }).success(function (data) {
+                    //alert('success');
+
+                    $('#EditMode').val("edit");
+                    //alert( $('#EditMode').val());
+
+                    $.fn.populateStudentForm(data);
+
+                    // should update the new current student id
+
+                    // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                    $(".datefield").datepicker();
+                }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                    var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    alert("There was an error calling editStudent: " + errorMessage);
                 });
-            });
-            </script>
-            *@
+            };
+
+
+            $.fn.handleEditRecord = function (recId) {
+                // enable
+                $("input").prop('disabled', false);
+                $("textarea").prop('disabled', false);
+                $("select").prop('disabled', false);
+
+                $("input").addClass("editmode");
+                $("textarea").addClass("editmode");
+                $("select").addClass("editmode");
+
+                //alert("studentEdit clicked");
+                //if (currentStudentId != $('#CurrentStudent_ID').val()) {
+                //    currentStudentId = $('#CurrentStudent_ID').val();
+                //}
+                //alert("Student: editStudent: " + currentStudentId.toString());
+                //var m = $("form").serialize();
+                //alert(m);
+                //var studentId = $('#StudentListLastName').select2("val");
+                $.ajax({
+                    url: '@Url.Content("~/Student/Edit")', @*'@Url.Content("~/Student/Edit")',*@
+                    type: 'get',
+                    cache: false,
+                    async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                    data: { id: recId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                    @*
+                         contentType: 'application/json; charset=utf-8',
+                       data: { Command: "approve", lastName: last, firstName: first },
+                         *@
+                }).done(function (data) {
+                    // alert('done');
+                    //$("#Student-General").replaceWith(data);
+                }).complete(function () {
+                    // alert("complete");
+                }).success(function (data) {
+                    //alert('success');
+                    $('#EditMode').val("edit");
+                    //alert( $('#EditMode').val());
+
+                    $.fn.populateStudentForm(data);
+
+                    // alert(data.CurrentStudent.LastName);
+                    //alert(JSON.stringify(JsonObj));
+                    //console.log(JSON.stringify(JsonObj));
+
+                    //$("#span1").html(JsonObj.Student.Name);
+                    //$("#span2").html(JsonObj.Teacher.Name);
+
+                    //                     $("#Student-General").empty().append(data); 
+                    //                     $("#Student-Preferences").empty().append(data); 
+
+                    // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                    $(".datefield").datepicker();
+
+                    //alert($('#CurrentStudent_ID').val);
+
+                }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                    var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    alert("There was an error calling editStudent: " + errorMessage);
+                });
+            };
 
             $.fn.populateStudentForm = function (data) {
                 if (data == "") {
@@ -830,6 +910,7 @@ S T U D E N T S
                     $('#SelectedStudentReport').val(data);
                 }
                 else {
+                    currentStudentId = data.CurrentStudent.ID;
                     $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
                     $('#Student-Children').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
                     $('#Student-Comments').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
@@ -1144,252 +1225,4 @@ S T U D E N T S
         });  // $(document).ready()
 
     </script>
-
-
-    @*
-    <script type="text/javascript">
-        function _EditComplete(data) {
-            // alert(data.responseText);
-            //var JsonObj = $.parseJSON(data.responseText);
-            //$("#span1").html(JsonObj.Student.Name);
-            //$("#span2").html(JsonObj.Teacher.Name);
-        }
-    </script>
-
-    <script type="text/javascript">
-        //function onStudentLastNameChange(value) {
-        function onStudentLastNameChange() {
-            currStudentId = ($("#StudentListLastName").select2("val"));
-            //alert(currStudentId);
-            //alert($("#StudentListLastName").select2("val"));
-            //$("#StudentListFirstName").select2("val", "Aaron Ford");
-        }
-    </script>
-    
-    <script type="text/javascript">
-        function onStudentFirstNameChange(value) {
-            currStudentId = ($("#StudentListFirstName").select2("val"));
-            //alert(currStudentId);
-        }
-    </script>
-
-    <script type="text/javascript">
-        function populateStudentForm(data) {
-            $('#CurrentStudent_ID').val(data.CurrentStudent.ID);
-            $('#CurrentStudent_Salutation').val(data.CurrentStudent.Salutation);
-            $('#CurrentStudent_FirstName').val(data.CurrentStudent.FirstName);
-            $('#CurrentStudent_LastName').val(data.CurrentStudent.LastName);
-            $('#CurrentStudent_Address1').val(data.CurrentStudent.Address1);
-            $('#CurrentStudent_Address2').val(data.CurrentStudent.Address2);
-            $('#CurrentStudent_City').val(data.CurrentStudent.City);
-            $('#CurrentStudent_State').val(data.CurrentStudent.State);
-            $('#CurrentStudent_Zip').val(data.CurrentStudent.Zip);
-            $('#CurrentStudent_HomeAreaCode').val(data.CurrentStudent.HomeAreaCode);
-            $('#CurrentStudent_HomePhone').val(data.CurrentStudent.HomePhone);
-            $('#CurrentStudent_WorkAreaCode').val(data.CurrentStudent.WorkAreaCode);
-            $('#CurrentStudent_WorkPhone').val(data.CurrentStudent.WorkPhone);
-            $('#CurrentStudent_WorkPhoneExt').val(data.CurrentStudent.WorkPhoneExt);
-            $('#CurrentStudent_FAXAreaCode').val(data.CurrentStudent.FAXAreaCode);
-            $('#CurrentStudent_FAX').val(data.CurrentStudent.FAX);
-            $('#CurrentStudent_CellAreaCode1').val(data.CurrentStudent.CellAreaCode1);
-            $('#CurrentStudent_CellPhone1').val(data.CurrentStudent.CellPhone1);
-            $('#CurrentStudent_CellAreaCode2').val(data.CurrentStudent.CellAreaCode2);
-            $('#CurrentStudent_CellAreaPhone2').val(data.CurrentStudent.CellAreaPhone2);
-            $('#CurrentStudent_ContactPref').val(data.CurrentStudent.ContactPref);
-            $('#CurrentStudent_EMail').val(data.CurrentStudent.EMail);
-            $('#CurrentStudent_Gender').val(data.CurrentStudent.Gender);
-            $('#CurrentStudent_Ethnicity').val(data.CurrentStudent.Ethnicity);
-            $('#CurrentStudent_Income').val(data.CurrentStudent.Income);
-            $('#CurrentStudent_Occupation').val(data.CurrentStudent.Occupation);
-            $('#CurrentStudent_Employer').val(data.CurrentStudent.Employer);
-            $('#CurrentStudent_EmployerStatus').val(data.CurrentStudent.EmployerStatus);
-            $('#CurrentStudent_EmergContact').val(data.CurrentStudent.EmergContact);
-            $('#CurrentStudent_EmergAreaCode').val(data.CurrentStudent.EmergAreaCode);
-            $('#CurrentStudent_EmergPhone').val(data.CurrentStudent.EmergPhone);
-            $('#CurrentStudent_CallLocation').val(data.CurrentStudent.CallLocation);
-            //$('#CurrentStudent_DOB').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.DOB));
-            $('#CurrentStudent_Country').val(data.CurrentStudent.Country);
-            $('#CurrentStudent_NativeLanguage').val(data.CurrentStudent.NativeLanguage);
-            $('#CurrentStudent_EducationLevel').val(data.CurrentStudent.EducationLevel);
-            $('#CurrentStudent_ReadWriteNativeLang').val(data.CurrentStudent.ReadWriteNativeLang);
-            $('#CurrentStudent_Referral').val(data.CurrentStudent.Referral);
-           // $('#CurrentStudent_FingerPrintDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FingerPrintDate));
-            $('#CurrentStudent_Staff').val(data.CurrentStudent.Staff);
-            $('#CurrentStudent_Source').val(data.CurrentStudent.Source);
-            //$('#CurrentStudent_IntakeDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.IntakeDate));
-            //$('#CurrentStudent_FirstActive').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstActive));
-            if (data.CurrentStudent.Active == true) {
-                $('#CurrentStudent_Active').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_Active').prop("checked", false);
-            }
-            //$('#CurrentStudent_ActiveDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.ActiveDate));
-            $('#CurrentStudent_Status').val(data.CurrentStudent.Status);
-            if (data.CurrentStudent.InActive == true) {
-                $('#CurrentStudent_InActive').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_InActive').prop("checked", false);
-            }
-            $('#CurrentStudent_InActiveReason').val(data.CurrentStudent.InActiveReason);
-            $('#CurrentStudent_Program').val(data.CurrentStudent.Program);
-            $('#CurrentStudent_MailCode').val(data.CurrentStudent.MailCode);
-            $('#CurrentStudent_Category').val(data.CurrentStudent.Category);
-            $('#CurrentStudent_Keyword').val(data.CurrentStudent.Keyword);
-
-            if (data.CurrentStudent.AvailMonAM == true) {
-                $('#CurrentStudent_AvailMonAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailMonAM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailTueAM == true) {
-                $('#CurrentStudent_AvailTueAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailTueAM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailWedAM == true) {
-                $('#CurrentStudent_AvailWedAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailWedAM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailThuAM == true) {
-                $('#CurrentStudent_AvailThuAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailThuAM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailFriAM == true) {
-                $('#CurrentStudent_AvailFriAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailFriAM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailSatAM == true) {
-                $('#CurrentStudent_AvailSatAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailSatAM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailSunAM == true) {
-                $('#CurrentStudent_AvailSunAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailSunAM').prop("checked", false);
-            }
-
-            if (data.CurrentStudent.AvailTueAM == true) {
-                $('#CurrentStudent_AvailTueAM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailTueAM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailMonPM == true) {
-                $('#CurrentStudent_AvailMonPM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailMonPM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailTuePM == true) {
-                $('#CurrentStudent_AvailTuePM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailTuePM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailWedPM == true) {
-                $('#CurrentStudent_AvailWedPM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailWedPM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailThuPM == true) {
-                $('#CurrentStudent_AvailThuPM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailThuPM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailFriPM == true) {
-                $('#CurrentStudent_AvailFriPM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailFriPM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailSatPM == true) {
-                $('#CurrentStudent_AvailSatPM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailSatPM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailSunAM == true) {
-                $('#CurrentStudent_AvailSunPM').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailSunPM').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailMonEVE == true) {
-                $('#CurrentStudent_AvailMonEVE').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailMonEVE').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailTueEVE == true) {
-                $('#CurrentStudent_AvailTueEVE').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailTueEVE').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailWedEVE == true) {
-                $('#CurrentStudent_AvailWedEVE').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailWedEVE').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailThudEVE == true) {
-                $('#CurrentStudent_AvailThudEVE').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailThudEVE').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailFriEVE == true) {
-                $('#CurrentStudent_AvailFriEVE').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailFriEVE').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailSatEVE == true) {
-                $('#CurrentStudent_AvailSatEVE').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailSatEVE').prop("checked", false);
-            }
-            if (data.CurrentStudent.AvailSunEVE == true) {
-                $('#CurrentStudent_AvailSunEVE').prop("checked", true);
-            }
-            else {
-                $('#CurrentStudent_AvailSunEVE').prop("checked", false);
-            }
-
-            $('#CurrentStudent_Transportation').val(data.CurrentStudent.Transportation);
-            $('#CurrentStudent_StudentContact').val(data.CurrentStudent.StudentContact);
-            $('#CurrentStudent_SmokingPref').val(data.CurrentStudent.SmokingPref);
-            $('#CurrentStudent_LocationPref').val(data.CurrentStudent.LocationPref);
-            $('#CurrentStudent_TutorSmoker').val(data.CurrentStudent.TutorSmoker);
-            $('#CurrentStudent_MedicalInfo').val(data.CurrentStudent.MedicalInfo);
-            $('#CurrentStudent_LocationPref2').val(data.CurrentStudent.LocationPref2);
-            $('#CurrentStudent_LocationPref3').val(data.CurrentStudent.LocationPref3);
-            $('#CurrentStudent_InterestHobbies').val(data.CurrentStudent.InterestHobbies);
-            $('#CurrentStudent_TutorPreference').val(data.CurrentStudent.TutorPreference);
-            $('#CurrentStudent_SpecialInstructions').val(data.CurrentStudent.SpecialInstructions);
-           // $('#CurrentStudent_FirstCalledByDate').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.FirstCalledByDate));
-            $('#CurrentStudent_FirstCalledBy').val(data.CurrentStudent.FirstCalledBy);
-            $('#CurrentStudent_HowHeard').val(data.CurrentStudent.HowHeard);
-            //$('#CurrentStudent_PreLibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.PreLibraryCard));
-           // $('#CurrentStudent_LibraryCard').datepicker({ dateFormat: '0:MM/dd/yyyy' }).datepicker('setDate', getFormattedDate(data.CurrentStudent.LibraryCard));
-        }
-    </script>
-    *@
-
 }

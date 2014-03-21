@@ -1,4 +1,10 @@
-﻿.editmode {
+﻿.pagingControl {
+    height: 10px;
+    font-size: 0.6em;
+    vertical-align:top;
+}
+
+.editmode {
     background-color: yellow;
 }
 

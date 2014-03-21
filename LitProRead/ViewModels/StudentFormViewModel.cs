@@ -16,7 +16,10 @@ namespace LitProRead.ViewModels
         //public LitProReadEntities db = new LitProReadEntities();
 
         public int Id { get; set; }
-        
+
+        public int RecordsCnt { get; set; }
+        public int CurrentRecordIndex { get; set; }
+
         public Student CurrentStudent { get; set; }
         public Pair MatchSPair { get; set; }
 
@@ -88,12 +91,28 @@ namespace LitProRead.ViewModels
             EditMode = "view";
         }
 
+        public int GetRecordsCnt(bool active)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                return db.GetStudentsCount(active, "", 0, 0);
+            }
+
+        }
+
         public void Load(int id)
         {
             this.Id = id;
             this.CurrentStudent = GetStudent(id);
             if (id > 0 && this.CurrentStudent != null)
+            {
                 EditMode = "edit";
+            }
+            else
+            {
+                RecordsCnt = GetRecordsCnt(true);
+                CurrentRecordIndex = -1;
+            }
 
             this.StudentChildrenList = GetStudentChildren(id);
             this.StudentCommentsList = GetStudentComments(id);
