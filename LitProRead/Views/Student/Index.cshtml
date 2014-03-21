@@ -294,8 +294,8 @@ S T U D E N T S
             var pageSize = 20;
             //$('ul.sf-menu').superfish();
 
-            var pages = $('#RecordsCnt').val() + " Records";
-            $('#studentPages').val(pages);
+            ////var pages = $('#RecordsCnt').val() + " Records";
+            ////$('#studentPages').val(pages);
 
             var mode = @Html.Raw(Json.Encode(Model.EditMode)); 
             $('#EditMode').val(mode);
@@ -399,6 +399,7 @@ S T U D E N T S
 
                 currentStudentId = e.val;
                 if (currentStudentId > 0) {
+                    $.fn.handleEditRecord(currentStudentId, "");
                     // enable "Edit" button
                     $('#studentEdit').prop('disabled', false);
                     $('#studentDelete').prop('disabled', false);
@@ -407,7 +408,6 @@ S T U D E N T S
                 //alert("Student Last Name: " + currentStudentId);
                 //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
 
-                $.fn.handleEditRecord(currentStudentId);
             });
 
             $("#StudentListFirstName").select2(
@@ -455,12 +455,12 @@ S T U D E N T S
                 $("#ByLastName").val(false);
                 currentStudentId = e.val;
                 if (currentStudentId > 0) {
+                    $.fn.handleEditRecord(currentStudentId, "");
                     // enable "Edit" button
                     $('#studentEdit').prop('disabled', false);
                     $('#studentDelete').prop('disabled', false);
                     $('#studentSave').prop('disabled', false);
 
-                    $.fn.handleEditRecord(currentStudentId);
                 }
                 //alert("Student First Name: " + currentStudentId);
                 //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
@@ -606,7 +606,7 @@ S T U D E N T S
 
             @* --- EDIT --- *@
             $('#studentEdit').click(function () {
-                $.fn.handleEditRecord(currentStudentId);
+                $.fn.handleEditRecord(currentStudentId, "edit");
             });
 
             $('#viewStatusChanges').click(function (event) {
@@ -666,6 +666,7 @@ S T U D E N T S
 
             $.fn.handleRecordNavigation = function (direction) {
                 // enable
+                @*
                 $("input").prop('disabled', false);
                 $("textarea").prop('disabled', false);
                 $("select").prop('disabled', false);
@@ -673,7 +674,7 @@ S T U D E N T S
                 $("input").addClass("editmode");
                 $("textarea").addClass("editmode");
                 $("select").addClass("editmode");
-
+                *@
                 var navUrl = '@Url.Content("~/Student/NextStudent")';
                 if (direction == "prev") {
                     navUrl = '@Url.Content("~/Student/PrevStudent")';
@@ -707,6 +708,19 @@ S T U D E N T S
 
                     // should update the new current student id
 
+                    //synch the search student profiles boxes
+                    var byLastName =  $("#ByLastName").val();
+                    if (byLastName == "true")
+                    {
+                        var name = data.CurrentStudent.LastName + ", " + data.CurrentStudent.FirstName;
+                        $("#StudentListLastName").select2("val", name);
+                    }
+                    else
+                    {
+                        var name = data.CurrentStudent.FirstName + " " + data.CurrentStudent.LastName;
+                        $("#StudentListFirstName").select2("val", name);
+                    }
+
                     // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
                     $(".datefield").datepicker();
                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
@@ -716,16 +730,18 @@ S T U D E N T S
             };
 
 
-            $.fn.handleEditRecord = function (recId) {
+            $.fn.handleEditRecord = function (recId, mode) {
                 // enable
-                $("input").prop('disabled', false);
-                $("textarea").prop('disabled', false);
-                $("select").prop('disabled', false);
+                if (mode == "edit")
+                {
+                    $("input").prop('disabled', false);
+                    $("textarea").prop('disabled', false);
+                    $("select").prop('disabled', false);
 
-                $("input").addClass("editmode");
-                $("textarea").addClass("editmode");
-                $("select").addClass("editmode");
-
+                    $("input").addClass("editmode");
+                    $("textarea").addClass("editmode");
+                    $("select").addClass("editmode");
+                }
                 //alert("studentEdit clicked");
                 //if (currentStudentId != $('#CurrentStudent_ID').val()) {
                 //    currentStudentId = $('#CurrentStudent_ID').val();
