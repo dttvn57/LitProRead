@@ -19,6 +19,11 @@ namespace LitProRead.ViewModels
 
         public int RecordsCnt { get; set; }
         public int CurrentRecordIndex { get; set; }
+        public bool ByLastName { get; set; }
+        public string SelectedLastName { get; set; }
+        public int SelectedLastNameId { get; set; }
+        public string SelectedFirstName { get; set; }
+        public int SelectedFirstNameId { get; set; }
 
         public Student CurrentStudent { get; set; }
         public Pair MatchSPair { get; set; }

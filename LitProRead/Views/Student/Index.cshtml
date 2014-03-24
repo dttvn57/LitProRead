@@ -719,13 +719,13 @@ S T U D E N T S
                 if (direction == "last") {
                     navUrl = '@Url.Content("~/Student/LastStudent")';
                 }
-
+                var id =  $('#CurrentStudent_ID').val();
                 $.ajax({
                     url: navUrl,
                     type: 'get',
                     cache: false,
                     async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                    data: { currStudentId: currentStudentId, activeOnly: $('#ActiveOnly').is(':checked'), byLastName: $("#ByLastName").val() },  
+                    data: { currStudentId: id, activeOnly: $('#ActiveOnly').is(':checked'), byLastName: $("#ByLastName").val() },  
                 }).done(function (data) {
                     // alert('done');
                 }).complete(function () {
@@ -746,12 +746,16 @@ S T U D E N T S
                     {
                         var name = data.CurrentStudent.LastName + ", " + data.CurrentStudent.FirstName;
                         $("#StudentListLastName").select2("val", name);
+                        $('#SelectedLastNameId').val(data.CurrentStudent.ID);
+                        $('#SelectedLastName').val(name);
                     }
                     else
                     {
                         var name = data.CurrentStudent.FirstName + " " + data.CurrentStudent.LastName;
                         $("#StudentListFirstName").select2("val", name);
-                    }
+                        $('#SelectedFirstNameId').val(data.CurrentStudent.ID);
+                        $('#SelectedFirstName').val(name);
+                   }
 
                     // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
                     $(".datefield").datepicker();
