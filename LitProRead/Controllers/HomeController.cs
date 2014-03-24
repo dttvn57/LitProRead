@@ -23,18 +23,26 @@ namespace LitProRead.Controllers
     public class HomeController : Controller
     {
         [HttpPost]
-        public JsonResult GetStudentsCount(bool activeOnly)
+        public ActionResult GetStudentsCount(bool activeOnly)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
                 try
                 {
                     int count = db.GetStudentsCount(activeOnly, "", 0, 0);
-                    return Json(new { Result = "OK", Options = count });
+                    JsonResult jsonData = new JsonResult();
+                    jsonData.Data = count;
+                    jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return jsonData;
+                    //return Json(new { Result = "OK", Options = count.ToString() });
                 }
                 catch (Exception ex)
                 {
-                    return Json(new { Result = "ERROR", Message = ex.Message });
+                    JsonResult jsonData = new JsonResult();
+                    jsonData.Data = ex.Message;
+                    jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return jsonData;
+                    //return Json(new { Result = "ERROR", Message = ex.Message });
                 }
             }
         }

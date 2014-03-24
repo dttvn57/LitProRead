@@ -50,29 +50,49 @@ namespace LitProRead.Models
                 .Count();
         }
 
-        public int FirstStudentId(int currStudentId, bool activeOnly, bool byLastName)
+        public int StudentIdByRecIndex(int recIndex, bool activeOnly, bool byLastName)
+        {
+            Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            if (cnt <= 0)
+                return 0;
+
+            if (recIndex <= 0)
+                return list[0].ID;
+
+            if (recIndex >= cnt)
+            {
+                return list[cnt-1].ID;
+            }
+
+            return list[recIndex].ID; ;
+        }
+
+        public int FirstStudentId(int currStudentId, bool activeOnly, bool byLastName, ref int recIndex)
         {
             int studentId = currStudentId;
             Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
             int cnt = list.Count();
             if (cnt > 0)
                 studentId = list[0].ID;
+            recIndex = 1;
 
             return studentId;
         }
 
-        public int LastStudentId(int currStudentId, bool activeOnly, bool byLastName)
+        public int LastStudentId(int currStudentId, bool activeOnly, bool byLastName, ref int recIndex)
         {
             int studentId = currStudentId;
             Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
             int cnt = list.Count();
             if (cnt > 0)
                 studentId = list[cnt - 1].ID;
+            recIndex = cnt;
 
             return studentId;
         }
 
-        public int NextStudentId(int currStudentId, bool activeOnly, bool byLastName)
+        public int NextStudentId(int currStudentId, bool activeOnly, bool byLastName, ref int recIndex)
         {
             int nextStudentId = 0;
             Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
@@ -81,17 +101,25 @@ namespace LitProRead.Models
             {
                 if (list[currIndex].ID == currStudentId)
                 {
+                    int nextIndex = 0;
                     if (currIndex == cnt - 1)   // at end of list
+                    {
                         nextStudentId = currStudentId;
+                        nextIndex = currIndex;
+                    }
                     else
+                    {
                         nextStudentId = list[currIndex + 1].ID;
+                        nextIndex = currIndex + 1;
+                    }
+                    recIndex = nextIndex + 1;
                     break;
                 }
             }
             return nextStudentId;
         }
 
-        public int PrevStudentId(int currStudentId, bool activeOnly, bool byLastName)
+        public int PrevStudentId(int currStudentId, bool activeOnly, bool byLastName, ref int recIndex)
         {
             int prevStudentId = 0;
             Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
@@ -99,14 +127,37 @@ namespace LitProRead.Models
             {
                 if (list[currIndex].ID == currStudentId)
                 {
+                    int nextIndex = 0;
                     if (currIndex == 0) // at top of list
-                        prevStudentId = currStudentId;                    
+                    {
+                        prevStudentId = currStudentId;
+                        nextIndex = currIndex;
+                    }
                     else
+                    {
                         prevStudentId = list[currIndex - 1].ID;
+                        nextIndex = currIndex - 1;
+                    }
+                    recIndex = nextIndex + 1;
                     break;
                 }
             }
             return prevStudentId ;
+        }
+
+        public Student GetStudent(int studentId, bool activeOnly, bool byLastName, ref int recIndex)
+        {
+            Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
+            {
+                if (list[currIndex].ID == studentId)
+                {
+                    recIndex = currIndex + 1;
+                    return list[currIndex];
+                }
+            }
+            return null;
         }
 
         //Our search term

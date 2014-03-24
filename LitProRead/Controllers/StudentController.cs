@@ -738,7 +738,8 @@ namespace LitProRead.Controllers
 
         //
         // GET: /Student/Edit/5
-        public ActionResult Edit(int id = -1)      //)JsonResult --- string studentvm
+        //public ActionResult Edit(int id = -1, int recIndex = 0, bool activeOnly = true, bool byLastName = true)      //)JsonResult --- string studentvm
+        public ActionResult Edit(int id, bool activeOnly, bool byLastName)      //)JsonResult --- string studentvm
         {
             //StudentFormViewModel s = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<StudentFormViewModel>(studentvm);
             //return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -758,11 +759,12 @@ namespace LitProRead.Controllers
                 return View("Index", new StudentFormViewModel());
             }
 
-            vm.Load(id);
+            vm.Load(id, activeOnly, byLastName);
             if (vm.CurrentStudent != null && vm.CurrentStudent.ID <= 0)
             {
                 return View("Index", new StudentFormViewModel());
             }
+            //vm.CurrentRecordIndex = recIndex;
 
             Session["StudentCommentsList"] = vm.StudentCommentsList;
             Session["StudentFollowUpsList"] = vm.StudentFollowUpsList;
@@ -773,44 +775,63 @@ namespace LitProRead.Controllers
             return jsonData;
         }
 
+        // passed-in recIndex is 1-based => convert to 0-based first before using.
+        public ActionResult StudentByRecIndex(int recIndex, bool activeOnly, bool byLastName)
+        {
+            int studentId = 0;
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                studentId = db.StudentIdByRecIndex(--recIndex, activeOnly, byLastName);
+            }
+            return Edit(studentId, activeOnly, byLastName);
+        }
+
         public ActionResult FirstStudent(int currStudentId, bool activeOnly, bool byLastName)
         {
+            int recIndex = 0;
             int studentId = currStudentId;
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                studentId = db.FirstStudentId(currStudentId, activeOnly, byLastName);
+                studentId = db.FirstStudentId(currStudentId, activeOnly, byLastName, ref recIndex);
             }
-            return Edit(studentId);
+            return Edit(studentId, activeOnly, byLastName);
+//            return Edit(studentId, recIndex, activeOnly);
         }
 
         public ActionResult LastStudent(int currStudentId, bool activeOnly, bool byLastName)
         {
+            int recIndex = 0;
             int studentId = currStudentId;
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                studentId = db.LastStudentId(currStudentId, activeOnly, byLastName);
+                studentId = db.LastStudentId(currStudentId, activeOnly, byLastName, ref recIndex);
             }
-            return Edit(studentId);
+            return Edit(studentId, activeOnly, byLastName);
+            //return Edit(studentId, recIndex, activeOnly);
         }
 
         public ActionResult PrevStudent(int currStudentId, bool activeOnly, bool byLastName)
         {
+            int recIndex = 0;
             int prevStudentId = currStudentId;
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                prevStudentId = db.PrevStudentId(currStudentId, activeOnly, byLastName);
+                prevStudentId = db.PrevStudentId(currStudentId, activeOnly, byLastName, ref recIndex);
             }
-            return Edit(prevStudentId);
+            return Edit(prevStudentId, activeOnly, byLastName);
+            //return Edit(prevStudentId, recIndex, activeOnly);
         }
 
         public ActionResult NextStudent(int currStudentId, bool activeOnly, bool byLastName)
         {
+            int recIndex = 0;
             int nextStudentId = currStudentId;
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                nextStudentId = db.NextStudentId(currStudentId, activeOnly, byLastName);
+                nextStudentId = db.NextStudentId(currStudentId, activeOnly, byLastName, ref recIndex);
             }
-            return Edit(nextStudentId);
+            return Edit(nextStudentId, activeOnly, byLastName);
+            //return Edit(nextStudentId, recIndex, activeOnly);
         }
 
         //
@@ -818,7 +839,7 @@ namespace LitProRead.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Edit(StudentFormViewModel studentFormVm, string EditMode)//string dataO)
+        public ActionResult Edit(StudentFormViewModel studentFormVm, bool ActiveOnly)   //string EditMode)//string dataO)
         {
             //string editMode = studentFormVm.
             if (ModelState.IsValid)
@@ -832,6 +853,7 @@ namespace LitProRead.Controllers
 
                         try
                         {
+
                             db.SaveChanges();
 
                             // student comments
@@ -878,6 +900,7 @@ namespace LitProRead.Controllers
  
                         try
                         {
+                            studentFormVm.CurrentStudent.Active = ActiveOnly;
                             db.Students.Add(studentFormVm.CurrentStudent);
                             db.SaveChanges();
 

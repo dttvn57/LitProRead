@@ -60,7 +60,7 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> StudentReports { get; set; }
         //public virtual ICollection<String> StudentReportsStatus { get; set; }
 
-        public double StudentAge { get; private set; }
+        public double? StudentAge { get; private set; }
 
         public List<SelectListItem> StatusList { get; private set; }
         public List<SelectListItem> StudentProgramList { get; private set; }
@@ -92,6 +92,7 @@ namespace LitProRead.ViewModels
 
         public StudentFormViewModel()
         {
+            ByLastName = true;
             Load(-1);
             EditMode = "view";
         }
@@ -105,10 +106,10 @@ namespace LitProRead.ViewModels
 
         }
 
-        public void Load(int id)
+        public void Load(int id, bool activeOnly = true, bool byLastName = true)
         {
             this.Id = id;
-            this.CurrentStudent = GetStudent(id);
+            this.CurrentStudent = GetStudent(id, activeOnly, byLastName);
             if (id > 0 && this.CurrentStudent != null)
             {
                 EditMode = "edit";
@@ -116,7 +117,6 @@ namespace LitProRead.ViewModels
             else
             {
                 RecordsCnt = GetRecordsCnt(true);
-                CurrentRecordIndex = -1;
             }
 
             this.StudentChildrenList = GetStudentChildren(id);
@@ -158,11 +158,13 @@ namespace LitProRead.ViewModels
             this.StudentReports = GetStudentReportList();
         }
 
-        public Student GetStudent(int id)
+        public Student GetStudent(int id, bool activeOnly, bool byLastName)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                Student student = db.Students.Find(id);
+               int recIndex = 0;
+                Student student = db.GetStudent(id, activeOnly, byLastName, ref recIndex);              //Students.Find(id);
+                CurrentRecordIndex = recIndex;
                 if (student == null)
                     return new Student();
                 return student;

@@ -233,7 +233,8 @@ S T U D E N T S
     @*
     <button class="pagingControl" type="button" id="studentPrev"><</button>
     *@
-    <input class="pagingControl" type="text" id="studentPages" style="width:80px" />
+    <input class="pagingControl" type="text" id="studentPages" style="width:30px" />
+    <input class="pagingControl" type="text" id="studentPagesLabel" style="width:80px; background-color:lightgrey" disabled="disabled"  />
 
     <img  id="studentNext" src="~/Images/nextRec.jpg"/>
     <img  id="studentLast" src="~/Images/lastRec.jpg"/>
@@ -298,8 +299,10 @@ S T U D E N T S
             var pageSize = 20;
             //$('ul.sf-menu').superfish();
 
-            ////var pages = $('#RecordsCnt').val() + " Records";
-            ////$('#studentPages').val(pages);
+            $('#studentPages').val(@Html.Raw(Json.Encode(Model.CurrentRecordIndex)));
+
+            var pagesLabel = "of " + $('#RecordsCnt').val() + " Records";
+            $('#studentPagesLabel').val(pagesLabel);
 
             var mode = @Html.Raw(Json.Encode(Model.EditMode)); 
             $('#EditMode').val(mode);
@@ -552,16 +555,17 @@ S T U D E N T S
                     type: 'post',
                     cache: false,
                     // async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                    data: { activeOnly: false},
+                    data: { activeOnly: $('#ActiveOnly').is(':checked') },
                     //contentType: 'application/json; charset=utf-8',
                 }).done(function () {
                     //alert("done");
                 }).complete(function () {
                     //alert("complete");
                 }).success(function (data) {
-                    //alert("success: " + data);
-                    var pages = data.toString() + " Records";
-                    $('#studentPages').val(data);
+                    //alert(data);
+                    //$('#studentPages').val(data);
+                    var pagesLabel = "of " + data + " Records";
+                    $('#studentPagesLabel').val(pagesLabel);
 
                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
@@ -791,7 +795,7 @@ S T U D E N T S
                     type: 'get',
                     cache: false,
                     async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
-                    data: { id: recId },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
+                    data: { id: recId, activeOnly: $('#ActiveOnly').is(':checked'), byLastName: $("#ByLastName").val() },       //currStudentId{ studentvm: m }  ---- $.toDictionary(m, "studentvm"),
                     @*
                          contentType: 'application/json; charset=utf-8',
                        data: { Command: "approve", lastName: last, firstName: first },
@@ -831,6 +835,14 @@ S T U D E N T S
 
             $.fn.populateStudentForm = function (data) {
                 if (data == "") {
+                    var recCnt = @Html.Raw(Json.Encode(Model.RecordsCnt + 1))
+                    $('#studentPages').val(recCnt);
+
+                    $('#studentPages').val(recCnt);
+
+                    var pagesLabel = "of " +  recCnt + " Records";
+                    $('#studentPagesLabel').val(pagesLabel);
+
                     $('#Student-Matching-S').jtable('load', { SID: 0 });//$('#CurrentStudent_ID').val()
                     $('#Student-Children').jtable('load', { studentId: 0 });//$('#CurrentStudent_ID').val()
                     $('#Student-Comments').jtable('load', { studentId: 0 });//$('#CurrentStudent_ID').val()
@@ -962,6 +974,7 @@ S T U D E N T S
                     $('#SelectedStudentReport').val(data);
                 }
                 else {
+                    $('#studentPages').val(data.CurrentRecordIndex);
                     currentStudentId = data.CurrentStudent.ID;
                     $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
                     $('#Student-Children').jtable('load', { studentId: currentStudentId });//$('#CurrentStudent_ID').val()
@@ -1273,6 +1286,53 @@ S T U D E N T S
                 $('#Student-Comments').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
                 $('#Student-FollowUp').jtable('load', { studentId: $('#CurrentStudent_ID').val() });
             }   
+
+            $('#studentPages').keypress(function(event) {
+                if (event.keyCode == 13) {
+                    //alert($('#studentPages').val());
+                    $.ajax({
+                        url: '@Url.Content("~/Student/StudentByRecIndex")',
+                    type: 'get',
+                    cache: false,
+                    async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
+                    data: { recIndex: $('#studentPages').val(), activeOnly: $('#ActiveOnly').is(':checked'), byLastName: $("#ByLastName").val() }, 
+                }).done(function (data) {
+                    // alert('done');
+                    //$("#Student-General").replaceWith(data);
+                }).complete(function () {
+                    // alert("complete");
+                }).success(function (data) {
+                    //alert('success');
+                    //$('#EditMode').val("edit");
+
+                    $.fn.populateStudentForm(data);
+
+                    //synch the search student profiles boxes
+                    var byLastName =  $("#ByLastName").val();
+                    if (byLastName == "true")
+                    {
+                        var name = data.CurrentStudent.LastName + ", " + data.CurrentStudent.FirstName;
+                        $("#StudentListLastName").select2("val", name);
+                        $('#SelectedLastNameId').val(data.CurrentStudent.ID);
+                        $('#SelectedLastName').val(name);
+                    }
+                    else
+                    {
+                        var name = data.CurrentStudent.FirstName + " " + data.CurrentStudent.LastName;
+                        $("#StudentListFirstName").select2("val", name);
+                        $('#SelectedFirstNameId').val(data.CurrentStudent.ID);
+                        $('#SelectedFirstName').val(name);
+                    }
+
+                    // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                    $(".datefield").datepicker();
+                }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
+                    var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
+                    alert("There was an error calling editStudent: " + errorMessage);
+                });
+            }
+                
+            });
 
         });  // $(document).ready()
 
