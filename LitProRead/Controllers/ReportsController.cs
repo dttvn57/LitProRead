@@ -440,9 +440,9 @@ namespace LitProRead.Controllers
                 date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
             }
 
-            //if (reportName == "StudentsMatchHistorybyDateRange")
-            //    return StudentsMatchHistorybyDateRange(reportType, beginDate, endDate);
-            //else
+            if (reportName == "StudentActivePhoneList")
+                return StudentActivePhoneList(reportType);
+            else
             if (reportName == "StudentStatusHistory")
                 return StudentStatusHistory(reportType, beginDate, endDate, statusType);
             else
@@ -739,6 +739,28 @@ namespace LitProRead.Controllers
             }
         }
 
+        public ActionResult StudentActivePhoneList(string reportType)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var datasource = from item in db.Students
+                                 //where item.Active == true
+                                 orderby item.LastName
+                                 select new
+                                 {
+                                     Name = item.LastName + ", " + item.FirstName,
+                                     Address = item.Address1,
+                                     CityStateZip = item.City + ", " + item.State + " " + item.Zip,
+                                     WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
+                                     HomePhone = item.HomeAreaCode + " " + item.HomePhone,
+                                     Active = item.Active,
+                                     ContactPref = item.ContactPref
+                                 };
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                return RunReport(reportType, "StudentActivePhoneList.rdlc", "StudentActivePhoneListDataSet", datasource, null, 11, 8.5, 0.25, 0.25);
+            }
+        }
 
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {
