@@ -6,10 +6,13 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#Student-FollowUp').jtable({
-            title: '',
+            title: 'Follow Up',
             paging: true, //Enable paging
             sorting: true, //Enable sorting
             //defaultSorting: 'FollowUpDate DESC',
+            messages: {
+                addNewRecord: 'Add New Follow Up'
+            },
 
             actions: {
                 listAction: '@Url.Action("GetStudentFollowUps", "Student")',
@@ -34,7 +37,7 @@
                             // I don't want create recrod dialog to popup if there's Student selected. I cant find a good way to do this so I use a workaround
                             // by forcing an exception by referncing a non-existing variable
                             var student = $('#CurrentStudent_ID').val();
-                            if (student == 0) {
+                            if (student == 0 ||  $('#EditMode').val() == "view") {
                                 var dummy = $("#BAC2").select2.val();
                             }
                             else {

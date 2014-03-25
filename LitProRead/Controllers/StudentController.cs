@@ -882,7 +882,7 @@ namespace LitProRead.Controllers
                         //return View("Forms", studentFormVm);
                         //return RedirectToAction("Index", new { Id = studentFormVm.CurrentStudent.ID });  // PartialView("_Student-General-View", studentFormVm);
                     }
-                    else
+                    else if (studentFormVm.EditMode == "add")
                     {
                         // "add"
 
@@ -897,7 +897,7 @@ namespace LitProRead.Controllers
                             return View("Index", studentFormVm);
                         }
 
- 
+
                         try
                         {
                             studentFormVm.CurrentStudent.Active = ActiveOnly;
@@ -924,7 +924,11 @@ namespace LitProRead.Controllers
                             //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
                             //studentFormVm.db.SaveChanges();
                         }
-                   }
+                    }
+                    else
+                    {
+                            return View("Index", studentFormVm);
+                    }
                 }
             }
             return View("Index", studentFormVm);

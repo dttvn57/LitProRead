@@ -53,6 +53,7 @@ S T U D E N T S
           *@
               @Html.HiddenFor(x => Model.CurrentStudent.ID)
               @Html.HiddenFor(x => Model.EditMode)
+              @Html.HiddenFor(x => Model.CurrentRecordIndex)
               @Html.HiddenFor(x => Model.RecordsCnt)
               @Html.HiddenFor(x => Model.ByLastName)
               @Html.HiddenFor(x => Model.SelectedLastName)
@@ -420,11 +421,18 @@ S T U D E N T S
 
                 currentStudentId = e.val;
                 if (currentStudentId > 0) {
-                    $.fn.handleEditRecord(currentStudentId, "");
+                    $.fn.handleEditRecord(currentStudentId, mode);
                     // enable "Edit" button
                     $('#studentEdit').prop('disabled', false);
                     $('#studentDelete').prop('disabled', false);
-                    $('#studentSave').prop('disabled', false);
+                    if (mode == "view")
+                    {
+                        $('#studentSave').prop('disabled', true);
+                    }
+                    else
+                    {
+                        $('#studentSave').prop('disabled', false);
+                    }
                 }
                 //alert("Student Last Name: " + currentStudentId);
                 //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
@@ -490,11 +498,18 @@ S T U D E N T S
                 $("#SelectedFirstNameId").val(id);
 
                 if (currentStudentId > 0) {
-                    $.fn.handleEditRecord(currentStudentId, "");
+                    $.fn.handleEditRecord(currentStudentId, mode);
                     // enable "Edit" button
                     $('#studentEdit').prop('disabled', false);
                     $('#studentDelete').prop('disabled', false);
-                    $('#studentSave').prop('disabled', false);
+                    if (mode == "view")
+                    {
+                        $('#studentSave').prop('disabled', true);
+                    }
+                    else
+                    {
+                        $('#studentSave').prop('disabled', false);
+                    }
 
                 }
                 //alert("Student First Name: " + currentStudentId);
@@ -748,17 +763,21 @@ S T U D E N T S
                     var byLastName =  $("#ByLastName").val();
                     if (byLastName == "true")
                     {
-                        var name = data.CurrentStudent.LastName + ", " + data.CurrentStudent.FirstName;
-                        $("#StudentListLastName").select2("val", name);
+                        // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedLastNameId and of SelectedLastName
                         $('#SelectedLastNameId').val(data.CurrentStudent.ID);
                         $('#SelectedLastName').val(name);
+
+                        var name = data.CurrentStudent.LastName + ", " + data.CurrentStudent.FirstName;
+                        $("#StudentListLastName").select2("val", name);
                     }
                     else
                     {
-                        var name = data.CurrentStudent.FirstName + " " + data.CurrentStudent.LastName;
-                        $("#StudentListFirstName").select2("val", name);
+                        // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedFirstNameId and of SelectedFirstName
                         $('#SelectedFirstNameId').val(data.CurrentStudent.ID);
                         $('#SelectedFirstName').val(name);
+
+                        var name = data.CurrentStudent.FirstName + " " + data.CurrentStudent.LastName;
+                        $("#StudentListFirstName").select2("val", name);
                    }
 
                     // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
@@ -771,7 +790,8 @@ S T U D E N T S
 
 
             $.fn.handleEditRecord = function (recId, mode) {
-                // enable
+                $('#EditMode').val(mode);
+
                 if (mode == "edit")
                 {
                     $("input").prop('disabled', false);
@@ -807,7 +827,7 @@ S T U D E N T S
                     // alert("complete");
                 }).success(function (data) {
                     //alert('success');
-                    $('#EditMode').val("edit");
+                    //$('#EditMode').val(mode);   //"edit");
                     //alert( $('#EditMode').val());
 
                     $.fn.populateStudentForm(data);
@@ -836,10 +856,9 @@ S T U D E N T S
             $.fn.populateStudentForm = function (data) {
                 if (data == "") {
                     var recCnt = @Html.Raw(Json.Encode(Model.RecordsCnt + 1))
-                    $('#studentPages').val(recCnt);
+                    $('#CurrentRecordIndex').val(recCnt);
 
                     $('#studentPages').val(recCnt);
-
                     var pagesLabel = "of " +  recCnt + " Records";
                     $('#studentPagesLabel').val(pagesLabel);
 
@@ -974,6 +993,7 @@ S T U D E N T S
                     $('#SelectedStudentReport').val(data);
                 }
                 else {
+                    $('#CurrentRecordIndex').val(data.CurrentRecordIndex);
                     $('#studentPages').val(data.CurrentRecordIndex);
                     currentStudentId = data.CurrentStudent.ID;
                     $('#Student-Matching-S').jtable('load', { SID: currentStudentId });//$('#CurrentStudent_ID').val()
