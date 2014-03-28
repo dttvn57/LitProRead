@@ -276,7 +276,7 @@ namespace LitProRead.Controllers
                 }
                 else
                 {
-                    List<StudentCommentsViewModel> list = null;
+                    List<StudentChildrenViewModel> list = null;
                     return Json(new { Result = "OK", Records = list, TotalRecordCount = 0 });
                 }
             }

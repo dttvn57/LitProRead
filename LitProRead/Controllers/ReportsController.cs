@@ -440,8 +440,14 @@ namespace LitProRead.Controllers
                 date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
             }
 
+            if (reportName == "StudentPortfolioReport")
+                return StudentPortfolioReport(reportType);
+            else
             if (reportName == "StudentActivePhoneList")
-                return StudentActivePhoneList(reportType);
+                return StudentActivePhoneList(reportType, true);
+            else
+            if (reportName == "StudentInActivePhoneList")
+                return StudentActivePhoneList(reportType, false);
             else
             if (reportName == "StudentStatusHistory")
                 return StudentStatusHistory(reportType, beginDate, endDate, statusType);
@@ -739,12 +745,12 @@ namespace LitProRead.Controllers
             }
         }
 
-        public ActionResult StudentActivePhoneList(string reportType)
+        public ActionResult StudentActivePhoneList(string reportType, bool showActive)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
                 var datasource = from item in db.Students
-                                 //where item.Active == true
+                                 where showActive == false ? item.Active == false : item.Active == true || item.Active == false  
                                  orderby item.LastName
                                  select new
                                  {
@@ -758,7 +764,104 @@ namespace LitProRead.Controllers
                                  };
                 //if (datasource.FirstOrDefault() == null)
                 //    return 
-                return RunReport(reportType, "StudentActivePhoneList.rdlc", "StudentActivePhoneListDataSet", datasource, null, 11, 8.5, 0.25, 0.25);
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("ShowActive", showActive ? "true" : "false"));
+                return RunReport(reportType, "StudentActivePhoneList.rdlc", "StudentActivePhoneListDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        //SELECT Students.FirstName, Students.LastName, [Address1] & " " & [Address2] AS Address, [City] & ", " & [State] & "  " & [Zip] AS CitZip, [HomeAreaCode] & " " & [HomePhone] AS Home, [WorkAreaCode] & " " & [WorkPhone] AS [Work], StudentAssessmentGoals.AssessNextReview, Pairs.TutorFName, Pairs.TutorLName, Pairs.MatchDate, Pairs.DissolveDate
+        //FROM (Students INNER JOIN Pairs ON Students.ID = Pairs.SID) LEFT JOIN StudentAssessmentGoals ON Students.ID = StudentAssessmentGoals.ID
+        //WHERE (((Pairs.DissolveDate) Is Null) AND ((Year([AssessNextReview]))=Year(Now())) AND ((Month([AssessNextReview]))=Month(Now())))
+        //ORDER BY Students.LastName;
+
+        //    // LINQ: simulate a LEFT JOIN
+        //using (LitProReadEntities db = new LitProReadEntities())
+        //{
+        //    var dataSource = from student in db.Students
+        //                        join pair in db.Pairs on student.ID equals pair.SID into grpJoin
+        //                        from studentpair in grpJoin.DefaultIfEmpty()
+        //                        select new { student.FirstName, PetName = (studentpair == null ? String.Empty : studentpair.Name) };
+        //}
+
+        public ActionResult StudentPortfolioReport(string reportType)
+        {
+            int currMonth = DateTime.Now.Month;
+            int currYear = DateTime.Now.Year;
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var list = db.Database.SqlQuery<StudentAssessmentGoalsBO>("SELECT * FROM dbo.StudentAssessmentGoals");
+                List<StudentAssessmentGoalsBO> assessmentGoals = new List<StudentAssessmentGoalsBO>();
+                foreach (var a in  list)
+                {
+                    if (a.AssessNextReview != null && a.AssessNextReview.Value.Year == currYear &&  a.AssessNextReview.Value.Month == currMonth)
+                    {
+                        StudentAssessmentGoalsBO aBO = new StudentAssessmentGoalsBO();
+                        aBO.ID = a.ID;
+                        aBO.AssessDate = a.AssessDate;
+                        aBO.AssessNextReview = a.AssessNextReview;
+
+                        aBO.AssessRoal = a.AssessRoal;
+                        aBO.AssessProgress = a.AssessProgress;
+                        aBO.AssessProof = a.AssessProof;
+                        aBO.AssessSkill = a.AssessSkill;
+                        aBO.AssessFollowUp = a.AssessFollowUp;
+
+                        aBO.DateCreated = a.DateCreated;
+                        aBO.DateModified = a.DateModified;
+                        aBO.LastModifiedBy = a.LastModifiedBy;
+
+                        assessmentGoals.Add(aBO);
+                    }
+                }
+                 //          where AssessNextReview != null ? x.AssessNextReview.Value.Date.Month == currMonth : false
+                   //        select a;
+                    //assessmentGoals.Where(x => x.AssessNextReview != null ? x.AssessNextReview.Value.Date.Month == currMonth : false &&
+                      //                                x.AssessNextReview.Value.Date.Year == currYear);
+//                var temp = assessmentGoals.Where(x => SqlFunctions.DatePart("m", x.AssessNextReview) == DateTime.Now.Month);
+
+                var dataSource = from student in db.Students
+                                 join pair in db.Pairs on student.ID equals pair.SID into studentPairGrp
+                                 from studentpair in studentPairGrp
+                                 where studentpair.DissolveDate != null
+                                 join tutor in db.Tutors on studentpair.TID equals tutor.ID
+                                 select new
+                                 {
+                                     SID = studentpair.SID,
+                                     StudentName = student.LastName + ", " + student.FirstName,
+                                     StudentAddress = student.Address1 + " " + student.Address2,
+                                     StudentCityStateZip = student.City + ", " + student.State + " " + student.Zip,
+                                     StudentWorkPhone = student.WorkAreaCode + " " + student.WorkPhone,
+                                     StudentHomePhone = student.HomeAreaCode + " " + student.HomePhone,
+
+                                     TutorName = tutor.LastName + ", " + tutor.FirstName,
+                                     MatchDate = studentpair.MatchDate,
+                                     DissolveDate = studentpair.DissolveDate
+                                 };
+
+                var moddataSource = from assesessment in assessmentGoals
+                                    join item in dataSource on assesessment.ID equals item.SID
+                                    orderby (item.StudentName)
+
+
+
+                                    select new {
+                                        StudentName = item.StudentName,
+                                        StudentAddress = item.StudentAddress,
+                                        StudentCityStateZip = item.StudentCityStateZip,
+                                        StudentWorkPhone = item.StudentWorkPhone,
+                                        StudentHomePhone = item.StudentHomePhone,
+                                        TutorName = item.TutorName,
+                                        MatchDate = item.MatchDate,
+                                        DissolveDate = item.DissolveDate,
+                                    };
+                var portfolio = moddataSource.GroupBy(a => a.StudentName).Select(g => g.First());
+
+                                 //where studentpair.DissolveDate != null;
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                //paramList.Add(new ReportParameter("ShowActive", showActive ? "true" : "false"));
+                return RunReport(reportType, "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", portfolio, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
 

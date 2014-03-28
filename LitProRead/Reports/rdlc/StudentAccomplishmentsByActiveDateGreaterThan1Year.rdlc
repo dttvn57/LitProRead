@@ -590,9 +590,9 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!StudentActive.Value</Value>
+                              <Value>=IIf(Fields!StudentActive.Value, Chr(82), Chr(163))</Value>
                               <Style>
-                                <FontFamily>Tahoma</FontFamily>
+                                <FontFamily>Wingdings 2</FontFamily>
                                 <Color>#4d4d4d</Color>
                               </Style>
                             </TextRun>
@@ -612,6 +612,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -1383,7 +1384,6 @@
           </Style>
         </Textbox>
         <Line Name="Line3">
-          <Top>0in</Top>
           <Height>0in</Height>
           <Width>9.79167in</Width>
           <ZIndex>2</ZIndex>

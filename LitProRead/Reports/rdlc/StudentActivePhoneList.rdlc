@@ -468,7 +468,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -627,7 +626,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Select Phone List</Value>
+                <Value>=IIf(Parameters!ShowActive.Value.Equals("true"), "Select Phone List", "Inactive Student Phone List")</Value>
                 <Style>
                   <FontFamily>Times New Roman</FontFamily>
                   <FontSize>24pt</FontSize>
@@ -641,7 +640,7 @@
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Left>0.14458in</Left>
         <Height>0.39583in</Height>
-        <Width>3.19792in</Width>
+        <Width>5.51042in</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -795,6 +794,12 @@
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="ShowActive">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>54900668-7f3b-4262-aa93-3f6e7b8daee8</rd:ReportID>
 </Report>
