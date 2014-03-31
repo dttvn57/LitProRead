@@ -855,13 +855,14 @@ namespace LitProRead.Controllers
                                         TutorName = item.TutorName,
                                         MatchDate = item.MatchDate,
                                         DissolveDate = item.DissolveDate,
+                                        AssessNextReview = assesessment.AssessNextReview
                                     };
                 var portfolio = moddataSource.GroupBy(a => a.StudentName).Select(g => g.First());
 
                                  //where studentpair.DissolveDate != null;
                 List<ReportParameter> paramList = new List<ReportParameter>();
                 //paramList.Add(new ReportParameter("ShowActive", showActive ? "true" : "false"));
-                return RunReport(reportType, "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", portfolio, paramList, 11, 8.5, 0.25, 0.25);
+                return RunReport(reportType, "StudentPortfolioReport.rdlc", "StudentPortfolioReportDataSet", portfolio, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
 

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="StudentPortfolioReportDataSet" targetNamespace="http://tempuri.org/StudentPortfolioReportDataSet.xsd" xmlns:mstns="http://tempuri.org/StudentPortfolioReportDataSet.xsd" xmlns="http://tempuri.org/StudentPortfolioReportDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="StudentPortfolioReportDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="StudentPortfolioReportDataSet" msprop:Generator_UserDSName="StudentPortfolioReportDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="StudentPortfolioReportDataTable" msprop:Generator_TableClassName="StudentPortfolioReportDataTableDataTable" msprop:Generator_TableVarName="tableStudentPortfolioReportDataTable" msprop:Generator_TablePropName="StudentPortfolioReportDataTable" msprop:Generator_RowDeletingName="StudentPortfolioReportDataTableRowDeleting" msprop:Generator_RowChangingName="StudentPortfolioReportDataTableRowChanging" msprop:Generator_RowEvHandlerName="StudentPortfolioReportDataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="StudentPortfolioReportDataTableRowDeleted" msprop:Generator_UserTableName="StudentPortfolioReportDataTable" msprop:Generator_RowChangedName="StudentPortfolioReportDataTableRowChanged" msprop:Generator_RowEvArgName="StudentPortfolioReportDataTableRowChangeEvent" msprop:Generator_RowClassName="StudentPortfolioReportDataTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="StudentName" msprop:Generator_ColumnVarNameInTable="columnStudentName" msprop:Generator_ColumnPropNameInRow="StudentName" msprop:Generator_ColumnPropNameInTable="StudentNameColumn" msprop:Generator_UserColumnName="StudentName" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentAddress" msprop:Generator_ColumnVarNameInTable="columnStudentAddress" msprop:Generator_ColumnPropNameInRow="StudentAddress" msprop:Generator_ColumnPropNameInTable="StudentAddressColumn" msprop:Generator_UserColumnName="StudentAddress" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentCityStateZip" msprop:Generator_ColumnVarNameInTable="columnStudentCityStateZip" msprop:Generator_ColumnPropNameInRow="StudentCityStateZip" msprop:Generator_ColumnPropNameInTable="StudentCityStateZipColumn" msprop:Generator_UserColumnName="StudentCityStateZip" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentWorkPhone" msprop:Generator_ColumnVarNameInTable="columnStudentWorkPhone" msprop:Generator_ColumnPropNameInRow="StudentWorkPhone" msprop:Generator_ColumnPropNameInTable="StudentWorkPhoneColumn" msprop:Generator_UserColumnName="StudentWorkPhone" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentHomePhone" msprop:Generator_ColumnVarNameInTable="columnStudentHomePhone" msprop:Generator_ColumnPropNameInRow="StudentHomePhone" msprop:Generator_ColumnPropNameInTable="StudentHomePhoneColumn" msprop:Generator_UserColumnName="StudentHomePhone" type="xs:string" minOccurs="0" />
+              <xs:element name="TutorName" msprop:Generator_ColumnVarNameInTable="columnTutorName" msprop:Generator_ColumnPropNameInRow="TutorName" msprop:Generator_ColumnPropNameInTable="TutorNameColumn" msprop:Generator_UserColumnName="TutorName" type="xs:string" minOccurs="0" />
+              <xs:element name="MatchDate" msprop:Generator_ColumnVarNameInTable="columnMatchDate" msprop:Generator_ColumnPropNameInRow="MatchDate" msprop:Generator_ColumnPropNameInTable="MatchDateColumn" msprop:Generator_UserColumnName="MatchDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DissolveDate" msprop:Generator_ColumnVarNameInTable="columnDissolveDate" msprop:Generator_ColumnPropNameInRow="DissolveDate" msprop:Generator_ColumnPropNameInTable="DissolveDateColumn" msprop:Generator_UserColumnName="DissolveDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="AssessNextReview" msprop:Generator_ColumnVarNameInTable="columnAssessNextReview" msprop:Generator_ColumnPropNameInRow="AssessNextReview" msprop:Generator_ColumnPropNameInTable="AssessNextReviewColumn" msprop:Generator_UserColumnName="AssessNextReview" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
