@@ -8,6 +8,27 @@ namespace LitProRead.Models
 {
     public static class DbHelper
     {
+        public static List<SelectListItem> GetChosenMonthList(string selected = "")
+        {
+            List<string> items = new List<string>();
+            items.Add("Last Month");
+            items.Add("This Month");
+            items.Add("Next Month");
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in items)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = item.Trim(),
+                    Value = item.Trim(),
+                    //Selected = selectedValue == item.Trim() ? true : false
+                });
+
+            }
+            return list;
+        }
+
         // SELECT DISTINCTROW MailCode.MailCode, MailCode.Description FROM MailCode ORDER BY MailCode.MailCode; 
         public static List<SelectListItem> GetMailCodeList(string[] selectedValues)
         {

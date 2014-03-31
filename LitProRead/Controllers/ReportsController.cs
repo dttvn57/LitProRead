@@ -11,6 +11,7 @@ using System.Data;
 using System.Data.Objects.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -440,6 +441,13 @@ namespace LitProRead.Controllers
                 date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
             }
 
+            //if (reportName == "StudentBday")
+            //{
+            //    string chosenMonth = "Last Month";
+            //    string chosenStatus = "Active";
+            //    return StudentBDay(reportType, chosenMonth, chosenStatus);
+            //}
+            //else
             if (reportName == "StudentPortfolioReport")
                 return StudentPortfolioReport(reportType);
             else
@@ -864,6 +872,90 @@ namespace LitProRead.Controllers
                 //paramList.Add(new ReportParameter("ShowActive", showActive ? "true" : "false"));
                 return RunReport(reportType, "StudentPortfolioReport.rdlc", "StudentPortfolioReportDataSet", portfolio, paramList, 11, 8.5, 0.25, 0.25);
             }
+        }
+
+        public ActionResult StudentBDay(string paramsVal)
+        {
+            string reportType = "";
+            string chosenMonth = "";
+            string chosenStatus = "";
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: report type (PDF, EXCEL, WORD, or IMAGE)
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd: report name
+                string[] s2 = str[1].Split('=');
+                chosenMonth = s2[1];
+
+                // 2nd: report name
+                string[] s3 = str[2].Split('=');
+                chosenStatus = s3[1];
+                if (chosenStatus.Length == 0)
+                {
+                    StringBuilder temp = new StringBuilder();
+                    var vm = new ReportsViewModel();
+                    var statusList = vm.ChosenStatusList;
+                    int cnt = 0;
+                    int listCnt = statusList.Count-1;
+                    foreach (var s in statusList)
+                    {
+                        string tempS = s.Text.ToString();
+                        if (tempS != "")
+                        {
+                            temp.Append("'");
+                            temp.Append(tempS);
+                            temp.Append("'");
+                            if (cnt++ < listCnt)
+                                temp.Append(",");
+                        }
+                    }
+                    chosenStatus = temp.ToString();
+                }
+            }
+
+            int currMonth = DateTime.Now.Month;
+            string currMonthStr = DateTime.Now.ToString("MMM");
+            if (chosenMonth.Equals("Last Month", StringComparison.OrdinalIgnoreCase))
+            {
+                currMonth = currMonth <= 1 ? 1 : currMonth - 1;
+                DateTime temp = new DateTime(DateTime.Now.Year, currMonth, 1);
+                currMonthStr = temp.ToString("MMM");
+            }
+            else
+            if (chosenMonth.Equals("Next Month", StringComparison.OrdinalIgnoreCase))
+            {
+                currMonth = currMonth >= 12 ? 12 : currMonth + 1;
+                DateTime temp = new DateTime(DateTime.Now.Year, currMonth, 1);
+                currMonthStr = temp.ToString("MMM");
+            }
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var dataSource = from student in db.Students
+                                 where chosenStatus.Contains(student.Status) && student.DOB.Value.Month == currMonth
+                                 select new {
+                                     DOB = student.DOB,
+                                     Age = System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", student.DOB, DateTime.Now) / 12,
+                                     //Age = Convert.ToString(System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", student.DOB, DateTime.Now) / 12),
+                                     Name = student.LastName + ", " + student.FirstName,
+                                     Address = student.Address1,
+                                     City = student.City,
+                                     State = student.State,
+                                     Zip = student.Zip,
+                                     WorkPhone = student.WorkAreaCode + " " + student.WorkPhone,
+                                     HomePhone = student.HomeAreaCode + " " + student.HomePhone,
+                                     Status = student.Status
+                                 };
+
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("ChosenMonth", currMonthStr));
+                paramList.Add(new ReportParameter("ChosenStatus", chosenStatus));
+                return RunReport(reportType, "StudentBday.rdlc", "StudentBdayDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+           }
         }
 
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)

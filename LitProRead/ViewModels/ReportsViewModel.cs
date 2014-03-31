@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LitProRead.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -13,8 +14,38 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> StudentsReport { get; set; }
         //public List<SelectListItem> StudentsReportStatus { get; set; }
 
+        public List<SelectListItem> ChosenMonthList { get; set; }
+        public List<SelectListItem> ChosenStatusList { get; set; }
+
         public ReportsViewModel()
         {
+            ChosenMonthList = GetChosenMonthList();
+            ChosenStatusList = GetChosenStatusList();
+        }
+
+        public List<SelectListItem> GetChosenMonthList(string selected = "")
+        {
+            return DbHelper.GetChosenMonthList();
+        }
+
+        public List<SelectListItem> GetChosenStatusList(string selected = "")
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var status = db.Database.SqlQuery<string>("SELECT Status FROM dbo.Status").ToList();
+
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var item in status)
+                {
+                    list.Add(new SelectListItem
+                    {
+                        Text = item.Trim(),
+                        Value = item.Trim(),
+                        //Selected = selectedValue == item.Trim() ? true : false
+                    });
+                }
+                return list;
+            }
         }
 
         public static List<SelectListItem> GetStudentsReportList(string selected = "")
