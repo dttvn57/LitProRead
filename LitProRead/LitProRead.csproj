@@ -153,6 +153,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BusinessObjects\StudentStatsBO.cs" />
     <Compile Include="BusinessObjects\StudentAccomplishmentBO.cs" />
     <Compile Include="Controllers\CLLSController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -564,6 +565,7 @@
     <Compile Include="Models\StudentAccomplishment.cs">
       <DependentUpon>LitProReadModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="BusinessObjects\StudentAssessmentGoalsBO.cs" />
     <Compile Include="Models\StudentChildren.cs">
       <DependentUpon>LitProReadModel.tt</DependentUpon>
     </Compile>
@@ -661,6 +663,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSets\StudentActivePhoneListDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentActivePhoneListDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\StudentBdayDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentBdayDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSets\StudentDataSet.cs">
       <DependentUpon>StudentDataSet.xsd</DependentUpon>
     </Compile>
@@ -668,6 +680,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\StudentPortfolioReportDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentPortfolioReportDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.cs">
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
@@ -677,6 +694,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\StudentStatsDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentStatsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\DataSets\StudentStatusHistoryDataSet.Designer.cs">
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
@@ -772,7 +794,11 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>LitProReadModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\firstRec.jpg" />
+    <Content Include="Images\lastRec.jpg" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\nextRec.jpg" />
+    <Content Include="Images\prevRec.jpg" />
     <Content Include="Models\LitProReadModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LitProReadModel.edmx</DependentUpon>
@@ -834,6 +860,28 @@
     <Content Include="Reports\DataSets\StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xss">
       <DependentUpon>StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\StudentActivePhoneListDataSet.xsc">
+      <DependentUpon>StudentActivePhoneListDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentActivePhoneListDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentActivePhoneListDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentActivePhoneListDataSet.xss">
+      <DependentUpon>StudentActivePhoneListDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSets\StudentBdayDataSet.xsc">
+      <DependentUpon>StudentBdayDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentBdayDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentBdayDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentBdayDataSet.xss">
+      <DependentUpon>StudentBdayDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSets\StudentDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -845,10 +893,25 @@
     <EmbeddedResource Include="Reports\rdlc\AuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentAccomplishmentsByActiveDateGreaterThan1Year.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentActivePhoneList.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentBday.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentPortfolioReport.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentsMatchHistorybyDateRange.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentStats.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
     <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsc">
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSets\StudentPortfolioReportDataSet.xsc">
+      <DependentUpon>StudentPortfolioReportDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentPortfolioReportDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentPortfolioReportDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentPortfolioReportDataSet.xss">
+      <DependentUpon>StudentPortfolioReportDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsd">
       <SubType>Designer</SubType>
@@ -866,6 +929,17 @@
     </Content>
     <Content Include="Reports\DataSets\StudentWaitTimeDataSet.xsc">
       <DependentUpon>StudentWaitTimeDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSets\StudentStatsDataSet.xsc">
+      <DependentUpon>StudentStatsDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentStatsDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentStatsDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentStatsDataSet.xss">
+      <DependentUpon>StudentStatsDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Reports\DataSets\StudentStatusHistoryDataSet.xsd">
       <SubType>Designer</SubType>

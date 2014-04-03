@@ -448,6 +448,9 @@ namespace LitProRead.Controllers
             //    return StudentBDay(reportType, chosenMonth, chosenStatus);
             //}
             //else
+            if (reportName == "StudentStats")
+                return StudentStats(reportType);
+            else
             if (reportName == "StudentPortfolioReport")
                 return StudentPortfolioReport(reportType);
             else
@@ -888,33 +891,34 @@ namespace LitProRead.Controllers
                 string[] s1 = str[0].Split('=');
                 reportType = s1[1];
 
-                // 2nd: report name
+                // 2nd: month
                 string[] s2 = str[1].Split('=');
                 chosenMonth = s2[1];
 
-                // 2nd: report name
+                // 3rd: status
                 string[] s3 = str[2].Split('=');
                 chosenStatus = s3[1];
                 if (chosenStatus.Length == 0)
                 {
-                    StringBuilder temp = new StringBuilder();
-                    var vm = new ReportsViewModel();
-                    var statusList = vm.ChosenStatusList;
-                    int cnt = 0;
-                    int listCnt = statusList.Count-1;
-                    foreach (var s in statusList)
-                    {
-                        string tempS = s.Text.ToString();
-                        if (tempS != "")
-                        {
-                            temp.Append("'");
-                            temp.Append(tempS);
-                            temp.Append("'");
-                            if (cnt++ < listCnt)
-                                temp.Append(",");
-                        }
-                    }
-                    chosenStatus = temp.ToString();
+                    chosenStatus = StatusString();
+                    //StringBuilder temp = new StringBuilder();
+                    //var vm = new ReportsViewModel();
+                    //var statusList = vm.ChosenStatusList;
+                    //int cnt = 0;
+                    //int listCnt = statusList.Count-1;
+                    //foreach (var s in statusList)
+                    //{
+                    //    string tempS = s.Text.ToString();
+                    //    if (tempS != "")
+                    //    {
+                    //        temp.Append("'");
+                    //        temp.Append(tempS);
+                    //        temp.Append("'");
+                    //        if (cnt++ < listCnt)
+                    //            temp.Append(",");
+                    //    }
+                    //}
+                    //chosenStatus = temp.ToString();
                 }
             }
 
@@ -955,8 +959,169 @@ namespace LitProRead.Controllers
                 paramList.Add(new ReportParameter("ChosenMonth", currMonthStr));
                 paramList.Add(new ReportParameter("ChosenStatus", chosenStatus));
                 return RunReport(reportType, "StudentBday.rdlc", "StudentBdayDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
-           }
+            }
         }
+
+        public ActionResult StudentStats(string paramsVal)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                string reportType = "";
+                string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();   // = "4/1/2010"; 
+                string endDate = DateTime.Now.ToShortDateString();     // = "4/30/2014";
+                string status = "";
+
+                if (paramsVal != null)
+                {
+                    char[] sep = { '!' };
+                    string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                    // 1st: report type (PDF, EXCEL, WORD, or IMAGE)
+                    if (str.Count() > 0)        // not all reports have a start date
+                    {
+                        string[] s1 = str[0].Split('=');
+                        reportType = s1[1];
+                    }
+
+                    // 2nd: begin date
+                    if (str.Count() > 1)        // not all reports have a start date
+                    {
+                        string[] s2 = str[1].Split('=');
+                        beginDate = s2[1];
+                    }
+
+                    // 3rd: end date
+                    if (str.Count() > 2)        // not all reports have a start date
+                    {
+                        string[] s3 = str[2].Split('=');
+                        endDate = s3[1];
+                    }
+
+                    // 4th: status
+                    if (str.Count() > 3)        // not all reports have a start date
+                    {
+                        string[] s4 = str[3].Split('=');
+                        status = s4[1];
+                    }
+                }
+
+                if (reportType.Length == 0)
+                {
+                    reportType = "PDF";
+                }
+
+                DateTime date1;
+                if (beginDate != "")
+                {
+                    date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+                }
+                else
+                {
+                    date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    beginDate = date1.ToShortDateString();
+                }
+
+                DateTime date2;
+                if (endDate != "")
+                {
+                    date2 = DateTime.ParseExact(endDate, @"M/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+                }
+                else
+                {
+                    int currMonth = DateTime.Now.Month;
+                    int day = 31;
+                    switch (currMonth)
+                    {
+                        case 2:
+                            day = 28;
+                            break;
+                        case 4:
+                        case 6:
+                        case 10:
+                        case 12:
+                            day = 30;
+                            break;
+                    }
+                    date2 = new DateTime(DateTime.Now.Year, currMonth, day);
+                    endDate = date2.ToShortDateString();
+                }
+
+                if (status.Length == 0)
+                {
+                    status = StatusString();
+                }
+
+                var query = from student in db.Students
+                            where status.Contains(student.Status) && student.FirstActive >= date1 && student.FirstActive <= date2 
+                            select student;
+
+                StudentStatsBO bo = new StudentStatsBO();
+                bo.BeginDate = beginDate;
+                bo.EndDate = endDate;
+                bo.Status = status;
+
+                //*** logic is in Access frmStudentStatsSelection (open any code and search for "CreateStudentStatsTable")
+                bo.Count_Asian = query.Count(n => n.Ethnicity == "Asian");
+                bo.Count_Black = query.Count(n => n.Ethnicity == "Black");
+                bo.Count_Latino = query.Count(n => n.Ethnicity == "Hispanic");
+                bo.Count_NativeAmerican = query.Count(n => n.Ethnicity == "Native American");
+                bo.Count_PacificIslander = query.Count(n => n.Ethnicity == "Pacific Islander");
+                bo.Count_White = query.Count(n => n.Ethnicity == "White");
+                bo.Count_Other = query.Count(n => n.Ethnicity == "Other");
+                bo.Count_Unknown = query.Count(n => n.Ethnicity == null);
+                bo.Total_Ethnicity_Count = bo.Count_Asian + bo.Count_Black + bo.Count_Latino + bo.Count_NativeAmerican + bo.Count_PacificIslander + bo.Count_White + bo.Count_Other + bo.Count_Unknown;
+
+                //bo.Count_Age_Unknown = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 0 &&
+                //                                        (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 15);
+                //bo.Count_0_15 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) < 16);
+                //bo.Count_16_19 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 16 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 19);
+                //bo.Count_20_29 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 20 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 29);
+                //bo.Count_30_39 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 30 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 39);
+                //bo.Count_40_49 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 40 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 49);
+                //bo.Count_50_59 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 50 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 59);
+                //bo.Count_60_69 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 60 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 69);
+                //bo.Count_70 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 70);
+
+                bo.Count_Age_Unknown = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) == null);
+                bo.Count_0_15 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) < 16));
+                bo.Count_16_19 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 16 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 19);
+                bo.Count_20_29 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 20 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 29);
+                bo.Count_30_39 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 30 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 39);
+                bo.Count_40_49 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 40 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 49);
+                bo.Count_50_59 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 50 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 59);
+                bo.Count_60_69 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 60 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 69);
+                bo.Count_70 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 70);
+                bo.Total_Age_Count = bo.Count_Age_Unknown + bo.Count_0_15 + bo.Count_16_19 + bo.Count_20_29 + bo.Count_30_39 + bo.Count_40_49 + bo.Count_50_59 + bo.Count_60_69 + bo.Count_70;
+  
+                bo.Count_Male = query.Count(n => n.Gender == "Male");
+                bo.Count_Female = query.Count(n => n.Gender == "Female");
+                bo.Count_Gender_Unknown = query.Count(n => n.Gender == null);
+                bo.Total_Gender_Count = bo.Count_Male + bo.Count_Female + bo.Count_Gender_Unknown;
+
+                bo.Count_FirstActiveDateIsNull = query.Count(n => n.FirstActive == null);
+
+                List<StudentStatsBO> list = new List<StudentStatsBO>();
+                list.Add(bo);
+
+                //List < ReportParameter > paramList = new List<ReportParameter>();
+                //paramList.Add(new ReportParameter("BeginDate", beginDate));
+                //paramList.Add(new ReportParameter("EndDate", endDate));
+                return RunReport(reportType, "StudentStats.rdlc", "StudentStatsDataSet", list, null, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
 
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {
@@ -1016,6 +1181,29 @@ namespace LitProRead.Controllers
 
                 return File(renderedBytes, mimeType);
             }
+        }
+
+        private string StatusString()
+        {
+            StringBuilder temp = new StringBuilder();
+            var vm = new ReportsViewModel();
+            var statusList = vm.ChosenStatusList;
+            int cnt = 0;
+            int listCnt = statusList.Count - 1;
+            foreach (var s in statusList)
+            {
+                string tempS = s.Text.ToString();
+                if (tempS != "")
+                {
+                    temp.Append("'");
+                    temp.Append(tempS);
+                    temp.Append("'");
+                    if (cnt++ < listCnt)
+                        temp.Append(",");
+                }
+            }
+            return temp.ToString();
+        
         }
     }
 }

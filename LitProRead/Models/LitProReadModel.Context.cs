@@ -11,6 +11,7 @@ using LitProRead.Extensions;
 
 namespace LitProRead.Models
 {
+    using LitProRead.BusinessObjects;
     using LitProRead.ViewModels;
     using System;
     using System.Collections.Generic;
@@ -505,7 +506,122 @@ namespace LitProRead.Models
         }
 
 
+        public List<StudentStatsBO> GetStudentStats(string beginDate, string endDate, string status)
+        {
+            DateTime date1;
+            if (beginDate != "")
+            {
+                date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+            }
+            else
+            {
+                date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
 
+            DateTime date2;
+            if (endDate != "")
+            {
+                date2 = DateTime.ParseExact(endDate, @"M/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+            }
+            else
+            {
+                int currMonth = DateTime.Now.Month;
+                int day = 31;
+                switch(currMonth)
+                {
+                    case 2:
+                        day = 28;
+                        break;
+                    case 4:
+                    case 6:
+                    case 10:
+                    case 12:
+                        day = 30;
+                        break;
+                }
+                date2 = new DateTime(DateTime.Now.Year, currMonth, day);
+            }
+
+            DateTime today = DateTime.Today;
+
+            int ubUnknown = 15;
+            int lbUnknown = 1;
+            DateTime minUnknown = today.AddYears(-ubUnknown);
+            DateTime maxUnknown = today.AddYears(-lbUnknown);
+
+            int ub10 = 19;
+            int lb10 = 16;
+            DateTime min10 = today.AddYears(-ub10);
+            DateTime max10 = today.AddYears(-lb10);
+
+            int ub20 = 29;
+            int lb20 = 20;
+            DateTime min20 = today.AddYears(-ub20);
+            DateTime max20 = today.AddYears(-lb20);
+
+            int ub30 = 39;
+            int lb30 = 30;
+            DateTime min30 = today.AddYears(-ub30);
+            DateTime max30 = today.AddYears(-lb30);
+
+            int ub40 = 49;
+            int lb40 = 40;
+            DateTime min40 = today.AddYears(-ub40); //12/24/1964
+            DateTime max40 = today.AddYears(-lb40); //12/24/1973
+
+            int ub50 = 59;
+            int lb50 = 50;
+            DateTime min50 = today.AddYears(-ub50);
+            DateTime max50 = today.AddYears(-lb50);
+
+            int ub60 = 69;
+            int lb60 = 60;
+            DateTime min60 = today.AddYears(-ub60);
+            DateTime max60 = today.AddYears(-lb60);
+
+            int ub70 = 999;
+            int lb70 = 70;
+            DateTime min70 = today.AddYears(-ub70);
+            DateTime max70 = today.AddYears(-lb70);
+
+            var query = from student in Students
+                       //where status.Contains(student.Status)
+                       //let Age = System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", student.DOB, DateTime.Now) / 12
+                       select new
+                       {
+                           Count_Asian = Students.Count(n => n.Ethnicity == "Asian" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           Count_Black = Students.Count(n => n.Ethnicity == "Black" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           Count_Latino = Students.Count(n => n.Ethnicity == "Hispanic" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           Count_NativeAmerican = Students.Count(n => n.Ethnicity == "Native American" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           Count_PacificIslander = Students.Count(n => n.Ethnicity == "Pacific Islander" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           Count_White = Students.Count(n => n.Ethnicity == "White" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           Count_Other = Students.Count(n => n.Ethnicity == "Other" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           Count_Unknown = Students.Count(n => n.Ethnicity == "Unknown" && n.FirstActive >= date1 && n.FirstActive <= date2),
+
+                           //Count_Age_Unknown = Students.Count(n => n.DOB != null && n.DOB >= minUnknown && n.DOB <= maxUnknown
+                           //                                  && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           ////Count_16_19 = Students.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 16 && (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 19),
+                           //Count_20_29 = Students.Count(n => n.DOB != null && n.DOB >= min20 && n.DOB <= max20
+                           //                               && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           //Count_30_39 = Students.Count(n => n.DOB != null && n.DOB >= min30 && n.DOB <= max30
+                           //                               && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           //Count_40_49 = Students.Count(n => n.DOB != null && n.DOB >= min40 && n.DOB <= max40
+                           //                              && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           //Count_50_59 = Students.Count(n => n.DOB != null && n.DOB >= min50 && n.DOB <= max50
+                           //                               && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           //Count_60_69 = Students.Count(n => n.DOB != null && n.DOB >= min60 && n.DOB <= max60
+                           //                               && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           //Count_70 = Students.Count(n => n.DOB != null && n.DOB >= min70 && n.DOB <= max70
+                           //                                  && n.FirstActive >= date1 && n.FirstActive <= date2),
+
+                           //Count_Male = Students.Count(n => n.Gender == "Male" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           //Count_Female = Students.Count(n => n.Gender == "Female" && n.FirstActive >= date1 && n.FirstActive <= date2),
+                           //Count_Gender_Unknown = Students.Count(n => n.Gender == null && n.FirstActive >= date1 && n.FirstActive <= date2),
+                       };
+
+            List<StudentStatsBO> list = new List<StudentStatsBO>();
+            return list;
+        }
 
         //Our search term
         private IQueryable<Tutor> GetTutorsQuery(string searchTerm, bool byLastName)
