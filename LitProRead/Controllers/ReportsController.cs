@@ -448,6 +448,9 @@ namespace LitProRead.Controllers
             //    return StudentBDay(reportType, chosenMonth, chosenStatus);
             //}
             //else
+            if (reportName == "StudentsActiveDateMoreThan1YearWithHoursMet")
+                return StudentsActiveDateMoreThan1YearWithHoursMet(reportType, date1, date2);
+            else
             if (reportName == "StudentStats")
                 return StudentStats(reportType);
             else
@@ -534,7 +537,7 @@ namespace LitProRead.Controllers
                                  where student.Active == true &&
                                        student.ActiveDate >= beginDate &&
                                        student.ActiveDate <= endDate &&
-                                       System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now) > 365 &&
+                                       System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now) >= 365 &&
                                        studentAccomplishments.AccomplishDate != null
                                  //let datespan = student.ActiveDate != null ? ConvertToTimeSpanString(student.ActiveDate) : "0 days"
                                  //group new { student, studentAccomplishments } by new { student.ID } into gp
@@ -1122,6 +1125,47 @@ namespace LitProRead.Controllers
             }
         }
 
+        //SELECT Students.ActiveDate, DateDiff("d",[ActiveDate],Now()) AS DaysofSvc, 
+        //          YMD([ActiveDate],Now()) AS MyDate, 
+        //          Students.FirstName, Students.LastName, Students.Active, 
+        //          Pairs.TutorFName, Pairs.TutorLName, PairHours.DateMet, PairHours.HoursMet, PairHours.Activity
+        //FROM Students INNER JOIN (Pairs INNER JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
+        //WHERE (((Students.ActiveDate) Between Forms!frmDateSelection!BeginDate And Forms!frmDateSelection!EndDate) 
+        //  And ((DateDiff("d",[ActiveDate],Now()))>=365) And ((Students.Active)=True));
+        public ActionResult StudentsActiveDateMoreThan1YearWithHoursMet(string reportType, DateTime beginDate, DateTime endDate)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var dataSource = from student in db.Students
+                                 where student.Active == true &&
+                                     student.ActiveDate >= beginDate &&
+                                     student.ActiveDate <= endDate &&
+                                     System.Data.Objects.SqlClient.SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now) >= 365
+
+                                     join pair in db.Pairs on student.ID equals pair.SID into studentPairGrp
+
+                                         from studentpair in studentPairGrp
+                                            join tutor in db.Tutors on studentpair.TID equals tutor.ID
+                                            join pairHour in db.PairHours on studentpair.UniqID equals pairHour.PairHours into studentPairPairHourGrp
+
+                                            from studentPairPairHour in studentPairPairHourGrp
+                                            select new
+                                            {
+                                                ActiveDate = student.ActiveDate,
+                                                DaysofSvc = SqlFunctions.DateDiff("day", student.ActiveDate, DateTime.Now),
+                                                StudentName = student.LastName + ", " + student.FirstName,
+                                                TutorName = tutor.LastName + ", " + tutor.FirstName,
+                                                DateMet = studentPairPairHour.DateMet,
+                                                HoursMet = studentPairPairHour.HoursMet,
+                                                Activity = studentPairPairHour.Activity
+                                            };
+
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", beginDate.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", endDate.ToShortDateString()));
+                return RunReport(reportType, "StudentsActiveDateMoreThan1YearWithHoursMet.rdlc", "StudentsActiveDateMoreThan1YearWithHoursMetDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
 
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {

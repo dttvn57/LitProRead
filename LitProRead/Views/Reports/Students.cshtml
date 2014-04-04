@@ -97,6 +97,7 @@
             }
 
             if (selectedStudentReport == 'StudentAccomplishmentsByActiveDateGreaterThan1Year' ||
+                selectedStudentReport == 'StudentsActiveDateMoreThan1YearWithHoursMet' ||
                 selectedStudentReport == 'StudentsMatchHistorybyDateRange' ||
                 selectedStudentReport == 'StudentStatusHistory' ||
                 selectedStudentReport == 'StudentStats' ||
@@ -125,7 +126,7 @@
 
         $('#runStudentsReports').click(function (value) {
             //var selectedStudentReport = $("#SelectedStudentsReport").val();
-            var reportType = "PDF";
+            var reportType = "EXCEL";
             var reportName = $("#SelectedStudentsReport").val();
             //var studentId = 0;
 
@@ -135,7 +136,7 @@
                 var status = $("#ChosenStatusList").val();
                 //url = ' Url.Action( "StudentBday", "Reports", new {reportType="PDF", chosenMonth=$("#ChosenMonthList").val(), chosenStatus=$("#ChosenStatusList").val()})';        //{ paramsVal = "_paramsVal_" })';
                 url = url.replace("destURL", reportName);
-                url = url.replace("_paramsVal_", "reportType=" + "PDF" + '!' + "chosenMonth=" + $("#ChosenMonthList").val() + '!' + "chosenStatus=" + $("#ChosenStatusList").val());
+                url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "chosenMonth=" + $("#ChosenMonthList").val() + '!' + "chosenStatus=" + $("#ChosenStatusList").val());
             }
             else 
             if (reportName == 'StudentStats') {
@@ -143,13 +144,13 @@
                 var endDate = $("#StudentReportsEndDate").val();
                 var status = $("#StatusList").val();
                 url = url.replace("destURL", reportName);
-                url = url.replace("_paramsVal_", "reportType=" + "PDF" + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate + '!' + "status=" + status);
+                url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate + '!' + "status=" + status);
             }
             else {
                 var beginDate = $("#StudentReportsStartDate").val();
                 var endDate = $("#StudentReportsEndDate").val();
                 url = url.replace("destURL", "Run");
-                url = url.replace("_paramsVal_", "reportType=" + "PDF" + '!' + "reportName=" + reportName + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate);
+                url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "reportName=" + reportName + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate);
             }
 
             //alert(url);

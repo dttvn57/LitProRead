@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="StudentsActiveDateMoreThan1YearWithHoursMetDataSet" targetNamespace="http://tempuri.org/StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsd" xmlns:mstns="http://tempuri.org/StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsd" xmlns="http://tempuri.org/StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="StudentsActiveDateMoreThan1YearWithHoursMetDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="StudentsActiveDateMoreThan1YearWithHoursMetDataSet" msprop:Generator_UserDSName="StudentsActiveDateMoreThan1YearWithHoursMetDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="StudentsActiveDateMoreThan1YearWithHoursMetDataTable" msprop:Generator_TableClassName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableDataTable" msprop:Generator_TableVarName="tableStudentsActiveDateMoreThan1YearWithHoursMetDataTable" msprop:Generator_TablePropName="StudentsActiveDateMoreThan1YearWithHoursMetDataTable" msprop:Generator_RowDeletingName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableRowDeleting" msprop:Generator_RowChangingName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableRowChanging" msprop:Generator_RowEvHandlerName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableRowDeleted" msprop:Generator_UserTableName="StudentsActiveDateMoreThan1YearWithHoursMetDataTable" msprop:Generator_RowChangedName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableRowChanged" msprop:Generator_RowEvArgName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableRowChangeEvent" msprop:Generator_RowClassName="StudentsActiveDateMoreThan1YearWithHoursMetDataTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ActiveDate" msprop:Generator_ColumnVarNameInTable="columnActiveDate" msprop:Generator_ColumnPropNameInRow="ActiveDate" msprop:Generator_ColumnPropNameInTable="ActiveDateColumn" msprop:Generator_UserColumnName="ActiveDate" type="xs:string" minOccurs="0" />
+              <xs:element name="DaysofSvc" msprop:Generator_ColumnVarNameInTable="columnDaysofSvc" msprop:Generator_ColumnPropNameInRow="DaysofSvc" msprop:Generator_ColumnPropNameInTable="DaysofSvcColumn" msprop:Generator_UserColumnName="DaysofSvc" type="xs:int" minOccurs="0" />
+              <xs:element name="StudentName" msprop:Generator_ColumnVarNameInTable="columnStudentName" msprop:Generator_ColumnPropNameInRow="StudentName" msprop:Generator_ColumnPropNameInTable="StudentNameColumn" msprop:Generator_UserColumnName="StudentName" type="xs:string" minOccurs="0" />
+              <xs:element name="TutorName" msprop:Generator_ColumnVarNameInTable="columnTutorName" msprop:Generator_ColumnPropNameInRow="TutorName" msprop:Generator_ColumnPropNameInTable="TutorNameColumn" msprop:Generator_UserColumnName="TutorName" type="xs:string" minOccurs="0" />
+              <xs:element name="DateMet" msprop:Generator_ColumnVarNameInTable="columnDateMet" msprop:Generator_ColumnPropNameInRow="DateMet" msprop:Generator_ColumnPropNameInTable="DateMetColumn" msprop:Generator_UserColumnName="DateMet" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="HoursMet" msprop:Generator_ColumnVarNameInTable="columnHoursMet" msprop:Generator_ColumnPropNameInRow="HoursMet" msprop:Generator_ColumnPropNameInTable="HoursMetColumn" msprop:Generator_UserColumnName="HoursMet" type="xs:int" minOccurs="0" />
+              <xs:element name="Activity" msprop:Generator_ColumnVarNameInTable="columnActivity" msprop:Generator_ColumnPropNameInRow="Activity" msprop:Generator_ColumnPropNameInTable="ActivityColumn" msprop:Generator_UserColumnName="Activity" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
