@@ -382,6 +382,14 @@ namespace LitProRead.Controllers
             return View(vm);
         }
 
+        public ActionResult StudentsActiveDateMoreThan1YearWithHoursMet(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentPortfolioReport(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentInActivePhoneList(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentActivePhoneList(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentStatusHistory(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentWaitTime(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentAccomplishmentsByActiveDateGreaterThan1Year(string paramsVal) { return Run(paramsVal); }
+
         public ActionResult Run(string paramsVal)
         {
             string reportType = "";
@@ -448,36 +456,36 @@ namespace LitProRead.Controllers
             //    return StudentBDay(reportType, chosenMonth, chosenStatus);
             //}
             //else
-            if (reportName == "StudentsActiveDateMoreThan1YearWithHoursMet")
-                return StudentsActiveDateMoreThan1YearWithHoursMet(reportType, date1, date2);
-            else
             if (reportName == "StudentStats")
                 return StudentStats(reportType);
             else
+            if (reportName == "StudentsActiveDateMoreThan1YearWithHoursMet")
+                return _StudentsActiveDateMoreThan1YearWithHoursMet(reportType, date1, date2);
+            else
             if (reportName == "StudentPortfolioReport")
-                return StudentPortfolioReport(reportType);
+                return _StudentPortfolioReport(reportType);
             else
             if (reportName == "StudentActivePhoneList")
-                return StudentActivePhoneList(reportType, true);
+                return _StudentActivePhoneList(reportType, true);
             else
             if (reportName == "StudentInActivePhoneList")
-                return StudentActivePhoneList(reportType, false);
+                return _StudentActivePhoneList(reportType, false);
             else
             if (reportName == "StudentStatusHistory")
-                return StudentStatusHistory(reportType, beginDate, endDate, statusType);
+                return _StudentStatusHistory(reportType, beginDate, endDate, statusType);
             else
             if (reportName == "StudentWaitTime")
-                return StudentWaitTime(reportType, beginDate, endDate, statusType);
+                return _StudentWaitTime(reportType, beginDate, endDate, statusType);
             else
-                if (reportName == "StudentAccomplishmentsByActiveDateGreaterThan1Year")
-                return StudentAccomplishmentsByActiveDateGreaterThan1Year(reportType, date1, date2, statusType);
+            if (reportName == "StudentAccomplishmentsByActiveDateGreaterThan1Year")
+                return _StudentAccomplishmentsByActiveDateGreaterThan1Year(reportType, date1, date2, statusType);
             else
                 return View();
         }
 
         //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students 
         //      WHERE (((Students.FirstActive) Between [Forms]![frmDateSelectionStudentStatus]![BeginDate] And [Forms]![frmDateSelectionStudentStatus]![EndDate]));
-        public ActionResult StudentWaitTime(string reportType, string beginDate, string endDate, string statusType)
+        public ActionResult _StudentWaitTime(string reportType, string beginDate, string endDate, string statusType)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
@@ -505,7 +513,7 @@ namespace LitProRead.Controllers
         //SELECT [LastName] & "," & [FirstName] AS Name, Students.FirstName, Students.LastName, tblStatusHistory.*
         //FROM Students INNER JOIN tblStatusHistory ON Students.ID=tblStatusHistory.ID
         //WHERE (((tblStatusHistory.StudentorTutor)="Student") And ((tblStatusHistory.StatusDate) Between Forms!frmDateSelection!BeginDate And Forms!frmDateSelection!EndDate));
-        public ActionResult StudentStatusHistory(string reportType, string beginDate, string endDate, string statusType)
+        public ActionResult _StudentStatusHistory(string reportType, string beginDate, string endDate, string statusType)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
@@ -528,7 +536,7 @@ namespace LitProRead.Controllers
         //  AND ((Students.ActiveDate) Between [Forms]![frmDateSelection]![BeginDate] And [Forms]![frmDateSelection]![EndDate]) 
         //  AND ((DateDiff("d",[ActiveDate],Now()))>365) AND ((StudentAccomplishments.AccomplishDate) Is Not Null));
         //
-        public ActionResult StudentAccomplishmentsByActiveDateGreaterThan1Year(string reportType, DateTime beginDate, DateTime endDate, string statusType)
+        public ActionResult _StudentAccomplishmentsByActiveDateGreaterThan1Year(string reportType, DateTime beginDate, DateTime endDate, string statusType)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
@@ -630,7 +638,7 @@ namespace LitProRead.Controllers
         public ActionResult AuditTrailThisStudent(string id = "")
         {
             //int studentId = Convert.ToInt32(id);
-            string reportType = "PDF";
+            string reportType = "EXCEL";
             using (LitProReadEntities db = new LitProReadEntities())
             {
                 var datasource = from item in db.tblAuditTrails.ToList()
@@ -759,7 +767,7 @@ namespace LitProRead.Controllers
             }
         }
 
-        public ActionResult StudentActivePhoneList(string reportType, bool showActive)
+        public ActionResult _StudentActivePhoneList(string reportType, bool showActive)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
@@ -798,7 +806,7 @@ namespace LitProRead.Controllers
         //                        select new { student.FirstName, PetName = (studentpair == null ? String.Empty : studentpair.Name) };
         //}
 
-        public ActionResult StudentPortfolioReport(string reportType)
+        public ActionResult _StudentPortfolioReport(string reportType)
         {
             int currMonth = DateTime.Now.Month;
             int currYear = DateTime.Now.Year;
@@ -1132,7 +1140,7 @@ namespace LitProRead.Controllers
         //FROM Students INNER JOIN (Pairs INNER JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
         //WHERE (((Students.ActiveDate) Between Forms!frmDateSelection!BeginDate And Forms!frmDateSelection!EndDate) 
         //  And ((DateDiff("d",[ActiveDate],Now()))>=365) And ((Students.Active)=True));
-        public ActionResult StudentsActiveDateMoreThan1YearWithHoursMet(string reportType, DateTime beginDate, DateTime endDate)
+        public ActionResult _StudentsActiveDateMoreThan1YearWithHoursMet(string reportType, DateTime beginDate, DateTime endDate)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
