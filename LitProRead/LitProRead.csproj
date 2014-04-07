@@ -686,6 +686,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentPortfolioReportDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSets\StudentsActiveDateMoreThan1YearWithHoursMetDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSets\StudentsComputerLabDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentsComputerLabDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.cs">
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -860,6 +870,9 @@
     <Content Include="Reports\DataSets\StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xss">
       <DependentUpon>StudentAccomplishmentsByActiveDateGreaterThan1YearDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\StudentBdayDataSet.xsc">
+      <DependentUpon>StudentBdayDataSet.xsd</DependentUpon>
+    </Content>
     <Content Include="Reports\DataSets\StudentActivePhoneListDataSet.xsc">
       <DependentUpon>StudentActivePhoneListDataSet.xsd</DependentUpon>
     </Content>
@@ -870,9 +883,6 @@
     </None>
     <Content Include="Reports\DataSets\StudentActivePhoneListDataSet.xss">
       <DependentUpon>StudentActivePhoneListDataSet.xsd</DependentUpon>
-    </Content>
-    <Content Include="Reports\DataSets\StudentBdayDataSet.xsc">
-      <DependentUpon>StudentBdayDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Reports\DataSets\StudentBdayDataSet.xsd">
       <SubType>Designer</SubType>
@@ -892,10 +902,12 @@
     </Content>
     <EmbeddedResource Include="Reports\rdlc\AuditTrailThisStudent.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\CLLS.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentsComputerLab.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentAccomplishmentsByActiveDateGreaterThan1Year.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentActivePhoneList.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentBday.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentPortfolioReport.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\StudentsActiveDateMoreThan1YearWithHoursMet.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentsMatchHistorybyDateRange.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStats.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
@@ -912,6 +924,28 @@
     </None>
     <Content Include="Reports\DataSets\StudentPortfolioReportDataSet.xss">
       <DependentUpon>StudentPortfolioReportDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSets\StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsc">
+      <DependentUpon>StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentsActiveDateMoreThan1YearWithHoursMetDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xss">
+      <DependentUpon>StudentsActiveDateMoreThan1YearWithHoursMetDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSets\StudentsComputerLabDataSet.xsc">
+      <DependentUpon>StudentsComputerLabDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSets\StudentsComputerLabDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StudentsComputerLabDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSets\StudentsComputerLabDataSet.xss">
+      <DependentUpon>StudentsComputerLabDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsd">
       <SubType>Designer</SubType>
@@ -954,6 +988,7 @@
     <Content Include="Reports\DataSets\StudentWaitTimeDataSet.xss">
       <DependentUpon>StudentWaitTimeDataSet.xsd</DependentUpon>
     </Content>
+    <EmbeddedResource Include="Reports\rdlc\StudentsWithCity.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentWaitTime.rdlc" />
     <Content Include="Scripts\appjs\student-general.partialview.js" />
     <Content Include="Scripts\hoverIntent.js" />

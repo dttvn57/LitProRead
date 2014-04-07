@@ -389,6 +389,8 @@ namespace LitProRead.Controllers
         public ActionResult StudentStatusHistory(string paramsVal) { return Run(paramsVal); }
         public ActionResult StudentWaitTime(string paramsVal) { return Run(paramsVal); }
         public ActionResult StudentAccomplishmentsByActiveDateGreaterThan1Year(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentsComputerLab(string paramsVal) { return Run(paramsVal); }
+        public ActionResult StudentsWithCity(string paramsVal) { return Run(paramsVal); }
 
         public ActionResult Run(string paramsVal)
         {
@@ -456,8 +458,11 @@ namespace LitProRead.Controllers
             //    return StudentBDay(reportType, chosenMonth, chosenStatus);
             //}
             //else
-            if (reportName == "StudentStats")
-                return StudentStats(reportType);
+            if (reportName == "StudentsWithCity")
+                return _StudentsWithCity(reportType);
+            else
+            if (reportName == "StudentsComputerLab")
+                return _StudentsComputerLab(reportType);
             else
             if (reportName == "StudentsActiveDateMoreThan1YearWithHoursMet")
                 return _StudentsActiveDateMoreThan1YearWithHoursMet(reportType, date1, date2);
@@ -1173,6 +1178,60 @@ namespace LitProRead.Controllers
                 paramList.Add(new ReportParameter("EndDate", endDate.ToShortDateString()));
                 return RunReport(reportType, "StudentsActiveDateMoreThan1YearWithHoursMet.rdlc", "StudentsActiveDateMoreThan1YearWithHoursMetDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
             }
+        }
+
+        //SELECT [FirstName] & " " & [LastName] AS Name, [Address1] & " " & [Address2] AS Address, [City] & ", " & [State] & "  " & [Zip] AS CitZip, [HomeAreaCode] & " " & [HomePhone] AS Home, [WorkAreaCode] & " " & [WorkPhone] AS [Work], Computer.*
+        //FROM Students INNER JOIN Computer ON Students.ID = Computer.ID
+        //ORDER BY Students.LastName;
+        public ActionResult _StudentsComputerLab(string reportType)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var dataSource = from computer in db.Computers.ToList()
+                                    join student in db.Students on computer.ID equals student.ID
+                                    orderby student.LastName
+                                        select new
+                                        {
+                                            Name = student.LastName + ", " + student.FirstName,
+                                            Address = student.Address1,
+                                            CityStateZip = student.City + ", " + student.State + " " + student.Zip,
+                                            WorkPhone = student.WorkAreaCode + " " + student.WorkPhone,
+                                            HomePhone = student.HomeAreaCode + " " + student.HomePhone,
+                                            StartDate = computer.StartDate.GetValueOrDefault().ToShortDateString(),
+                                            EndDate = computer.EndDate.GetValueOrDefault().ToShortDateString(),
+                                            SkillsWanted = computer.SkillsWanted,
+                                            Comments = computer.Comments
+                                        };
+
+                return RunReport(reportType, "StudentsComputerLab.rdlc", "StudentsComputerLabDataSet", dataSource, null, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        public ActionResult _StudentsWithCity(string reportType)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var datasource = from item in db.Students
+                                 //where showActive == false ? item.Active == false : item.Active == true || item.Active == false
+                                 orderby item.LastName
+                                 select new
+                                 {
+                                     Name = item.LastName + ", " + item.FirstName,
+                                     LastName = item.LastName,
+                                     FirstName = item.FirstName,
+                                     City = item.City,
+                                     Address = item.Address1,
+                                     CityStateZip = item.City + ", " + item.State + " " + item.Zip,
+                                     WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
+                                     HomePhone = item.HomeAreaCode + " " + item.HomePhone,
+                                     Active = item.Active,
+                                     ContactPref = item.ContactPref
+                                 };
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                return RunReport(reportType, "StudentsWithCity.rdlc", "StudentActivePhoneListDataSet", datasource, null, 11, 8.5, 0.25, 0.25);
+            }
+
         }
 
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)

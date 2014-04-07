@@ -101,6 +101,7 @@
                 selectedStudentReport == 'StudentsMatchHistorybyDateRange' ||
                 selectedStudentReport == 'StudentStatusHistory' ||
                 selectedStudentReport == 'StudentStats' ||
+                //selectedStudentReport == 'StudentsComputerLab' ||
                 selectedStudentReport == 'StudentWaitTime')
             {
                 document.getElementById("StudentReportsViewStartDateRangeLabel").style.display = "block";
@@ -149,7 +150,7 @@
             else {
                 var beginDate = $("#StudentReportsStartDate").val();
                 var endDate = $("#StudentReportsEndDate").val();
-                url = url.replace("destURL", "Run");
+                url = url.replace("destURL", reportName);
                 url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "reportName=" + reportName + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate);
             }
 
