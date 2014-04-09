@@ -72,31 +72,80 @@ namespace LitProRead.Controllers
 
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult Edit(TutorFormViewModel tutorFormVm)
+        public ActionResult Edit(TutorFormViewModel tutorFormVm, bool ActiveOnly)
         {
             if (ModelState.IsValid)
             {
                 using (LitProReadEntities db = new LitProReadEntities())
                 {
-                    db.Configuration.ValidateOnSaveEnabled = true;
-                    db.Entry(tutorFormVm.CurrentTutor).State = EntityState.Modified;
+                    if (tutorFormVm.EditMode == "edit")
+                    {
+                        db.Configuration.ValidateOnSaveEnabled = true;
+                        db.Entry(tutorFormVm.CurrentTutor).State = EntityState.Modified;
 
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch (DbEntityValidationException ex)
-                    {
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbEntityValidationException ex)
+                        {
 
-                        string err = ex.Message;
-                        int i = 0;
-                        i++;
+                            string err = ex.Message;
+                            int i = 0;
+                            i++;
+                        }
+                        catch (OptimisticConcurrencyException ex)
+                        {
+                            string err = ex.Message;
+                            int i = 0;
+                            i++;
+                        }
                     }
-                    catch (OptimisticConcurrencyException ex)
+                    else if (tutorFormVm.EditMode == "add")
                     {
-                        string err = ex.Message;
-                        int i = 0;
-                        i++;
+                        // "add"
+
+                        // check for dup here (using name + dob)
+                        Tutor tutor = db.Tutors.FirstOrDefault(p => p.LastName == tutorFormVm.CurrentTutor.LastName &&
+                                                                          p.FirstName == tutorFormVm.CurrentTutor.FirstName &&
+                                                                          p.DOB == tutorFormVm.CurrentTutor.DOB);
+                        if (tutor != null)
+                        {
+                            TempData["SaveEror"] = "Cannot Save: Duplicate Tutor";
+                            return View("Index", tutorFormVm);
+                        }
+
+
+                        try
+                        {
+                            tutorFormVm.CurrentTutor.Active = ActiveOnly;
+                            db.Tutors.Add(tutorFormVm.CurrentTutor);
+                            db.SaveChanges();
+
+                            //// comments
+                            //var comments = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
+                            //SaveStudentComments(comments);
+
+                            //// followups
+                            //var followups = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
+                            //SaveStudentFollowUps(followups);
+
+                            //// change from "add" to "edit"
+                            ////studentFormVm.EditMode = "edit";
+                            return RedirectToAction("Index", new { Id = tutorFormVm.CurrentTutor.ID });
+                        }
+                        catch (Exception ex)
+                        {
+                            string err = ex.Message;
+                            int i = 0;
+                            i++;
+                            //studentFormVm.db.Refresh(RefreshMode.ClientWins, studentFormVm.CurrentStudent);
+                            //studentFormVm.db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        return View("Index", tutorFormVm);
                     }
                 }
             }

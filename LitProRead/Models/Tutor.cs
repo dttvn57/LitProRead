@@ -11,15 +11,23 @@ namespace LitProRead.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Tutor
     {
         public int ID { get; set; }
         public Nullable<int> LitProID { get; set; }
         public string Salutation { get; set; }
+
+        [Required]
         public string FirstName { get; set; }
+
+        [Required]
         public string LastName { get; set; }
+
+        [Required]
         public string Address1 { get; set; }
+
         public string Address2 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
@@ -48,6 +56,8 @@ namespace LitProRead.Models
         public string InActiveReason { get; set; }
         public Nullable<System.DateTime> FirstActive { get; set; }
         public string MailCode { get; set; }
+
+        [Required]
         public Nullable<System.DateTime> DOB { get; set; }
         public string Country { get; set; }
         public string Gender { get; set; }
