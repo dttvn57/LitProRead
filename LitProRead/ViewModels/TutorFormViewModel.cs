@@ -15,7 +15,15 @@ namespace LitProRead.ViewModels
         //public LitProReadEntities db = new LitProReadEntities();
 
         public int Id { get; set; }
-        
+
+        public int RecordsCnt { get; set; }
+        public int CurrentRecordIndex { get; set; }
+        public bool ByLastName { get; set; }
+        public string SelectedLastName { get; set; }
+        public int SelectedLastNameId { get; set; }
+        public string SelectedFirstName { get; set; }
+        public int SelectedFirstNameId { get; set; }
+
         public Tutor CurrentTutor { get; set; }
 
         public List<SelectListItem> SalutationList { get; set; }
@@ -54,15 +62,37 @@ namespace LitProRead.ViewModels
         public IEnumerable<SelectListItem> TutorListLastName { get; set; }
         public IEnumerable<SelectListItem> TutorListFirstName { get; set; }
 
+        public string EditMode { get; set; }
+
         public TutorFormViewModel()
         {
+            ByLastName = true;
             Load(-1);
+            EditMode = "view";
         }
 
-        public void Load(int id)
+        public int GetRecordsCnt(bool active)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                return db.GetTutorsCount(active, "", 0, 0);
+            }
+
+        }
+
+        public void Load(int id, bool activeOnly = true, bool byLastName = true)
         {
             this.Id = id;
-            this.CurrentTutor = GetTutor(id);
+            this.CurrentTutor = GetTutor(id, activeOnly, byLastName);
+            if (id > 0 && this.CurrentTutor != null)
+            {
+                EditMode = "edit";
+            }
+            else
+            {
+                RecordsCnt = GetRecordsCnt(true);
+            }
+
             this.SalutationList = GetSalutationList(CurrentTutor.Salutation);
             this.AreaCodeList = GetAreaCodeList();
             this.CityList = GetCityList();
@@ -253,11 +283,14 @@ namespace LitProRead.ViewModels
         //    }
         //}
 
-        public Tutor GetTutor(int id)
+        public Tutor GetTutor(int id, bool activeOnly, bool byLastName)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                Tutor tutor = db.Tutors.Find(id);
+                //Tutor tutor = db.Tutors.Find(id);
+                int recIndex = 0;
+                Tutor tutor = db.GetTutor(id, activeOnly, byLastName, ref recIndex);              //Students.Find(id);
+                CurrentRecordIndex = recIndex;
                 if (tutor == null)
                     return new Tutor();
                 return tutor;
@@ -625,7 +658,7 @@ namespace LitProRead.ViewModels
 
         public void SetCurrentActive(string active)
         {
-            if (CurrentTutor != null && CurrentTutor.Active != null)
+            if (CurrentTutor != null && !CurrentTutor.Active)
             {
                 if (active.Equals("true"))
                     CurrentTutor.Active = true;

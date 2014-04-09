@@ -68,15 +68,38 @@ namespace LitProRead.Controllers
             };
         }
 
+        [HttpPost]
+        public ActionResult GetTutorsCount(bool activeOnly)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                try
+                {
+                    int count = db.GetTutorsCount(activeOnly, "", 0, 0);
+                    JsonResult jsonData = new JsonResult();
+                    jsonData.Data = count;
+                    jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return jsonData;
+                }
+                catch (Exception ex)
+                {
+                    JsonResult jsonData = new JsonResult();
+                    jsonData.Data = ex.Message;
+                    jsonData.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+                    return jsonData;
+                }
+            }
+        }
+
         [HttpGet]
-        public ActionResult GetTutorsName(string searchTerm, int pageSize, int pageNum, bool byLastName)  // true: get by last name
+        public ActionResult GetTutorsName(bool ActiveOnly, string searchTerm, int pageSize, int pageNum, bool byLastName)  // true: get by last name
                                                                                                           // false: get by first name
         {
             //Get the paged results and the total count of the results for this query. 
             LitProReadEntities db = new LitProReadEntities();
 
-            List<Tutor> tutors = db.GetTutors(searchTerm, pageSize, pageNum, byLastName);
-            int tutorCount = db.GetTutorsCount(searchTerm, pageSize, pageNum);
+            List<Tutor> tutors = db.GetTutors(ActiveOnly, searchTerm, pageSize, pageNum, byLastName);
+            int tutorCount = db.GetTutorsCount(ActiveOnly, searchTerm, pageSize, pageNum);
 
             //Translate the attendees into a format the select2 dropdown expects
             Select2PagedResult pagedTutors = ToSelect2Format(tutors, tutorCount, byLastName);

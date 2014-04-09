@@ -98,6 +98,11 @@ namespace LitProRead.Models
             int nextStudentId = 0;
             Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
             int cnt = list.Count();
+            if (cnt == 0)
+            {
+                recIndex = 0;
+                return nextStudentId;
+            }
             for (int currIndex = 0; currIndex < cnt; currIndex++)
             {
                 if (list[currIndex].ID == currStudentId)
@@ -114,17 +119,25 @@ namespace LitProRead.Models
                         nextIndex = currIndex + 1;
                     }
                     recIndex = nextIndex + 1;
-                    break;
+                    return nextStudentId;
                 }
             }
-            return nextStudentId;
+            recIndex = 0;
+            return list[recIndex].ID; 
         }
 
         public int PrevStudentId(int currStudentId, bool activeOnly, bool byLastName, ref int recIndex)
         {
             int prevStudentId = 0;
             Student[] list = GetStudentsQuery(activeOnly, "", byLastName).ToArray();
-            for (int currIndex = 0; currIndex < list.Count(); currIndex++)
+            int cnt = list.Count();
+            if (cnt == 0)
+            {
+                recIndex = 0;
+                return prevStudentId;
+            }
+
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
             {
                 if (list[currIndex].ID == currStudentId)
                 {
@@ -140,10 +153,11 @@ namespace LitProRead.Models
                         nextIndex = currIndex - 1;
                     }
                     recIndex = nextIndex + 1;
-                    break;
+                    return prevStudentId;
                 }
             }
-            return prevStudentId ;
+            recIndex = 0;
+            return list[recIndex].ID;
         }
 
         public Student GetStudent(int studentId, bool activeOnly, bool byLastName, ref int recIndex)
@@ -180,8 +194,8 @@ namespace LitProRead.Models
                             a.LastName.StartsWith(searchTerm)
                         ).OrderBy(a => a.LastName).ThenBy(a => a.FirstName);
            }
-            else
-            {
+           else
+           {
                 if (ActiveOnly)
                     return Students
                     .Where(
@@ -197,21 +211,6 @@ namespace LitProRead.Models
             }
         }
 
-        //Return only the results we want
-        public List<Tutor> GetTutors(string searchTerm, int pageSize, int pageNum, bool byLastName)
-        {
-            return GetTutorsQuery(searchTerm, byLastName)
-                .Skip(pageSize * (pageNum - 1))
-                .Take(pageSize)
-                .ToList();
-        }
-
-        //And the total count of records
-        public int GetTutorsCount(string searchTerm, int pageSize, int pageNum)
-        {
-            return GetTutorsQuery(searchTerm, true)
-                .Count();
-        }
 
         public List<PairViewModel> GetMatchedTutorForStudent(int studentID, int pageSize, int pageNum, string sort, ref int matchCount)
         {
@@ -623,25 +622,182 @@ namespace LitProRead.Models
             return list;
         }
 
+
+        //******************** TUTOR *************************************************
+
+        //Return only the results we want
+        public List<Tutor> GetTutors(bool ActiveOnly, string searchTerm, int pageSize, int pageNum, bool byLastName)
+        {
+            return GetTutorsQuery(ActiveOnly, searchTerm, byLastName)
+                .Skip(pageSize * (pageNum - 1))
+                .Take(pageSize)
+                .ToList();
+        }
+
+        //And the total count of records
+        public int GetTutorsCount(bool ActiveOnly, string searchTerm, int pageSize, int pageNum)
+        {
+            return GetTutorsQuery(ActiveOnly, searchTerm, true)
+                .Count();
+        }
+
+        public int TutorIdByRecIndex(int recIndex, bool activeOnly, bool byLastName)
+        {
+            Tutor[] list = GetTutorsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            if (cnt <= 0)
+                return 0;
+
+            if (recIndex <= 0)
+                return list[0].ID;
+
+            if (recIndex >= cnt)
+            {
+                return list[cnt - 1].ID;
+            }
+
+            return list[recIndex].ID; ;
+        }
+
+        public int FirstTutorId(int currTutorId, bool activeOnly, bool byLastName, ref int recIndex)
+        {
+            int tutorId = currTutorId;
+            Tutor[] list = GetTutorsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            if (cnt > 0)
+                tutorId = list[0].ID;
+            recIndex = 1;
+
+            return tutorId;
+        }
+
+        public int LastTutorId(int currTutorId, bool activeOnly, bool byLastName, ref int recIndex)
+        {
+            int tutorId = currTutorId;
+            Tutor[] list = GetTutorsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            if (cnt > 0)
+                tutorId = list[cnt - 1].ID;
+            recIndex = cnt;
+
+            return tutorId;
+        }
+
+        public int NextTutorId(int currTutorId, bool activeOnly, bool byLastName, ref int recIndex)
+        {
+            int nextTutorId = 0;
+            Tutor[] list = GetTutorsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            if (cnt == 0)
+            {
+                recIndex = 0;
+                return nextTutorId;
+            }
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
+            {
+                if (list[currIndex].ID == currTutorId)
+                {
+                    int nextIndex = 0;
+                    if (currIndex == cnt - 1)   // at end of list
+                    {
+                        nextTutorId = currTutorId;
+                        nextIndex = currIndex;
+                    }
+                    else
+                    {
+                        nextTutorId = list[currIndex + 1].ID;
+                        nextIndex = currIndex + 1;
+                    }
+                    recIndex = nextIndex + 1;
+                    return nextTutorId;
+                }
+            }
+            recIndex = 0;
+            return list[recIndex].ID;
+        }
+
+        public int PrevTutorId(int currTutorId, bool activeOnly, bool byLastName, ref int recIndex)
+        {
+            int prevTutorId = 0;
+            Tutor[] list = GetTutorsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            if (cnt == 0)
+            {
+                recIndex = 0;
+                return prevTutorId;
+            }
+
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
+            {
+                if (list[currIndex].ID == currTutorId)
+                {
+                    int nextIndex = 0;
+                    if (currIndex == 0) // at top of list
+                    {
+                        prevTutorId = currTutorId;
+                        nextIndex = currIndex;
+                    }
+                    else
+                    {
+                        prevTutorId = list[currIndex - 1].ID;
+                        nextIndex = currIndex - 1;
+                    }
+                    recIndex = nextIndex + 1;
+                    return prevTutorId;
+                }
+            }
+            recIndex = 0;
+            return list[recIndex].ID;
+        }
+
+        public Tutor GetTutor(int tutorId, bool activeOnly, bool byLastName, ref int recIndex)
+        {
+            Tutor[] list = GetTutorsQuery(activeOnly, "", byLastName).ToArray();
+            int cnt = list.Count();
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
+            {
+                if (list[currIndex].ID == tutorId)
+                {
+                    recIndex = currIndex + 1;
+                    return list[currIndex];
+                }
+            }
+            return null;
+        }
+
         //Our search term
-        private IQueryable<Tutor> GetTutorsQuery(string searchTerm, bool byLastName)
+        private IQueryable<Tutor> GetTutorsQuery(bool ActiveOnly, string searchTerm, bool byLastName)
         {
             searchTerm = searchTerm.ToLower();
             if (byLastName)
             {
-                return Tutors
-                    .Where(
-                        a =>
-                        a.LastName.StartsWith(searchTerm)
-                    ).OrderBy(a => a.LastName);
+                if (ActiveOnly)
+                    return Tutors
+                        .Where(
+                            a =>
+                            a.LastName.StartsWith(searchTerm) && a.Active == true
+                        ).OrderBy(a => a.LastName).ThenBy(a => a.FirstName);
+                else
+                    return Tutors
+                       .Where(
+                           a =>
+                           a.LastName.StartsWith(searchTerm)
+                       ).OrderBy(a => a.LastName).ThenBy(a => a.FirstName);
             }
             else
             {
-                return Tutors
+                if (ActiveOnly)
+                    return Tutors
+                    .Where(
+                        a =>
+                        a.FirstName.StartsWith(searchTerm) && a.Active == true
+                    ).OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+                else
+                    return Tutors
                     .Where(
                         a =>
                         a.FirstName.StartsWith(searchTerm)
-                    ).OrderBy(a => a.FirstName);
+                    ).OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
             }
         }
 

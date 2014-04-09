@@ -541,7 +541,7 @@ namespace LitProRead.Controllers
                     db.Database.ExecuteSqlCommand(insertCmd);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             
             }
@@ -659,7 +659,7 @@ namespace LitProRead.Controllers
                     db.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
             
             }
@@ -953,7 +953,7 @@ namespace LitProRead.Controllers
                 db.Students.Remove(student);
                 db.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 int i = 0;
                 i++;

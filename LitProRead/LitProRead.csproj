@@ -808,6 +808,7 @@
     <Content Include="Images\lastRec.jpg" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\nextRec.jpg" />
+    <Content Include="Images\nextTutorRec.jpg" />
     <Content Include="Images\prevRec.jpg" />
     <Content Include="Models\LitProReadModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

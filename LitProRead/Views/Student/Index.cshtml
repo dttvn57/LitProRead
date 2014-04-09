@@ -1,7 +1,7 @@
 ﻿@model LitProRead.ViewModels.StudentFormViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Student Page";
     var currentStudentId = 0;
     if (Model != null && Model.CurrentStudent != null)
     {
@@ -232,8 +232,8 @@ S T U D E N T S
     <img id="studentFirst" src="~/Images/firstRec.jpg"/>
     <img id="studentPrev" src="~/Images/prevRec.jpg"/>
     @*
-    <button class="pagingControl" type="button" id="studentPrev"><</button>
-    *@
+    //<button class="pagingControl" type="button" id="studentPrev"><</button>
+    *@    
     <input class="pagingControl" type="text" id="studentPages" style="width:30px" />
     <input class="pagingControl" type="text" id="studentPagesLabel" style="width:80px; background-color:lightgrey" disabled="disabled"  />
 
@@ -241,6 +241,7 @@ S T U D E N T S
     <img  id="studentLast" src="~/Images/lastRec.jpg"/>
 
 </div>
+
 
 @section scripts
 {
@@ -305,7 +306,7 @@ S T U D E N T S
             var pagesLabel = "of " + $('#RecordsCnt').val() + " Records";
             $('#studentPagesLabel').val(pagesLabel);
 
-            var mode = @Html.Raw(Json.Encode(Model.EditMode)); 
+            var mode = @Html.Raw(Json.Encode(Model.EditMode))
             $('#EditMode').val(mode);
 
             if (mode == "edit" || mode == "add") {
@@ -671,6 +672,7 @@ S T U D E N T S
 
             });
 
+            @* --- DELETE --- *@
             $('#studentDelete').click(function (event) {
                 //alert("studentDelete");
 
