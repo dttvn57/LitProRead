@@ -211,5 +211,27 @@ namespace LitProRead.Controllers
             //return Edit(nextTutorId, recIndex, activeOnly);
         }
 
+        [HttpPost]
+        public ActionResult Delete(int id = 0)
+        {
+            Tutor tutor = db.Tutors.Find(id);
+            if (tutor == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                db.Tutors.Remove(tutor);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                int i = 0;
+                i++;
+                //return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+            return View(tutor);
+        }
     }
 }

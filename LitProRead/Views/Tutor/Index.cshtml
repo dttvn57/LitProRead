@@ -76,7 +76,7 @@ T U T O R S
                     <button type="button" id="tutorDelete">Delete</button>
                         
                         <input type="submit"  id="tutorSave" value="Save" />
-                        <button type="button" id="tutorCancel">Cancel</button>
+                        <button type="button" id="tutorCancel" onclick='cancelRecord()'>Cancel</button> 
 
                     <button type="button" id="printTutor">Print</button>
 
@@ -131,7 +131,11 @@ T U T O R S
             $.fn.handleTutorRecordNavigation(direction);
         }
 
-       $(document).ready(function () {
+        function cancelRecord() {
+            $.fn.handleCancelRecord();
+        }
+
+        $(document).ready(function () {
             var pageSize = 20;
             //$('ul.sf-menu').superfish();
 
@@ -382,7 +386,8 @@ T U T O R S
             *@
 
             // --- CANCEL --- 
-            $('#tuTorCancel').click(function () {
+            //$('#tuTorCancel').click(function () {
+            $.fn.handleCancelRecord = function () {
                 $('#EditMode').val("view");
 
                 $("input").prop('disabled', true);
@@ -404,7 +409,8 @@ T U T O R S
                 $("select").removeClass("editmode");
 
                 $("#tuTorPages").prop('disabled', false);
-            });
+            };
+            //});
 
             // --- ADD --- 
             $('#tutorAdd').click(function () {
@@ -446,8 +452,8 @@ T U T O R S
                         close: function () {
                             $(this).remove();
                         },
-                        resizable: false,
-                        height: 140,
+                        resizable: true,
+                        height: 180,
                         modal: true,
                         buttons: {
                             'Yes': function () {
