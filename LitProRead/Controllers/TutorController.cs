@@ -362,6 +362,126 @@ namespace LitProRead.Controllers
             }
         }
 
+
+        //*** Tutor FollowUp ***
+        [HttpPost]
+        public JsonResult GetTutorFollowUps(int tutorId, string jtSorting = null)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                if (tutorId > 0)
+                {
+                    var query = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
+                    var sortedQuery = query.OrderByDescending(f => f.FollowUpDate).ToList();
+                    var count = sortedQuery.Count();
+                    return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
+                }
+                else
+                {
+                    List<TutorCommentsViewModel> list = null;
+                    return Json(new { Result = "OK", Records = list, TotalRecordCount = 0 });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CreateTutorFollowUp(TutorFollowUpViewModel tutorFollowUpVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Tutor Follow Up form is not valid! Please correct it and try again." });
+                }
+
+                // add to the in-memory list
+                var query = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
+                if (query == null)
+                {
+                    query = new List<TutorFollowUpViewModel>();
+                    Session["TutorFollowUpsList"] = query;
+                }
+                tutorFollowUpVm.New = true;
+                query.Add(tutorFollowUpVm);
+                return Json(new { Result = "OK", Record = tutorFollowUpVm });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateTutorFollowUp(TutorFollowUpViewModel tutorFollowUpVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Tutor Follow Up form is not valid! Please correct it and try again." });
+                }
+
+                var query = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
+                foreach (var item in query)
+                {
+                    if (item.UniqID == tutorFollowUpVm.UniqID)
+                    {
+                        item.ID = tutorFollowUpVm.ID;
+                        item.FollowUpDate = tutorFollowUpVm.FollowUpDate;
+                        item.FollowUpDesc = tutorFollowUpVm.FollowUpDesc;
+                        item.DateCreated = tutorFollowUpVm.DateCreated;
+                        item.DateModified = tutorFollowUpVm.DateModified;
+                        item.LastModifiedBy = tutorFollowUpVm.LastModifiedBy;
+                        break;
+                    }
+                }
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        // go thru the list and either Add or Update based on record's filed "New" 
+        private void SaveTutorFollowUps(List<TutorFollowUpViewModel> followups)
+        {
+            if (followups == null || followups.Count() == 0)
+                return;
+
+            int tutorId = (int)followups.FirstOrDefault().ID;
+            try
+            {
+                foreach (var item in followups)
+                {
+                    var followUp = new TutorFollowUp();
+                    item.SetTo(followUp, item.New);
+
+                    if (item.New)
+                    {
+                        db.TutorFollowUps.Add(followUp);
+                    }
+                    else
+                    {
+                        db.Configuration.ValidateOnSaveEnabled = true;
+                        db.Entry(followUp).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        //********************************************************************************************
         //
         // GET: /Tutor/
 
@@ -371,7 +491,7 @@ namespace LitProRead.Controllers
             {
                 var vm = new TutorFormViewModel();
                 Session["TutorCommentsList"] = vm.TutorCommentsList;
-//                Session["TutorFollowUpsList"] = vm.TutorFollowUpsList;
+                Session["TutorFollowUpsList"] = vm.TutorFollowUpsList;
                 return View("Index", vm);
             }
             else
@@ -411,7 +531,7 @@ namespace LitProRead.Controllers
             //vm.CurrentRecordIndex = recIndex;
 
             Session["TutorCommentsList"] = vm.TutorCommentsList;
-//            Session["TutorFollowUpsList"] = vm.TutorFollowUpsList;
+            Session["TutorFollowUpsList"] = vm.TutorFollowUpsList;
 
             JsonResult jsonData = new JsonResult();
             jsonData.Data = vm;
@@ -441,8 +561,8 @@ namespace LitProRead.Controllers
                             SaveTutorComments(comments);
 
                             // student followups
-//                            var followups = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
-                            //SaveStudentFollowUps(followups);
+                            var followups = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
+                            SaveTutorFollowUps(followups);
                         }
                         catch (DbEntityValidationException ex)
                         {
@@ -483,9 +603,9 @@ namespace LitProRead.Controllers
                             var comments = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
                             SaveTutorComments(comments);
 
-                            //// followups
-                            //var followups = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
-                            //SaveStudentFollowUps(followups);
+                            // followups
+                            var followups = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
+                            SaveTutorFollowUps(followups);
 
                             //// change from "add" to "edit"
                             ///tutorFormVm.EditMode = "edit";

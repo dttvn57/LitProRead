@@ -930,6 +930,34 @@ namespace LitProRead.Models
             return list;
         }
 
+        public List<TutorFollowUpViewModel> GetTutorFollowUps(int id)
+        {
+            var query = from c in TutorFollowUps
+                        where c.ID == id
+                        select c;
+
+            if (query.Count() == 0)
+                return new List<TutorFollowUpViewModel>();
+
+            List<TutorFollowUpViewModel> list = new List<TutorFollowUpViewModel>();
+            foreach (var item in query)
+            {
+                list.Add(new TutorFollowUpViewModel
+                {
+                    New = false,        // not a new FollowUp record
+                    UniqID = item.UniqID,
+                    ID = item.ID,
+                    FollowUpDate = item.FollowUpDate,
+                    FollowUpDesc = item.FollowUpDesc,
+                    DateCreated = item.DateCreated,
+                    DateModified = item.DateModified,
+                    LastModifiedBy = item.LastModifiedBy
+                });
+            }
+
+            return list;
+        }
+
         // ********************************************************************************************************
         public static string GetActivity(int activityId)
         {

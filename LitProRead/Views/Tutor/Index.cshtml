@@ -90,10 +90,9 @@ T U T O R S
         <ul>
             <li><a href="#Tutor-General">General</a></li>
             <li><a href="#Tutor-Preferences">Preferences</a></li>
-             @*
-              *@
-          <li><a href="#Tutor-Matching-T">Matching-T</a></li>
-           <li><a href="#Tutor-Comments">Comments</a></li>
+            <li><a href="#Tutor-Matching-T">Matching-T</a></li>
+            <li><a href="#Tutor-Comments">Comments</a></li>
+            <li><a href="#Tutor-FollowUp">FollowUp</a></li>
         </ul>
 
         <div>
@@ -102,15 +101,15 @@ T U T O R S
        
         <div>
             @Html.Partial("_Tutor-Preferences-View", Model)
-        </div>
-        
-        @*
-         *@
+        </div>        
         <div id="Tutor-Matching-T">
             @Html.Partial("_Tutor-Matching-T-View", Model)
         </div>
        <div id="Tutor-Comments">
             @Html.Partial("_Tutor-Comments-View", Model)
+        </div>
+        <div id="Tutor-FollowUp">
+            @Html.Partial("_Tutor-FollowUp-View", Model)
         </div>
     }
 </div>
@@ -655,7 +654,7 @@ T U T O R S
                         $('#Tutor-Matching-T').jtable('load', { TID: 0 });
                     //$('#Tutor-Children').jtable('load', { tutorId: 0 });
                         $('#Tutor-Comments').jtable('load', { tutorId: 0 });
-                    //    $('#Tutor-FollowUp').jtable('load', { tutorId: 0 });
+                        $('#Tutor-FollowUp').jtable('load', { tutorId: 0 });
 
                     //$('#CurrentTutor_ID').val(data);
 
@@ -775,7 +774,7 @@ T U T O R S
 
                         $('#Tutor-Matching-T').jtable('load', { TID: currentTutorId });
                         $('#Tutor-Comments').jtable('load', { tutorId: currentTutorId });
-                       // $('#Tutor-FollowUp').jtable('load', { tutorId: currentTutorId });
+                        $('#Tutor-FollowUp').jtable('load', { tutorId: currentTutorId });
 
                         $('#CurrentTutor_ID').val(data.CurrentTutor.ID);
                         $('#CurrentTutor_Salutation').val(data.CurrentTutor.Salutation);
@@ -1046,9 +1045,8 @@ T U T O R S
             if ($('#CurrentTutor_ID').val() > 0)
             {
                 $('#Tutor-Matching-T').jtable('load', { TID: $('#CurrentTutor_ID').val() });
-                //$('#Tutor-Children').jtable('load', { studentId: $('#CurrentTutor_ID').val() });
-                //$('#Tutor-Comments').jtable('load', { studentId: $('#CurrentTutor_ID').val() });
-                //$('#Tutor-FollowUp').jtable('load', { studentId: $('#CurrentTutor_ID').val() });
+                $('#Tutor-Comments').jtable('load', { tutorId: $('#CurrentTutor_ID').val() });
+                $('#Tutor-FollowUp').jtable('load', { tutorId: $('#CurrentTutor_ID').val() });
             }   
 
             $('#tutorPages').keypress(function (event) {
