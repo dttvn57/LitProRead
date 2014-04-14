@@ -1,0 +1,414 @@
+﻿@using System.Text
+
+@model LitProRead.ViewModels.TutorFormViewModel
+ 
+@{
+    var currTutorId2 = 0;
+}
+
+@section CssImport
+{
+    <style>
+        .child-opener-image
+        {
+            cursor: pointer;
+        }
+        .child-opener-image-column
+        {
+            text-align: center;
+        }
+        .jtable-dialog-form
+        {
+            min-width: 220px;
+        }
+        .jtable-dialog-form input[type="text"]
+        {
+            min-width: 200px;
+        }
+        .jtable-input-readonly
+        {
+            background-color:lightgray;
+        }
+    </style>
+
+    <link href="@Url.Content("~/Scripts/validationEngine/validationEngine.jquery.css")" rel="stylesheet" type="text/css" />
+}
+@section JavascriptImport
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/validationEngine/jquery.validationEngine.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/validationEngine/jquery.validationEngine-en.js")"></script>
+}  
+
+<table>
+    <colgroup>
+            <col style="width:13%;"/>
+            <col style="width:15%;"/>
+            <col style="width:18%;"/>
+            <col style="width:23%;"/>
+            <col style="width:13%;"/>
+            <col style="width:18%;"/>
+    </colgroup>
+
+    @*
+    <tr>
+        @for (int i = 0; i < 6; i++)
+        {
+            if (i % 2 == 0)
+            {
+                <td style="background-color:red"></td>
+            }
+            else
+            {
+                <td style="background-color:yellow"></td>
+            }
+        }
+    </tr>
+    *@
+
+    <tr>
+        <td colspan="4" style="text-align: left; color: blue">
+            @Html.LabelForModel(Model.CurrentTutor.FirstName)
+            @*
+            &nbsp;&nbsp;@Html.LabelFor(m => m.CurrentStudent.LastName)
+            *@
+        </td>
+    </tr>
+
+    <tr><td colspan="6"><hr /></td></tr>
+
+    <tr>
+        <td>
+            @Html.Label("Choose Student")
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.StudentNameID, new { id = "StudentNameList" }) 
+        </td>
+
+        
+            @*
+        <td colspan="4" style="text-align:right">
+            <button type="button" id="tutorMatchTPrint">Print This</button>
+            <button type="button" id="tutorMatchTViewStatusChange">View Status Change</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <button type="button" id="tutorMatchTAdd">Add</button>
+            <button type="button" id="tutorMatchTEdit">Edit</button>
+            <button type="button" id="tutorMatchTDelete">Delete</button>
+                <input type="submit" value="Save" />
+
+        </td>
+            *@       
+    </tr>
+    <tr><td colspan="6"><hr /></td></tr>
+</table>
+
+<div id="Tutor-Matching-T">
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#Tutor-Matching-T').jtable({
+            title: 'Matched Students',
+            paging: true, //Enable paging
+            //pageSize: 5,
+            sorting: true, //Enable sorting
+            defaultSorting: 'DateCreated DESC',
+            //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
+            messages: {
+                addNewRecord: 'Add New Matched Student'
+            },
+            actions: {
+                listAction: '@Url.Action("MatchTList", "Tutor")',
+                deleteAction: '@Url.Action("DeleteMatchT", "Tutor")',
+                updateAction: '@Url.Action("UpdateMatchT", "Tutor")',
+                createAction: '@Url.Action("CreateMatchT", "Tutor")'
+            },
+            fields: {
+                UniqID: {
+                    key: true,      //this is to be used in deletion action
+                    title: 'UniqID',
+                    list: true,
+                    input: function (data) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="UniqID" value="' + data.value + '"/>';
+                        if (data.value) {
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
+                },
+                TID: {
+                    title: 'TID',
+                    //key: true
+                    //create: false,
+                    //edit: false,
+                    //list: false
+
+                    //create: true,
+                    //edit: true,
+                    list: true,
+                    input: function (data) {
+                             return '<input type="text" readonly class="jtable-input-readonly" name="TID" value="' + data.value + '"/>';
+                       if (data.value) {
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
+                },
+                SID: {
+                    title: 'SID',
+                    //create: false,
+                    //edit: false,
+                    //list: false
+                    list: true,
+                    input: function (data) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="SID" value="' + data.value + '"/>';
+                        if (data.value) {
+                        } else {
+                            //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
+                        }
+                    },
+                    width: '5%',
+                    visibility: 'hidden'
+                },
+
+                //CHILD TABLE DEFINITION FOR "Pair Activity"
+                PairActivity: {
+                    title: '',
+                    //showCloseButton: true,
+                    //openChildAsAccordion: true, 
+                    width: '2%',
+                    //paging: true, 
+                    sorting: false,
+                    edit: false,
+                    create: false,
+                    listClass: 'child-opener-image-column',
+                    display: function (tutorData) {
+                        //Create an image that will be used to open child table
+                       
+                        //var $img = $('<img class="child-opener-image" src="/LibProRead/Images/note.png" title="Open pair activities" />');
+                        var $img = $('<img src="../Images/note.png" title="Open pair activities" />');
+                        //Open child table when user clicks the image
+                        $img.click(function () {
+                            $('#Tutor-Matching-T').jtable('openChildTable',
+                                    $img.closest('tr'),
+                                    {
+                                        title: tutorData.record.StudentLName + " - Pair Activities",
+                                        //showCloseButton: true,
+                                        messages: {
+                                            addNewRecord: 'Add New Activity'
+                                        },
+                                        paging: true, //Enable paging
+                                        //pageSize: 5,
+                                        sorting: true, //Enable sorting
+                                        defaultSorting: 'DateMet DESC',
+                                        actions: {
+                                            listAction: '@Url.Action("MatchTPairsList", "Tutor")',
+                                            deleteAction: '@Url.Action("DeleteMatchTPairs", "Tutor")',
+                                            updateAction: '@Url.Action("UpdateMatchTPairs", "Tutor")',
+                                            createAction: '@Url.Action("CreateMatchTPairs", "Tutor")'
+                                        },
+                                        fields: {
+                                            UniqID: {
+                                                key: true,
+                                                type: 'hidden',
+                                                defaultValue: tutorData.UniqID
+                                            },    
+                                            PairHours: {
+                                                type: 'hidden',
+                                                defaultValue: tutorData.PairHours
+                                            },
+                                            SID: {
+                                                type: 'hidden',
+                                                defaultValue: tutorData.SID
+                                            },
+                                            TID: {
+                                                type: 'hidden',
+                                                defaultValue: tutorData.TID
+                                            },
+                                            ActivityID: {
+                                                title: 'Activity',
+                                                options: '@Url.Action("GetActivity", "Home")',
+                                            },
+                                            DateMet: {
+                                                title: 'Date Met',
+                                                //width: '10%',
+                                                type: 'date',
+                                                sorting: true, //This column is sortable!
+                                                displayFormat: 'yy-mm-dd'
+                                                //create: false,
+                                                //edit: false
+                                            },
+                                            HoursMet: {
+                                                title: 'Hours Met'
+                                                //width: '5%'
+                                            },
+                                        },
+                                        formCreated: function (event, data) {
+                                            if (data.formType == "create") {
+                                                var v = tutorData.record.UniqID;
+                                                data.form.find('input[name="PairHours"]').val(v);
+                                            }
+                                            //data.form.validationEngine();
+                                            //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
+                                        }
+                                    },
+
+                                    function (data) { //opened handler
+                                        currTutorId2 = tutorData.record.TID;
+                                        data.childTable.jtable('load', { TID: tutorData.record.TID, SID: tutorData.record.SID });
+                                    });
+                        });
+                        //Return image to show on the person row
+                        return $img;
+                    }
+                },
+                DateCreated: {
+                    title: 'Date Created',
+                    width: '7%',
+                    type: 'date',
+                    displayFormat: 'yy/mm/dd',
+                    list: true,
+                    input: function (data) {
+                        if (data.value) {
+                            return '<input type="text" readonly class="jtable-input-readonly" name="DateCreated" value="' + data.value + '"/>';
+                        }
+                        else {
+                            var dt = new Date();
+                            var now =  dt.getFullYear() + "/" + (dt.getMonth()+1) + "/" + dt.getDate();
+                             return '<input type="text" readonly class="jtable-input-readonly" name="DateCreated" value="' + now + '"/>';
+                       }
+                    },
+                    visibility: 'hidden'
+                },
+                StudentLName: {
+                    title: 'Student Name',
+                    width: '10%',
+                    sorting: false, //This column is not sortable!
+                    //edit: false,
+                    input: function (data) {
+                        //data.record.TutorLName = $("#TutorNameList").val();
+                        if (data.record) {
+                            return '<input type="text" name="StudentLName" style="width:200px" value="' + data.record.StudentLName + '" />';
+                        } else {
+                            // I don't want create recrod dialog to popup if there's Student selected. I cant find a good way to do this so I use a workaround
+                            // by forcing an exception by referncing a non-existing variable
+                            var tutor = $('#CurrentTutor_ID').val();
+                            var student = $('#StudentNameList').val();
+                            if (student == 0 || tutor == 0) {
+                                var studentName = $("#StudentNameList").select2('data').text; //$("#TutorNameList").val();
+                                return '<input type="text" name="StudentLName" style="width:200px" value="" />';
+                            }
+                            //return '<input type="text" name="Name" style="width:200px" value="enter your name here" />';
+                            var studentName = $("#StudentNameList").select2('data').text; //$("#TutorNameList").val();
+                            var lastName = studentName.split(",");
+                            return '<input type="text" name="StudentLName" style="width:200px" value="' + lastName[0] + '" />';
+                        }
+                    }
+                },
+                TotalHoursMet: {
+                    title: 'Total Hours Met',
+                    sorting: false, //This column is not sortable!
+                    edit: false,
+                    create: false,
+                    width: '10%'
+                },
+                TStatusID: {
+                    title: 'T-Status',
+                    width: '10%',
+                    sorting: false, //This column is not sortable!
+                    options: '@Url.Action("GetStatus", "Home")',
+                    list: true
+                },
+                PairStatusID: {
+                    title: 'Pair Status',
+                    //width: '10%',
+                    sorting: false, //This column is not sortable!
+                    options: '@Url.Action("GetStatus", "Home")'
+                },
+                PairStatusDate: {
+                    title: 'Status Date',
+                    //width: '10%',
+                    type: 'date',
+                    displayFormat: 'yy/mm/dd',
+                    sorting: false, //This column is not sortable!
+                    list: false
+                },
+                PairProgram: {
+                    title: 'Program',
+                    width: '10%',
+                    list: false
+                },
+                MatchDate: {
+                    title: 'Match',
+                   // width: '7%',
+                    type: 'date',
+                    sorting: false, //This column is not sortable!
+                    displayFormat: 'yy/mm/dd',
+                    list: false
+                },
+                DissolveDate: {
+                    title: 'Dissolve',
+                    //width: '7%',
+                    type: 'date',
+                    sorting: false, //This column is not sortable!
+                    displayFormat: 'yy/mm/dd',
+                    list: false
+                },
+                Comments: {
+                    title: 'Comments',
+                    type: 'textarea',
+                    width: '10%',
+                    list: false
+                },
+                DateModified: {
+                    title: 'Date Modified',
+                    width: '7%',
+                    type: 'date',
+                    sorting: false, //This column is not sortable!
+                    displayFormat: 'yy/mm/dd',
+                    list: false
+                },
+                LastModifiedBy: {
+                    sorting: false, //This column is not sortable!
+                    title: 'Last Modified By',
+                    //width: '10%',
+                    list: false
+                }
+            },      //fields
+
+            formCreated: function (event, data) {
+                if (data.formType == "create") {
+                    var v = $("#StudentNameList").val();
+                    data.form.find('input[name="SID"]').val(v);
+                    v = $('#CurrentTutor_ID').val();
+                    data.form.find('input[name="TID"]').val(v);
+
+                    data.form.find('input[name="UniqID"]').val(0);
+                }
+                //data.form.validationEngine();
+                //data.form.find('input[name="Name"]').addClass( 'validate[required]'); data.form.find('input[name="EmailAddress"]').addClass( 'validate[required,custom[email]]'); data.form.find('input[name="Password"]').addClass( 'validate[required]'); data.form.find('input[name="BirthDate"]').addClass( 'validate[required,custom[date]]'); data.form.find('input[name="Education"]').addClass( 'validate[required]'); data.form.validationEngine();             
+            },
+
+            //formSubmitting: function (event, data) {
+            //    return data.form.validationEngine('validate');             
+            //},
+            
+            formClosed: function (event, data) {
+                //data.form.validationEngine('hide');
+                //data.form.validationEngine('detach');
+                //$('#Student-Matching-S').jtable('load', { SID: currentStudentId });
+            }
+        });
+
+        //Load person list from server
+        //$('#Tutor-Matching-T').jtable('load', { TID: 18 });
+
+    });
+
+</script>

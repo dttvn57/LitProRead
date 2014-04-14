@@ -533,6 +533,7 @@ S T U D E N T S
                     //Our search term and what page we are on
                     data: function (term, page) {
                         return {
+                            activeOnly: $('#ActiveOnly').is(':checked'),
                             pageSize: pageSize,
                             pageNum: page,
                             searchTerm: term,
@@ -559,7 +560,7 @@ S T U D E N T S
             });
 
             $("#TutorNameList").on("change", function (e) {
-                currentTutortId = $("#TutorNameList").select2('data').text; // e.val() returns the ID, or
+                currentTutorId = $("#TutorNameList").select2('data').text; // e.val() returns the ID, or
                 // $("#TutorNameList").select2('data').id  returns the ID
                 //alert("Tutor: " + currentTutortId + " => " + $("#TutorNameList").val());
             });

@@ -57,6 +57,9 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> SmokingPrefList { get; private set; }
         public List<SelectListItem> StudentSmokerList { get; private set; }
 
+        public List<SelectListItem> StudentList { get; private set; }
+        public string StudentNameID { get; set; }
+
         public string TutorLastNameID { get; set; }
         public string TutorFirstNameID { get; set; }
         public IEnumerable<SelectListItem> TutorListLastName { get; set; }

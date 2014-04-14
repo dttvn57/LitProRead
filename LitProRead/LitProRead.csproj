@@ -1219,6 +1219,7 @@
     <Content Include="Views\Shared\_Student-Reports-View.cshtml" />
     <Content Include="Views\CLLS\Index.cshtml" />
     <Content Include="Views\Reports\Students.cshtml" />
+    <Content Include="Views\Shared\_Tutor-Matching-T-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

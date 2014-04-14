@@ -801,6 +801,113 @@ namespace LitProRead.Models
             }
         }
 
+        public List<PairViewModel> GetMatchedStudentForTutor(int tutorID, int pageSize, int pageNum, string sort, ref int matchCount)
+        {
+            var tutorStatus = Tutors.Find(tutorID).Status;
+            var pairs =
+                from pair in Pairs
+                where pair.TID == tutorID
+                join student in Students on pair.SID equals student.ID //into pt 
+                //from p in pt.DefaultIfEmpty() 
+                select new
+                {
+                    TID = tutorID,
+                    SID = pair.SID,
+                    StudentLastName = student.LastName,
+                    StudentFirstName = student.FirstName,
+                    SStatus = student.Status,
+                    TStatus = tutorStatus,
+                    MatchDate = pair.MatchDate,
+                    DissolveDate = pair.DissolveDate,
+                    PairStatus = pair.PairStatus,
+                    PairStatusDate = pair.PairStatusDate,
+                    PairProgram = pair.PairProgram,
+                    DateCreated = pair.DateCreated,
+                    DateModified = pair.DateModified,
+                    LastModifiedBy = pair.LastModifiedBy,
+                    SSMA_TimeStamp = pair.SSMA_TimeStamp,
+                    UniqID = pair.UniqID,
+                    Comments = pair.Comments
+                };
+
+            matchCount = pairs.Count();
+
+            // get the Total Hours Met for the Tutors.
+            var query = pairs.GroupJoin(PairHours,
+                                              p => p.UniqID,
+                                              ph => ph.PairHours,
+                                              (d, t) => new
+                                              {
+                                                  UniqID = d.UniqID,
+                                                  SID = d.SID,
+                                                  TID = d.TID,
+                                                  StudentLName = d.StudentLastName,
+                                                  StudentFName = d.StudentFirstName,
+                                                  MatchDate = d.MatchDate,
+                                                  PairStatus = d.PairStatus,
+                                                  DissolveDate = d.DissolveDate,
+                                                  PairStatusDate = d.PairStatusDate,
+                                                  PairProgram = d.PairProgram,
+                                                  DateCreated = d.DateCreated,
+                                                  DateModified = d.DateModified,
+                                                  LastModifiedBy = d.LastModifiedBy,
+                                                  SSMA_TimeStamp = d.SSMA_TimeStamp,
+                                                  TStatus = d.TStatus,
+                                                  SStatus = d.SStatus,
+                                                  Comments = d.Comments,
+                                                  TotalHoursMet = t.Sum(x => x.HoursMet)
+                                              });
+
+            if (string.IsNullOrEmpty(sort) || sort.Equals("DateCreated ASC"))
+            {
+                query = query.OrderBy(p => p.DateCreated);
+            }
+            else if (sort.Equals("DateCreated DESC"))
+            {
+                query = query.OrderByDescending(p => p.DateCreated);
+            }
+
+            // consolidate results.
+            List<PairViewModel> list = new List<PairViewModel>();
+            foreach (var pair in query)
+            {
+                int pairStatusId = GetStatusId(pair.PairStatus);
+                int tStatusId = GetStatusId(pair.TStatus);
+                int sStatusId = GetStatusId(pair.SStatus);
+                list.Add(new PairViewModel
+                {
+                    UniqID = pair.UniqID,
+                    SID = pair.SID,
+                    TID = pair.TID,
+                    StudentFName = pair.StudentFName,
+                    StudentLName = pair.StudentLName,
+                    MatchDate = pair.MatchDate,
+                    DissolveDate = pair.DissolveDate,
+                    PairStatusID = pairStatusId,
+                    PairStatusDate = pair.PairStatusDate,
+                    PairProgram = pair.PairProgram,
+                    DateCreated = pair.DateCreated,
+                    DateModified = pair.DateModified,
+                    LastModifiedBy = pair.LastModifiedBy,
+                    SSMA_TimeStamp = pair.SSMA_TimeStamp,
+                    TStatusID = tStatusId,
+                    SStatusID = sStatusId,
+                    Comments = pair.Comments,
+                    TotalHoursMet = pair.TotalHoursMet
+                });
+            }
+
+            if (pageSize > 0)
+            {
+                IEnumerable<PairViewModel> retList = list.AsEnumerable();
+                return retList.Skip(pageNum).Take(pageSize).ToList();
+            }
+            else
+                return list;
+        }
+
+
+        // ********************************************************************************************************
         public static string GetActivity(int activityId)
         {
             switch (activityId)

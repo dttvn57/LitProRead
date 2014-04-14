@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,6 +14,219 @@ namespace LitProRead.Controllers
     public class TutorController : Controller
     {
         private LitProReadEntities db = new LitProReadEntities();
+
+        [HttpPost]
+        public JsonResult MatchTList(int TID, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                int matchTCount = 0;
+                IEnumerable<PairViewModel> query = null;
+                if (TID > 0)
+                {
+                    query = db.GetMatchedStudentForTutor(TID, jtPageSize, jtStartIndex, jtSorting, ref matchTCount);
+                    return Json(new { Result = "OK", Records = query, TotalRecordCount = matchTCount });
+                }
+                else
+                {
+                    return Json(new { Result = "OK", Records = query, TotalRecordCount = matchTCount });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CreateMatchT(PairViewModel pairVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Matched Student form is not valid! Please correct it and try again." });
+                }
+
+                var addedPair = new Pair();
+                pairVm.SetTo(addedPair, true);
+                db.Pairs.Add(addedPair);
+                db.SaveChanges();
+                return Json(new { Result = "OK", Record = pairVm });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message + " (maybe the same Student?" });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateMatchT(PairViewModel pairVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Matched Student form is not valid! Please correct it and try again." });
+                }
+
+                var editPair = db.Pairs.FirstOrDefault(p => p.UniqID == pairVm.UniqID);
+                if (editPair == null)
+                {
+                    return Json(new { Result = "ERROR", Message = "Can't locate the Matched Student record (" + pairVm.UniqID.ToString() + ")" });
+                }
+
+                pairVm.SetTo(editPair, false);
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.Entry(editPair).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteMatchT(int UniqID)
+        {
+            try
+            {
+                Thread.Sleep(50);
+                Pair pair = db.Pairs.FirstOrDefault(p => p.UniqID == UniqID);
+                if (pair == null)
+                    return Json(new { Result = "ERROR", Message = "can't delete Matched Student " + UniqID.ToString() });
+
+                db.Pairs.Remove(pair);
+                db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        //*** Match-S ***
+        [HttpPost]
+        public JsonResult MatchTPairsList(int SID, int TID, int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
+        {
+            try
+            {
+                Thread.Sleep(200);
+
+                int count = 0;
+                IEnumerable<PairHoursViewModel> query = db.GetPairHoursForStudentAndTutor(SID, TID, jtPageSize, jtStartIndex, jtSorting, ref count);
+
+                //var matchSes = query.Where(p => p.SID == SID);//"TRUNG", jtPageSize, jtStartIndex, true);// db.StudentRepository.GetStudents(jtStartIndex, jtPageSize, jtSorting);
+                return Json(new { Result = "OK", Records = query, TotalRecordCount = count });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CreateMatchTPairs(PairHoursViewModel pairHourVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Pair Activity form is not valid! Please correct it and try again." });
+                }
+
+                var addedPairHour = new PairHour();
+                pairHourVm.SetTo(addedPairHour, true);
+                db.PairHours.Add(addedPairHour);
+                db.SaveChanges();
+                return Json(new { Result = "OK", Record = pairHourVm });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateMatchTPairs(PairHoursViewModel pairHourVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Pair Activity form is not valid! Please correct it and try again." });
+                }
+
+                var editPairHour = db.PairHours.FirstOrDefault(p => p.UniqID == pairHourVm.UniqID);
+                if (editPairHour == null)
+                {
+                    return Json(new { Result = "ERROR", Message = "Can't locate the Pair Activity record (" + pairHourVm.UniqID.ToString() + ")" });
+                }
+
+                pairHourVm.SetTo(editPairHour, false);
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.Entry(editPairHour).State = EntityState.Modified;
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+                catch (OptimisticConcurrencyException ex)
+                {
+                    return Json(new { Result = "ERROR", Message = ex.Message });
+                }
+
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeleteMatchTPairs(int UniqID)
+        {
+            try
+            {
+                Thread.Sleep(50);
+                PairHour pair = db.PairHours.FirstOrDefault(p => p.UniqID == UniqID);
+                if (pair == null)
+                    return Json(new { Result = "ERROR", Message = "can't delete Pair Activity " + UniqID.ToString() });
+
+                db.PairHours.Remove(pair);
+                db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
 
         //
         // GET: /Tutor/

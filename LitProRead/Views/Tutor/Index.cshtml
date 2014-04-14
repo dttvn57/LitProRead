@@ -100,6 +100,10 @@ T U T O R S
         <div>
             @Html.Partial("_Tutor-Preferences-View", Model)
         </div>
+        
+        <div id="_Tutor-Matching-T-View">
+            @Html.Partial("_Tutor-Matching-T-View", Model)
+        </div>
     }
 </div>
 
@@ -335,6 +339,53 @@ T U T O R S
                     }
 
                 }
+            });
+
+            $("#StudentNameList").select2(
+            {
+                placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetStudentsName", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            activeOnly: $('#ActiveOnly').is(':checked'),
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                            byLastName: true
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    var id = element.val();
+                    //var text = element.data('text');
+                    var text = $('#CurrentTutor_FirstName').val() + " " + $('#CurrentTutor_LastName').val();
+                    var data = { id: id, text: text };
+                    //callback(data);
+                }
+            });
+
+            $("#StudentNameList").on("change", function (e) {
+                currentStudentId = $("#StudentNameList").select2('data').text; // e.val() returns the ID, or
+                // $("#StudentNameList").select2('data').id  returns the ID
+                //alert("Tutor: " + currentStudentId + " => " + $("#StudentNameList").val());
             });
 
             $('#ActiveOnly').click(function () {
@@ -593,7 +644,7 @@ T U T O R S
                         var pagesLabel = "of " +  recCnt + " Records";
                         $('#tutorPagesLabel').val(pagesLabel);
 
-                        $('#Tutor-Matching-T').jtable('load', { SID: 0 });
+                        $('#Tutor-Matching-T').jtable('load', { TID: 0 });
                     //$('#Tutor-Children').jtable('load', { tutorId: 0 });
                     //$('#Tutor-Comments').jtable('load', { tutorId: 0 });
                     //$('#Tutor-FollowUp').jtable('load', { tutorId: 0 });
@@ -714,7 +765,7 @@ T U T O R S
                         $('#tutorPages').val(data.CurrentRecordIndex);
                         currentTutorId = data.CurrentTutor.ID;
 
-                        $('#Tutor-Matching-T').jtable('load', { SID: currentTutorId });
+                        $('#Tutor-Matching-T').jtable('load', { TID: currentTutorId });
                         $('#Tutor-Children').jtable('load', { tutorId: currentTutorId });
                         $('#Tutor-Comments').jtable('load', { tutorId: currentTutorId });
                         $('#Tutor-FollowUp').jtable('load', { tutorId: currentTutorId });
