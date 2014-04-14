@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -228,6 +229,139 @@ namespace LitProRead.Controllers
             }
         }
 
+        //*** Tutor Comments ***
+        [HttpPost]
+        public JsonResult GetTutorComments(int tutorId)
+        {
+            try
+            {
+                Thread.Sleep(200);
+                if (tutorId > 0)
+                {
+                    var query = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
+                    var sortedQuery = query.OrderByDescending(c => c.CommentDate).ToList();
+                    var count = sortedQuery.Count();
+                    return Json(new { Result = "OK", Records = sortedQuery, TotalRecordCount = count });
+                }
+                else
+                {
+                    List<TutorCommentsViewModel> list = null;
+                    return Json(new { Result = "OK", Records = list, TotalRecordCount = 0 });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult CreateTutorComments(TutorCommentsViewModel tutorCommentsVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Tutor Comments form is not valid! Please correct it and try again." });
+                }
+
+                // add to the in-memory list
+                var query = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
+                if (query == null)
+                {
+                    query = new List<TutorCommentsViewModel>();
+                    Session["TutorCommentsList"] = query;
+                }
+                tutorCommentsVm.Index = query.Count();
+                tutorCommentsVm.New = true;
+                query.Add(tutorCommentsVm);
+                return Json(new { Result = "OK", Record = tutorCommentsVm });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult UpdateTutorComments(TutorCommentsViewModel tutorCommentsVm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return Json(new { Result = "ERROR", Message = "Tutor Comment form is not valid! Please correct it and try again." });
+                }
+
+                var query = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
+                foreach (var item in query)
+                {
+                    if (item.Index == tutorCommentsVm.Index)
+                    {
+                        item.Comment = tutorCommentsVm.Comment;
+                        item.CommentDate = tutorCommentsVm.CommentDate;
+                        break;
+                    }
+                }
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        // NOT being used
+        [HttpPost]
+        public JsonResult DeleteTutorComments(int ID)
+        {
+            try
+            {
+                Thread.Sleep(50);
+                TutorComment item = db.TutorComments.FirstOrDefault(p => p.ID == ID);
+                if (item == null)
+                    return Json(new { Result = "ERROR", Message = "can't delete Tutor Comment " + ID.ToString() });
+
+                db.TutorComments.Remove(item);
+                db.SaveChanges();
+                return Json(new { Result = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message });
+            }
+        }
+
+        // the table TutorComment has no keys so it's not easy to Insert/Update using LINQ.
+        // the work-around here is to delete all exsiting records and insert the new ones.
+        private void SaveTutorComments(List<TutorCommentsViewModel> comments)
+        {
+            if (comments == null || comments.Count() == 0)
+                return;
+
+            using (var scope = new TransactionScope())
+            {
+                int tutorId = (int)comments.FirstOrDefault().ID;
+
+                // delete
+                string delCmd = "delete from dbo.TutorComments where ID = " + tutorId.ToString();
+                db.Database.ExecuteSqlCommand(delCmd);
+
+                // insert
+                foreach (var item in comments)
+                {
+                    string insertCmd = "INSERT INTO TutorComments (ID, CommentDate, Comment) VALUES (" +
+                                        "'" + item.ID + "'," +
+                                        "'" + item.CommentDate + "'," +
+                                        "'" + item.Comment + "')";
+                    db.Database.ExecuteSqlCommand(insertCmd);
+                }
+
+                //transaction completed successfully, both calls succeeded
+                scope.Complete();
+            }
+        }
+
         //
         // GET: /Tutor/
 
@@ -236,7 +370,8 @@ namespace LitProRead.Controllers
             if (Id == -1)
             {
                 var vm = new TutorFormViewModel();
-                //vm.TutorVM = new TutorViewModel();
+                Session["TutorCommentsList"] = vm.TutorCommentsList;
+//                Session["TutorFollowUpsList"] = vm.TutorFollowUpsList;
                 return View("Index", vm);
             }
             else
@@ -275,7 +410,7 @@ namespace LitProRead.Controllers
             }
             //vm.CurrentRecordIndex = recIndex;
 
-//            Session["TutorCommentsList"] = vm.TutorCommentsList;
+            Session["TutorCommentsList"] = vm.TutorCommentsList;
 //            Session["TutorFollowUpsList"] = vm.TutorFollowUpsList;
 
             JsonResult jsonData = new JsonResult();
@@ -300,6 +435,14 @@ namespace LitProRead.Controllers
                         try
                         {
                             db.SaveChanges();
+
+                            // tutor comments
+                            var comments = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
+                            SaveTutorComments(comments);
+
+                            // student followups
+//                            var followups = Session["StudentFollowUpsList"] as List<StudentFollowUpViewModel>;
+                            //SaveStudentFollowUps(followups);
                         }
                         catch (DbEntityValidationException ex)
                         {
@@ -336,16 +479,16 @@ namespace LitProRead.Controllers
                             db.Tutors.Add(tutorFormVm.CurrentTutor);
                             db.SaveChanges();
 
-                            //// comments
-                            //var comments = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
-                            //SaveStudentComments(comments);
+                            // comments
+                            var comments = Session["TutorCommentsList"] as List<TutorCommentsViewModel>;
+                            SaveTutorComments(comments);
 
                             //// followups
                             //var followups = Session["TutorFollowUpsList"] as List<TutorFollowUpViewModel>;
                             //SaveStudentFollowUps(followups);
 
                             //// change from "add" to "edit"
-                            ////studentFormVm.EditMode = "edit";
+                            ///tutorFormVm.EditMode = "edit";
                             return RedirectToAction("Index", new { Id = tutorFormVm.CurrentTutor.ID });
                         }
                         catch (Exception ex)

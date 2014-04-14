@@ -906,6 +906,29 @@ namespace LitProRead.Models
                 return list;
         }
 
+        public List<TutorCommentsViewModel> GetTutorComments(int id)
+        {
+            var query = from c in TutorComments
+                        where c.ID == id
+                        select c;
+
+            if (query.Count() == 0)
+                return new List<TutorCommentsViewModel>();
+
+            List<TutorCommentsViewModel> list = new List<TutorCommentsViewModel>();
+            foreach (var item in query)
+            {
+                list.Add(new TutorCommentsViewModel
+                {
+                    ID = item.ID,
+                    CommentDate = item.CommentDate,
+                    Comment = item.Comment,
+                    SSMA_TimeStamp = item.SSMA_TimeStamp
+                });
+            }
+
+            return list;
+        }
 
         // ********************************************************************************************************
         public static string GetActivity(int activityId)

@@ -26,6 +26,9 @@ namespace LitProRead.ViewModels
 
         public Tutor CurrentTutor { get; set; }
 
+        public List<TutorCommentsViewModel> TutorCommentsList { get; set; }
+        //        public List<TutorFollowUpViewModel> TutorFollowUpsList { get; set; }
+
         public List<SelectListItem> SalutationList { get; set; }
         public List<SelectListItem> AreaCodeList { get; private set; }
         public List<SelectListItem> CityList { get; private set; }
@@ -95,6 +98,9 @@ namespace LitProRead.ViewModels
             {
                 RecordsCnt = GetRecordsCnt(true);
             }
+
+            this.TutorCommentsList = GetTutorComments(id);
+            //this.TutorFollowUpsList = GetTutorFollowUps(id);
 
             this.SalutationList = GetSalutationList(CurrentTutor.Salutation);
             this.AreaCodeList = GetAreaCodeList();
@@ -299,6 +305,37 @@ namespace LitProRead.ViewModels
                 return tutor;
             }
         }
+
+        public List<TutorCommentsViewModel> GetTutorComments(int id)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var query = db.GetTutorComments(id);
+                int counter = 0;
+                List<TutorCommentsViewModel> list = new List<TutorCommentsViewModel>();
+                foreach (var item in query)
+                {
+                    list.Add(new TutorCommentsViewModel
+                    {
+                        Index = counter++,
+                        New = false,        // not a new Comment record
+                        ID = item.ID,
+                        CommentDate = item.CommentDate,
+                        Comment = item.Comment
+                    });
+                }
+                return list;
+             }
+        }
+
+        //public List<TutorFollowUpViewModel> GetTutorFollowUps(int id)
+        //{
+        //    using (LitProReadEntities db = new LitProReadEntities())
+        //    {
+        //        List<TutorFollowUpViewModel> list = db.GetTutorFollowUps(id);
+        //        return list;
+        //    }
+        //}
 
         // SELECT DISTINCTROW Salutation.Salutation FROM Salutation
         public List<SelectListItem> GetSalutationList(string selected = "")

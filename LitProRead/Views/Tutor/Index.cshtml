@@ -90,7 +90,10 @@ T U T O R S
         <ul>
             <li><a href="#Tutor-General">General</a></li>
             <li><a href="#Tutor-Preferences">Preferences</a></li>
-            <li><a href="#Tutor-Matching-T">Matching-T</a></li>
+             @*
+              *@
+          <li><a href="#Tutor-Matching-T">Matching-T</a></li>
+           <li><a href="#Tutor-Comments">Comments</a></li>
         </ul>
 
         <div>
@@ -101,8 +104,13 @@ T U T O R S
             @Html.Partial("_Tutor-Preferences-View", Model)
         </div>
         
-        <div id="_Tutor-Matching-T-View">
+        @*
+         *@
+        <div id="Tutor-Matching-T">
             @Html.Partial("_Tutor-Matching-T-View", Model)
+        </div>
+       <div id="Tutor-Comments">
+            @Html.Partial("_Tutor-Comments-View", Model)
         </div>
     }
 </div>
@@ -565,20 +573,20 @@ T U T O R S
 
                     //synch the search tutor profiles boxes
                     var byLastName = $("#ByLastName").val();
-                    if (byLastName == "true") {
+                    if (byLastName == "True" || byLastName == "true") {
                         // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedLastNameId and of SelectedLastName
                         $('#SelectedLastNameId').val(data.CurrentTutor.ID);
+                        var name = data.CurrentTutor.LastName + ", " + data.CurrentTutor.FirstName;
                         $('#SelectedLastName').val(name);
 
-                        var name = data.CurrentTutor.LastName + ", " + data.CurrentTutor.FirstName;
                         $("#TutorListLastName").select2("val", name);
                     }
                     else {
                         // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedFirstNameId and of SelectedFirstName
                         $('#SelectedFirstNameId').val(data.CurrentTutor.ID);
+                        var name = data.CurrentTutor.FirstName + " " + data.CurrentTutor.LastName;
                         $('#SelectedFirstName').val(name);
 
-                        var name = data.CurrentTutor.FirstName + " " + data.CurrentTutor.LastName;
                         $("#TutorListFirstName").select2("val", name);
                     }
 
@@ -646,8 +654,8 @@ T U T O R S
 
                         $('#Tutor-Matching-T').jtable('load', { TID: 0 });
                     //$('#Tutor-Children').jtable('load', { tutorId: 0 });
-                    //$('#Tutor-Comments').jtable('load', { tutorId: 0 });
-                    //$('#Tutor-FollowUp').jtable('load', { tutorId: 0 });
+                        $('#Tutor-Comments').jtable('load', { tutorId: 0 });
+                    //    $('#Tutor-FollowUp').jtable('load', { tutorId: 0 });
 
                     //$('#CurrentTutor_ID').val(data);
 
@@ -766,9 +774,8 @@ T U T O R S
                         currentTutorId = data.CurrentTutor.ID;
 
                         $('#Tutor-Matching-T').jtable('load', { TID: currentTutorId });
-                        $('#Tutor-Children').jtable('load', { tutorId: currentTutorId });
                         $('#Tutor-Comments').jtable('load', { tutorId: currentTutorId });
-                        $('#Tutor-FollowUp').jtable('load', { tutorId: currentTutorId });
+                       // $('#Tutor-FollowUp').jtable('load', { tutorId: currentTutorId });
 
                         $('#CurrentTutor_ID').val(data.CurrentTutor.ID);
                         $('#CurrentTutor_Salutation').val(data.CurrentTutor.Salutation);
@@ -1038,7 +1045,7 @@ T U T O R S
             // this is to care care of the case of after a "save" is executed
             if ($('#CurrentTutor_ID').val() > 0)
             {
-                $('#Tutor-Matching-T').jtable('load', { SID: $('#CurrentTutor_ID').val() });
+                $('#Tutor-Matching-T').jtable('load', { TID: $('#CurrentTutor_ID').val() });
                 //$('#Tutor-Children').jtable('load', { studentId: $('#CurrentTutor_ID').val() });
                 //$('#Tutor-Comments').jtable('load', { studentId: $('#CurrentTutor_ID').val() });
                 //$('#Tutor-FollowUp').jtable('load', { studentId: $('#CurrentTutor_ID').val() });
@@ -1065,7 +1072,7 @@ T U T O R S
 
                         //synch the search student profiles boxes
                         var byLastName = $("#ByLastName").val();
-                        if (byLastName == "true") {
+                        if (byLastName == "True" || byLastName == "true") {
                             var name = data.CurrentTutor.LastName + ", " + data.CurrentTutor.FirstName;
                             $("#TutorListLastName").select2("val", name);
                             $('#SelectedLastNameId').val(data.CurrentTutor.ID);

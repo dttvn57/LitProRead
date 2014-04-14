@@ -12,6 +12,7 @@ using System.Collections;
 using System.Data.Entity.Validation;
 using System.Threading;
 using System.Configuration;
+using System.Transactions;
 
 // id is the id that is passed into the details method
 //var nextID = db.Products.OrderBy(i => i.ID)
@@ -524,13 +525,14 @@ namespace LitProRead.Controllers
             if (comments == null || comments.Count() == 0)
                 return;
 
-            int studentId = (int)comments.FirstOrDefault().ID;
-            try
+            using (var scope = new TransactionScope())
             {
+                int studentId = (int)comments.FirstOrDefault().ID;
+
                 // delete
                 string delCmd = "delete from dbo.StudentComments where ID = " + studentId.ToString();
-                db.Database.ExecuteSqlCommand(delCmd);   
-       
+                db.Database.ExecuteSqlCommand(delCmd);
+
                 // insert
                 foreach (var item in comments)
                 {
@@ -540,10 +542,9 @@ namespace LitProRead.Controllers
                                         "'" + item.Comment + "')";
                     db.Database.ExecuteSqlCommand(insertCmd);
                 }
-            }
-            catch (Exception)
-            {
-            
+
+                //transaction completed successfully, both calls succeeded
+                scope.Complete();
             }
         }
 

@@ -749,9 +749,9 @@ S T U D E N T S
                     async: false,      // IMPORTANT to have this statement. If not the Home/Index will be called and the result is we'll have an empty form.
                     data: { currStudentId: id, activeOnly: $('#ActiveOnly').is(':checked'), byLastName: $("#ByLastName").val() },  
                 }).done(function (data) {
-                    // alert('done');
+                     //alert('done');
                 }).complete(function () {
-                    // alert("complete");
+                     //alert("complete");
                 }).success(function (data) {
                     //alert('success');
 
@@ -764,22 +764,20 @@ S T U D E N T S
 
                     //synch the search student profiles boxes
                     var byLastName =  $("#ByLastName").val();
-                    if (byLastName == "true")
+                    if (byLastName == "True" || byLastName == "true")
                     {
                         // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedLastNameId and of SelectedLastName
                         $('#SelectedLastNameId').val(data.CurrentStudent.ID);
-                        $('#SelectedLastName').val(name);
-
                         var name = data.CurrentStudent.LastName + ", " + data.CurrentStudent.FirstName;
+                        $('#SelectedLastName').val(name);
                         $("#StudentListLastName").select2("val", name);
                     }
                     else
                     {
                         // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedFirstNameId and of SelectedFirstName
                         $('#SelectedFirstNameId').val(data.CurrentStudent.ID);
-                        $('#SelectedFirstName').val(name);
-
                         var name = data.CurrentStudent.FirstName + " " + data.CurrentStudent.LastName;
+                        $('#SelectedFirstName').val(name);
                         $("#StudentListFirstName").select2("val", name);
                    }
 
@@ -1332,7 +1330,7 @@ S T U D E N T S
 
                     //synch the search student profiles boxes
                     var byLastName =  $("#ByLastName").val();
-                    if (byLastName == "true")
+                    if (byLastName == "True" || byLastName == "true")
                     {
                         var name = data.CurrentStudent.LastName + ", " + data.CurrentStudent.FirstName;
                         $("#StudentListLastName").select2("val", name);
