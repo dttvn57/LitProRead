@@ -666,8 +666,8 @@ S T U D E N T S
                 //alert("viewStatusChanges");
                 var StudentId = $('#CurrentStudent_ID').val();
                 if (StudentId > 0) {
-                    var url = '@Url.Action("AuditTrailThisStudent", "Reports", new { id = "_IdVal_" })';
-                    url = url.replace("_IdVal_", StudentId);
+                    var url = '@Url.Action("AuditTrailThis", "Reports", new { id = "_IdVal_" })';
+                    url = url.replace("_IdVal_", "S" + StudentId);
                     window.open(url, '_blank'); // <- This is what makes it open in a new window.
                 };
 

@@ -1,0 +1,117 @@
+﻿@model LitProRead.ViewModels.TutorFormViewModel
+
+<div id="Tutor-Reports-div">
+    <table>
+        <colgroup>
+                <col style="width:35%;"/>
+                <col style="width:5%;"/>
+                <col style="width:5%;"/>
+                <col style="width:55%;"/>
+        </colgroup>
+        @*
+        <tr>
+            @for (int i = 0; i < 4; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    <td style="background-color:red"></td>
+                }
+                else
+                {
+                    <td style="background-color:yellow"></td>
+                }
+            }
+        </tr>
+        *@
+        <tr><td></br></td></tr>
+        <tr>
+            <td style="text-align:center">
+                <span>Reports</span>
+            </td>
+            <td style="text-align:center"><div id="TutorReportsViewStartDateRangeLabel" style="display: none">Start Date</div>
+                @* Html.Label("Start Date", htmlAttributes: new { id = "TutorReportsViewStartDateRangeLabel", style="display: none;" })*@
+            </td>
+            <td style="text-align:center"><div id="TutorReportsViewEndDateRangeLabel" style="display: none">End Date</div>
+                @* Html.Label("End Date", htmlAttributes: new { id = "TutorReportsViewEndDateRangeLabel", style="display: none;" })*@
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @*
+                @Html.DropDownListFor(m => Model.CurrentTutor.Salutation, Model.SalutationList, string.Empty, new { style = "width:100%" })
+                @Html.DropDownList("TutorReports", Model.TutorReports, string.Empty)
+                *@
+                @Html.DropDownListFor(m => Model.SelectedTutorReport, Model.TutorReports, string.Empty)
+            </td>
+            <td style="text-align:center">
+                @Html.TextBox("TutorReportsStartDate", null, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "display: none; width:7em" })
+            </td>
+            <td style="text-align:center">
+                @Html.TextBox("TutorReportsEndDate", null, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "display: none; width:7em" })
+            </td>
+            <td style="text-align:center">
+                <button type="button" id="runTutorReports" style="display: none">Run</button>
+            </td>
+        </tr>
+
+        <tr><td></br></td></tr>
+
+    </table>
+
+</div>
+
+
+    <script type="text/javascript">
+        $("#SelectedTutorReport").change(function () {
+            $.fn.TutorReportsHandler();
+
+            @*
+            var selectedTutorReport = $("#SelectedTutorReport").val();
+
+            @ *alert(selectedTutorReport);
+        $("#TutorReportsDate1").style.display = "block";attr("disabled", false);
+        var TutorReportsBeginDate = document.getElementById("TutorReportsBeginDate");
+        var TutorReportsEndDate = document.getElementById("TutorReportsEndDate");* @
+            if (selectedTutorReport == '') 
+            {
+                document.getElementById("runTutorReports").style.display = "none";
+            }
+            else
+            {
+                document.getElementById("runTutorReports").style.display = "block";
+            }
+
+            if (selectedTutorReport == 'TutorsMatchHistorybyDateRange' ||
+                selectedTutorReport == 'TutorStatusHistory' ||
+                selectedTutorReport == 'TutorWaitTime')
+            {
+                document.getElementById("TutorReportsViewStartDateRangeLabel").style.display = "block";
+                document.getElementById("TutorReportsViewEndDateRangeLabel").style.display = "block";
+                document.getElementById("TutorReportsStartDate").style.display = "block";
+                document.getElementById("TutorReportsEndDate").style.display = "block";
+            }
+            else {
+                document.getElementById("TutorReportsViewStartDateRangeLabel").style.display = "none";
+                document.getElementById("TutorReportsViewEndDateRangeLabel").style.display = "none";
+                document.getElementById("TutorReportsStartDate").style.display = "none";
+                document.getElementById("TutorReportsEndDate").style.display = "none";
+            }
+            *@
+        });
+
+        $('#runTutorReports').click(function (value) {
+            var reportType = "PDF";
+            var TutorId = $("#CurrentTutor_ID").val();
+            var reportName = $("#TutorReports").val();
+            var beginDate = $("#TutorReportsStartDate").val();
+            var endDate = $("#TutorReportsEndDate").val();
+
+            var url = '@Url.Action("TutorsMatchHistorybyDateRange", "Reports", new { paramsVal = "_paramsVal_" })';
+            url = url.replace("_paramsVal_", "TutorId=" + TutorId + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate);
+            //alert(url);
+            //window.location.href = url;
+            window.open(url, '_blank'); // <- This is what makes it open in a new window.
+            return false;
+        });
+    </script>

@@ -93,6 +93,7 @@ T U T O R S
             <li><a href="#Tutor-Matching-T">Matching-T</a></li>
             <li><a href="#Tutor-Comments">Comments</a></li>
             <li><a href="#Tutor-FollowUp">FollowUp</a></li>
+            <li><a href="#Tutor-Reports">Reports</a></li>
         </ul>
 
         <div>
@@ -110,6 +111,9 @@ T U T O R S
         </div>
         <div id="Tutor-FollowUp">
             @Html.Partial("_Tutor-FollowUp-View", Model)
+        </div>
+        <div id="Tutor-Reports">
+            @Html.Partial("_Tutor-Reports-View", Model)
         </div>
     }
 </div>
@@ -494,6 +498,17 @@ T U T O R S
             // --- EDIT --- 
             $('#tutorEdit').click(function () {
                 $.fn.handleEditRecord(currentTutorId, "edit");
+            });
+
+            $('#viewStatusChanges').click(function (event) {
+                //alert("viewStatusChanges");
+                var TutorId = $('#CurrentTutor_ID').val();
+                if (TutorId > 0) {
+                    var url = '@Url.Action("AuditTrailThis", "Reports", new { id = "_IdVal_" })';
+                    url = url.replace("_IdVal_", "T" + TutorId);
+                    window.open(url, '_blank'); // <- This is what makes it open in a new window.
+                };
+
             });
 
             // --- DELETE --- 
@@ -1026,7 +1041,7 @@ T U T O R S
                         document.getElementById("runTutorReports").style.display = "block";
                     }
 
-                    if (selectedTutorReport == 'aaaa') {
+                    if (selectedTutorReport == 'TutorsMatchHistorybyDateRange') {
                         document.getElementById("TutorReportsViewStartDateRangeLabel").style.display = "block";
                         document.getElementById("TutorReportsViewEndDateRangeLabel").style.display = "block";
                         document.getElementById("TutorReportsStartDate").style.display = "block";

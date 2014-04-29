@@ -37,6 +37,8 @@ namespace LitProRead.Controllers
                 return false;
         };
 
+
+        //*** CLLS ***
         //
         // GET: /Reports/
         // CLLS
@@ -313,6 +315,7 @@ namespace LitProRead.Controllers
             }
         }
 
+        //*** STUDENTS ***
         public ActionResult Students()
         {
             // students
@@ -485,7 +488,16 @@ namespace LitProRead.Controllers
             if (reportName == "StudentAccomplishmentsByActiveDateGreaterThan1Year")
                 return _StudentAccomplishmentsByActiveDateGreaterThan1Year(reportType, date1, date2, statusType);
             else
-                return View();
+            if (reportName == "TutorActivePhoneList")
+                return _TutorActivePhoneList(reportType, true);
+            else
+            if (reportName == "TutorInActivePhoneList")
+                return _TutorActivePhoneList(reportType, false);
+            else
+            if (reportName == "TutorsWithCity")
+                return _TutorsWithCity(reportType);
+            else
+            return View();
         }
 
         //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students 
@@ -640,14 +652,15 @@ namespace LitProRead.Controllers
         //FROM tblAuditTrail
         //WHERE (((tblAuditTrail.ID)="S" & [Forms]![frmMain]![frmStudents].[Form]![ID]))
         //ORDER BY tblAuditTrail.DateChanged DESC , tblAuditTrail.TimeChanged DESC;
-        public ActionResult AuditTrailThisStudent(string id = "")
+        public ActionResult AuditTrailThis(string id = "")
         {
             //int studentId = Convert.ToInt32(id);
             string reportType = "EXCEL";
             using (LitProReadEntities db = new LitProReadEntities())
             {
                 var datasource = from item in db.tblAuditTrails.ToList()
-                                 where item.ID.Equals("S" + id)
+                                 where item.ID.Equals(id)
+//                                 where item.ID.Equals("S" + id)
                                  orderby item.DateChanged descending, item.TimeChanged descending
                                  select new
                                  {
@@ -767,6 +780,10 @@ namespace LitProRead.Controllers
                 List<ReportParameter> paramList = new List<ReportParameter>();
                 paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));
                 paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString()));
+                paramList.Add(new ReportParameter("Title", "Student Match Hisory"));
+                paramList.Add(new ReportParameter("PrimaryStatus", "Student Status"));
+                paramList.Add(new ReportParameter("SecondaryStatus", "Tutor Status"));
+                paramList.Add(new ReportParameter("MatchedWith", "Matched with Tutors"));
 
                 return RunReport("PDF", "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
             }
@@ -957,6 +974,7 @@ namespace LitProRead.Controllers
             {
                 var dataSource = from student in db.Students
                                  where chosenStatus.Contains(student.Status) && student.DOB.Value.Month == currMonth
+                                 orderby student.DOB
                                  select new {
                                      DOB = student.DOB,
                                      Age = System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", student.DOB, DateTime.Now) / 12,
@@ -972,6 +990,7 @@ namespace LitProRead.Controllers
                                  };
 
                 List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("Title", "Student Birthdays"));
                 paramList.Add(new ReportParameter("ChosenMonth", currMonthStr));
                 paramList.Add(new ReportParameter("ChosenStatus", chosenStatus));
                 return RunReport(reportType, "StudentBday.rdlc", "StudentBdayDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
@@ -1131,10 +1150,9 @@ namespace LitProRead.Controllers
                 List<StudentStatsBO> list = new List<StudentStatsBO>();
                 list.Add(bo);
 
-                //List < ReportParameter > paramList = new List<ReportParameter>();
-                //paramList.Add(new ReportParameter("BeginDate", beginDate));
-                //paramList.Add(new ReportParameter("EndDate", endDate));
-                return RunReport(reportType, "StudentStats.rdlc", "StudentStatsDataSet", list, null, 11, 8.5, 0.25, 0.25);
+                List < ReportParameter > paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("Title", "Student Stats"));
+                return RunReport(reportType, "StudentStats.rdlc", "StudentStatsDataSet", list, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
 
@@ -1227,13 +1245,450 @@ namespace LitProRead.Controllers
                                      Active = item.Active,
                                      ContactPref = item.ContactPref
                                  };
-                //if (datasource.FirstOrDefault() == null)
-                //    return 
-                return RunReport(reportType, "StudentsWithCity.rdlc", "StudentActivePhoneListDataSet", datasource, null, 11, 8.5, 0.25, 0.25);
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("Title", "Students With City"));
+                return RunReport(reportType, "StudentsWithCity.rdlc", "StudentActivePhoneListDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
             }
 
         }
 
+
+        //*** TUTORS ***
+        public ActionResult Tutors()
+        {
+            var vm = new ReportsViewModel
+            {
+                TutorsReport = ReportsViewModel.GetTutorsReportList()
+            };
+
+            return View(vm);
+        }
+
+        public ActionResult TutorActivePhoneList(string paramsVal) { return Run(paramsVal); }
+        public ActionResult TutorInActivePhoneList(string paramsVal) { return Run(paramsVal); }
+        public ActionResult TutorsWithCity(string paramsVal) { return Run(paramsVal); }
+
+        public ActionResult _TutorActivePhoneList(string reportType, bool showActive)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var datasource = from item in db.Tutors
+                                 where showActive == false ? item.Active == false : item.Active == true || item.Active == false
+                                 orderby item.LastName
+                                 select new
+                                 {
+                                     Name = item.LastName + ", " + item.FirstName,
+                                     Address = item.Address1,
+                                     CityStateZip = item.City + ", " + item.State + " " + item.Zip,
+                                     WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
+                                     HomePhone = item.HomeAreaCode + " " + item.HomePhone,
+                                     Active = item.Active,
+                                     ContactPref = item.ContactPref
+                                 };
+
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("ShowActive", showActive ? "true" : "false"));
+
+                // *** note: since the reports for Students & Tutors are identical, StudentActivePhoneList & StudentActivePhoneListDataSet, but the datasource is of Tutors.
+                return RunReport(reportType, "StudentActivePhoneList.rdlc", "StudentActivePhoneListDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        public ActionResult TutorBDay(string paramsVal)
+        {
+            string reportType = "";
+            string chosenMonth = "";
+            string chosenStatus = "";
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: report type (PDF, EXCEL, WORD, or IMAGE)
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd: month
+                string[] s2 = str[1].Split('=');
+                chosenMonth = s2[1];
+
+                // 3rd: status
+                string[] s3 = str[2].Split('=');
+                chosenStatus = s3[1];
+                if (chosenStatus.Length == 0)
+                {
+                    chosenStatus = StatusString();
+                }
+            }
+
+            int currMonth = DateTime.Now.Month;
+            string currMonthStr = DateTime.Now.ToString("MMM");
+            if (chosenMonth.Equals("Last Month", StringComparison.OrdinalIgnoreCase))
+            {
+                currMonth = currMonth <= 1 ? 1 : currMonth - 1;
+                DateTime temp = new DateTime(DateTime.Now.Year, currMonth, 1);
+                currMonthStr = temp.ToString("MMM");
+            }
+            else
+            if (chosenMonth.Equals("Next Month", StringComparison.OrdinalIgnoreCase))
+            {
+                currMonth = currMonth >= 12 ? 12 : currMonth + 1;
+                DateTime temp = new DateTime(DateTime.Now.Year, currMonth, 1);
+                currMonthStr = temp.ToString("MMM");
+            }
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var dataSource = from tutor in db.Tutors
+                                 where chosenStatus.Contains(tutor.Status) && tutor.DOB.Value.Month == currMonth
+                                 orderby tutor.DOB 
+                                 select new
+                                 {
+                                     DOB = tutor.DOB,
+                                     Age = System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", tutor.DOB, DateTime.Now) / 12,
+                                     //Age = Convert.ToString(System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", student.DOB, DateTime.Now) / 12),
+                                     Name = tutor.LastName + ", " + tutor.FirstName,
+                                     Address = tutor.Address1,
+                                     City = tutor.City,
+                                     State = tutor.State,
+                                     Zip = tutor.Zip,
+                                     WorkPhone = tutor.WorkAreaCode + " " + tutor.WorkPhone,
+                                     HomePhone = tutor.HomeAreaCode + " " + tutor.HomePhone,
+                                     Status = tutor.Status
+                                 };
+
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("Title", "Tutor Birthdays"));
+                paramList.Add(new ReportParameter("ChosenMonth", currMonthStr));
+                paramList.Add(new ReportParameter("ChosenStatus", chosenStatus));
+
+                // *** note: since the reports for Students & Tutors are identical, StudentBday & StudentBdayDataSet, but the datasource is of Tutors.
+                return RunReport(reportType, "StudentBday.rdlc", "StudentBdayDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        public ActionResult TutorStats(string paramsVal)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                string reportType = "";
+                string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();   // = "4/1/2010"; 
+                string endDate = DateTime.Now.ToShortDateString();     // = "4/30/2014";
+                string status = "";
+
+                if (paramsVal != null)
+                {
+                    char[] sep = { '!' };
+                    string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                    // 1st: report type (PDF, EXCEL, WORD, or IMAGE)
+                    if (str.Count() > 0)        // not all reports have a start date
+                    {
+                        string[] s1 = str[0].Split('=');
+                        reportType = s1[1];
+                    }
+
+                    // 2nd: begin date
+                    if (str.Count() > 1)        // not all reports have a start date
+                    {
+                        string[] s2 = str[1].Split('=');
+                        beginDate = s2[1];
+                    }
+
+                    // 3rd: end date
+                    if (str.Count() > 2)        // not all reports have a start date
+                    {
+                        string[] s3 = str[2].Split('=');
+                        endDate = s3[1];
+                    }
+
+                    // 4th: status
+                    if (str.Count() > 3)        // not all reports have a start date
+                    {
+                        string[] s4 = str[3].Split('=');
+                        status = s4[1];
+                    }
+                }
+
+                if (reportType.Length == 0)
+                {
+                    reportType = "PDF";
+                }
+
+                DateTime date1;
+                if (beginDate != "")
+                {
+                    date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+                }
+                else
+                {
+                    date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    beginDate = date1.ToShortDateString();
+                }
+
+                DateTime date2;
+                if (endDate != "")
+                {
+                    date2 = DateTime.ParseExact(endDate, @"M/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+                }
+                else
+                {
+                    int currMonth = DateTime.Now.Month;
+                    int day = 31;
+                    switch (currMonth)
+                    {
+                        case 2:
+                            day = 28;
+                            break;
+                        case 4:
+                        case 6:
+                        case 10:
+                        case 12:
+                            day = 30;
+                            break;
+                    }
+                    date2 = new DateTime(DateTime.Now.Year, currMonth, day);
+                    endDate = date2.ToShortDateString();
+                }
+
+                if (status.Length == 0)
+                {
+                    status = StatusString();
+                }
+
+                var query = from tutor in db.Tutors
+                            where status.Contains(tutor.Status) && tutor.FirstActive >= date1 && tutor.FirstActive <= date2
+                            select tutor;
+
+                // StudentStatsBO is used because info for Tutor to run this report is the same as Student.
+                StudentStatsBO bo = new StudentStatsBO();
+                bo.BeginDate = beginDate;
+                bo.EndDate = endDate;
+                bo.Status = status;
+
+                //*** logic is in Access frmStudentStatsSelection (open any code and search for "CreateStudentStatsTable")
+                bo.Count_Asian = query.Count(n => n.Ethnicity == "Asian");
+                bo.Count_Black = query.Count(n => n.Ethnicity == "Black");
+                bo.Count_Latino = query.Count(n => n.Ethnicity == "Hispanic");
+                bo.Count_NativeAmerican = query.Count(n => n.Ethnicity == "Native American");
+                bo.Count_PacificIslander = query.Count(n => n.Ethnicity == "Pacific Islander");
+                bo.Count_White = query.Count(n => n.Ethnicity == "White");
+                bo.Count_Other = query.Count(n => n.Ethnicity == "Other");
+                bo.Count_Unknown = query.Count(n => n.Ethnicity == null);
+                bo.Total_Ethnicity_Count = bo.Count_Asian + bo.Count_Black + bo.Count_Latino + bo.Count_NativeAmerican + bo.Count_PacificIslander + bo.Count_White + bo.Count_Other + bo.Count_Unknown;
+
+                //bo.Count_Age_Unknown = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 0 &&
+                //                                        (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 15);
+                //bo.Count_0_15 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) < 16);
+                //bo.Count_16_19 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 16 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 19);
+                //bo.Count_20_29 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 20 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 29);
+                //bo.Count_30_39 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 30 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 39);
+                //bo.Count_40_49 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 40 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 49);
+                //bo.Count_50_59 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 50 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 59);
+                //bo.Count_60_69 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 60 &&
+                //                                  (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) <= 69);
+                //bo.Count_70 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("month", n.DOB, DateTime.Now) / 12) >= 70);
+
+                bo.Count_Age_Unknown = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) == null);
+                bo.Count_0_15 = query.Count(n => (System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) < 16));
+                bo.Count_16_19 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 16 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 19);
+                bo.Count_20_29 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 20 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 29);
+                bo.Count_30_39 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 30 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 39);
+                bo.Count_40_49 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 40 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 49);
+                bo.Count_50_59 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 50 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 59);
+                bo.Count_60_69 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 60 &&
+                                                  System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) <= 69);
+                bo.Count_70 = query.Count(n => System.Data.Objects.SqlClient.SqlFunctions.DateDiff("year", n.DOB, DateTime.Now) >= 70);
+                bo.Total_Age_Count = bo.Count_Age_Unknown + bo.Count_0_15 + bo.Count_16_19 + bo.Count_20_29 + bo.Count_30_39 + bo.Count_40_49 + bo.Count_50_59 + bo.Count_60_69 + bo.Count_70;
+
+                bo.Count_Male = query.Count(n => n.Gender == "Male");
+                bo.Count_Female = query.Count(n => n.Gender == "Female");
+                bo.Count_Gender_Unknown = query.Count(n => n.Gender == null);
+                bo.Total_Gender_Count = bo.Count_Male + bo.Count_Female + bo.Count_Gender_Unknown;
+
+                bo.Count_FirstActiveDateIsNull = query.Count(n => n.FirstActive == null);
+
+                List<StudentStatsBO> list = new List<StudentStatsBO>();
+                list.Add(bo);
+
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("Title", "Tutor Stats"));
+
+                // *** note: since the reports for Students & Tutors are identical, StudentStats & StudentStatsDataSet, but the datasource is of Tutors.
+                return RunReport(reportType, "StudentStats.rdlc", "StudentStatsDataSet", list, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        public ActionResult _TutorsWithCity(string reportType)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var datasource = from item in db.Tutors
+                                 //where showActive == false ? item.Active == false : item.Active == true || item.Active == false
+                                 orderby item.LastName
+                                 select new
+                                 {
+                                     Name = item.LastName + ", " + item.FirstName,
+                                     LastName = item.LastName,
+                                     FirstName = item.FirstName,
+                                     City = item.City,
+                                     Address = item.Address1,
+                                     CityStateZip = item.City + ", " + item.State + " " + item.Zip,
+                                     WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
+                                     HomePhone = item.HomeAreaCode + " " + item.HomePhone,
+                                     Active = item.Active,
+                                     ContactPref = item.ContactPref
+                                 };
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("Title", "Tutors With City"));
+
+                // *** note: since the reports for Students & Tutors are identical, StudentsWithCity & StudentActivePhoneListDataSet, but the datasource is of Tutors.
+                return RunReport(reportType, "StudentsWithCity.rdlc", "StudentActivePhoneListDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+
+        }
+
+        //SELECT Pairs.*, IIf(IsNull([DissolveDate]),DateDiff("m",[MatchDate],Now()),DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, students.HomeAreaCode & " " & Students.HomePhone AS StudentHome, Students.WorkAreaCode & " " & Students.WorkPhone AS StudentWork, Tutors.HomeAreaCode & " " & Tutors.HomePhone AS TutorHome, Tutors.WorkAreaCode & " " & Tutors.WorkPhone AS TutorWork, Tutors.TutorContact, Tutors.Status, Students.Status
+        //FROM Students INNER JOIN (Tutors INNER JOIN Pairs ON Tutors.ID = Pairs.TID) ON Students.ID = Pairs.SID
+        //WHERE (((Pairs.MatchDate) Between [Forms]![frmTutorMatchHistorybyDateRange]![BeginDate] And [Forms]![frmTutorMatchHistorybyDateRange]![EndDate]));
+        //
+
+        public ActionResult TutorsMatchHistorybyDateRange(string paramsVal) 
+        {
+            string id = "0";
+            string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+            string endDate = DateTime.Now.ToShortDateString();
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: student Id
+                string[] s1 = str[0].Split('=');
+                id = s1[1];
+
+                // 2nd: begin date
+                if (str.Count() > 1)        // not all reports have a start date
+                {
+                    string[] date = str[1].Split('=');
+                    beginDate = date[1];
+                }
+
+                // 3rd: end date
+                if (str.Count() > 2)        // not all reports have an end date
+                {
+                    string[] date = str[2].Split('=');
+                    endDate = date[1];
+                }
+            }
+
+            int tutorID = Convert.ToInt32(id);
+
+            DateTime date1;
+            if (beginDate != "")
+            {
+                date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+            }
+            else
+            {
+                date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+
+            DateTime date2 = DateTime.Now;
+            if (endDate != "")
+            {
+                date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+            }
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var tutor = db.Tutors.Find(tutorID);
+                var tutorStatus = tutor.Status;
+
+                //var dataSource = from tutor in db.Tutors
+                //                 join pair in db.Pairs on tutor.ID equals pair.TID into tutorPairGrp
+                //                 from tutorpair in tutorPairGrp
+                //                 where tutorpair.DissolveDate != null
+                //                 join student in db.Students on tutorpair.SID equals student.ID
+                //                 select new
+                //                 {
+                //                     UniqID = pair.UniqID,
+                //                     TID = pair.TID,
+                //                     SID = studentID,
+                //                     MatchDate = pair.MatchDate,
+                //                     DissolveDate = pair.DissolveDate,
+                //                     Comments = pair.Comments,
+                //                     //TotalHoursMet = t.Sum(x => x.HoursMet)
+
+                //                     StudentID = studentID,
+                //                     StudentName = student.FirstName + " " + student.LastName,
+                //                     StudentHome = student.HomeAreaCode + " " + student.HomePhone,
+                //                     StudentWork = student.WorkAreaCode + " " + student.WorkPhone,
+                //                     StudentStatus = student.Status,
+
+                //                     TutorID = tutor.ID,
+                //                     TutorName = tutor.FirstName + " " + tutor.LastName,
+                //                     TutorHome = tutor.HomeAreaCode + " " + tutor.HomePhone,
+                //                     TutorWork = tutor.WorkAreaCode + " " + tutor.WorkPhone,
+                //                     TutorStatus = tutor.Status,
+                //                     TutorContact = tutor.TutorContact
+                //                 };
+
+                var dataSource =
+                    from pair in db.Pairs
+                    where pair.TID == tutorID && pair.MatchDate >= date1 && pair.MatchDate <= date2
+                    join student in db.Students on pair.SID equals student.ID //into pt 
+                    //from p in pt.DefaultIfEmpty() 
+                    select new
+                    {
+                        UniqID = pair.UniqID,
+                        //TID = pair.TID,
+                        TID = tutorID,
+                        MatchDate = pair.MatchDate,
+                        DissolveDate = pair.DissolveDate,
+                        Comments = pair.Comments,
+                        //TotalHoursMet = t.Sum(x => x.HoursMet)
+
+                        // this is kind of resverse where Tutor takes place of student, and vice versa
+                        TutorID = student.ID,
+                        TutorName = student.FirstName + " " + student.LastName,
+                        TutorHome = student.HomeAreaCode + " " + student.HomePhone,
+                        TutorWork = student.WorkAreaCode + " " + student.WorkPhone,
+                        TutorStatus = student.Status,
+                        StudentContact = student.StudentContact,
+
+                        StudentID = tutor.ID,
+                        StudentName = tutor.FirstName + " " + tutor.LastName,
+                        StudentHome = tutor.HomeAreaCode + " " + tutor.HomePhone,
+                        StudentWork = tutor.WorkAreaCode + " " + tutor.WorkPhone,
+                        StudentStatus = tutor.Status
+                    };
+
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString()));
+                paramList.Add(new ReportParameter("Title", "Tutor Match Hisory"));
+                paramList.Add(new ReportParameter("PrimaryStatus", "Tutor Status"));
+                paramList.Add(new ReportParameter("SecondaryStatus", "Student Status"));
+                paramList.Add(new ReportParameter("MatchedWith", "Matched with Students"));
+
+                return RunReport("PDF", "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+        
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {
             LocalReport lr = new LocalReport();

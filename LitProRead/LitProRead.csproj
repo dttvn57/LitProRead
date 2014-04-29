@@ -56,6 +56,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -65,7 +66,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -725,6 +725,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\TutorFollowUpViewModel.cs" />
+    <Compile Include="ViewModels\TutorCommentsViewModel.cs" />
     <Compile Include="ViewModels\StudentFollowUpViewModel.cs" />
     <Compile Include="ViewModels\StudentCommentsViewModel.cs" />
     <Compile Include="ViewModels\StudentChildrenViewModel.cs" />
@@ -1220,6 +1222,10 @@
     <Content Include="Views\CLLS\Index.cshtml" />
     <Content Include="Views\Reports\Students.cshtml" />
     <Content Include="Views\Shared\_Tutor-Matching-T-View.cshtml" />
+    <Content Include="Views\Shared\_Tutor-Comments-View.cshtml" />
+    <Content Include="Views\Shared\_Tutor-FollowUp-View.cshtml" />
+    <Content Include="Views\Reports\Tutors.cshtml" />
+    <Content Include="Views\Shared\_Tutor-Reports-View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

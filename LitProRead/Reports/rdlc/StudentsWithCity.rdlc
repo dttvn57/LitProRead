@@ -470,7 +470,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Students With City</Value>
+                <Value>=Parameters!Title.Value</Value>
                 <Style>
                   <FontFamily>Times New Roman</FontFamily>
                   <FontSize>24pt</FontSize>
@@ -650,6 +650,12 @@
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="Title">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>54900668-7f3b-4262-aa93-3f6e7b8daee8</rd:ReportID>
 </Report>

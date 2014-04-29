@@ -14,6 +14,9 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> StudentsReport { get; set; }
         //public List<SelectListItem> StudentsReportStatus { get; set; }
 
+        public string SelectedTutorsReport { get; set; }
+        public List<SelectListItem> TutorsReport { get; set; }
+
         public List<SelectListItem> ChosenMonthList { get; set; }
         public List<SelectListItem> ChosenStatusList { get; set; }
 
@@ -71,5 +74,28 @@ namespace LitProRead.ViewModels
             return list;// new SelectList(list.ToList(), "Value", "Text");
         }
 
+
+        public static List<SelectListItem> GetTutorsReportList(string selected = "")
+        {
+            // students
+            string[] names = ConfigurationManager.AppSettings.AllKeys
+                                                            .Where(k => k.StartsWith("TutorReport"))
+                                                            .Select(k => ConfigurationManager.AppSettings[k])
+                                                            .ToArray();
+
+            string selectedValue = selected != null ? selected.Trim() : "";
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var name in names)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = name.Trim(),
+                    Value = name.Trim(),
+                    //Selected = selectedValue == sal.Trim() ? true : false
+                });
+
+            }
+            return list;// new SelectList(list.ToList(), "Value", "Text");
+        }
     }
 }

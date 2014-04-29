@@ -1,6 +1,7 @@
 ﻿using LitProRead.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -27,7 +28,7 @@ namespace LitProRead.ViewModels
         public Tutor CurrentTutor { get; set; }
 
         public List<TutorCommentsViewModel> TutorCommentsList { get; set; }
-        //        public List<TutorFollowUpViewModel> TutorFollowUpsList { get; set; }
+        public List<TutorFollowUpViewModel> TutorFollowUpsList { get; set; }
 
         public List<SelectListItem> SalutationList { get; set; }
         public List<SelectListItem> AreaCodeList { get; private set; }
@@ -45,6 +46,9 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> ReferralList { get; private set; }
         public List<SelectListItem> StaffList { get; private set; }
         public List<SelectListItem> SourceList { get; private set; }
+
+        public string SelectedTutorReport { get; set; }
+        public List<SelectListItem> TutorReports { get; set; }
 
         public double TutorAge { get; private set; }
 
@@ -100,7 +104,7 @@ namespace LitProRead.ViewModels
             }
 
             this.TutorCommentsList = GetTutorComments(id);
-            //this.TutorFollowUpsList = GetTutorFollowUps(id);
+            this.TutorFollowUpsList = GetTutorFollowUps(id);
 
             this.SalutationList = GetSalutationList(CurrentTutor.Salutation);
             this.AreaCodeList = GetAreaCodeList();
@@ -130,6 +134,8 @@ namespace LitProRead.ViewModels
             this.MailCodeList = DbHelper.GetMailCodeList(null);
             this.CategoryList = DbHelper.GetCategoryList(null);
             this.KeywordList = DbHelper.GetKeywordList(null);
+
+            this.TutorReports = GetTutorReportList();
         }
 
         //public void Populate(Dictionary<string, string> values)
@@ -328,14 +334,14 @@ namespace LitProRead.ViewModels
              }
         }
 
-        //public List<TutorFollowUpViewModel> GetTutorFollowUps(int id)
-        //{
-        //    using (LitProReadEntities db = new LitProReadEntities())
-        //    {
-        //        List<TutorFollowUpViewModel> list = db.GetTutorFollowUps(id);
-        //        return list;
-        //    }
-        //}
+        public List<TutorFollowUpViewModel> GetTutorFollowUps(int id)
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                List<TutorFollowUpViewModel> list = db.GetTutorFollowUps(id);
+                return list;
+            }
+        }
 
         // SELECT DISTINCTROW Salutation.Salutation FROM Salutation
         public List<SelectListItem> GetSalutationList(string selected = "")
@@ -659,6 +665,29 @@ namespace LitProRead.ViewModels
             return ParseList(selected, yn);
         }
 
+
+        public List<SelectListItem> GetTutorReportList(string selected = "")
+        {
+            // students
+            string[] names = ConfigurationManager.AppSettings.AllKeys
+                                                            .Where(k => k.StartsWith("OneTutorReport"))
+                                                            .Select(k => ConfigurationManager.AppSettings[k])
+                                                            .ToArray();
+
+            string selectedValue = selected != null ? selected.Trim() : "";
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var name in names)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = name.Trim(),
+                    Value = name.Trim(),
+                    //Selected = selectedValue == sal.Trim() ? true : false
+                });
+
+            }
+            return list;// new SelectList(list.ToList(), "Value", "Text");
+        }
 
         private double GetTutorAge()
         {

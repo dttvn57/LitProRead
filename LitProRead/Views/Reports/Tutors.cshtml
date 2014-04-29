@@ -1,0 +1,164 @@
+﻿@model LitProRead.ViewModels.ReportsViewModel
+
+    <table>
+           <colgroup>
+               <col style="width:35%;"/>
+                <col style="width:12%;"/>
+                <col style="width:13%;"/>
+                <col style="width:40%;"/>
+            </colgroup>
+
+         <tr>
+            <td style="text-align:left">
+                <span>Reports</span>
+            </td>
+            <td style="text-align:left">
+                @Html.Label("Start Date", new { id = "TutorReportsViewStartDateRangeLabel", style="text-align:left; display: none" })
+                @Html.Label("Choose Month", new { id = "ChooseMonthLabel", style="text-align:left; display: none" })
+            </td>
+            <td style="text-align:left">
+                @Html.Label("End Date", new { id = "TutorReportsViewEndDateRangeLabel", style="text-align:left; display: none" })
+                @Html.Label("Choose Status", new { id = "ChooseStatusLabel", style="text-align:left; display: none" })
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.DropDownListFor(m => Model.SelectedTutorsReport, Model.TutorsReport, string.Empty)
+           </td>
+            <td style="text-align:center">
+                @Html.TextBox("TutorReportsStartDate", null, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "display: none; width:7em" })
+                @Html.DropDownList("ChosenMonthList", Model.ChosenMonthList, new { style="width:100%; display: none;" })  
+            </td>
+            <td style="text-align:center">
+                @Html.TextBox("TutorReportsEndDate", null, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "display: none; width:7em" })
+                @Html.DropDownList("ChosenStatusList", Model.ChosenStatusList, string.Empty, new { style="width:100%; display: none;" })  
+            </td>
+            <td style="text-align:center">
+                <button type="button" id="runTutorsReports" style="display: none">Run</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="1">
+            </td>
+            <td>
+                @Html.Label("Status", new { id = "StatusLabel", style="text-align:left; display: none" })
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="1">
+            </td>
+            <td style="text-align:center">
+                @Html.DropDownList("StatusList", Model.ChosenStatusList, string.Empty, new { style="width:100%; display: none;" })  
+            </td>
+        </tr>
+    </table>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".datefield").datepicker();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#SelectedTutorsReport").change(function () {
+
+            var selectedTutorReport = $("#SelectedTutorsReport").val();
+
+            //alert(selectedTutorReport);
+            if (selectedTutorReport == '') 
+            {
+                document.getElementById("runTutorsReports").style.display = "none";
+            }
+            else
+            {
+                document.getElementById("runTutorsReports").style.display = "block";
+            }
+
+            document.getElementById("StatusLabel").style.display = "none";
+            document.getElementById("StatusList").style.display = "none";
+
+            if (selectedTutorReport == 'TutorBday') {
+                document.getElementById("ChosenMonthList").style.display = "block";
+                document.getElementById("ChosenStatusList").style.display = "block";
+                document.getElementById("ChooseMonthLabel").style.display = "block";
+                document.getElementById("ChooseStatusLabel").style.display = "block";
+            }
+            else {
+                document.getElementById("ChosenMonthList").style.display = "none";
+                document.getElementById("ChosenStatusList").style.display = "none";
+                document.getElementById("ChooseMonthLabel").style.display = "none";
+                document.getElementById("ChooseStatusLabel").style.display = "none";
+            }
+
+            if (selectedTutorReport == 'TutorAccomplishmentsByActiveDateGreaterThan1Year' ||
+                selectedTutorReport == 'TutorsActiveDateMoreThan1YearWithHoursMet' ||
+                selectedTutorReport == 'TutorsMatchHistorybyDateRange' ||
+                selectedTutorReport == 'TutorStatusHistory' ||
+                selectedTutorReport == 'TutorStats' ||
+                //selectedTutorReport == 'TutorsComputerLab' ||
+                selectedTutorReport == 'TutorWaitTime')
+            {
+                document.getElementById("TutorReportsViewStartDateRangeLabel").style.display = "block";
+                document.getElementById("TutorReportsViewEndDateRangeLabel").style.display = "block";
+                document.getElementById("TutorReportsStartDate").style.display = "block";
+                document.getElementById("TutorReportsEndDate").style.display = "block";
+
+                if (selectedTutorReport == 'TutorStats') {
+                    document.getElementById("StatusLabel").style.display = "block";
+                    document.getElementById("StatusList").style.display = "block";
+                }
+            }
+            else {
+                document.getElementById("TutorReportsViewStartDateRangeLabel").style.display = "none";
+                document.getElementById("TutorReportsViewEndDateRangeLabel").style.display = "none";
+                document.getElementById("TutorReportsStartDate").style.display = "none";
+                document.getElementById("TutorReportsEndDate").style.display = "none";
+
+                if (selectedTutorReport == 'TutorStats') {
+                }
+            }
+        });
+
+        $('#runTutorsReports').click(function (value) {
+            //var selectedTutorReport = $("#SelectedTutorsReport").val();
+            var reportType = "EXCEL";
+            var reportName = $("#SelectedTutorsReport").val();
+            //var TutorId = 0;
+
+            var url = '@Url.Action( "destURL", "Reports", new { paramsVal = "_paramsVal_" })';
+            if (reportName == 'TutorBday') {
+                var month = $("#ChosenMonthList").val();
+                var status = $("#ChosenStatusList").val();
+                //url = ' Url.Action( "TutorBday", "Reports", new {reportType="PDF", chosenMonth=$("#ChosenMonthList").val(), chosenStatus=$("#ChosenStatusList").val()})';        //{ paramsVal = "_paramsVal_" })';
+                url = url.replace("destURL", reportName);
+                url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "chosenMonth=" + $("#ChosenMonthList").val() + '!' + "chosenStatus=" + $("#ChosenStatusList").val());
+            }
+            else 
+            if (reportName == 'TutorStats') {
+                var beginDate = $("#TutorReportsStartDate").val();
+                var endDate = $("#TutorReportsEndDate").val();
+                var status = $("#StatusList").val();
+                url = url.replace("destURL", reportName);
+                url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate + '!' + "status=" + status);
+            }
+            else {
+                var beginDate = $("#TutorReportsStartDate").val();
+                var endDate = $("#TutorReportsEndDate").val();
+                url = url.replace("destURL", reportName);
+                url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "reportName=" + reportName + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate);
+            }
+
+            //alert(url);
+
+            window.open(url, '_blank'); // <- This is what makes it open in a new window.
+            return false;
+        });
+    </script>
+ }
+  

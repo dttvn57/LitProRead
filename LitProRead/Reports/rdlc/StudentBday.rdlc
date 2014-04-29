@@ -696,7 +696,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Student Birthdays</Value>
+                <Value>=Parameters!Title.Value</Value>
                 <Style>
                   <FontSize>20pt</FontSize>
                   <FontWeight>Bold</FontWeight>
@@ -1012,6 +1012,10 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="ChosenStatus">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Title">
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
