@@ -3,36 +3,8 @@
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-        <Connections>
-          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="LitProReadConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="LitProReadConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.LitProReadConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
-        </Connections>
-        <Tables>
-          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="qryStudentStatusHistoryTableAdapter" GeneratorDataComponentClassName="qryStudentStatusHistoryTableAdapter" Name="qryStudentStatusHistory" UserDataComponentName="qryStudentStatusHistoryTableAdapter">
-            <MainSource>
-              <DbSource ConnectionRef="LitProReadConnectionString (Web.config)" DbObjectName="LitProRead.dbo.qryStudentStatusHistory" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
-                <SelectCommand>
-                  <DbCommand CommandType="Text" ModifiedByUser="false">
-                    <CommandText>SELECT FirstName, LastName, AutoID, ID, StudentorTutor, Status, StatusDate, InActiveDate, ChangedDateTime, ChangedBy FROM dbo.qryStudentStatusHistory</CommandText>
-                    <Parameters />
-                  </DbCommand>
-                </SelectCommand>
-              </DbSource>
-            </MainSource>
-            <Mappings>
-              <Mapping SourceColumn="FirstName" DataSetColumn="FirstName" />
-              <Mapping SourceColumn="LastName" DataSetColumn="LastName" />
-              <Mapping SourceColumn="AutoID" DataSetColumn="AutoID" />
-              <Mapping SourceColumn="ID" DataSetColumn="ID" />
-              <Mapping SourceColumn="StudentorTutor" DataSetColumn="StudentorTutor" />
-              <Mapping SourceColumn="Status" DataSetColumn="Status" />
-              <Mapping SourceColumn="StatusDate" DataSetColumn="StatusDate" />
-              <Mapping SourceColumn="InActiveDate" DataSetColumn="InActiveDate" />
-              <Mapping SourceColumn="ChangedDateTime" DataSetColumn="ChangedDateTime" />
-              <Mapping SourceColumn="ChangedBy" DataSetColumn="ChangedBy" />
-            </Mappings>
-            <Sources />
-          </TableAdapter>
-        </Tables>
+        <Connections />
+        <Tables />
         <Sources />
       </DataSource>
     </xs:appinfo>
@@ -40,57 +12,19 @@
   <xs:element name="StudentStatusHistoryDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="StudentStatusHistoryDataSet" msprop:Generator_UserDSName="StudentStatusHistoryDataSet">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="qryStudentStatusHistory" msprop:Generator_TableClassName="qryStudentStatusHistoryDataTable" msprop:Generator_TableVarName="tableqryStudentStatusHistory" msprop:Generator_TablePropName="qryStudentStatusHistory" msprop:Generator_RowDeletingName="qryStudentStatusHistoryRowDeleting" msprop:Generator_RowChangingName="qryStudentStatusHistoryRowChanging" msprop:Generator_RowEvHandlerName="qryStudentStatusHistoryRowChangeEventHandler" msprop:Generator_RowDeletedName="qryStudentStatusHistoryRowDeleted" msprop:Generator_UserTableName="qryStudentStatusHistory" msprop:Generator_RowChangedName="qryStudentStatusHistoryRowChanged" msprop:Generator_RowEvArgName="qryStudentStatusHistoryRowChangeEvent" msprop:Generator_RowClassName="qryStudentStatusHistoryRow">
+        <xs:element name="StudentStatusHistoryDataTable" msprop:Generator_TableClassName="StudentStatusHistoryDataTableDataTable" msprop:Generator_TableVarName="tableStudentStatusHistoryDataTable" msprop:Generator_TablePropName="StudentStatusHistoryDataTable" msprop:Generator_RowDeletingName="StudentStatusHistoryDataTableRowDeleting" msprop:Generator_RowChangingName="StudentStatusHistoryDataTableRowChanging" msprop:Generator_RowEvHandlerName="StudentStatusHistoryDataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="StudentStatusHistoryDataTableRowDeleted" msprop:Generator_UserTableName="StudentStatusHistoryDataTable" msprop:Generator_RowChangedName="StudentStatusHistoryDataTableRowChanged" msprop:Generator_RowEvArgName="StudentStatusHistoryDataTableRowChangeEvent" msprop:Generator_RowClassName="StudentStatusHistoryDataTableRow">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="FirstName" msprop:Generator_ColumnVarNameInTable="columnFirstName" msprop:Generator_ColumnPropNameInRow="FirstName" msprop:Generator_ColumnPropNameInTable="FirstNameColumn" msprop:Generator_UserColumnName="FirstName">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="LastName" msprop:Generator_ColumnVarNameInTable="columnLastName" msprop:Generator_ColumnPropNameInRow="LastName" msprop:Generator_ColumnPropNameInTable="LastNameColumn" msprop:Generator_UserColumnName="LastName">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="AutoID" msprop:Generator_ColumnVarNameInTable="columnAutoID" msprop:Generator_ColumnPropNameInRow="AutoID" msprop:Generator_ColumnPropNameInTable="AutoIDColumn" msprop:Generator_UserColumnName="AutoID" type="xs:int" />
-              <xs:element name="ID" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:int" minOccurs="0" />
-              <xs:element name="StudentorTutor" msprop:Generator_ColumnVarNameInTable="columnStudentorTutor" msprop:Generator_ColumnPropNameInRow="StudentorTutor" msprop:Generator_ColumnPropNameInTable="StudentorTutorColumn" msprop:Generator_UserColumnName="StudentorTutor" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="Status" msprop:Generator_ColumnVarNameInTable="columnStatus" msprop:Generator_ColumnPropNameInRow="Status" msprop:Generator_ColumnPropNameInTable="StatusColumn" msprop:Generator_UserColumnName="Status" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="StatusDate" msprop:Generator_ColumnVarNameInTable="columnStatusDate" msprop:Generator_ColumnPropNameInRow="StatusDate" msprop:Generator_ColumnPropNameInTable="StatusDateColumn" msprop:Generator_UserColumnName="StatusDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="StatusDate" msprop:Generator_ColumnVarNameInTable="columnStatusDate" msprop:Generator_ColumnPropNameInRow="StatusDate" msprop:Generator_ColumnPropNameInTable="StatusDateColumn" msprop:Generator_UserColumnName="StatusDate" type="xs:string" minOccurs="0" />
+              <xs:element name="Status" msprop:Generator_ColumnVarNameInTable="columnStatus" msprop:Generator_ColumnPropNameInRow="Status" msprop:Generator_ColumnPropNameInTable="StatusColumn" msprop:Generator_UserColumnName="Status" type="xs:string" minOccurs="0" />
               <xs:element name="InActiveDate" msprop:Generator_ColumnVarNameInTable="columnInActiveDate" msprop:Generator_ColumnPropNameInRow="InActiveDate" msprop:Generator_ColumnPropNameInTable="InActiveDateColumn" msprop:Generator_UserColumnName="InActiveDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="ChangedDateTime" msprop:Generator_ColumnVarNameInTable="columnChangedDateTime" msprop:Generator_ColumnPropNameInRow="ChangedDateTime" msprop:Generator_ColumnPropNameInTable="ChangedDateTimeColumn" msprop:Generator_UserColumnName="ChangedDateTime" type="xs:dateTime" minOccurs="0" />
-              <xs:element name="ChangedBy" msprop:Generator_ColumnVarNameInTable="columnChangedBy" msprop:Generator_ColumnPropNameInRow="ChangedBy" msprop:Generator_ColumnPropNameInTable="ChangedByColumn" msprop:Generator_UserColumnName="ChangedBy" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
+              <xs:element name="ChangedBy" msprop:Generator_ColumnVarNameInTable="columnChangedBy" msprop:Generator_ColumnPropNameInRow="ChangedBy" msprop:Generator_ColumnPropNameInTable="ChangedByColumn" msprop:Generator_UserColumnName="ChangedBy" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
       </xs:choice>
     </xs:complexType>
-    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
-      <xs:selector xpath=".//mstns:qryStudentStatusHistory" />
-      <xs:field xpath="mstns:AutoID" />
-    </xs:unique>
   </xs:element>
 </xs:schema>

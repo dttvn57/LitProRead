@@ -299,6 +299,8 @@ namespace LitProRead.Reports.DataSets {
             
             private global::System.Data.DataColumn columnContactPref;
             
+            private global::System.Data.DataColumn columnFirstActive;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public StudentActivePhoneListDataTableDataTable() {
@@ -414,6 +416,14 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn FirstActiveColumn {
+                get {
+                    return this.columnFirstActive;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -449,7 +459,7 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public StudentActivePhoneListDataTableRow AddStudentActivePhoneListDataTableRow(string Name, string LastName, string FirstName, string Address, string CityStateZip, string City, string HomePhone, string WorkPhone, string Active, string ContactPref) {
+            public StudentActivePhoneListDataTableRow AddStudentActivePhoneListDataTableRow(string Name, string LastName, string FirstName, string Address, string CityStateZip, string City, string HomePhone, string WorkPhone, string Active, string ContactPref, System.DateTime FirstActive) {
                 StudentActivePhoneListDataTableRow rowStudentActivePhoneListDataTableRow = ((StudentActivePhoneListDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Name,
@@ -461,7 +471,8 @@ namespace LitProRead.Reports.DataSets {
                         HomePhone,
                         WorkPhone,
                         Active,
-                        ContactPref};
+                        ContactPref,
+                        FirstActive};
                 rowStudentActivePhoneListDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStudentActivePhoneListDataTableRow);
                 return rowStudentActivePhoneListDataTableRow;
@@ -494,6 +505,7 @@ namespace LitProRead.Reports.DataSets {
                 this.columnWorkPhone = base.Columns["WorkPhone"];
                 this.columnActive = base.Columns["Active"];
                 this.columnContactPref = base.Columns["ContactPref"];
+                this.columnFirstActive = base.Columns["FirstActive"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -519,6 +531,8 @@ namespace LitProRead.Reports.DataSets {
                 base.Columns.Add(this.columnActive);
                 this.columnContactPref = new global::System.Data.DataColumn("ContactPref", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnContactPref);
+                this.columnFirstActive = new global::System.Data.DataColumn("FirstActive", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFirstActive);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -831,6 +845,23 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime FirstActive {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableStudentActivePhoneListDataTable.FirstActiveColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FirstActive\' in table \'StudentActivePhoneListDataTable\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableStudentActivePhoneListDataTable.FirstActiveColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsNameNull() {
                 return this.IsNull(this.tableStudentActivePhoneListDataTable.NameColumn);
             }
@@ -947,6 +978,18 @@ namespace LitProRead.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetContactPrefNull() {
                 this[this.tableStudentActivePhoneListDataTable.ContactPrefColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsFirstActiveNull() {
+                return this.IsNull(this.tableStudentActivePhoneListDataTable.FirstActiveColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetFirstActiveNull() {
+                this[this.tableStudentActivePhoneListDataTable.FirstActiveColumn] = global::System.Convert.DBNull;
             }
         }
         

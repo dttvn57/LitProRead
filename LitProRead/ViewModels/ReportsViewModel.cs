@@ -20,10 +20,18 @@ namespace LitProRead.ViewModels
         public List<SelectListItem> ChosenMonthList { get; set; }
         public List<SelectListItem> ChosenStatusList { get; set; }
 
+        public string SelectedCity1 { get; set; }
+        public string SelectedCity2 { get; set; }
+        public string SelectedCity3 { get; set; }
+        public string SelectedCity4 { get; set; }
+        public string SelectedCity5 { get; set; }
+        public List<SelectListItem> CityList { get; private set; }
+
         public ReportsViewModel()
         {
             ChosenMonthList = GetChosenMonthList();
             ChosenStatusList = GetChosenStatusList();
+            this.CityList = GetCityList();
         }
 
         public List<SelectListItem> GetChosenMonthList(string selected = "")
@@ -96,6 +104,33 @@ namespace LitProRead.ViewModels
 
             }
             return list;// new SelectList(list.ToList(), "Value", "Text");
+        }
+
+        public List<SelectListItem> GetCityList(string selected = "")
+        {
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var cities = db.Database.SqlQuery<string>("SELECT City FROM dbo.City").ToList();
+                return ParseList(selected, cities);// new SelectList(cities);
+            }
+        }
+
+
+        private List<SelectListItem> ParseList(string selected, List<string> Items)
+        {
+            string selectedValue = selected != null ? selected.Trim() : "";
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in Items)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = item.Trim(),
+                    Value = item.Trim(),
+                    //Selected = selectedValue == item.Trim() ? true : false
+                });
+
+            }
+            return list;
         }
     }
 }

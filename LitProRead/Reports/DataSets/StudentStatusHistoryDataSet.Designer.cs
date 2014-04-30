@@ -24,7 +24,7 @@ namespace LitProRead.Reports.DataSets {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class StudentStatusHistoryDataSet : global::System.Data.DataSet {
         
-        private qryStudentStatusHistoryDataTable tableqryStudentStatusHistory;
+        private StudentStatusHistoryDataTableDataTable tableStudentStatusHistoryDataTable;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace LitProRead.Reports.DataSets {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["qryStudentStatusHistory"] != null)) {
-                    base.Tables.Add(new qryStudentStatusHistoryDataTable(ds.Tables["qryStudentStatusHistory"]));
+                if ((ds.Tables["StudentStatusHistoryDataTable"] != null)) {
+                    base.Tables.Add(new StudentStatusHistoryDataTableDataTable(ds.Tables["StudentStatusHistoryDataTable"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace LitProRead.Reports.DataSets {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public qryStudentStatusHistoryDataTable qryStudentStatusHistory {
+        public StudentStatusHistoryDataTableDataTable StudentStatusHistoryDataTable {
             get {
-                return this.tableqryStudentStatusHistory;
+                return this.tableStudentStatusHistoryDataTable;
             }
         }
         
@@ -152,8 +152,8 @@ namespace LitProRead.Reports.DataSets {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["qryStudentStatusHistory"] != null)) {
-                    base.Tables.Add(new qryStudentStatusHistoryDataTable(ds.Tables["qryStudentStatusHistory"]));
+                if ((ds.Tables["StudentStatusHistoryDataTable"] != null)) {
+                    base.Tables.Add(new StudentStatusHistoryDataTableDataTable(ds.Tables["StudentStatusHistoryDataTable"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace LitProRead.Reports.DataSets {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableqryStudentStatusHistory = ((qryStudentStatusHistoryDataTable)(base.Tables["qryStudentStatusHistory"]));
+            this.tableStudentStatusHistoryDataTable = ((StudentStatusHistoryDataTableDataTable)(base.Tables["StudentStatusHistoryDataTable"]));
             if ((initTable == true)) {
-                if ((this.tableqryStudentStatusHistory != null)) {
-                    this.tableqryStudentStatusHistory.InitVars();
+                if ((this.tableStudentStatusHistoryDataTable != null)) {
+                    this.tableStudentStatusHistoryDataTable.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace LitProRead.Reports.DataSets {
             this.Namespace = "http://tempuri.org/StudentStatusHistoryDataSet.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableqryStudentStatusHistory = new qryStudentStatusHistoryDataTable();
-            base.Tables.Add(this.tableqryStudentStatusHistory);
+            this.tableStudentStatusHistoryDataTable = new StudentStatusHistoryDataTableDataTable();
+            base.Tables.Add(this.tableStudentStatusHistoryDataTable);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeqryStudentStatusHistory() {
+        private bool ShouldSerializeStudentStatusHistoryDataTable() {
             return false;
         }
         
@@ -270,28 +270,20 @@ namespace LitProRead.Reports.DataSets {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void qryStudentStatusHistoryRowChangeEventHandler(object sender, qryStudentStatusHistoryRowChangeEvent e);
+        public delegate void StudentStatusHistoryDataTableRowChangeEventHandler(object sender, StudentStatusHistoryDataTableRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class qryStudentStatusHistoryDataTable : global::System.Data.TypedTableBase<qryStudentStatusHistoryRow> {
+        public partial class StudentStatusHistoryDataTableDataTable : global::System.Data.TypedTableBase<StudentStatusHistoryDataTableRow> {
             
-            private global::System.Data.DataColumn columnFirstName;
-            
-            private global::System.Data.DataColumn columnLastName;
-            
-            private global::System.Data.DataColumn columnAutoID;
-            
-            private global::System.Data.DataColumn columnID;
-            
-            private global::System.Data.DataColumn columnStudentorTutor;
-            
-            private global::System.Data.DataColumn columnStatus;
+            private global::System.Data.DataColumn columnName;
             
             private global::System.Data.DataColumn columnStatusDate;
+            
+            private global::System.Data.DataColumn columnStatus;
             
             private global::System.Data.DataColumn columnInActiveDate;
             
@@ -301,8 +293,8 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public qryStudentStatusHistoryDataTable() {
-                this.TableName = "qryStudentStatusHistory";
+            public StudentStatusHistoryDataTableDataTable() {
+                this.TableName = "StudentStatusHistoryDataTable";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -310,7 +302,7 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal qryStudentStatusHistoryDataTable(global::System.Data.DataTable table) {
+            internal StudentStatusHistoryDataTableDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -327,56 +319,16 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected qryStudentStatusHistoryDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected StudentStatusHistoryDataTableDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn FirstNameColumn {
+            public global::System.Data.DataColumn NameColumn {
                 get {
-                    return this.columnFirstName;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn LastNameColumn {
-                get {
-                    return this.columnLastName;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn AutoIDColumn {
-                get {
-                    return this.columnAutoID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn IDColumn {
-                get {
-                    return this.columnID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn StudentorTutorColumn {
-                get {
-                    return this.columnStudentorTutor;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn StatusColumn {
-                get {
-                    return this.columnStatus;
+                    return this.columnName;
                 }
             }
             
@@ -385,6 +337,14 @@ namespace LitProRead.Reports.DataSets {
             public global::System.Data.DataColumn StatusDateColumn {
                 get {
                     return this.columnStatusDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn StatusColumn {
+                get {
+                    return this.columnStatus;
                 }
             }
             
@@ -423,61 +383,50 @@ namespace LitProRead.Reports.DataSets {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public qryStudentStatusHistoryRow this[int index] {
+            public StudentStatusHistoryDataTableRow this[int index] {
                 get {
-                    return ((qryStudentStatusHistoryRow)(this.Rows[index]));
+                    return ((StudentStatusHistoryDataTableRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event qryStudentStatusHistoryRowChangeEventHandler qryStudentStatusHistoryRowChanging;
+            public event StudentStatusHistoryDataTableRowChangeEventHandler StudentStatusHistoryDataTableRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event qryStudentStatusHistoryRowChangeEventHandler qryStudentStatusHistoryRowChanged;
+            public event StudentStatusHistoryDataTableRowChangeEventHandler StudentStatusHistoryDataTableRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event qryStudentStatusHistoryRowChangeEventHandler qryStudentStatusHistoryRowDeleting;
+            public event StudentStatusHistoryDataTableRowChangeEventHandler StudentStatusHistoryDataTableRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event qryStudentStatusHistoryRowChangeEventHandler qryStudentStatusHistoryRowDeleted;
+            public event StudentStatusHistoryDataTableRowChangeEventHandler StudentStatusHistoryDataTableRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddqryStudentStatusHistoryRow(qryStudentStatusHistoryRow row) {
+            public void AddStudentStatusHistoryDataTableRow(StudentStatusHistoryDataTableRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public qryStudentStatusHistoryRow AddqryStudentStatusHistoryRow(string FirstName, string LastName, int AutoID, int ID, string StudentorTutor, string Status, System.DateTime StatusDate, System.DateTime InActiveDate, System.DateTime ChangedDateTime, string ChangedBy) {
-                qryStudentStatusHistoryRow rowqryStudentStatusHistoryRow = ((qryStudentStatusHistoryRow)(this.NewRow()));
+            public StudentStatusHistoryDataTableRow AddStudentStatusHistoryDataTableRow(string Name, string StatusDate, string Status, System.DateTime InActiveDate, System.DateTime ChangedDateTime, string ChangedBy) {
+                StudentStatusHistoryDataTableRow rowStudentStatusHistoryDataTableRow = ((StudentStatusHistoryDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        FirstName,
-                        LastName,
-                        AutoID,
-                        ID,
-                        StudentorTutor,
-                        Status,
+                        Name,
                         StatusDate,
+                        Status,
                         InActiveDate,
                         ChangedDateTime,
                         ChangedBy};
-                rowqryStudentStatusHistoryRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowqryStudentStatusHistoryRow);
-                return rowqryStudentStatusHistoryRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public qryStudentStatusHistoryRow FindByAutoID(int AutoID) {
-                return ((qryStudentStatusHistoryRow)(this.Rows.Find(new object[] {
-                            AutoID})));
+                rowStudentStatusHistoryDataTableRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowStudentStatusHistoryDataTableRow);
+                return rowStudentStatusHistoryDataTableRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                qryStudentStatusHistoryDataTable cln = ((qryStudentStatusHistoryDataTable)(base.Clone()));
+                StudentStatusHistoryDataTableDataTable cln = ((StudentStatusHistoryDataTableDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -485,19 +434,15 @@ namespace LitProRead.Reports.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new qryStudentStatusHistoryDataTable();
+                return new StudentStatusHistoryDataTableDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnFirstName = base.Columns["FirstName"];
-                this.columnLastName = base.Columns["LastName"];
-                this.columnAutoID = base.Columns["AutoID"];
-                this.columnID = base.Columns["ID"];
-                this.columnStudentorTutor = base.Columns["StudentorTutor"];
-                this.columnStatus = base.Columns["Status"];
+                this.columnName = base.Columns["Name"];
                 this.columnStatusDate = base.Columns["StatusDate"];
+                this.columnStatus = base.Columns["Status"];
                 this.columnInActiveDate = base.Columns["InActiveDate"];
                 this.columnChangedDateTime = base.Columns["ChangedDateTime"];
                 this.columnChangedBy = base.Columns["ChangedBy"];
@@ -506,63 +451,44 @@ namespace LitProRead.Reports.DataSets {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnFirstName = new global::System.Data.DataColumn("FirstName", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnFirstName);
-                this.columnLastName = new global::System.Data.DataColumn("LastName", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLastName);
-                this.columnAutoID = new global::System.Data.DataColumn("AutoID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAutoID);
-                this.columnID = new global::System.Data.DataColumn("ID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnID);
-                this.columnStudentorTutor = new global::System.Data.DataColumn("StudentorTutor", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnStudentorTutor);
+                this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnName);
+                this.columnStatusDate = new global::System.Data.DataColumn("StatusDate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStatusDate);
                 this.columnStatus = new global::System.Data.DataColumn("Status", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStatus);
-                this.columnStatusDate = new global::System.Data.DataColumn("StatusDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnStatusDate);
                 this.columnInActiveDate = new global::System.Data.DataColumn("InActiveDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInActiveDate);
                 this.columnChangedDateTime = new global::System.Data.DataColumn("ChangedDateTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnChangedDateTime);
                 this.columnChangedBy = new global::System.Data.DataColumn("ChangedBy", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnChangedBy);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnAutoID}, true));
-                this.columnFirstName.AllowDBNull = false;
-                this.columnFirstName.MaxLength = 50;
-                this.columnLastName.AllowDBNull = false;
-                this.columnLastName.MaxLength = 50;
-                this.columnAutoID.AllowDBNull = false;
-                this.columnAutoID.Unique = true;
-                this.columnStudentorTutor.MaxLength = 10;
-                this.columnStatus.MaxLength = 50;
-                this.columnChangedBy.MaxLength = 50;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public qryStudentStatusHistoryRow NewqryStudentStatusHistoryRow() {
-                return ((qryStudentStatusHistoryRow)(this.NewRow()));
+            public StudentStatusHistoryDataTableRow NewStudentStatusHistoryDataTableRow() {
+                return ((StudentStatusHistoryDataTableRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new qryStudentStatusHistoryRow(builder);
+                return new StudentStatusHistoryDataTableRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(qryStudentStatusHistoryRow);
+                return typeof(StudentStatusHistoryDataTableRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.qryStudentStatusHistoryRowChanged != null)) {
-                    this.qryStudentStatusHistoryRowChanged(this, new qryStudentStatusHistoryRowChangeEvent(((qryStudentStatusHistoryRow)(e.Row)), e.Action));
+                if ((this.StudentStatusHistoryDataTableRowChanged != null)) {
+                    this.StudentStatusHistoryDataTableRowChanged(this, new StudentStatusHistoryDataTableRowChangeEvent(((StudentStatusHistoryDataTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -570,8 +496,8 @@ namespace LitProRead.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.qryStudentStatusHistoryRowChanging != null)) {
-                    this.qryStudentStatusHistoryRowChanging(this, new qryStudentStatusHistoryRowChangeEvent(((qryStudentStatusHistoryRow)(e.Row)), e.Action));
+                if ((this.StudentStatusHistoryDataTableRowChanging != null)) {
+                    this.StudentStatusHistoryDataTableRowChanging(this, new StudentStatusHistoryDataTableRowChangeEvent(((StudentStatusHistoryDataTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -579,8 +505,8 @@ namespace LitProRead.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.qryStudentStatusHistoryRowDeleted != null)) {
-                    this.qryStudentStatusHistoryRowDeleted(this, new qryStudentStatusHistoryRowChangeEvent(((qryStudentStatusHistoryRow)(e.Row)), e.Action));
+                if ((this.StudentStatusHistoryDataTableRowDeleted != null)) {
+                    this.StudentStatusHistoryDataTableRowDeleted(this, new StudentStatusHistoryDataTableRowChangeEvent(((StudentStatusHistoryDataTableRow)(e.Row)), e.Action));
                 }
             }
             
@@ -588,14 +514,14 @@ namespace LitProRead.Reports.DataSets {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.qryStudentStatusHistoryRowDeleting != null)) {
-                    this.qryStudentStatusHistoryRowDeleting(this, new qryStudentStatusHistoryRowChangeEvent(((qryStudentStatusHistoryRow)(e.Row)), e.Action));
+                if ((this.StudentStatusHistoryDataTableRowDeleting != null)) {
+                    this.StudentStatusHistoryDataTableRowDeleting(this, new StudentStatusHistoryDataTableRowChangeEvent(((StudentStatusHistoryDataTableRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveqryStudentStatusHistoryRow(qryStudentStatusHistoryRow row) {
+            public void RemoveStudentStatusHistoryDataTableRow(StudentStatusHistoryDataTableRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -622,7 +548,7 @@ namespace LitProRead.Reports.DataSets {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "qryStudentStatusHistoryDataTable";
+                attribute2.FixedValue = "StudentStatusHistoryDataTableDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -666,80 +592,47 @@ namespace LitProRead.Reports.DataSets {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class qryStudentStatusHistoryRow : global::System.Data.DataRow {
+        public partial class StudentStatusHistoryDataTableRow : global::System.Data.DataRow {
             
-            private qryStudentStatusHistoryDataTable tableqryStudentStatusHistory;
+            private StudentStatusHistoryDataTableDataTable tableStudentStatusHistoryDataTable;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal qryStudentStatusHistoryRow(global::System.Data.DataRowBuilder rb) : 
+            internal StudentStatusHistoryDataTableRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableqryStudentStatusHistory = ((qryStudentStatusHistoryDataTable)(this.Table));
+                this.tableStudentStatusHistoryDataTable = ((StudentStatusHistoryDataTableDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string FirstName {
-                get {
-                    return ((string)(this[this.tableqryStudentStatusHistory.FirstNameColumn]));
-                }
-                set {
-                    this[this.tableqryStudentStatusHistory.FirstNameColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string LastName {
-                get {
-                    return ((string)(this[this.tableqryStudentStatusHistory.LastNameColumn]));
-                }
-                set {
-                    this[this.tableqryStudentStatusHistory.LastNameColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int AutoID {
-                get {
-                    return ((int)(this[this.tableqryStudentStatusHistory.AutoIDColumn]));
-                }
-                set {
-                    this[this.tableqryStudentStatusHistory.AutoIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ID {
+            public string Name {
                 get {
                     try {
-                        return ((int)(this[this.tableqryStudentStatusHistory.IDColumn]));
+                        return ((string)(this[this.tableStudentStatusHistoryDataTable.NameColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ID\' in table \'qryStudentStatusHistory\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Name\' in table \'StudentStatusHistoryDataTable\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableqryStudentStatusHistory.IDColumn] = value;
+                    this[this.tableStudentStatusHistoryDataTable.NameColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string StudentorTutor {
+            public string StatusDate {
                 get {
                     try {
-                        return ((string)(this[this.tableqryStudentStatusHistory.StudentorTutorColumn]));
+                        return ((string)(this[this.tableStudentStatusHistoryDataTable.StatusDateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'StudentorTutor\' in table \'qryStudentStatusHistory\' is DBNul" +
-                                "l.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'StatusDate\' in table \'StudentStatusHistoryDataTable\' is DBN" +
+                                "ull.", e);
                     }
                 }
                 set {
-                    this[this.tableqryStudentStatusHistory.StudentorTutorColumn] = value;
+                    this[this.tableStudentStatusHistoryDataTable.StatusDateColumn] = value;
                 }
             }
             
@@ -748,30 +641,15 @@ namespace LitProRead.Reports.DataSets {
             public string Status {
                 get {
                     try {
-                        return ((string)(this[this.tableqryStudentStatusHistory.StatusColumn]));
+                        return ((string)(this[this.tableStudentStatusHistoryDataTable.StatusColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Status\' in table \'qryStudentStatusHistory\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Status\' in table \'StudentStatusHistoryDataTable\' is DBNull." +
+                                "", e);
                     }
                 }
                 set {
-                    this[this.tableqryStudentStatusHistory.StatusColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime StatusDate {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableqryStudentStatusHistory.StatusDateColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'StatusDate\' in table \'qryStudentStatusHistory\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableqryStudentStatusHistory.StatusDateColumn] = value;
+                    this[this.tableStudentStatusHistoryDataTable.StatusColumn] = value;
                 }
             }
             
@@ -780,15 +658,15 @@ namespace LitProRead.Reports.DataSets {
             public System.DateTime InActiveDate {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableqryStudentStatusHistory.InActiveDateColumn]));
+                        return ((global::System.DateTime)(this[this.tableStudentStatusHistoryDataTable.InActiveDateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'InActiveDate\' in table \'qryStudentStatusHistory\' is DBNull." +
-                                "", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'InActiveDate\' in table \'StudentStatusHistoryDataTable\' is D" +
+                                "BNull.", e);
                     }
                 }
                 set {
-                    this[this.tableqryStudentStatusHistory.InActiveDateColumn] = value;
+                    this[this.tableStudentStatusHistoryDataTable.InActiveDateColumn] = value;
                 }
             }
             
@@ -797,15 +675,15 @@ namespace LitProRead.Reports.DataSets {
             public System.DateTime ChangedDateTime {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableqryStudentStatusHistory.ChangedDateTimeColumn]));
+                        return ((global::System.DateTime)(this[this.tableStudentStatusHistoryDataTable.ChangedDateTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ChangedDateTime\' in table \'qryStudentStatusHistory\' is DBNu" +
-                                "ll.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ChangedDateTime\' in table \'StudentStatusHistoryDataTable\' i" +
+                                "s DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableqryStudentStatusHistory.ChangedDateTimeColumn] = value;
+                    this[this.tableStudentStatusHistoryDataTable.ChangedDateTimeColumn] = value;
                 }
             }
             
@@ -814,99 +692,88 @@ namespace LitProRead.Reports.DataSets {
             public string ChangedBy {
                 get {
                     try {
-                        return ((string)(this[this.tableqryStudentStatusHistory.ChangedByColumn]));
+                        return ((string)(this[this.tableStudentStatusHistoryDataTable.ChangedByColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ChangedBy\' in table \'qryStudentStatusHistory\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ChangedBy\' in table \'StudentStatusHistoryDataTable\' is DBNu" +
+                                "ll.", e);
                     }
                 }
                 set {
-                    this[this.tableqryStudentStatusHistory.ChangedByColumn] = value;
+                    this[this.tableStudentStatusHistoryDataTable.ChangedByColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsIDNull() {
-                return this.IsNull(this.tableqryStudentStatusHistory.IDColumn);
+            public bool IsNameNull() {
+                return this.IsNull(this.tableStudentStatusHistoryDataTable.NameColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetIDNull() {
-                this[this.tableqryStudentStatusHistory.IDColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsStudentorTutorNull() {
-                return this.IsNull(this.tableqryStudentStatusHistory.StudentorTutorColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetStudentorTutorNull() {
-                this[this.tableqryStudentStatusHistory.StudentorTutorColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsStatusNull() {
-                return this.IsNull(this.tableqryStudentStatusHistory.StatusColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetStatusNull() {
-                this[this.tableqryStudentStatusHistory.StatusColumn] = global::System.Convert.DBNull;
+            public void SetNameNull() {
+                this[this.tableStudentStatusHistoryDataTable.NameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsStatusDateNull() {
-                return this.IsNull(this.tableqryStudentStatusHistory.StatusDateColumn);
+                return this.IsNull(this.tableStudentStatusHistoryDataTable.StatusDateColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetStatusDateNull() {
-                this[this.tableqryStudentStatusHistory.StatusDateColumn] = global::System.Convert.DBNull;
+                this[this.tableStudentStatusHistoryDataTable.StatusDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsStatusNull() {
+                return this.IsNull(this.tableStudentStatusHistoryDataTable.StatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetStatusNull() {
+                this[this.tableStudentStatusHistoryDataTable.StatusColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsInActiveDateNull() {
-                return this.IsNull(this.tableqryStudentStatusHistory.InActiveDateColumn);
+                return this.IsNull(this.tableStudentStatusHistoryDataTable.InActiveDateColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetInActiveDateNull() {
-                this[this.tableqryStudentStatusHistory.InActiveDateColumn] = global::System.Convert.DBNull;
+                this[this.tableStudentStatusHistoryDataTable.InActiveDateColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsChangedDateTimeNull() {
-                return this.IsNull(this.tableqryStudentStatusHistory.ChangedDateTimeColumn);
+                return this.IsNull(this.tableStudentStatusHistoryDataTable.ChangedDateTimeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetChangedDateTimeNull() {
-                this[this.tableqryStudentStatusHistory.ChangedDateTimeColumn] = global::System.Convert.DBNull;
+                this[this.tableStudentStatusHistoryDataTable.ChangedDateTimeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsChangedByNull() {
-                return this.IsNull(this.tableqryStudentStatusHistory.ChangedByColumn);
+                return this.IsNull(this.tableStudentStatusHistoryDataTable.ChangedByColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetChangedByNull() {
-                this[this.tableqryStudentStatusHistory.ChangedByColumn] = global::System.Convert.DBNull;
+                this[this.tableStudentStatusHistoryDataTable.ChangedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -914,22 +781,22 @@ namespace LitProRead.Reports.DataSets {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class qryStudentStatusHistoryRowChangeEvent : global::System.EventArgs {
+        public class StudentStatusHistoryDataTableRowChangeEvent : global::System.EventArgs {
             
-            private qryStudentStatusHistoryRow eventRow;
+            private StudentStatusHistoryDataTableRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public qryStudentStatusHistoryRowChangeEvent(qryStudentStatusHistoryRow row, global::System.Data.DataRowAction action) {
+            public StudentStatusHistoryDataTableRowChangeEvent(StudentStatusHistoryDataTableRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public qryStudentStatusHistoryRow Row {
+            public StudentStatusHistoryDataTableRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -940,547 +807,6 @@ namespace LitProRead.Reports.DataSets {
             public global::System.Data.DataRowAction Action {
                 get {
                     return this.eventAction;
-                }
-            }
-        }
-    }
-}
-namespace LitProRead.Reports.DataSets.StudentStatusHistoryDataSetTableAdapters {
-    
-    
-    /// <summary>
-    ///Represents the connection and commands used to retrieve and save data.
-    ///</summary>
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DataObjectAttribute(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
-        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class qryStudentStatusHistoryTableAdapter : global::System.ComponentModel.Component {
-        
-        private global::System.Data.SqlClient.SqlDataAdapter _adapter;
-        
-        private global::System.Data.SqlClient.SqlConnection _connection;
-        
-        private global::System.Data.SqlClient.SqlTransaction _transaction;
-        
-        private global::System.Data.SqlClient.SqlCommand[] _commandCollection;
-        
-        private bool _clearBeforeFill;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public qryStudentStatusHistoryTableAdapter() {
-            this.ClearBeforeFill = true;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected internal global::System.Data.SqlClient.SqlDataAdapter Adapter {
-            get {
-                if ((this._adapter == null)) {
-                    this.InitAdapter();
-                }
-                return this._adapter;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        internal global::System.Data.SqlClient.SqlConnection Connection {
-            get {
-                if ((this._connection == null)) {
-                    this.InitConnection();
-                }
-                return this._connection;
-            }
-            set {
-                this._connection = value;
-                if ((this.Adapter.InsertCommand != null)) {
-                    this.Adapter.InsertCommand.Connection = value;
-                }
-                if ((this.Adapter.DeleteCommand != null)) {
-                    this.Adapter.DeleteCommand.Connection = value;
-                }
-                if ((this.Adapter.UpdateCommand != null)) {
-                    this.Adapter.UpdateCommand.Connection = value;
-                }
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    if ((this.CommandCollection[i] != null)) {
-                        ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
-                    }
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        internal global::System.Data.SqlClient.SqlTransaction Transaction {
-            get {
-                return this._transaction;
-            }
-            set {
-                this._transaction = value;
-                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
-                    this.CommandCollection[i].Transaction = this._transaction;
-                }
-                if (((this.Adapter != null) 
-                            && (this.Adapter.DeleteCommand != null))) {
-                    this.Adapter.DeleteCommand.Transaction = this._transaction;
-                }
-                if (((this.Adapter != null) 
-                            && (this.Adapter.InsertCommand != null))) {
-                    this.Adapter.InsertCommand.Transaction = this._transaction;
-                }
-                if (((this.Adapter != null) 
-                            && (this.Adapter.UpdateCommand != null))) {
-                    this.Adapter.UpdateCommand.Transaction = this._transaction;
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected global::System.Data.SqlClient.SqlCommand[] CommandCollection {
-            get {
-                if ((this._commandCollection == null)) {
-                    this.InitCommandCollection();
-                }
-                return this._commandCollection;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public bool ClearBeforeFill {
-            get {
-                return this._clearBeforeFill;
-            }
-            set {
-                this._clearBeforeFill = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private void InitAdapter() {
-            this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
-            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
-            tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "qryStudentStatusHistory";
-            tableMapping.ColumnMappings.Add("FirstName", "FirstName");
-            tableMapping.ColumnMappings.Add("LastName", "LastName");
-            tableMapping.ColumnMappings.Add("AutoID", "AutoID");
-            tableMapping.ColumnMappings.Add("ID", "ID");
-            tableMapping.ColumnMappings.Add("StudentorTutor", "StudentorTutor");
-            tableMapping.ColumnMappings.Add("Status", "Status");
-            tableMapping.ColumnMappings.Add("StatusDate", "StatusDate");
-            tableMapping.ColumnMappings.Add("InActiveDate", "InActiveDate");
-            tableMapping.ColumnMappings.Add("ChangedDateTime", "ChangedDateTime");
-            tableMapping.ColumnMappings.Add("ChangedBy", "ChangedBy");
-            this._adapter.TableMappings.Add(tableMapping);
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private void InitConnection() {
-            this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["LitProReadConnectionString"].ConnectionString;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
-            this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT FirstName, LastName, AutoID, ID, StudentorTutor, Status, StatusDate, InAct" +
-                "iveDate, ChangedDateTime, ChangedBy FROM dbo.qryStudentStatusHistory";
-            this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(StudentStatusHistoryDataSet.qryStudentStatusHistoryDataTable dataTable) {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual StudentStatusHistoryDataSet.qryStudentStatusHistoryDataTable GetData() {
-            this.Adapter.SelectCommand = this.CommandCollection[0];
-            StudentStatusHistoryDataSet.qryStudentStatusHistoryDataTable dataTable = new StudentStatusHistoryDataSet.qryStudentStatusHistoryDataTable();
-            this.Adapter.Fill(dataTable);
-            return dataTable;
-        }
-    }
-    
-    /// <summary>
-    ///TableAdapterManager is used to coordinate TableAdapters in the dataset to enable Hierarchical Update scenarios
-    ///</summary>
-    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
-    [global::System.ComponentModel.ToolboxItem(true)]
-    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerDesigner, Microsoft.VSD" +
-        "esigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
-    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapterManager")]
-    public partial class TableAdapterManager : global::System.ComponentModel.Component {
-        
-        private UpdateOrderOption _updateOrder;
-        
-        private bool _backupDataSetBeforeUpdate;
-        
-        private global::System.Data.IDbConnection _connection;
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public UpdateOrderOption UpdateOrder {
-            get {
-                return this._updateOrder;
-            }
-            set {
-                this._updateOrder = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public bool BackupDataSetBeforeUpdate {
-            get {
-                return this._backupDataSetBeforeUpdate;
-            }
-            set {
-                this._backupDataSetBeforeUpdate = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Browsable(false)]
-        public global::System.Data.IDbConnection Connection {
-            get {
-                if ((this._connection != null)) {
-                    return this._connection;
-                }
-                return null;
-            }
-            set {
-                this._connection = value;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Browsable(false)]
-        public int TableAdapterInstanceCount {
-            get {
-                int count = 0;
-                return count;
-            }
-        }
-        
-        /// <summary>
-        ///Update rows in top-down order.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateUpdatedRows(StudentStatusHistoryDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
-            int result = 0;
-            return result;
-        }
-        
-        /// <summary>
-        ///Insert rows in top-down order.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateInsertedRows(StudentStatusHistoryDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
-            int result = 0;
-            return result;
-        }
-        
-        /// <summary>
-        ///Delete rows in bottom-up order.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateDeletedRows(StudentStatusHistoryDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
-            int result = 0;
-            return result;
-        }
-        
-        /// <summary>
-        ///Remove inserted rows that become updated rows after calling TableAdapter.Update(inserted rows) first
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private global::System.Data.DataRow[] GetRealUpdatedRows(global::System.Data.DataRow[] updatedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
-            if (((updatedRows == null) 
-                        || (updatedRows.Length < 1))) {
-                return updatedRows;
-            }
-            if (((allAddedRows == null) 
-                        || (allAddedRows.Count < 1))) {
-                return updatedRows;
-            }
-            global::System.Collections.Generic.List<global::System.Data.DataRow> realUpdatedRows = new global::System.Collections.Generic.List<global::System.Data.DataRow>();
-            for (int i = 0; (i < updatedRows.Length); i = (i + 1)) {
-                global::System.Data.DataRow row = updatedRows[i];
-                if ((allAddedRows.Contains(row) == false)) {
-                    realUpdatedRows.Add(row);
-                }
-            }
-            return realUpdatedRows.ToArray();
-        }
-        
-        /// <summary>
-        ///Update all changes to the dataset.
-        ///</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public virtual int UpdateAll(StudentStatusHistoryDataSet dataSet) {
-            if ((dataSet == null)) {
-                throw new global::System.ArgumentNullException("dataSet");
-            }
-            if ((dataSet.HasChanges() == false)) {
-                return 0;
-            }
-            global::System.Data.IDbConnection workConnection = this.Connection;
-            if ((workConnection == null)) {
-                throw new global::System.ApplicationException("TableAdapterManager contains no connection information. Set each TableAdapterMana" +
-                        "ger TableAdapter property to a valid TableAdapter instance.");
-            }
-            bool workConnOpened = false;
-            if (((workConnection.State & global::System.Data.ConnectionState.Broken) 
-                        == global::System.Data.ConnectionState.Broken)) {
-                workConnection.Close();
-            }
-            if ((workConnection.State == global::System.Data.ConnectionState.Closed)) {
-                workConnection.Open();
-                workConnOpened = true;
-            }
-            global::System.Data.IDbTransaction workTransaction = workConnection.BeginTransaction();
-            if ((workTransaction == null)) {
-                throw new global::System.ApplicationException("The transaction cannot begin. The current data connection does not support transa" +
-                        "ctions or the current state is not allowing the transaction to begin.");
-            }
-            global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows = new global::System.Collections.Generic.List<global::System.Data.DataRow>();
-            global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows = new global::System.Collections.Generic.List<global::System.Data.DataRow>();
-            global::System.Collections.Generic.List<global::System.Data.Common.DataAdapter> adaptersWithAcceptChangesDuringUpdate = new global::System.Collections.Generic.List<global::System.Data.Common.DataAdapter>();
-            global::System.Collections.Generic.Dictionary<object, global::System.Data.IDbConnection> revertConnections = new global::System.Collections.Generic.Dictionary<object, global::System.Data.IDbConnection>();
-            int result = 0;
-            global::System.Data.DataSet backupDataSet = null;
-            if (this.BackupDataSetBeforeUpdate) {
-                backupDataSet = new global::System.Data.DataSet();
-                backupDataSet.Merge(dataSet);
-            }
-            try {
-                // ---- Prepare for update -----------
-                //
-                // 
-                //---- Perform updates -----------
-                //
-                if ((this.UpdateOrder == UpdateOrderOption.UpdateInsertDelete)) {
-                    result = (result + this.UpdateUpdatedRows(dataSet, allChangedRows, allAddedRows));
-                    result = (result + this.UpdateInsertedRows(dataSet, allAddedRows));
-                }
-                else {
-                    result = (result + this.UpdateInsertedRows(dataSet, allAddedRows));
-                    result = (result + this.UpdateUpdatedRows(dataSet, allChangedRows, allAddedRows));
-                }
-                result = (result + this.UpdateDeletedRows(dataSet, allChangedRows));
-                // 
-                //---- Commit updates -----------
-                //
-                workTransaction.Commit();
-                if ((0 < allAddedRows.Count)) {
-                    global::System.Data.DataRow[] rows = new System.Data.DataRow[allAddedRows.Count];
-                    allAddedRows.CopyTo(rows);
-                    for (int i = 0; (i < rows.Length); i = (i + 1)) {
-                        global::System.Data.DataRow row = rows[i];
-                        row.AcceptChanges();
-                    }
-                }
-                if ((0 < allChangedRows.Count)) {
-                    global::System.Data.DataRow[] rows = new System.Data.DataRow[allChangedRows.Count];
-                    allChangedRows.CopyTo(rows);
-                    for (int i = 0; (i < rows.Length); i = (i + 1)) {
-                        global::System.Data.DataRow row = rows[i];
-                        row.AcceptChanges();
-                    }
-                }
-            }
-            catch (global::System.Exception ex) {
-                workTransaction.Rollback();
-                // ---- Restore the dataset -----------
-                if (this.BackupDataSetBeforeUpdate) {
-                    global::System.Diagnostics.Debug.Assert((backupDataSet != null));
-                    dataSet.Clear();
-                    dataSet.Merge(backupDataSet);
-                }
-                else {
-                    if ((0 < allAddedRows.Count)) {
-                        global::System.Data.DataRow[] rows = new System.Data.DataRow[allAddedRows.Count];
-                        allAddedRows.CopyTo(rows);
-                        for (int i = 0; (i < rows.Length); i = (i + 1)) {
-                            global::System.Data.DataRow row = rows[i];
-                            row.AcceptChanges();
-                            row.SetAdded();
-                        }
-                    }
-                }
-                throw ex;
-            }
-            finally {
-                if (workConnOpened) {
-                    workConnection.Close();
-                }
-                if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
-                    global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];
-                    adaptersWithAcceptChangesDuringUpdate.CopyTo(adapters);
-                    for (int i = 0; (i < adapters.Length); i = (i + 1)) {
-                        global::System.Data.Common.DataAdapter adapter = adapters[i];
-                        adapter.AcceptChangesDuringUpdate = true;
-                    }
-                }
-            }
-            return result;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected virtual void SortSelfReferenceRows(global::System.Data.DataRow[] rows, global::System.Data.DataRelation relation, bool childFirst) {
-            global::System.Array.Sort<global::System.Data.DataRow>(rows, new SelfReferenceComparer(relation, childFirst));
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected virtual bool MatchTableAdapterConnection(global::System.Data.IDbConnection inputConnection) {
-            if ((this._connection != null)) {
-                return true;
-            }
-            if (((this.Connection == null) 
-                        || (inputConnection == null))) {
-                return true;
-            }
-            if (string.Equals(this.Connection.ConnectionString, inputConnection.ConnectionString, global::System.StringComparison.Ordinal)) {
-                return true;
-            }
-            return false;
-        }
-        
-        /// <summary>
-        ///Update Order Option
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public enum UpdateOrderOption {
-            
-            InsertUpdateDelete = 0,
-            
-            UpdateInsertDelete = 1,
-        }
-        
-        /// <summary>
-        ///Used to sort self-referenced table's rows
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private class SelfReferenceComparer : object, global::System.Collections.Generic.IComparer<global::System.Data.DataRow> {
-            
-            private global::System.Data.DataRelation _relation;
-            
-            private int _childFirst;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal SelfReferenceComparer(global::System.Data.DataRelation relation, bool childFirst) {
-                this._relation = relation;
-                if (childFirst) {
-                    this._childFirst = -1;
-                }
-                else {
-                    this._childFirst = 1;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            private global::System.Data.DataRow GetRoot(global::System.Data.DataRow row, out int distance) {
-                global::System.Diagnostics.Debug.Assert((row != null));
-                global::System.Data.DataRow root = row;
-                distance = 0;
-
-                global::System.Collections.Generic.IDictionary<global::System.Data.DataRow, global::System.Data.DataRow> traversedRows = new global::System.Collections.Generic.Dictionary<global::System.Data.DataRow, global::System.Data.DataRow>();
-                traversedRows[row] = row;
-
-                global::System.Data.DataRow parent = row.GetParentRow(this._relation, global::System.Data.DataRowVersion.Default);
-                for (
-                ; ((parent != null) 
-                            && (traversedRows.ContainsKey(parent) == false)); 
-                ) {
-                    distance = (distance + 1);
-                    root = parent;
-                    traversedRows[parent] = parent;
-                    parent = parent.GetParentRow(this._relation, global::System.Data.DataRowVersion.Default);
-                }
-
-                if ((distance == 0)) {
-                    traversedRows.Clear();
-                    traversedRows[row] = row;
-                    parent = row.GetParentRow(this._relation, global::System.Data.DataRowVersion.Original);
-                    for (
-                    ; ((parent != null) 
-                                && (traversedRows.ContainsKey(parent) == false)); 
-                    ) {
-                        distance = (distance + 1);
-                        root = parent;
-                        traversedRows[parent] = parent;
-                        parent = parent.GetParentRow(this._relation, global::System.Data.DataRowVersion.Original);
-                    }
-                }
-
-                return root;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Compare(global::System.Data.DataRow row1, global::System.Data.DataRow row2) {
-                if (object.ReferenceEquals(row1, row2)) {
-                    return 0;
-                }
-                if ((row1 == null)) {
-                    return -1;
-                }
-                if ((row2 == null)) {
-                    return 1;
-                }
-
-                int distance1 = 0;
-                global::System.Data.DataRow root1 = this.GetRoot(row1, out distance1);
-
-                int distance2 = 0;
-                global::System.Data.DataRow root2 = this.GetRoot(row2, out distance2);
-
-                if (object.ReferenceEquals(root1, root2)) {
-                    return (this._childFirst * distance1.CompareTo(distance2));
-                }
-                else {
-                    global::System.Diagnostics.Debug.Assert(((root1.Table != null) 
-                                    && (root2.Table != null)));
-                    if ((root1.Table.Rows.IndexOf(root1) < root2.Table.Rows.IndexOf(root2))) {
-                        return -1;
-                    }
-                    else {
-                        return 1;
-                    }
                 }
             }
         }

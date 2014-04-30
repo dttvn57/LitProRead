@@ -480,7 +480,7 @@ namespace LitProRead.Controllers
                 return _StudentActivePhoneList(reportType, false);
             else
             if (reportName == "StudentStatusHistory")
-                return _StudentStatusHistory(reportType, beginDate, endDate, statusType);
+                return _StudentStatusHistory(reportType, date1, date2, statusType);
             else
             if (reportName == "StudentWaitTime")
                 return _StudentWaitTime(reportType, beginDate, endDate, statusType);
@@ -530,17 +530,27 @@ namespace LitProRead.Controllers
         //SELECT [LastName] & "," & [FirstName] AS Name, Students.FirstName, Students.LastName, tblStatusHistory.*
         //FROM Students INNER JOIN tblStatusHistory ON Students.ID=tblStatusHistory.ID
         //WHERE (((tblStatusHistory.StudentorTutor)="Student") And ((tblStatusHistory.StatusDate) Between Forms!frmDateSelection!BeginDate And Forms!frmDateSelection!EndDate));
-        public ActionResult _StudentStatusHistory(string reportType, string beginDate, string endDate, string statusType)
+        public ActionResult _StudentStatusHistory(string reportType, DateTime beginDate, DateTime endDate, string statusType)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
                 var hist = from student in db.Students
                             join statusHist in db.tblStatusHistories on student.ID equals statusHist.ID
-                            where statusHist.StudentorTutor.Equals("Student") && (student.LastName.StartsWith("A"))
+                            where statusHist.StudentorTutor.Equals("Student") && (student.LastName.StartsWith("A")) &&
+                                       statusHist.StatusDate >= beginDate && statusHist.StatusDate <= endDate 
                             orderby student.LastName
-                           select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, statusHist.StatusDate, statusHist.Status, statusHist.InActiveDate, statusHist.ChangedDateTime, statusHist.ChangedBy };
+                            select new { Name = student.LastName + ", " + student.FirstName,
+                                        StatusDate = statusHist.StatusDate,
+                                        Status = statusHist.Status,
+                                        InActiveDate = statusHist.InActiveDate,
+                                        ChangedDateTime = statusHist.ChangedDateTime,
+                                        ChangedBy = statusHist.ChangedBy
+                           };
 
-                return RunReport(reportType, "StudentStatusHistory.rdlc", "StudentStatusHistoryDataSet", hist, null, 11, 8.5, 0.25, 0.25);
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", beginDate.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", endDate.ToShortDateString()));
+                return RunReport(reportType, "StudentStatusHistory.rdlc", "StudentStatusHistoryDataSet", hist, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
 
@@ -804,6 +814,7 @@ namespace LitProRead.Controllers
                                      WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
                                      HomePhone = item.HomeAreaCode + " " + item.HomePhone,
                                      Active = item.Active,
+                                     FirstActive = item.FirstActive,
                                      ContactPref = item.ContactPref
                                  };
                 //if (datasource.FirstOrDefault() == null)
@@ -1243,6 +1254,7 @@ namespace LitProRead.Controllers
                                      WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
                                      HomePhone = item.HomeAreaCode + " " + item.HomePhone,
                                      Active = item.Active,
+                                     FirstActive = item.FirstActive,
                                      ContactPref = item.ContactPref
                                  };
                 List<ReportParameter> paramList = new List<ReportParameter>();
@@ -1283,6 +1295,7 @@ namespace LitProRead.Controllers
                                      WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
                                      HomePhone = item.HomeAreaCode + " " + item.HomePhone,
                                      Active = item.Active,
+                                     FirstActive = item.FirstActive,
                                      ContactPref = item.ContactPref
                                  };
 
@@ -1547,6 +1560,7 @@ namespace LitProRead.Controllers
                                      WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
                                      HomePhone = item.HomeAreaCode + " " + item.HomePhone,
                                      Active = item.Active,
+                                     FirstActive = item.FirstActive,
                                      ContactPref = item.ContactPref
                                  };
                 List<ReportParameter> paramList = new List<ReportParameter>();
@@ -1689,6 +1703,143 @@ namespace LitProRead.Controllers
             }
         }
         
+        //SELECT Tutors.ID, [LastName] & ", " & [FirstName] AS Name, [HomeAreaCode] & " " & [HomePhone] AS HPhone, [workAreaCode] & " " & [WorkPhone] & " " & [WorkPhoneExt] AS WPhone, Tutors.FirstActive, Tutors.LastName, Tutors.City, Tutors.Active
+        //FROM Tutors
+        //WHERE (((Tutors.FirstActive) Between [Forms]![frmDateSelection3]![BeginDate] And [Forms]![frmDateSelection3]![EndDate]) AND ((Tutors.City)=[Forms]![frmDateSelection3]![cmbCity] Or (Tutors.City)=[Forms]![frmDateSelection3]![cmbCity2] Or (Tutors.City)=[Forms]![frmDateSelection3]![cmbCity3] Or (Tutors.City)=[Forms]![frmDateSelection3]![cmbCity4] Or (Tutors.City)=[Forms]![frmDateSelection3]![cmbCity5] Or (Tutors.City)=[Forms]![frmDateSelection3]![cmbCity6]))
+        //ORDER BY Tutors.LastName;
+        public ActionResult TutorCountsbyCitybyDate(string paramsVal)
+        {
+            string reportType = "PDF"; 
+            string beginDate = ""; 
+            string endDate = "";
+            string city1 = "";
+            string city2 = "";
+            string city3 = "";
+            string city4 = "";
+            string city5 = "";
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd
+                if (str.Count() > 1)        // not all reports have a start date
+                {
+                    string[] date = str[1].Split('=');
+                    beginDate = date[1];
+                }
+
+                // 3rd
+                if (str.Count() > 2)        // not all reports have an end date
+                {
+                    string[] date = str[2].Split('=');
+                    endDate = date[1];
+                }
+
+                // 4th
+                if (str.Count() > 3)
+                {
+                    s1 = str[3].Split('=');
+                    city1 = s1[1];
+                }
+
+                // 5th
+                if (str.Count() > 4)
+                {
+                    s1 = str[4].Split('=');
+                    city2 = s1[1];
+                }
+
+                // 6th
+                if (str.Count() > 5)
+                {
+                    s1 = str[5].Split('=');
+                    city3 = s1[1];
+                }
+
+                // 7th
+                if (str.Count() > 6)
+                {
+                    s1 = str[6].Split('=');
+                    city4 = s1[1];
+                }
+
+                // 7th
+                if (str.Count() > 7)
+                {
+                    s1 = str[7].Split('=');
+                    city5 = s1[1];
+                }
+            }
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                DateTime date1;
+                if (beginDate != "")
+                {
+                    date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+                }
+                else
+                {
+                    date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                }
+
+                DateTime date2 = DateTime.Now;
+                if (endDate != "")
+                {
+                    date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+                }
+
+                List<string> cities = new List<string>();
+                if (city1.Length > 0)
+                    cities.Add(city1);
+                if (city2.Length > 0)
+                    cities.Add(city2);
+                if (city3.Length > 0)
+                    cities.Add(city3);
+                if (city4.Length > 0)
+                    cities.Add(city4);
+                if (city5.Length > 0)
+                    cities.Add(city5);
+               
+                var datasource = from item in db.Tutors
+                                 where (cities.Contains(item.City) && (item.FirstActive >= date1 && item.FirstActive <= date2))
+                                 orderby item.City
+                                 select new
+                                 {
+                                     City = item.City,
+                                     Name = item.LastName + ", " + item.FirstName,
+                                     LastName = item.LastName,
+                                     FirstName = item.FirstName,
+                                     WorkPhone = item.WorkAreaCode + " " + item.WorkPhone,
+                                     HomePhone = item.HomeAreaCode + " " + item.HomePhone,
+                                     Active = item.Active,
+                                     FirstActive = item.FirstActive
+                                 };
+
+                StringBuilder temp = new StringBuilder();
+                int cnt = cities.Count;
+                for (int n = 0; n < cnt; n++)
+                {
+                    if (n < cnt-1)
+                        temp.Append(cities[n] + ", ");
+                    else
+                        temp.Append(cities[n]);
+                }
+                string title = temp.ToString();
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("Title", "Tutors Serviced for: " + title));
+
+                //note: StudentActivePhoneListDataSet is used since it contains all info we need to display the report
+                return RunReport(reportType, "TutorCountsbyCitybyDate.rdlc", "StudentActivePhoneListDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {
             LocalReport lr = new LocalReport();

@@ -54,6 +54,57 @@
                 @Html.DropDownList("StatusList", Model.ChosenStatusList, string.Empty, new { style="width:100%; display: none;" })  
             </td>
         </tr>
+
+        <tr>
+            <td colspan="1">
+            <td>
+                @Html.Label("Select City 1", new { id = "City1Label", style="text-align:left; display: none" })
+            </td>
+            <td>
+                @Html.DropDownListFor(m => Model.SelectedCity1, Model.CityList, string.Empty, new { style="width:100%; display: none" })
+            </td>
+        </tr>
+
+
+        <tr>
+            <td colspan="1">
+            <td>
+                @Html.Label("Select City 2", new { id = "City2Label", style="text-align:left; display: none" })
+            </td>
+            <td>
+                @Html.DropDownListFor(m => Model.SelectedCity2, Model.CityList, string.Empty, new { style="width:100%; display: none" })
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="1">
+            <td>
+                @Html.Label("Select City 3", new { id = "City3Label", style="text-align:left; display: none" })
+            </td>
+            <td>
+                @Html.DropDownListFor(m => Model.SelectedCity3, Model.CityList, string.Empty, new { style="width:100%; display: none" })
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="1">
+            <td>
+                @Html.Label("Select City 4", new { id = "City4Label", style="text-align:left; display: none" })
+            </td>
+            <td>
+                @Html.DropDownListFor(m => Model.SelectedCity4, Model.CityList, string.Empty, new { style="width:100%; display: none" })
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="1">
+            <td>
+                @Html.Label("Select City 5", new { id = "City5Label", style="text-align:left; display: none" })
+            </td>
+            <td>
+                @Html.DropDownListFor(m => Model.SelectedCity5, Model.CityList, string.Empty, new { style="width:100%; display: none" })
+            </td>
+        </tr>
     </table>
 
 
@@ -82,12 +133,40 @@
 
             document.getElementById("StatusLabel").style.display = "none";
             document.getElementById("StatusList").style.display = "none";
+            document.getElementById("City1Label").style.display = "none";
+            document.getElementById("SelectedCity1").style.display = "none";
+            document.getElementById("City2Label").style.display = "none";
+            document.getElementById("SelectedCity2").style.display = "none";
+            document.getElementById("City3Label").style.display = "none";
+            document.getElementById("SelectedCity3").style.display = "none";
+            document.getElementById("City4Label").style.display = "none";
+            document.getElementById("SelectedCity4").style.display = "none";
+            document.getElementById("City5Label").style.display = "none";
+            document.getElementById("SelectedCity5").style.display = "none";
 
             if (selectedTutorReport == 'TutorBday') {
                 document.getElementById("ChosenMonthList").style.display = "block";
                 document.getElementById("ChosenStatusList").style.display = "block";
                 document.getElementById("ChooseMonthLabel").style.display = "block";
                 document.getElementById("ChooseStatusLabel").style.display = "block";
+            }
+            else 
+            if (selectedTutorReport == 'TutorCountsbyCitybyDate') {
+                document.getElementById("City1Label").style.display = "block";
+                document.getElementById("SelectedCity1").style.display = "block";
+                document.getElementById("City2Label").style.display = "block";
+                document.getElementById("SelectedCity2").style.display = "block";
+                document.getElementById("City3Label").style.display = "block";
+                document.getElementById("SelectedCity3").style.display = "block";
+                document.getElementById("City4Label").style.display = "block";
+                document.getElementById("SelectedCity4").style.display = "block";
+                document.getElementById("City5Label").style.display = "block";
+                document.getElementById("SelectedCity5").style.display = "block";
+
+                document.getElementById("ChosenMonthList").style.display = "none";
+                document.getElementById("ChosenStatusList").style.display = "none";
+                document.getElementById("ChooseMonthLabel").style.display = "none";
+                document.getElementById("ChooseStatusLabel").style.display = "none";
             }
             else {
                 document.getElementById("ChosenMonthList").style.display = "none";
@@ -101,7 +180,7 @@
                 selectedTutorReport == 'TutorsMatchHistorybyDateRange' ||
                 selectedTutorReport == 'TutorStatusHistory' ||
                 selectedTutorReport == 'TutorStats' ||
-                //selectedTutorReport == 'TutorsComputerLab' ||
+                selectedTutorReport == 'TutorCountsbyCitybyDate' ||
                 selectedTutorReport == 'TutorWaitTime')
             {
                 document.getElementById("TutorReportsViewStartDateRangeLabel").style.display = "block";
@@ -112,6 +191,11 @@
                 if (selectedTutorReport == 'TutorStats') {
                     document.getElementById("StatusLabel").style.display = "block";
                     document.getElementById("StatusList").style.display = "block";
+                }
+                else
+                {
+                    document.getElementById("StatusLabel").style.display = "none";
+                    document.getElementById("StatusList").style.display = "none";
                 }
             }
             else {
@@ -138,6 +222,19 @@
                 //url = ' Url.Action( "TutorBday", "Reports", new {reportType="PDF", chosenMonth=$("#ChosenMonthList").val(), chosenStatus=$("#ChosenStatusList").val()})';        //{ paramsVal = "_paramsVal_" })';
                 url = url.replace("destURL", reportName);
                 url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "chosenMonth=" + $("#ChosenMonthList").val() + '!' + "chosenStatus=" + $("#ChosenStatusList").val());
+            }
+            else 
+            if (reportName == 'TutorCountsbyCitybyDate') {
+                var beginDate = $("#TutorReportsStartDate").val();
+                var endDate = $("#TutorReportsEndDate").val();
+                var city1 = $("#SelectedCity1").val();
+                var city2 = $("#SelectedCity2").val();
+                var city3 = $("#SelectedCity3").val();
+                var city4 = $("#SelectedCity4").val();
+                var city5 = $("#SelectedCity5").val();
+                //url = ' Url.Action( "TutorBday", "Reports", new {reportType="PDF", chosenMonth=$("#ChosenMonthList").val(), chosenStatus=$("#ChosenStatusList").val()})';        //{ paramsVal = "_paramsVal_" })';
+                url = url.replace("destURL", reportName);
+                url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "beginDate=" + beginDate + '!' + "endDate=" + endDate + '!' + "city1=" + city1 + '!' + "city2=" + city2 + '!' + "city3=" + city3 + '!' + "city4=" + city4 + '!' + "city5=" + city5);
             }
             else 
             if (reportName == 'TutorStats') {
