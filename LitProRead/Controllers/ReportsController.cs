@@ -390,7 +390,7 @@ namespace LitProRead.Controllers
         public ActionResult StudentInActivePhoneList(string paramsVal) { return Run(paramsVal); }
         public ActionResult StudentActivePhoneList(string paramsVal) { return Run(paramsVal); }
         public ActionResult StudentStatusHistory(string paramsVal) { return Run(paramsVal); }
-        public ActionResult StudentWaitTime(string paramsVal) { return Run(paramsVal); }
+        //public ActionResult StudentWaitTime(string paramsVal) { return Run(paramsVal); }
         public ActionResult StudentAccomplishmentsByActiveDateGreaterThan1Year(string paramsVal) { return Run(paramsVal); }
         public ActionResult StudentsComputerLab(string paramsVal) { return Run(paramsVal); }
         public ActionResult StudentsWithCity(string paramsVal) { return Run(paramsVal); }
@@ -481,9 +481,9 @@ namespace LitProRead.Controllers
             else
             if (reportName == "StudentStatusHistory")
                 return _StudentStatusHistory(reportType, date1, date2, statusType);
-            else
-            if (reportName == "StudentWaitTime")
-                return _StudentWaitTime(reportType, beginDate, endDate, statusType);
+            //else
+            //if (reportName == "StudentWaitTime")
+            //    return _StudentWaitTime(reportType, date1, date2, statusType);
             else
             if (reportName == "StudentAccomplishmentsByActiveDateGreaterThan1Year")
                 return _StudentAccomplishmentsByActiveDateGreaterThan1Year(reportType, date1, date2, statusType);
@@ -502,16 +502,93 @@ namespace LitProRead.Controllers
 
         //SELECT Students.FirstName, Students.LastName, Students.FirstActive, Date() AS Today, Students.Status, (DateDiff('m',[FirstActive],Now())) AS WaitTime FROM Students 
         //      WHERE (((Students.FirstActive) Between [Forms]![frmDateSelectionStudentStatus]![BeginDate] And [Forms]![frmDateSelectionStudentStatus]![EndDate]));
-        public ActionResult _StudentWaitTime(string reportType, string beginDate, string endDate, string statusType)
+        public ActionResult StudentWaitTime(string paramsVal)//reportType, DateTime beginDate, DateTime endDate, string statusType)
         {
             using (LitProReadEntities db = new LitProReadEntities())
             {
-                DateTime date1 = new DateTime(1900, 01, 01);
+                string reportType = "";
+                string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();   // = "4/1/2010"; 
+                string endDate = DateTime.Now.ToShortDateString();     // = "4/30/2014";
+                string statusType = "";   // default
+
+                if (paramsVal != null)
+                {
+                    char[] sep = { '!' };
+                    string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                    // 1st: report type (PDF, EXCEL, WORD, or IMAGE)
+                    if (str.Count() > 0)        // not all reports have a start date
+                    {
+                        string[] s1 = str[0].Split('=');
+                        reportType = s1[1];
+                    }
+
+                    // 2nd: begin date
+                    if (str.Count() > 1)        // not all reports have a start date
+                    {
+                        string[] s2 = str[1].Split('=');
+                        beginDate = s2[1];
+                    }
+
+                    // 3rd: end date
+                    if (str.Count() > 2)        // not all reports have a start date
+                    {
+                        string[] s3 = str[2].Split('=');
+                        endDate = s3[1];
+                    }
+
+                    // 4th: status
+                    if (str.Count() > 3)        // not all reports have a start date
+                    {
+                        string[] s4 = str[3].Split('=');
+                        statusType = s4[1];
+                    }
+                }
+
+                if (reportType.Length == 0)
+                {
+                    reportType = "PDF";
+                }
+
+                DateTime date1;
                 if (beginDate != "")
+                {
                     date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
-                DateTime date2 = new DateTime(2025, 12, 31);
+                }
+                else
+                {
+                    date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    beginDate = date1.ToShortDateString();
+                }
+
+                DateTime date2;
                 if (endDate != "")
-                    date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+                {
+                    date2 = DateTime.ParseExact(endDate, @"M/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+                }
+                else
+                {
+                    int currMonth = DateTime.Now.Month;
+                    int day = 31;
+                    switch (currMonth)
+                    {
+                        case 2:
+                            day = 28;
+                            break;
+                        case 4:
+                        case 6:
+                        case 10:
+                        case 12:
+                            day = 30;
+                            break;
+                    }
+                    date2 = new DateTime(DateTime.Now.Year, currMonth, day);
+                    endDate = date2.ToShortDateString();
+                }
+
+                if (statusType.Length == 0)
+                    statusType = "Active";
+
                 var wait = from student in db.Students
                            where statusType != "" ? (student.FirstActive >= date1 && student.FirstActive <= date2) && (student.Status.Equals(statusType)) : (student.FirstActive >= date1 && student.FirstActive <= date2)
                            select new { Name = student.LastName + ", " + student.FirstName, student.LastName, student.FirstName, student.FirstActive, student.Status };

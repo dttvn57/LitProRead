@@ -109,7 +109,7 @@
                 document.getElementById("StudentReportsStartDate").style.display = "block";
                 document.getElementById("StudentReportsEndDate").style.display = "block";
 
-                if (selectedStudentReport == 'StudentStats') {
+                if (selectedStudentReport == 'StudentStats' || selectedStudentReport == 'StudentWaitTime') {
                     document.getElementById("StatusLabel").style.display = "block";
                     document.getElementById("StatusList").style.display = "block";
                 }
@@ -140,7 +140,7 @@
                 url = url.replace("_paramsVal_", "reportType=" + reportType + '!' + "chosenMonth=" + $("#ChosenMonthList").val() + '!' + "chosenStatus=" + $("#ChosenStatusList").val());
             }
             else 
-            if (reportName == 'StudentStats') {
+            if (reportName == 'StudentStats' || reportName == 'StudentWaitTime') {
                 var beginDate = $("#StudentReportsStartDate").val();
                 var endDate = $("#StudentReportsEndDate").val();
                 var status = $("#StatusList").val();
