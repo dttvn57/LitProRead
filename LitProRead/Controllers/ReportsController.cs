@@ -1911,6 +1911,8 @@ namespace LitProRead.Controllers
                 string title = temp.ToString();
                 List<ReportParameter> paramList = new List<ReportParameter>();
                 paramList.Add(new ReportParameter("Title", "Tutors Serviced for: " + title));
+                paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString()));
 
                 //note: StudentActivePhoneListDataSet is used since it contains all info we need to display the report
                 return RunReport(reportType, "TutorCountsbyCitybyDate.rdlc", "StudentActivePhoneListDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
