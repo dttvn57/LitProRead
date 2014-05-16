@@ -872,7 +872,7 @@ namespace LitProRead.Controllers
                 paramList.Add(new ReportParameter("SecondaryStatus", "Tutor Status"));
                 paramList.Add(new ReportParameter("MatchedWith", "Matched with Tutors"));
 
-                return RunReport("PDF", "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+                return RunReport("EXCEL", "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
 
@@ -1776,7 +1776,7 @@ namespace LitProRead.Controllers
                 paramList.Add(new ReportParameter("SecondaryStatus", "Student Status"));
                 paramList.Add(new ReportParameter("MatchedWith", "Matched with Students"));
 
-                return RunReport("PDF", "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+                return RunReport("EXCEL", "StudentsMatchHistorybyDateRange.rdlc", "StudentsMatchHistorybyDateRangeDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
         

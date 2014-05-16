@@ -156,6 +156,7 @@
     <Compile Include="BusinessObjects\StudentStatsBO.cs" />
     <Compile Include="BusinessObjects\StudentAccomplishmentBO.cs" />
     <Compile Include="Controllers\CLLSController.cs" />
+    <Compile Include="Controllers\AllPairsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
@@ -711,9 +712,9 @@
       <DependentUpon>StudentStatsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\DataSets\StudentStatusHistoryDataSet.Designer.cs">
-      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\DataSets\StudentWaitTimeDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -724,6 +725,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AllPairsFormViewModel.cs">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\TutorFollowUpViewModel.cs" />
     <Compile Include="ViewModels\TutorCommentsViewModel.cs" />
@@ -802,6 +806,8 @@
     <Content Include="Content\themes\metroblue\jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
+    <EmbeddedResource Include="Reports\rdlc\TutorCountsbyCitybyDate.rdlc" />
     <EntityDeploy Include="Models\LitProReadModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>LitProReadModel.Designer.cs</LastGenOutput>
@@ -913,7 +919,6 @@
     <EmbeddedResource Include="Reports\rdlc\StudentsActiveDateMoreThan1YearWithHoursMet.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentsMatchHistorybyDateRange.rdlc" />
     <EmbeddedResource Include="Reports\rdlc\StudentStats.rdlc" />
-    <EmbeddedResource Include="Reports\rdlc\StudentStatusHistory.rdlc" />
     <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xsc">
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
     </Content>
@@ -958,12 +963,6 @@
     <Content Include="Reports\DataSets\StudentsMatchHistorybyDateRangeDataSet.xss">
       <DependentUpon>StudentsMatchHistorybyDateRangeDataSet.xsd</DependentUpon>
     </Content>
-    <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
-      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
-    </Content>
-    <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xss">
-      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
-    </Content>
     <Content Include="Reports\DataSets\StudentWaitTimeDataSet.xsc">
       <DependentUpon>StudentWaitTimeDataSet.xsd</DependentUpon>
     </Content>
@@ -978,11 +977,17 @@
     <Content Include="Reports\DataSets\StudentStatsDataSet.xss">
       <DependentUpon>StudentStatsDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xsc">
+      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSets\StudentStatusHistoryDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>StudentStatusHistoryDataSet.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="Reports\DataSets\StudentStatusHistoryDataSet.xss">
+      <DependentUpon>StudentStatusHistoryDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSets\StudentWaitTimeDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -1226,6 +1231,7 @@
     <Content Include="Views\Shared\_Tutor-FollowUp-View.cshtml" />
     <Content Include="Views\Reports\Tutors.cshtml" />
     <Content Include="Views\Shared\_Tutor-Reports-View.cshtml" />
+    <Content Include="Views\AllPairs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

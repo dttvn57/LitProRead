@@ -18,11 +18,23 @@ namespace LitProRead.ViewModels
         public int SID { get; set; }
         public string TutorFName { get; set; }
         public string TutorLName { get; set; }
+        public string TutorHome { get; set; }
+        public string TutorWork { get; set; }
+        public string TutorContact { get; set; }
+        public string TutorStatus { get; set; }
+
         public string StudentFName { get; set; }
         public string StudentLName { get; set; }
+        public string StudentHome { get; set; }
+        public string StudentWork { get; set; }
+        public string StudentStatus { get; set; }
+
         public Nullable<System.DateTime> MatchDate { get; set; }
         public Nullable<System.DateTime> DissolveDate { get; set; }
+        
+        public string PairStatus { get; set; }
         public int PairStatusID { get; set; }
+        
         public Nullable<System.DateTime> PairStatusDate { get; set; }
         public string PairProgram { get; set; }
         public string Comments { get; set; }
@@ -32,6 +44,7 @@ namespace LitProRead.ViewModels
         public byte[] SSMA_TimeStamp { get; set; }
         public int SStatusID { get; set; }
         public int TStatusID { get; set; }
+        public Nullable<double> MonthsOfService { get; set; }
         public Nullable<double> TotalHoursMet { get; set; }
 
         public PairViewModel()
@@ -53,8 +66,8 @@ namespace LitProRead.ViewModels
                 dest.DateCreated = DateCreated;
                 dest.SID = SID;
                 dest.TID = TID;
-
             }
+
             dest.Comments = Comments;
             dest.DateModified = DateModified;
             dest.DissolveDate = DissolveDate;
@@ -62,6 +75,25 @@ namespace LitProRead.ViewModels
             dest.MatchDate = MatchDate;
             dest.PairProgram = PairProgram;
             dest.PairStatus = LitProReadEntities.GetStatus(PairStatusID);
+            dest.PairStatusDate = PairStatusDate;
+            dest.DateModified = DateModified;
+            //dest.SSMA_TimeStamp = DateTime.Now.;
+        }
+
+        public void CopyTo(Pair dest)
+        {
+            dest.UniqID = UniqID;
+            dest.DateCreated = DateCreated;
+            dest.SID = SID;
+            dest.TID = TID;
+
+            dest.Comments = Comments;
+            dest.DateModified = DateModified;
+            dest.DissolveDate = DissolveDate;
+            dest.LastModifiedBy = LastModifiedBy;
+            dest.MatchDate = MatchDate;
+            dest.PairProgram = PairProgram;
+            dest.PairStatus = PairStatus;
             dest.PairStatusDate = PairStatusDate;
             //dest.SSMA_TimeStamp = DateTime.Now.;
         }

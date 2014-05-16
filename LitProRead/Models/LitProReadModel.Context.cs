@@ -623,6 +623,114 @@ namespace LitProRead.Models
         }
 
 
+        //******************** PAIRS *************************************************
+
+        //SELECT Students.FirstName, Students.LastName, Tutors.FirstName, Tutors.LastName, Pairs.*, 
+        //IIf(IsNull([DissolveDate]),DateDiff("m",[MatchDate],Now()),DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, 
+        //students.HomeAreaCode & " " & Students.HomePhone AS StudentHome, 
+        //Students.WorkAreaCode & " " & Students.WorkPhone AS StudentWork, 
+        //Tutors.HomeAreaCode & " " & Tutors.HomePhone AS TutorHome, 
+        //Tutors.WorkAreaCode & " " & Tutors.WorkPhone AS TutorWork, 
+        //Tutors.TutorContact, 
+        //Students.Status, 
+        //Tutors.Status
+        //FROM Students INNER JOIN (Tutors INNER JOIN Pairs ON Tutors.ID = Pairs.TID) ON Students.ID = Pairs.SID;
+        public List<PairViewModel> GetAllPairs()
+        {
+            var query =
+                from pair in Pairs
+               // where pair.SID == studentID && pair.MatchDate >= date1 && pair.MatchDate <= date2
+                join tutor in Tutors on pair.TID equals tutor.ID //into pt 
+                //from p in pt
+                join student in Students on pair.SID equals student.ID
+                select new PairViewModel
+                {
+                    UniqID = pair.UniqID,
+                    DateCreated = pair.DateCreated,
+                    TID = pair.TID,
+                    SID = pair.SID,
+
+                    Comments = pair.Comments,
+                    DateModified = pair.DateModified,
+                    DissolveDate = pair.DissolveDate,
+                    LastModifiedBy = pair.LastModifiedBy,
+                    MatchDate = pair.MatchDate,
+                    PairProgram = pair.PairProgram,
+                    PairStatus = pair.PairStatus,
+                    PairStatusDate = pair.PairStatusDate,
+                    //TotalHoursMet = t.Sum(x => x.HoursMet)
+
+                    StudentLName = student.LastName,
+                    StudentFName = student.FirstName,
+                    StudentHome = student.HomeAreaCode + " " + student.HomePhone,
+                    StudentWork = student.WorkAreaCode + " " + student.WorkPhone,
+                    StudentStatus = student.Status,
+
+                    TutorLName = tutor.LastName,
+                    TutorFName = tutor.FirstName,
+                    TutorHome = tutor.HomeAreaCode + " " + tutor.HomePhone,
+                    TutorWork = tutor.WorkAreaCode + " " + tutor.WorkPhone,
+                    TutorStatus = tutor.Status,
+                    TutorContact = tutor.TutorContact
+                };
+            return query.ToList();
+        }
+
+        //SELECT PairHours.DateMet, PairHours.HoursMet, Tutors.FirstName & " " & Tutors.LastName AS TutorName, Students.FirstName & " " & Students.Lastname AS StudentName, Pairs.DissolveDate, PairHours.Activity, Pairs.PairStatus, Pairs.MatchDate, IIf(IsNull([DissolveDate]),DateDiff("m",[MatchDate],Now()),DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, Pairs.PairProgram, Pairs.PairStatusDate
+        //FROM Students RIGHT JOIN ((Tutors RIGHT JOIN Pairs ON Tutors.ID = Pairs.TID) RIGHT JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
+        //WHERE (((PairHours.DateMet) Between [Forms]![frmDateSelectionPairStatus]![BeginDate] And [Forms]![frmDateSelectionPairStatus]![EndDate]));
+        public List<PairHoursViewModel> GetPairHours(int UniqID, int pageSize, int pageNum, string sort, ref int matchCount)
+        {
+            var query =
+                from pair in Pairs
+                where pair.UniqID == UniqID
+                join pairHour in PairHours on pair.UniqID equals pairHour.PairHours into pairPairHours 
+               
+                //from p in pairPairHours.DefaultIfEmpty()
+                //    where p.Activity != "prep time"
+                from p in pairPairHours
+                    where !(p.Activity.Contains("prep time"))
+
+                select p;
+
+            matchCount = query.Count();
+
+
+            if (string.IsNullOrEmpty(sort) || sort.Equals("DateMet ASC"))
+            {
+                query = query.OrderBy(p => p.DateMet);
+            }
+            else if (sort.Equals("DateMet DESC"))
+            {
+                query = query.OrderByDescending(p => p.DateMet);
+            }
+
+            List<PairHoursViewModel> list = new List<PairHoursViewModel>();
+            if (matchCount > 0)  //First() != null)
+            {
+                foreach (var pairHr in query)
+                {
+                    int activityId = GetActivityId(pairHr.Activity);
+                    list.Add(new PairHoursViewModel
+                    {
+                        UniqID = pairHr.UniqID,
+                        PairHours = pairHr.PairHours,
+                        DateMet = pairHr.DateMet,
+                        HoursMet = pairHr.HoursMet,
+                        ActivityID = activityId,   //pair.Activity
+                    });
+                }
+            }
+
+            if (pageSize > 0)
+            {
+                IEnumerable<PairHoursViewModel> retList = list.AsEnumerable();
+                return retList.Skip(pageNum).Take(pageSize).ToList();
+            }
+            else
+                return list;
+        }
+
         //******************** TUTOR *************************************************
 
         //Return only the results we want
@@ -958,6 +1066,134 @@ namespace LitProRead.Models
             return list;
         }
 
+        // ************************************************************************************************
+        // All Pairs
+        public int PairIdByRecIndex(int recIndex)
+        {
+            PairViewModel[] list = GetAllPairs().ToArray();
+            int cnt = list.Count();
+            if (cnt <= 0)
+                return 0;
+
+            if (recIndex <= 0)
+                return list[0].UniqID;
+
+            if (recIndex >= cnt)
+            {
+                return list[cnt - 1].UniqID;
+            }
+
+            return list[recIndex].UniqID;
+        }
+
+        public int FirstPairId(int currPairId, ref int recIndex)
+        {
+            int Id = currPairId;
+            PairViewModel[] list = GetAllPairs().ToArray();
+            int cnt = list.Count();
+            if (cnt > 0)
+                Id = list[0].UniqID;
+            recIndex = 1;
+
+            return Id;
+        }
+
+        public int LastPairId(int currPairId, ref int recIndex)
+        {
+            int Id = currPairId;
+            PairViewModel[] list = GetAllPairs().ToArray();
+            int cnt = list.Count();
+            if (cnt > 0)
+                Id = list[cnt - 1].UniqID;
+            recIndex = cnt;
+
+            return Id;
+        }
+
+        public int NextPairId(int currPairId, ref int recIndex)
+        {
+            int Id = 0;
+            PairViewModel[] list = GetAllPairs().ToArray();
+            int cnt = list.Count();
+            if (cnt == 0)
+            {
+                recIndex = 0;
+                return Id;
+            }
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
+            {
+                if (list[currIndex].UniqID == currPairId)
+                {
+                    int nextIndex = 0;
+                    if (currIndex == cnt - 1)   // at end of list
+                    {
+                        Id = currPairId;
+                        nextIndex = currIndex;
+                    }
+                    else
+                    {
+                        Id = list[currIndex + 1].UniqID;
+                        nextIndex = currIndex + 1;
+                    }
+                    recIndex = nextIndex + 1;
+                    return Id;
+                }
+            }
+            recIndex = 0;
+            return list[recIndex].UniqID;
+        }
+
+        public int PrevPairId(int currPairId, ref int recIndex)
+        {
+            int Id = 0;
+            PairViewModel[] list = GetAllPairs().ToArray();
+            int cnt = list.Count();
+            if (cnt == 0)
+            {
+                recIndex = 0;
+                return Id;
+            }
+
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
+            {
+                if (list[currIndex].UniqID == currPairId)
+                {
+                    int nextIndex = 0;
+                    if (currIndex == 0) // at top of list
+                    {
+                        Id = currPairId;
+                        nextIndex = currIndex;
+                    }
+                    else
+                    {
+                        Id = list[currIndex - 1].UniqID;
+                        nextIndex = currIndex - 1;
+                    }
+                    recIndex = nextIndex + 1;
+                    return Id;
+                }
+            }
+            recIndex = 0;
+            return list[recIndex].UniqID;
+        }
+
+        public PairViewModel GetPair(int pairId, ref int recIndex)
+        {
+            PairViewModel[] list = GetAllPairs().ToArray();
+            int cnt = list.Count();
+            for (int currIndex = 0; currIndex < cnt; currIndex++)
+            {
+                if (list[currIndex].UniqID == pairId)
+                {
+                    recIndex = currIndex + 1;
+
+                    list[currIndex].TotalHoursMet = GetTotalHoursMet(pairId);
+                    return list[currIndex];
+                }
+            }
+            return null;
+        }
+
         // ********************************************************************************************************
         public static string GetActivity(int activityId)
         {
@@ -1178,6 +1414,19 @@ namespace LitProRead.Models
                 return 3;
             return 0;
         }
+
+        private double GetTotalHoursMet(int pairId)
+        {
+            var query =
+                from pairHour in PairHours
+                where pairHour.PairHours == pairId && !(pairHour.Activity.Contains("prep time"))
+                select pairHour;
+            if (query.Count() == 0)
+                return 0;
+
+            return query.Sum(p => (double)p.HoursMet);
+        }
+
 
         //SELECT [FirstName] & " " & [LastName] AS Name, [HomeAreaCode] & " " & [HomePhone] AS Home, [WorkAreaCode] & " " & [WorkPhone] AS [Work], StudentFollowUp.FollowUpDate, StudentFollowUp.FollowUpDesc, Students.ID, StudentFollowUp.LastModifiedBy, StudentFollowUp.UniqID
         //FROM Students INNER JOIN StudentFollowUp ON Students.ID = StudentFollowUp.ID

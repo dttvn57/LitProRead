@@ -147,13 +147,9 @@
         <ul class="sf-menu">
             <li class="current"><a href="#a">Forms</a>
                 <ul>
-                    <li>
-                        @*
-                        <a href="#aa">Students</a> 
-                        *@
-                        @Html.ActionLink("Students", "Index", "Student")
-                    </li>
+                    <li>@Html.ActionLink("Students", "Index", "Student")</li>
                     <li>@Html.ActionLink("Tutors", "Index", "Tutor")</a> </li>
+                    <li>@Html.ActionLink("All Pairs", "Index", "AllPairs")</a> </li>
 
                     @*
                     <li class="current"><a href="#ab">menu item</a>
