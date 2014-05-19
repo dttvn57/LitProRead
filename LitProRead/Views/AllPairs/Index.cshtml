@@ -1,5 +1,11 @@
 ﻿@model LitProRead.ViewModels.AllPairsFormViewModel
    
+<style>
+    .select2-container {
+        width:250px;
+    }
+</style>
+
 <div style="font-weight: bold;">
 A L L&nbsp;&nbsp;&nbsp;P A I R S
 </div>
@@ -11,18 +17,25 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
         @Html.HiddenFor(m => Model.EditMode)
         @Html.HiddenFor(m => Model.CurrentRecordIndex)
         @Html.HiddenFor(m => Model.RecordsCnt)
+        @Html.HiddenFor(m => Model.PairByTutor)
 
         <table>
             <colgroup>
+                @*
                     <col style="width:25%;"/>
                     <col style="width:15%;"/>
                     <col style="width:25%;"/>
                     <col style="width:15%;"/>
                     <col style="width:20%;"/>
+                *@
+                    <col style="width:25%;"/>
+                    <col style="width:25%;"/>
+                    <col style="width:25%;"/>
+                    <col style="width:25%;"/>
             </colgroup>
             @*
             <tr>
-                @for (int i = 0; i < 5; i++)
+                @for (int i = 0; i < 4; i++)
                 {
                     if (i % 2 == 0)
                     {
@@ -35,6 +48,25 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                 }
             </tr>
             *@
+            <tr>
+                <td colspan="4">
+                    <hr>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="text-align:right; border:0 none;">Find Tutor
+                </td>
+                <td style="text-align:left; border:0 none;">
+                    @Html.TextBoxFor(m => m.TutorID, new { id = "TutorList", style = "width:20em" }) 
+                </td>
+                <td style="text-align:right; border:0 none;">Find Student
+                </td>
+                <td style="text-align:left; border:0 none;">
+                    @Html.TextBoxFor(m => m.StudentID, new { id = "StudentList", style = "width:20em" }) 
+
+                </td>
+            </tr>
 
             <tr>
                 <td colspan="5" style="text-align:center">
@@ -47,29 +79,39 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
 
                 </td>
             </tr>
-
+        </table>
+        
+        <table>
+            <colgroup>
+                    <col style="width:15%;"/>
+                    <col style="width:20%;"/>
+                    <col style="width:35%;"/>
+                    <col style="width:15%;"/>
+                    <col style="width:15%;"/>
+            </colgroup>
+        @*
             <tr>
                 <td colspan="5">
                     <hr>
                 </td>
             </tr>
-
+        *@
  
             <tr>
                 <td>
                     @Html.Label("Tutor Name")
                 </td>
                 <td>
-                    @Html.TextBoxFor(m => Model.CurrentPair.TutorFName)
+                    @Html.TextBoxFor(m => Model.CurrentPair.TutorFName, new { style = "width:25em" })
                 </td>
                 <td>
-                    @Html.TextBoxFor(m => Model.CurrentPair.TutorLName)
+                    @Html.TextBoxFor(m => Model.CurrentPair.TutorLName, new { style = "width:25em" })
                 </td>
                 <td>
                     @Html.Label("Tutor Status")
                 </td>
                 <td colspan="2">
-                    @Html.DropDownListFor(m => Model.CurrentPair.TutorStatus, Model.StatusList, string.Empty, new { style="width:100%" })  
+                    @Html.DropDownListFor(m => Model.CurrentPair.TutorStatus, Model.StatusList, string.Empty, new { style = "width:100%" })  
                 </td>
             </tr>
 
@@ -78,16 +120,16 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     @Html.Label("Student Name")
                 </td>
                 <td>
-                    @Html.TextBoxFor(m => Model.CurrentPair.StudentFName)
+                    @Html.TextBoxFor(m => Model.CurrentPair.StudentFName, new { style = "width:25em" })
                 </td>
                 <td>
-                    @Html.TextBoxFor(m => Model.CurrentPair.StudentLName)
+                    @Html.TextBoxFor(m => Model.CurrentPair.StudentLName, new { style = "width:25em" })
                 </td>
                 <td>
                     @Html.Label("Student Status")
                 </td>
                 <td colspan="2">
-                    @Html.DropDownListFor(m => Model.CurrentPair.StudentStatus, Model.StatusList, string.Empty, new { style="width:100%" })  
+                    @Html.DropDownListFor(m => Model.CurrentPair.StudentStatus, Model.StatusList, string.Empty, new { style = "width:100%" })  
                 </td>
             </tr>
 
@@ -96,7 +138,7 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     @Html.Label("Pair Status")
                 </td>
                 <td>
-                    @Html.DropDownListFor(m => Model.CurrentPair.PairStatus, Model.StatusList, string.Empty, new { style="width:100%" })  
+                    @Html.DropDownListFor(m => Model.CurrentPair.PairStatus, Model.StatusList, string.Empty, new { style = "width:20em" })  
                 </td>
                 <td>Status Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         @Html.TextBoxFor(m => m.CurrentPair.PairStatusDate, "{0:MM/dd/yyyy}", new { @class = "datefield", style = "width:8em" })
@@ -105,7 +147,7 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     @Html.Label("Pair Program")
                 </td>
                 <td colspan="2">
-                    @Html.DropDownListFor(m => Model.CurrentPair.PairProgram, Model.ProgramList, string.Empty, new { style="width:100%" })  
+                    @Html.DropDownListFor(m => Model.CurrentPair.PairProgram, Model.ProgramList, string.Empty, new { style = "width:100%" })  
                 </td>
             </tr>
 
@@ -132,7 +174,7 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     @Html.Label("Comments")
                 </td>
                 <td colspan="4">
-                    @Html.TextAreaFor(m => m.CurrentPair.Comments, new { style="width:100%" })
+                    @Html.TextAreaFor(m => m.CurrentPair.Comments, new { style = "width:100%" })
                 </td>
             </tr>
 
@@ -224,6 +266,11 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                 $('#pairSave').prop('disabled', true);
             }
 
+            // always enable these controls
+            $("#pairPages").prop('disabled', false);
+            $('#TutorList').prop('disabled', false);
+            $('#StudentList').prop('disabled', false);
+
             $.fn.handlePairRecordNavigation = function (direction) {
                 // enable
                 var navUrl = '@Url.Content("~/AllPairs/NextPair")';
@@ -257,29 +304,31 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
 
                     $.fn.populatePairForm(data);
 
-                    // should update the new current tutor id
+                    // should update the new pair id
 
                     //synch the search tutor profiles boxes
-//                  var byLastName = $("#ByLastName").val();
-//                  if (byLastName == "True" || byLastName == "true") {
+                    @*
+                    var pairByTutor = $("#PairByTutor").val();
+                    if (pairByTutor == "True" || pairByTutor == "true") {
                         // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedLastNameId and of SelectedLastName
-//                      $('#SelectedLastNameId').val(data.CurrentTutor.ID);
-//                      var name = data.CurrentTutor.LastName + ", " + data.CurrentTutor.FirstName;
-//                      $('#SelectedLastName').val(name);
+                      //$('#SelectedLastNameId').val(data.CurrentTutor.ID);
+                        var name = data.CurrentPair.TutorLName + ", " + data.CurrentPair.TutorFName;
+                      //$('#SelectedLastName').val(name);
 
-//                      $("#TutorListLastName").select2("val", name);
-//                  }
-//                  else {
-                        // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedFirstNameId and of SelectedFirstName
-//                      $('#SelectedFirstNameId').val(data.CurrentTutor.ID);
-//                      var name = data.CurrentTutor.FirstName + " " + data.CurrentTutor.LastName;
-//                      $('#SelectedFirstName').val(name);
+                      $("#TutorList").select2("val", name);
+                   }
+                   else {
+                      // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedFirstNameId and of SelectedFirstName
+                      //$('#SelectedFirstNameId').val(data.CurrentTutor.ID);
+                      //var name = data.CurrentTutor.FirstName + " " + data.CurrentTutor.LastName;
+                      //$('#SelectedFirstName').val(name);
 
-//                      $("#TutorListFirstName").select2("val", name);
-//                  }
+                      //$("#TutorListFirstName").select2("val", name);
+                   }
+                    *@
 
-                    // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
-                    $(".datefield").datepicker();
+                   // MUST reload the date picker in order for it to work AFTER coming back from calling the Partial View.
+                   $(".datefield").datepicker();
                 }).error(function (xhr, errorType, exception) { //Triggered if an error communicating with server  
                     var errorMessage = exception || xhr.statusText; //If exception null, then default to xhr.statusText  
                     alert("There was an error calling editpair: " + errorMessage);
@@ -301,8 +350,8 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                 $('#pairEdit').prop('disabled', false);
 
                 // always enable the Last Name & First Name dropboxes for search + "active only" checkbox
-                $('#TuTorListLastName').prop('disabled', false);
-                $('#TuTorListFirstName').prop('disabled', false);
+                //$('#TuTorList').prop('disabled', false);
+                //$('#StudentList').prop('disabled', false);
 
                 $("input").removeClass("editmode");
                 $("textarea").removeClass("editmode");
@@ -437,6 +486,24 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     $('#CurrentPair_Comments').val(data.CurrentPair.Comments);
                     $('#CurrentPair_TotalHoursMet').val(data.CurrentPair.TotalHoursMet);
                 }
+
+                var pairByTutor = $("#PairByTutor").val();
+                //if (pairByTutor == "True" || pairByTutor == "true") {
+                    // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedLastNameId and of SelectedLastName
+                    //$('#SelectedLastNameId').val(data.CurrentTutor.ID);
+                    var tutor = data.CurrentPair.TutorLName + ", " + data.CurrentPair.TutorFName;
+                    //$('#SelectedLastName').val(name);
+
+                    $("#TutorList").select2("val", tutor);
+                //}
+                //else {
+                    // these 2 have to be here, before the call to .select2() since this will trigger the select2's initSelection() which relies on the value of SelectedFirstNameId and of SelectedFirstName
+                    //$('#SelectedFirstNameId').val(data.CurrentTutor.ID);
+                    var student = data.CurrentPair.StudentLName + ", " + data.CurrentPair.StudentFName;
+                    //$('#SelectedFirstName').val(name);
+
+                    $("#StudentList").select2("val", student);
+                //}
             };
 
             $('#pairPages').keypress(function (event) {
@@ -609,6 +676,153 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
 
             $('#AllPairsHours').jtable('load', { UniqID: uniqId });
 
+            $("#TutorList").select2(
+            {
+                //placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetAllPairsForTutors", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    if (mode == "view") {
+                        var id = element.val();
+                        //var id2 = $("#StudentListLastName").select2('data').id;
+                        //var text2 = $("#StudentListLastName").select2('data').text;
+
+                        //var text = element.data('text');
+                        var text = $('#CurrentPair_TutorLName').val() + ", " + $('#CurrentPair_TutorFName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
+                    else {
+                        var id = $('#SelectedLastNameId').val();
+                        var text = $('#SelectedLastName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
+                }
+            });     // TutorList
+
+            $("#TutorList").on("change", function (e) {
+                $("#PairByTutor").val(true);
+
+                var text = $("#TutorList").select2('data').text;
+                var id = $("#TutorList").select2('data').id;
+                $("#SelectedLastName").val(text);
+                $("#SelectedLastNameId").val(id);
+
+
+                var pairId = e.val;
+                if (pairId > 0) {
+                    $.fn.handleEditRecord(pairId, mode);
+                    // enable "Edit" button
+                    $('#pairEdit').prop('disabled', false);
+                    $('#pairDelete').prop('disabled', false);
+                    if (mode == "view") {
+                        $('#pairSave').prop('disabled', true);
+                    }
+                    else {
+                        $('#pairSave').prop('disabled', false);
+                    }
+                }
+            });
+
+            $("#StudentList").select2(
+            {
+                //placeholder: 'Enter last name',
+                //Does the user have to enter any data before sending the ajax request
+                minimumInputLength: 0,
+                allowClear: true,
+                ajax: {
+                    //How long the user has to pause their typing before sending the next request
+                    quietMillis: 150,
+                    //The url of the json service
+                    url: '@Url.Action("GetAllPairsForStudents", "Home")',
+                    dataType: 'jsonp',
+                    //Our search term and what page we are on
+                    data: function (term, page) {
+                        return {
+                            pageSize: pageSize,
+                            pageNum: page,
+                            searchTerm: term,
+                        };
+                    },
+                    results: function (data, page) {
+                        //Used to determine whether or not there are more results available,
+                        //and if requests for more data should be sent in the infinite scrolling                    
+                        var more = (page * pageSize) < data.Total;
+                        return { results: data.Results, more: more };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    // the input tag has a value attribute preloaded that points to a preselected movie's id
+                    // this function resolves that id attribute to an object that select2 can render
+                    // using its formatResult renderer - that way the movie name is shown preselected
+                    if (mode == "view") {
+                        var id = element.val();
+                        //var id2 = $("#StudentListLastName").select2('data').id;
+                        //var text2 = $("#StudentListLastName").select2('data').text;
+
+                        //var text = element.data('text');
+                        var text = $('#CurrentPair_StudentLName').val() + ", " + $('#CurrentPair_StudentFName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
+                    else {
+                        var id = $('#SelectedLastNameId').val();
+                        var text = $('#SelectedLastName').val();
+                        var data = { id: id, text: text };
+                        callback(data);
+                    }
+                }
+            });     // StudentList
+
+            $("#StudentList").on("change", function (e) {
+                $("#PairByTutor").val(false);
+
+                var text = $("#StudentList").select2('data').text;
+                var id = $("#StudentList").select2('data').id;
+                //$("#SelectedLastName").val(text);
+                //$("#SelectedLastNameId").val(id);
+
+
+                var pairId = e.val;
+                if (pairId > 0) {
+                    $.fn.handleEditRecord(pairId, mode);
+                    // enable "Edit" button
+                    $('#pairEdit').prop('disabled', false);
+                    $('#pairDelete').prop('disabled', false);
+                    if (mode == "view") {
+                        $('#pairSave').prop('disabled', true);
+                    }
+                    else {
+                        $('#pairSave').prop('disabled', false);
+                    }
+                }
+            });
         });  // $(document).ready()
 
     </script>

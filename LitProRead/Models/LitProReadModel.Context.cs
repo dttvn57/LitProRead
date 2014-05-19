@@ -676,6 +676,102 @@ namespace LitProRead.Models
             return query.ToList();
         }
 
+        public List<PairViewModel> GetAllPairsForTutors(string searchTerm, int pageSize, int pageNum)
+        {
+            var query =
+                from pair in Pairs
+               // where pair.SID == studentID && pair.MatchDate >= date1 && pair.MatchDate <= date2
+                join tutor in Tutors on pair.TID equals tutor.ID //into pt 
+                //from p in pt
+                join student in Students on pair.SID equals student.ID
+                orderby tutor.LastName
+                where tutor.LastName.StartsWith(searchTerm) 
+                select new PairViewModel
+                {
+                    UniqID = pair.UniqID,
+                    DateCreated = pair.DateCreated,
+                    TID = pair.TID,
+                    SID = pair.SID,
+
+                    Comments = pair.Comments,
+                    DateModified = pair.DateModified,
+                    DissolveDate = pair.DissolveDate,
+                    LastModifiedBy = pair.LastModifiedBy,
+                    MatchDate = pair.MatchDate,
+                    PairProgram = pair.PairProgram,
+                    PairStatus = pair.PairStatus,
+                    PairStatusDate = pair.PairStatusDate,
+                    //TotalHoursMet = t.Sum(x => x.HoursMet)
+
+                    StudentLName = student.LastName,
+                    StudentFName = student.FirstName,
+                    StudentHome = student.HomeAreaCode + " " + student.HomePhone,
+                    StudentWork = student.WorkAreaCode + " " + student.WorkPhone,
+                    StudentStatus = student.Status,
+
+                    TutorLName = tutor.LastName,
+                    TutorFName = tutor.FirstName,
+                    TutorHome = tutor.HomeAreaCode + " " + tutor.HomePhone,
+                    TutorWork = tutor.WorkAreaCode + " " + tutor.WorkPhone,
+                    TutorStatus = tutor.Status,
+                    TutorContact = tutor.TutorContact
+                };
+
+            query = query
+                .Skip(pageSize * (pageNum - 1))
+                .Take(pageSize);
+
+            return query.ToList();
+        }
+
+        public List<PairViewModel> GetAllPairsForStudents(string searchTerm, int pageSize, int pageNum)
+        {
+            var query =
+                from pair in Pairs
+               // where pair.SID == studentID && pair.MatchDate >= date1 && pair.MatchDate <= date2
+                join tutor in Tutors on pair.TID equals tutor.ID //into pt 
+                //from p in pt
+                join student in Students on pair.SID equals student.ID
+                orderby student.LastName
+                where student.LastName.StartsWith(searchTerm)
+                select new PairViewModel
+                {
+                    UniqID = pair.UniqID,
+                    DateCreated = pair.DateCreated,
+                    TID = pair.TID,
+                    SID = pair.SID,
+
+                    Comments = pair.Comments,
+                    DateModified = pair.DateModified,
+                    DissolveDate = pair.DissolveDate,
+                    LastModifiedBy = pair.LastModifiedBy,
+                    MatchDate = pair.MatchDate,
+                    PairProgram = pair.PairProgram,
+                    PairStatus = pair.PairStatus,
+                    PairStatusDate = pair.PairStatusDate,
+                    //TotalHoursMet = t.Sum(x => x.HoursMet)
+
+                    StudentLName = student.LastName,
+                    StudentFName = student.FirstName,
+                    StudentHome = student.HomeAreaCode + " " + student.HomePhone,
+                    StudentWork = student.WorkAreaCode + " " + student.WorkPhone,
+                    StudentStatus = student.Status,
+
+                    TutorLName = tutor.LastName,
+                    TutorFName = tutor.FirstName,
+                    TutorHome = tutor.HomeAreaCode + " " + tutor.HomePhone,
+                    TutorWork = tutor.WorkAreaCode + " " + tutor.WorkPhone,
+                    TutorStatus = tutor.Status,
+                    TutorContact = tutor.TutorContact
+                };
+
+            query = query
+                .Skip(pageSize * (pageNum - 1))
+                .Take(pageSize);
+
+            return query.ToList();
+        }
+
         //SELECT PairHours.DateMet, PairHours.HoursMet, Tutors.FirstName & " " & Tutors.LastName AS TutorName, Students.FirstName & " " & Students.Lastname AS StudentName, Pairs.DissolveDate, PairHours.Activity, Pairs.PairStatus, Pairs.MatchDate, IIf(IsNull([DissolveDate]),DateDiff("m",[MatchDate],Now()),DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, Pairs.PairProgram, Pairs.PairStatusDate
         //FROM Students RIGHT JOIN ((Tutors RIGHT JOIN Pairs ON Tutors.ID = Pairs.TID) RIGHT JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
         //WHERE (((PairHours.DateMet) Between [Forms]![frmDateSelectionPairStatus]![BeginDate] And [Forms]![frmDateSelectionPairStatus]![EndDate]));

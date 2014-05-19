@@ -356,6 +356,40 @@ namespace LitProRead.Controllers
             //return Json(new { msg = "Successfully saved " + studentFormVm.CurrentStudent.LastName });
         }
 
+        public ActionResult GetAllPairsForTutors(string searchTerm, int pageSize, int pageNum)
+        {
+            LitProReadEntities db = new LitProReadEntities();
+            List<PairViewModel> list = db.GetAllPairsForTutors(searchTerm, pageSize, pageNum);
+            int cnt = list.Count();
+
+            //Translate the attendees into a format the select2 dropdown expects
+            Select2PagedResult pagedTutors = ToSelect2Format((List<PairViewModel>)list, cnt, true);
+
+            //Return the data as a jsonp result
+            return new JsonpResult
+            {
+                Data = pagedTutors,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public ActionResult GetAllPairsForStudents(string searchTerm, int pageSize, int pageNum)
+        {
+            LitProReadEntities db = new LitProReadEntities();
+            List<PairViewModel> list = db.GetAllPairsForStudents(searchTerm, pageSize, pageNum);
+            int cnt = list.Count();
+
+            //Translate the attendees into a format the select2 dropdown expects
+            Select2PagedResult pagedTutors = ToSelect2Format((List<PairViewModel>)list, cnt, false);
+
+            //Return the data as a jsonp result
+            return new JsonpResult
+            {
+                Data = pagedTutors,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         /***
         //
         // POST: /Student/Edit/5
@@ -593,6 +627,26 @@ namespace LitProRead.Controllers
             jsonTutors.Total = totalTutors;
 
             return jsonTutors;
+        }
+
+        private Select2PagedResult ToSelect2Format(List<PairViewModel> pairs, int totalPairs, bool forTutor)
+        {
+            Select2PagedResult jsonPairs = new Select2PagedResult();
+            jsonPairs.Results = new List<Select2Result>();
+
+            //Loop through our list and translate it into a text value and an id for the select list
+            foreach (PairViewModel pair in pairs)
+            {
+                if (forTutor)
+                    jsonPairs.Results.Add(new Select2Result { id = pair.UniqID.ToString(), text = pair.TutorLName + ", " + pair.TutorFName });
+                else
+                    jsonPairs.Results.Add(new Select2Result { id = pair.UniqID.ToString(), text = pair.StudentLName + ", " + pair.StudentFName });
+            }
+
+            //Set the total count of the results from the query.
+            jsonPairs.Total = totalPairs;
+
+            return jsonPairs;
         }
 
         private Dictionary<string, object> deserializeToDictionary(string jo)

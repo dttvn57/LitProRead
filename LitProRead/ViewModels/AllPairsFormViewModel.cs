@@ -25,6 +25,11 @@ namespace LitProRead.ViewModels
 
         public PairViewModel CurrentPair { get; set; }
 
+        public string TutorID { get; set; }
+        public string StudentID { get; set; }
+
+        public bool PairByTutor { get; set; }
+
         //public List<TutorCommentsViewModel> TutorCommentsList { get; set; }
         //public List<TutorFollowUpViewModel> TutorFollowUpsList { get; set; }
 
@@ -74,6 +79,7 @@ namespace LitProRead.ViewModels
 
         public AllPairsFormViewModel()
         {
+            PairByTutor = true;
             Load(-1);
             EditMode = "view";
         }
