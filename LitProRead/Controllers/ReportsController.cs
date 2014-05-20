@@ -737,6 +737,44 @@ namespace LitProRead.Controllers
 
         //SELECT tblAuditTrail.*, [FirstName] & " " & [LastName] AS MyName
         //FROM tblAuditTrail
+        //WHERE (((tblAuditTrail.ID)="P" & [Forms]![frmMain]![frmPairsAll].[Form]![UniqID]))
+        //ORDER BY tblAuditTrail.DateChanged DESC , tblAuditTrail.TimeChanged DESC;
+        public ActionResult AuditTrailThisPair(string UniqID = "")
+        {
+            string reportType = "EXCEL";
+            string id = "P" + UniqID;
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var datasource = from item in db.tblAuditTrails.ToList()
+                                 where item.ID.Equals(id)
+                                 orderby item.DateChanged descending, item.TimeChanged descending
+                                 select new
+                                 {
+                                     MyName = item.FirstName + " " + item.LastName,
+                                     DateChanged = item.DateChanged.GetValueOrDefault().ToShortDateString(),
+                                     TimeChanged = item.TimeChanged.GetValueOrDefault().ToShortTimeString(),
+                                     FieldName = item.FieldName,
+                                     OldValue = item.OldValue,
+                                     NewValue = item.NewValue,
+                                     Computer = item.Computer,
+                                     Employee = item.Employee,
+                                     ID = item.ID
+                                 };
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                StringBuilder title = new StringBuilder();
+                title.Append("Audit Trail for ");
+                if (datasource.Count() > 0)
+                    title.Append(datasource.FirstOrDefault().MyName);
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("MyName", title.ToString()));
+
+                return RunReport(reportType, "AuditTrailThisStudent.rdlc", "AuditTrailThisStudentDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        //SELECT tblAuditTrail.*, [FirstName] & " " & [LastName] AS MyName
+        //FROM tblAuditTrail
         //WHERE (((tblAuditTrail.ID)="S" & [Forms]![frmMain]![frmStudents].[Form]![ID]))
         //ORDER BY tblAuditTrail.DateChanged DESC , tblAuditTrail.TimeChanged DESC;
         public ActionResult AuditTrailThis(string id = "")
@@ -764,11 +802,20 @@ namespace LitProRead.Controllers
                 //if (datasource.FirstOrDefault() == null)
                 //    return 
                 List<ReportParameter> paramList = new List<ReportParameter>();
-                paramList.Add(new ReportParameter("MyName", datasource.FirstOrDefault().MyName));
+                StringBuilder title = new StringBuilder();
+                title.Append("Audit Trail for ");
+                if (id[0] == 'T')
+                    title.Append("Tutor: ");
+                else
+                     title.Append("Student: ");
+                if (datasource.Count() > 0)
+                    title.Append( datasource.FirstOrDefault().MyName);
+                paramList.Add(new ReportParameter("MyName", title.ToString()));
 
                 return RunReport(reportType, "AuditTrailThisStudent.rdlc", "AuditTrailThisStudentDataSet", datasource, paramList, 11, 8.5, 0.25, 0.25);
             }
         }
+
 
         //SELECT Pairs.*, 
         //  IIf(IsNull([DissolveDate]), DateDiff("m",[MatchDate] ,Now()), DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, 

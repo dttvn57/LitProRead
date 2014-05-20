@@ -78,6 +78,8 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     <button type="button" id="pairCancel" onclick='cancelRecord()'>Cancel</button> 
 
                     <button type="button" id="printpair">Print</button>
+                     
+                    <button type="button" id="viewStatusChanges">View Status Changes</button>
 
                 </td>
             </tr>
@@ -824,6 +826,18 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     }
                 }
             });
+
+            $('#viewStatusChanges').click(function (event) {
+                //alert("viewStatusChanges");
+                var UniqID = $('#CurrentPair_UniqID').val();
+                if (UniqID > 0) {
+                    var url = '@Url.Action("AuditTrailThisPair", "Reports", new { UniqID = "_IdVal_" })';
+                    url = url.replace("_IdVal_", UniqID);
+                    window.open(url, '_blank'); // <- This is what makes it open in a new window.
+                };
+
+            });
+
         });  // $(document).ready()
 
     </script>
