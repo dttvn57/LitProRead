@@ -787,7 +787,15 @@ namespace LitProRead.Models
                 from p in pairPairHours
                     where !(p.Activity.Contains("prep time"))
 
-                select p;
+                select new {
+                    UniqID = p.UniqID,
+                    TID = pair.TID,
+                    SID = pair.SID,
+                    PairHours = p.PairHours,
+                    DateMet = p.DateMet,
+                    HoursMet = p.HoursMet,
+                    Activity = p.Activity
+                }; 
 
             matchCount = query.Count();
 
@@ -810,6 +818,8 @@ namespace LitProRead.Models
                     list.Add(new PairHoursViewModel
                     {
                         UniqID = pairHr.UniqID,
+                        TID = pairHr.TID,
+                        SID = pairHr.SID,
                         PairHours = pairHr.PairHours,
                         DateMet = pairHr.DateMet,
                         HoursMet = pairHr.HoursMet,

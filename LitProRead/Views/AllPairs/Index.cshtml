@@ -14,6 +14,8 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
     @using (Html.BeginForm("Edit", "AllPairs", FormMethod.Post))
     { 
         @Html.HiddenFor(m => Model.CurrentPair.UniqID)
+        @Html.HiddenFor(m => Model.CurrentPair.TID)
+        @Html.HiddenFor(m => Model.CurrentPair.SID)
         @Html.HiddenFor(m => Model.EditMode)
         @Html.HiddenFor(m => Model.CurrentRecordIndex)
         @Html.HiddenFor(m => Model.RecordsCnt)
@@ -552,19 +554,19 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
 
 
             $('#AllPairsHours').jtable({
-                //title: 'Pair Hours',
+                title: 'Pair Activities',
                 paging: true, //Enable paging
                 //pageSize: 5,
                 sorting: true, //Enable sorting
                 defaultSorting: 'DateCreated DESC',
                 //openChildAsAccordion: true, //Enable this line to show child tabes as accordion style
                 messages: {
-                    addNewRecord: 'Add New Matched Student'
+                    addNewRecord: 'Add New Pair Activity'
                 },
                 actions: {
-                    //deleteAction: '@Url.Action("DeleteMatchT", "Tutor")',
-                    //updateAction: '@Url.Action("UpdateMatchT", "Tutor")',
-                    //createAction: '@Url.Action("CreateMatchT", "Tutor")',
+                    deleteAction: '@Url.Action("DeleteMatchTPairs", "Tutor")',
+                    updateAction: '@Url.Action("UpdateMatchTPairs", "Tutor")',
+                    createAction: '@Url.Action("CreateMatchTPairs", "Tutor")',
                     listAction: '@Url.Action("PairHours", "AllPairs")'
                 },
 
@@ -573,15 +575,16 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                         key: true,      
                         title: 'UniqID',
                         list: true,
-                        input: function (data) {
-                            return '<input type="text" readonly class="jtable-input-readonly" name="UniqID" value="' + data.value + '"/>';
-                            if (data.value) {
-                            } else {
-                                //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
-                            }
-                        },
-                        width: '5%',
-                        visibility: 'hidden'
+                        //input: function (data) {
+                        //    return '<input type="text" readonly class="jtable-input-readonly" name="UniqID" value="' + data.value + '"/>';
+                        //    if (data.record) {
+                        //    } else {
+                        //    }
+                        //},
+                        //width: '5%',
+                        //defaultValue: tutorData.UniqID,
+                        type: 'hidden'
+
                     },
                     TID: {
                         title: 'TID',
@@ -594,11 +597,16 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                         //edit: true,
                         list: true,
                         input: function (data) {
-                            return '<input type="text" readonly class="jtable-input-readonly" name="TID" value="' + data.value + '"/>';
-                            if (data.value) {
-                            } else {
-                                //nothing to worry about here for your situation, data.value is undefined so the else is for the create/add new record user interaction, create is false for your usage so this else is not needed but shown just so you know when it would be entered
-                            }
+                           var mode = $('#EditMode').val();
+                           if (mode == "view") {
+                                throw new UserException("InvalidMonthNo");
+                           }
+                          
+                           return '<input type="text" readonly class="jtable-input-readonly" name="TID" value="' + data.value + '"/>';
+
+                           if (data.record) {
+                           } else {
+                           }
                         },
                         width: '5%',
                         visibility: 'hidden'
@@ -620,20 +628,9 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                         visibility: 'hidden'
                     },
 
-                    @*
                     PairHours: {
-                        type: 'hidden',
-                        defaultValue: tutorData.PairHours
+                        type: 'hidden'
                     },
-                    SID: {
-                        type: 'hidden',
-                        defaultValue: tutorData.SID
-                    },
-                    TID: {
-                        type: 'hidden',
-                        defaultValue: tutorData.TID
-                    },
-                    *@
 
                     ActivityID: {
                         title: 'Activity',
@@ -656,14 +653,18 @@ A L L&nbsp;&nbsp;&nbsp;P A I R S
                     },
                 },      // fields
                 
-                @*
                 formCreated: function (event, data) {
                     if (data.formType == "create") {
-                        var v = tutorData.record.UniqID;
+                        var v = $('#CurrentPair_TID').val();
+                        data.form.find('input[name="TID"]').val(v);
+
+                        v = $('#CurrentPair_SID').val();
+                        data.form.find('input[name="SID"]').val(v);
+
+                        v = $('#CurrentPair_UniqID').val();
                         data.form.find('input[name="PairHours"]').val(v);
                     }
                 },
-                *@
             });
 
 
