@@ -315,6 +315,364 @@ namespace LitProRead.Controllers
             }
         }
 
+        // ALL PAIRS
+        //SELECT PairHours.DateMet, PairHours.HoursMet, Tutors.FirstName & " " & Tutors.LastName AS TutorName, Students.FirstName & " " & Students.Lastname AS StudentName, Pairs.DissolveDate, PairHours.Activity, Pairs.PairStatus, Pairs.MatchDate, IIf(IsNull([DissolveDate]),DateDiff("m",[MatchDate],Now()),DateDiff("m",[MatchDate],[DissolveDate])) AS MthofSvc, Pairs.PairProgram, Pairs.PairStatusDate
+        //FROM Students RIGHT JOIN ((Tutors RIGHT JOIN Pairs ON Tutors.ID = Pairs.TID) RIGHT JOIN PairHours ON Pairs.UniqID = PairHours.PairHours) ON Students.ID = Pairs.SID
+        //WHERE (((PairHours.DateMet) Between [Forms]![frmDateSelectionPairStatus]![BeginDate] And [Forms]![frmDateSelectionPairStatus]![EndDate]));
+        public ActionResult PairHours(string paramsVal)   //string studentId, string beginDate, string endDate)
+        {
+            string reportType = "EXCEL";
+            string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+            string endDate = DateTime.Now.ToShortDateString();
+            string statusType = "";
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: report type
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd: begin date
+                if (str.Count() > 1)        // not all reports have a start date
+                {
+                    string[] date = str[1].Split('=');
+                    beginDate = date[1];
+                }
+
+                // 3rd: end date
+                if (str.Count() > 2)        // not all reports have an end date
+                {
+                    string[] date = str[2].Split('=');
+                    endDate = date[1];
+                }
+
+                // 4th: status
+                if (str.Count() > 3)        // not all reports have a status
+                {
+                    string[] type = str[3].Split('=');
+                    statusType = type[1];
+                }
+            }
+
+            DateTime date1;
+            if (beginDate != "")
+            {
+                date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+            }
+            else
+            {
+                date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+
+            DateTime date2 = DateTime.Now;
+            if (endDate != "")
+            {
+                date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+            }
+
+            int statusCnt = statusType.Length;
+            if (statusCnt == 0)
+            {
+                statusType = StatusString();
+            }
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var dataSource = from student in db.Students
+                                 where statusCnt == 0 ? statusType.Contains(student.Status) : student.Status.Equals(statusType)
+                                 join pair in db.Pairs on student.ID equals pair.SID into studentPairGrp
+                                 from studentpair in studentPairGrp
+
+                                 /////////where studentpair.DissolveDate != null
+                                 join tutor in db.Tutors on studentpair.TID equals tutor.ID
+                                 join pairHour in db.PairHours on studentpair.UniqID equals pairHour.PairHours into studentPairPairHourGrp
+
+                                 from studentPairPairHour in studentPairPairHourGrp
+                                 where studentPairPairHour.DateMet >= date1 && studentPairPairHour.DateMet <= date2
+                                 orderby studentPairPairHour.DateMet descending
+                                 //join student in db.Students on tutorPairPairHours.SID equals student.ID
+                                 select new
+                                 {
+                                     DateMet = studentPairPairHour.DateMet,
+                                     HoursMet = studentPairPairHour.HoursMet,
+                                     TutorName = tutor.FirstName + " " + tutor.LastName,
+                                     StudentName = student.FirstName + " " + student.LastName,
+                                     DissolveDate = studentpair.DissolveDate,
+                                     Activity = studentPairPairHour.Activity,
+                                     PairStatus = studentpair.PairStatus,
+                                     MatchDate = studentpair.MatchDate,
+                                     //MthofSvc,
+                                     PairProgram = studentpair.PairProgram,
+                                     PairStatusDate = studentpair.PairStatusDate,
+                                 };
+ 
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString()));
+                paramList.Add(new ReportParameter("StatusType", statusType));
+
+                return RunReport(reportType, "PairHours.rdlc", "PairHoursDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        public ActionResult PairsbyPairStatusandMatchDate(string paramsVal)   //string studentId, string beginDate, string endDate)
+        {
+            string reportType = "EXCEL";
+            string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+            string endDate = DateTime.Now.ToShortDateString();
+            string statusType = "";
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: report type
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd: begin date
+                if (str.Count() > 1)        // not all reports have a start date
+                {
+                    string[] date = str[1].Split('=');
+                    beginDate = date[1];
+                }
+
+                // 3rd: end date
+                if (str.Count() > 2)        // not all reports have an end date
+                {
+                    string[] date = str[2].Split('=');
+                    endDate = date[1];
+                }
+
+                // 4th: status
+                if (str.Count() > 3)        // not all reports have a status
+                {
+                    string[] type = str[3].Split('=');
+                    statusType = type[1];
+                }
+            }
+
+            DateTime date1;
+            if (beginDate != "")
+            {
+                date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+            }
+            else
+            {
+                date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+
+            DateTime date2 = DateTime.Now;
+            if (endDate != "")
+            {
+                date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+            }
+
+            int statusCnt = statusType.Length;
+            if (statusCnt == 0)
+            {
+                statusType = StatusString();
+            }
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                //var dataSource = from student in db.Students
+                //                 where statusCnt == 0 ? statusType.Contains(student.Status) : student.Status.Equals(statusType)
+                //                 join pair in db.Pairs on student.ID equals pair.SID into studentPairGrp
+                //                 from studentpair in studentPairGrp
+                //                 where studentpair.PairStatus != null
+
+                //                 /////////where studentpair.DissolveDate != null
+                //                 join tutor in db.Tutors on studentpair.TID equals tutor.ID
+                //                 join pairHour in db.PairHours on studentpair.UniqID equals pairHour.PairHours into studentPairPairHourGrp
+
+                //                 from studentPairPairHour in studentPairPairHourGrp
+                //                 where studentPairPairHour.DateMet >= date1 && studentPairPairHour.DateMet <= date2
+                //                 orderby studentpair.PairStatus ascending
+                //                 select new
+                //                 {
+                //                     DateMet = studentPairPairHour.DateMet,
+                //                     HoursMet = studentPairPairHour.HoursMet,
+                //                     TutorName = tutor.FirstName + " " + tutor.LastName,
+                //                     StudentName = student.FirstName + " " + student.LastName,
+                //                     DissolveDate = studentpair.DissolveDate,
+                //                     Activity = studentPairPairHour.Activity,
+                //                     PairStatus = studentpair.PairStatus,
+                //                     MatchDate = studentpair.MatchDate,
+                //                     //MthofSvc,
+                //                     PairProgram = studentpair.PairProgram,
+                //                     PairStatusDate = studentpair.PairStatusDate,
+                //                 };
+
+                var dataSource = from tutor in db.Tutors
+                                 join pair in db.Pairs on tutor.ID equals pair.TID
+                                    where pair.PairStatus != null && pair.MatchDate >= date1 && pair.MatchDate <= date2
+                                   // orderby pair.PairStatus ascending, pair.MatchDate descending
+                                 join student in db.Students on pair.SID equals student.ID
+                                    orderby pair.PairStatus ascending, pair.MatchDate descending, student.LastName ascending, tutor.LastName ascending
+                                 select new
+                                 {
+                                     TutorName = tutor.LastName + ", " + tutor.FirstName,
+                                     StudentName = student.LastName + ", " + student.FirstName,
+                                     DissolveDate = pair.DissolveDate,
+                                     PairStatus = pair.PairStatus,
+                                     MatchDate = pair.MatchDate,
+                                     //MthofSvc,
+                                     PairProgram = pair.PairProgram,
+                                     PairStatusDate = pair.PairStatusDate,
+                                 };
+
+
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString()));
+                paramList.Add(new ReportParameter("StatusType", statusType));
+
+                return RunReport(reportType, "PairsbyPairStatusandMatchDate.rdlc", "PairHoursDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        public ActionResult PairHoursbyActivity(string paramsVal)   //string studentId, string beginDate, string endDate)
+        {
+            string reportType = "EXCEL";
+            string beginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).ToShortDateString();
+            string endDate = DateTime.Now.ToShortDateString();
+            string statusType = "";
+            string activityType = "";
+            string detail = "Y";
+
+            if (paramsVal != null)
+            {
+                char[] sep = { '!' };
+                string[] str = paramsVal.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+
+                // 1st: report type
+                string[] s1 = str[0].Split('=');
+                reportType = s1[1];
+
+                // 2nd: begin date
+                if (str.Count() > 1)        // not all reports have a start date
+                {
+                    string[] date = str[1].Split('=');
+                    beginDate = date[1];
+                }
+
+                // 3rd: end date
+                if (str.Count() > 2)        // not all reports have an end date
+                {
+                    string[] date = str[2].Split('=');
+                    endDate = date[1];
+                }
+
+                // 4th: status
+                if (str.Count() > 3)        // not all reports have a status
+                {
+                    string[] type = str[3].Split('=');
+                    statusType = type[1];
+                }
+
+                // 5th: status
+                if (str.Count() > 4)        // not all reports have an activity
+                {
+                    string[] type = str[4].Split('=');
+                    activityType = type[1];
+                }
+
+                // 6th: Details?
+                if (str.Count() > 5)        // not all reports have an activity
+                {
+                    string[] type = str[5].Split('=');
+                    detail = type[1];
+                }
+            }
+
+            DateTime date1;
+            if (beginDate != "")
+            {
+                date1 = DateTime.ParseExact(beginDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(beginDate);
+            }
+            else
+            {
+                date1 = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+
+            DateTime date2 = DateTime.Now;
+            if (endDate != "")
+            {
+                date2 = DateTime.ParseExact(endDate, @"M/d/yyyy", System.Globalization.CultureInfo.InvariantCulture);       //Parse(endDate);
+            }
+
+            int statusCnt = statusType.Length;
+            if (statusCnt == 0)
+            {
+                statusType = StatusString();
+            }
+            int activityCnt = activityType.Length;
+            if (activityCnt == 0)
+            {
+                activityType = ActivityString();
+            }
+
+            using (LitProReadEntities db = new LitProReadEntities())
+            {
+                var dataSource = from student in db.Students
+                                 join pair in db.Pairs on student.ID equals pair.SID into studentPairGrp
+                                 from studentpair in studentPairGrp
+                                 where statusCnt == 0 ? statusType.Contains(studentpair.PairStatus) : studentpair.PairStatus.Equals(statusType)
+
+                                 /////////where studentpair.DissolveDate != null
+                                 join tutor in db.Tutors on studentpair.TID equals tutor.ID
+                                 join pairHour in db.PairHours on studentpair.UniqID equals pairHour.PairHours into studentPairPairHourGrp
+
+                                 from studentPairPairHour in studentPairPairHourGrp
+                                 where studentPairPairHour.DateMet >= date1 && studentPairPairHour.DateMet <= date2
+                                    && activityType.Contains(studentPairPairHour.Activity)
+                                   // && activityCnt == 0 ? (activityType.Contains(studentPairPairHour.Activity)) : studentPairPairHour.Activity.Equals(activityType)
+                                 orderby studentPairPairHour.Activity ascending, studentPairPairHour.DateMet descending
+                                 //join student in db.Students on tutorPairPairHours.SID equals student.ID
+                                 select new
+                                 {
+                                     DateMet = studentPairPairHour.DateMet,
+                                     HoursMet = studentPairPairHour.HoursMet,
+                                     TutorName = tutor.FirstName + " " + tutor.LastName,
+                                     StudentName = student.FirstName + " " + student.LastName,
+                                     DissolveDate = studentpair.DissolveDate,
+                                     Activity = studentPairPairHour.Activity,
+                                     PairStatus = studentpair.PairStatus,
+                                     MatchDate = studentpair.MatchDate,
+                                     //MthofSvc,
+                                     PairProgram = studentpair.PairProgram,
+                                     PairStatusDate = studentpair.PairStatusDate,
+                                 };
+
+                //if (datasource.FirstOrDefault() == null)
+                //    return 
+                List<ReportParameter> paramList = new List<ReportParameter>();
+                paramList.Add(new ReportParameter("BeginDate", date1.ToShortDateString()));
+                paramList.Add(new ReportParameter("EndDate", date2.ToShortDateString()));
+                paramList.Add(new ReportParameter("StatusType", statusType));
+                paramList.Add(new ReportParameter("ActivityType", activityType));
+
+                if (detail == "Y")
+                    return RunReport(reportType, "PairHoursbyActivity.rdlc", "PairHoursDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+                else
+                    return RunReport(reportType, "PairHoursbyActivityNoDetail.rdlc", "PairHoursDataSet", dataSource, paramList, 11, 8.5, 0.25, 0.25);
+            }
+        }
+
+        public ActionResult PairHoursbyActivityNoDetail(string paramsVal)   //string studentId, string beginDate, string endDate)
+        {
+            return PairHoursbyActivity(paramsVal);
+        }
+
         //*** STUDENTS ***
         public ActionResult Students()
         {
@@ -1966,6 +2324,18 @@ namespace LitProRead.Controllers
             }
         }
 
+
+        //*** ALL PAIRS ***
+        public ActionResult AllPairs()
+        {
+            var vm = new ReportsViewModel
+            {
+                AllPairsReport = ReportsViewModel.GetAllPairsReportList()
+            };
+
+            return View(vm);
+        }
+
         private ActionResult RunReport(string reportType, string reportName, string dataSetname, object dataSourceValue, List<ReportParameter> paramList, double width = -1, double height = -1, double horzMargin = -1, double vertMargin = -1)
         {
             LocalReport lr = new LocalReport();
@@ -2034,6 +2404,30 @@ namespace LitProRead.Controllers
             int cnt = 0;
             int listCnt = statusList.Count - 1;
             foreach (var s in statusList)
+            {
+                string tempS = s.Text.ToString();
+                if (tempS != "")
+                {
+                    temp.Append("'");
+                    temp.Append(tempS);
+                    temp.Append("'");
+                    if (cnt++ < listCnt)
+                        temp.Append(",");
+                }
+            }
+
+            return temp.ToString();
+        
+        }
+
+        private string ActivityString()
+        {
+            StringBuilder temp = new StringBuilder();
+            var vm = new ReportsViewModel();
+            var activityList = vm.ChosenActivityList;
+            int cnt = 0;
+            int listCnt = activityList.Count - 1;
+            foreach (var s in activityList)
             {
                 string tempS = s.Text.ToString();
                 if (tempS != "")

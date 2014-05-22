@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PairHoursDataSet" targetNamespace="http://tempuri.org/PairHoursDataSet.xsd" xmlns:mstns="http://tempuri.org/PairHoursDataSet.xsd" xmlns="http://tempuri.org/PairHoursDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="PairHoursDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="PairHoursDataSet" msprop:Generator_UserDSName="PairHoursDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="PairHoursDataTable" msprop:Generator_TableClassName="PairHoursDataTableDataTable" msprop:Generator_TableVarName="tablePairHoursDataTable" msprop:Generator_TablePropName="PairHoursDataTable" msprop:Generator_RowDeletingName="PairHoursDataTableRowDeleting" msprop:Generator_RowChangingName="PairHoursDataTableRowChanging" msprop:Generator_RowEvHandlerName="PairHoursDataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="PairHoursDataTableRowDeleted" msprop:Generator_UserTableName="PairHoursDataTable" msprop:Generator_RowChangedName="PairHoursDataTableRowChanged" msprop:Generator_RowEvArgName="PairHoursDataTableRowChangeEvent" msprop:Generator_RowClassName="PairHoursDataTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DateMet" msprop:Generator_ColumnVarNameInTable="columnDateMet" msprop:Generator_ColumnPropNameInRow="DateMet" msprop:Generator_ColumnPropNameInTable="DateMetColumn" msprop:Generator_UserColumnName="DateMet" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="HoursMet" msprop:Generator_ColumnVarNameInTable="columnHoursMet" msprop:Generator_ColumnPropNameInRow="HoursMet" msprop:Generator_ColumnPropNameInTable="HoursMetColumn" msprop:Generator_UserColumnName="HoursMet" type="xs:double" minOccurs="0" />
+              <xs:element name="Activity" msprop:Generator_ColumnVarNameInTable="columnActivity" msprop:Generator_ColumnPropNameInRow="Activity" msprop:Generator_ColumnPropNameInTable="ActivityColumn" msprop:Generator_UserColumnName="Activity" type="xs:string" minOccurs="0" />
+              <xs:element name="TutorName" msprop:Generator_ColumnVarNameInTable="columnTutorName" msprop:Generator_ColumnPropNameInRow="TutorName" msprop:Generator_ColumnPropNameInTable="TutorNameColumn" msprop:Generator_UserColumnName="TutorName" type="xs:string" minOccurs="0" />
+              <xs:element name="StudentName" msprop:Generator_ColumnVarNameInTable="columnStudentName" msprop:Generator_ColumnPropNameInRow="StudentName" msprop:Generator_ColumnPropNameInTable="StudentNameColumn" msprop:Generator_UserColumnName="StudentName" type="xs:string" minOccurs="0" />
+              <xs:element name="MatchDate" msprop:Generator_ColumnVarNameInTable="columnMatchDate" msprop:Generator_ColumnPropNameInRow="MatchDate" msprop:Generator_ColumnPropNameInTable="MatchDateColumn" msprop:Generator_UserColumnName="MatchDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DissolveDate" msprop:Generator_ColumnVarNameInTable="columnDissolveDate" msprop:Generator_ColumnPropNameInRow="DissolveDate" msprop:Generator_ColumnPropNameInTable="DissolveDateColumn" msprop:Generator_UserColumnName="DissolveDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="PairStatus" msprop:Generator_ColumnVarNameInTable="columnPairStatus" msprop:Generator_ColumnPropNameInRow="PairStatus" msprop:Generator_ColumnPropNameInTable="PairStatusColumn" msprop:Generator_UserColumnName="PairStatus" type="xs:string" minOccurs="0" />
+              <xs:element name="PairProgram" msprop:Generator_ColumnVarNameInTable="columnPairProgram" msprop:Generator_ColumnPropNameInRow="PairProgram" msprop:Generator_ColumnPropNameInTable="PairProgramColumn" msprop:Generator_UserColumnName="PairProgram" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
